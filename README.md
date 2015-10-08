@@ -1,6 +1,6 @@
 # Easy AdminLTE integration with Laravel 5
 
-This package provides an easy way to set up AdminLTE with Laravel.
+This package provides an easy way to set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5.
 I really like AdminLTE and I use it in almost all of my Laravel projects.
 So I wanted an easy way to pull this in, however I did not want a lot of
 features baked in (like others do, e.g.
