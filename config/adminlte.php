@@ -65,7 +65,7 @@ return [
     |
     | Specify your menu items to display in the left sidebar. Each menu item
     | should have a text and and a URL. You can also specify an icon from
-    | FontAwesome. A string instead of an array represents a header.
+    | Font Awesome. A string instead of an array represents a header.
     |
     */
 
