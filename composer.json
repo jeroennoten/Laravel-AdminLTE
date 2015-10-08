@@ -1,0 +1,19 @@
+{
+  "name": "jeroennoten/laravel-adminlte",
+  "description": "Easy AdminLTE integration with Laravel",
+  "keywords": ["laravel", "adminlte", "admin", "administrator"],
+  "authors": [
+    {
+      "name": "Jeroen Noten",
+      "email": "jeroennoten@me.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "JeroenNoten\\LaravelAdminLte\\": "src/"
+    }
+  },
+  "require": {
+    "illuminate/support": "^5.1"
+  }
+}
