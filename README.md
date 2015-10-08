@@ -15,18 +15,21 @@ start simple.
 
 1. Require the package using composer:
 
-
-    composer require jeroennoten/laravel-adminlte
+```
+composer require jeroennoten/laravel-adminlte
+```
 
 2. Add the service provider to the `providers` in `config/app.php`:
 
-
-    JeroenNoten\LaravelAdminLte\ServiceProvider::class,
+```php
+JeroenNoten\LaravelAdminLte\ServiceProvider::class,
+```
 
 3. Publish the config file and assets:
 
-
-    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider"
+```
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider"
+```
 
 ## Usage
 
@@ -41,27 +44,29 @@ This template yields the following sections:
 
 All sections are in fact optional. Your blade template could look like the following.
 
-    {{-- resources/views/admin/dashboard.blade.php --}}
+```html
+{{-- resources/views/admin/dashboard.blade.php --}}
 
-    @extends('adminlte::page')
+@extends('adminlte::page')
 
-    @section('title', 'Dashboard')
+@section('title', 'Dashboard')
 
-    @section('content_header')
-        <h1>Dashboard</h1>
-    @stop
+@section('content_header')
+    <h1>Dashboard</h1>
+@stop
 
-    @section('content')
-        <p>Welcome to this beautiful admin panel.</p>
-    @stop
+@section('content')
+    <p>Welcome to this beautiful admin panel.</p>
+@stop
 
-    @section('css')
-        <link rel="stylesheet" href="/css/admin_custom.css">
-    @stop
+@section('css')
+    <link rel="stylesheet" href="/css/admin_custom.css">
+@stop
 
-    @section('js')
-        <script> console.log('Hi!'); </script>
-    @stop
+@section('js')
+    <script> console.log('Hi!'); </script>
+@stop
+```
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
@@ -70,29 +75,31 @@ You now just return this view from your controller, as usual. Check out [AdminLT
 Edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
 You can configure your menu as follows:
 
-    'menu' => [
-        'MAIN NAVIGATION',
-        [
-            'text' => 'Blog',
-            'url' => 'admin/blog',
-        ],
-        [
-            'text' => 'Pages',
-            'url' => 'admin/pages',
-            'icon' => 'file'
-        ],
-        'ACCOUNT SETTINGS',
-        [
-            'text' => 'Profile',
-            'url' => 'admin/settings',
-            'icon' => 'user'
-        ],
-        [
-            'text' => 'Change Password',
-            'url' => 'admin/settings',
-            'icon' => 'lock'
-        ],
+```php
+'menu' => [
+    'MAIN NAVIGATION',
+    [
+        'text' => 'Blog',
+        'url' => 'admin/blog',
     ],
+    [
+        'text' => 'Pages',
+        'url' => 'admin/pages',
+        'icon' => 'file'
+    ],
+    'ACCOUNT SETTINGS',
+    [
+        'text' => 'Profile',
+        'url' => 'admin/settings',
+        'icon' => 'user'
+    ],
+    [
+        'text' => 'Change Password',
+        'url' => 'admin/settings',
+        'icon' => 'lock'
+    ],
+],
+```
 
 With a single string, you specify a menu header item to separate the items.
 With an array, you specify a menu item. `text` and `url` are required attributes.
