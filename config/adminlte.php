@@ -49,14 +49,16 @@ return [
     |--------------------------------------------------------------------------
     |
     | The dashboard_url is used for the link behind the logo in the upper
-    | left corner. The logout_url is used for the logout button in the
-    | upper right corner. They are passed through the url() helper.
+    | left corner. The logout_url is for the logout button in the upper
+    | right corner. The login_url is for the action of the login form.
     |
     */
 
     'dashboard_url' => 'admin/dashboard',
 
     'logout_url' => 'auth/logout',
+
+    'login_url' => 'auth/login',
 
     /*
     |--------------------------------------------------------------------------

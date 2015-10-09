@@ -25,10 +25,10 @@ composer require jeroennoten/laravel-adminlte
 JeroenNoten\LaravelAdminLte\ServiceProvider::class,
 ```
 
-3. Publish the config file and assets:
+3. Publish the public assets:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider"
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
 ```
 
 ## Usage
@@ -70,9 +70,21 @@ All sections are in fact optional. Your blade template could look like the follo
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
+### Login Form
+
+AdminLTE also comes with a nice [login form](https://almsaeedstudio.com/themes/AdminLTE/pages/examples/login.html).
+To use this login form with Laravel, the only thing you need to do is to create a `auth.login` view (`resources/views/auth/login.blade.php`)
+and put `@extends('adminlte::login')` at the top of the file. Don't forget to set up the routing for authentication, as [explained in the Laravel documentation](http://laravel.com/docs/5.1/authentication#included-routing) and you're good to go.
+
 ## Configuration
 
-Edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
+First, publish the configuration file:
+
+```
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=config
+```
+
+Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
 You can configure your menu as follows:
 
 ```php
@@ -106,3 +118,25 @@ With an array, you specify a menu item. `text` and `url` are required attributes
 The `icon` is optional, you get an [open circle](http://fontawesome.io/icon/circle-o/) if you leave it out.
 The available icons that you can use are those from [Font Awesome](http://fontawesome.io/icons/).
 Just specify the name of the icon and it will appear in front of your menu item.
+
+## Translations
+
+At the moment, Dutch and English translations are available out of the box.
+Just specifiy the language in `config/app.php`.
+If you need to modify the texts or add other languages, you can publish the language files:
+
+```
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=translations
+```
+
+Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
+
+## Customize views
+
+If you need full control over the provided views, you can publish them:
+
+```
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=views
+```
+
+Now, you can edit the views in `resources/views/vendor/adminlte`.
