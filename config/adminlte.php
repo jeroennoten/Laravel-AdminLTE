@@ -48,9 +48,9 @@ return [
     | URLs
     |--------------------------------------------------------------------------
     |
-    | The dashboard_url is used for the link behind the logo in the upper
-    | left corner. The logout_url is for the logout button in the upper
-    | right corner. The login_url is for the action of the login form.
+    | Register here your dashboard, logout, login and register URLs. The
+    | first two must respond to a GET request, the last two to a POST.
+    | Set register_url to null if you don't want a register link.
     |
     */
 
@@ -59,6 +59,8 @@ return [
     'logout_url' => 'auth/logout',
 
     'login_url' => 'auth/login',
+
+    'register_url' => 'auth/register',
 
     /*
     |--------------------------------------------------------------------------
