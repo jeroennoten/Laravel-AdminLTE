@@ -15,21 +15,21 @@ start simple.
 
 1. Require the package using composer:
 
-```
-composer require jeroennoten/laravel-adminlte
-```
+    ```
+    composer require jeroennoten/laravel-adminlte
+    ```
 
 2. Add the service provider to the `providers` in `config/app.php`:
 
-```php
-JeroenNoten\LaravelAdminLte\ServiceProvider::class,
-```
+    ```php
+    JeroenNoten\LaravelAdminLte\ServiceProvider::class,
+    ```
 
 3. Publish the public assets:
 
-```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
-```
+    ```
+    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
+    ```
 
 ## Usage
 
