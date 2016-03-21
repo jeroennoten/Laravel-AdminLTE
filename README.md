@@ -11,6 +11,14 @@ I just want a template to build my admin panel. Therefore, I made this package.
 Right now the functionality is very basic, I will add more features later, but let's
 start simple.
 
+- [Installation](#installation)
+- [Updating](#updating)
+- [Usage](#usage)
+- [Login and Registration Form](#login-and-registration-form)
+- [Configuration](#configuration)
+- [Translations](#translations)
+- [Customize views](#customize-views)
+
 ## Installation
 
 1. Require the package using composer:
@@ -29,6 +37,20 @@ start simple.
 
     ```
     php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
+    ```
+
+## Updating
+
+1. To update this package, first update the composer package:
+
+    ```
+    composer update jeroennoten/laravel-adminlte
+    ```
+
+2. Then, publish the public assets with the `--force` flag to overwrite existing files
+
+    ```
+    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets --force
     ```
 
 ## Usage
