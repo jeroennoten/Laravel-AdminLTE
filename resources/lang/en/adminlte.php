@@ -7,7 +7,7 @@ return [
     'password' => 'Password',
     'retype_password' => 'Retype password',
     'remember_me' => 'Remember Me',
-    'register' => 'Registreren',
+    'register' => 'Register',
     'register_a_new_membership' => 'Register a new membership',
     'sign_in' => 'Sign In',
     'log_out' => 'Log Out',
