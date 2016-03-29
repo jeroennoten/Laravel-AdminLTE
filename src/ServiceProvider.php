@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JeroenNoten\LaravelAdminLte\Console\MakeAdminLteCommand;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -21,6 +22,8 @@ class ServiceProvider extends BaseServiceProvider
         $this->publishConfig();
 
         $this->publishAssets();
+
+        $this->registerCommands();
     }
 
     private function loadViews()
@@ -67,6 +70,11 @@ class ServiceProvider extends BaseServiceProvider
     {
         return __DIR__ . "/../$path";
 
+    }
+
+    private function registerCommands()
+    {
+        $this->commands(MakeAdminLteCommand::class);
     }
 
 }
