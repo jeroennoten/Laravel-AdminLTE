@@ -11,7 +11,7 @@
 @section('body')
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url(config('adminlte.dashboard_url')) }}">{!! config('adminlte.logo') !!}</a>
+            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
         </div>
         <!-- /.login-logo -->
         <div class="login-box-body">
@@ -56,7 +56,7 @@
                 </div>
             </form>
             <div class="auth-links">
-                @if (config('adminlte.register_url'))
+                @if (config('adminlte.register_url', 'register'))
                     <a href="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}"
                        class="text-center"
                     >{{ trans('adminlte::adminlte.i_forgot_my_password') }}</a>
