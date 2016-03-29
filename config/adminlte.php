@@ -54,13 +54,13 @@ return [
     |
     */
 
-    'dashboard_url' => 'admin/dashboard',
+    'dashboard_url' => 'home',
 
-    'logout_url' => 'auth/logout',
+    'logout_url' => 'logout',
 
-    'login_url' => 'auth/login',
+    'login_url' => 'login',
 
-    'register_url' => 'auth/register',
+    'register_url' => 'register',
 
     /*
     |--------------------------------------------------------------------------
