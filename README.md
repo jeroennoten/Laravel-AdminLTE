@@ -7,9 +7,7 @@ features baked in (like others do, e.g.
 [Orchestra Platform](http://orchestraplatform.com/),
 [SleepingOwl Admin](http://sleeping-owl.github.io/),
 [Administrator](http://administrator.frozennode.com/)).
-I just want a template to build my admin panel. Therefore, I made this package.
-Right now the functionality is very basic, I will add more features later, but let's
-start simple.
+I just want a template to build my admin panel. Therefore, I made this package. It also includes a replacement for `make:auth` that uses AdminLTE styled views instead of the default ones.
 
 - [Installation](#installation)
 - [Updating](#updating)
