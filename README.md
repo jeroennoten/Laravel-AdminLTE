@@ -92,11 +92,32 @@ All sections are in fact optional. Your blade template could look like the follo
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
-### Login and Registration Form
+### The `make:adminlte` artisan command
 
-AdminLTE also comes with nice [login](https://almsaeedstudio.com/themes/AdminLTE/pages/examples/login.html) and [registration](https://almsaeedstudio.com/themes/AdminLTE/pages/examples/register.html) forms.
-To use these forms with Laravel, the only thing you need to do is to create a `auth.login` and `auth.register` view (`resources/views/auth/login.blade.php` and `resources/views/auth/register.blade.php`)
-and put `@extends('adminlte::login')` or `@extends('adminlte::register')` at the top of the file. Don't forget to set up the routing for authentication, as [explained in the Laravel documentation](http://laravel.com/docs/5.1/authentication#included-routing) and you're good to go.
+This package ships with a `make:adminlte` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
+This command should be used on fresh applications, just like the `make:auth` command.
+
+### Using the authentication views without the `make:adminlte` command
+
+If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
+
+- `resources/views/auth/login.blade.php`:
+```
+@extends('adminlte::login')
+```
+- `resources/views/auth/register.blade.php`
+```
+@extends('adminlte::register')
+```
+- `resources/views/auth/passwords/email.blade.php`
+```
+@extends('adminlte::passwords.email')
+```
+- `resources/views/auth/passwords/reset.blade.php`
+```
+@extends('adminlte::passwords.reset')
+```
+
 By default, the login form contains a link to the registration form.
 If you don't want a registration form, set the `register_url` setting to `null` and the link will not be displayed.
 
