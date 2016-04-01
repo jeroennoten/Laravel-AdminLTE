@@ -49,19 +49,7 @@
 
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu">
-
-                    @foreach(config('adminlte.menu', []) as $item)
-                        @if (is_string($item))
-                            <li class="header">{{ $item }}</li>
-                        @else
-                            <li>
-                                <a href="{{ url($item['url']) }}">
-                                    <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }}"></i>
-                                    <span>{{ $item['text'] }}</span>
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
+                    @each('adminlte::partials.menu-item', config('adminlte.menu', []), 'item')
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
