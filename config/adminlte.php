@@ -82,7 +82,9 @@ return [
         [
             'text' => 'Pages',
             'url' => 'admin/pages',
-            'icon' => 'file'
+            'icon' => 'file',
+            'label' => 4,
+            'label-color' => 'success',
         ],
         'ACCOUNT SETTINGS',
         [
@@ -132,6 +134,19 @@ return [
                     'url' => '#',
                 ],
             ],
+        ],
+        'LABELS',
+        [
+            'text' => 'Important',
+            'icon-color' => 'red',
+        ],
+        [
+            'text' => 'Warning',
+            'icon-color' => 'yellow',
+        ],
+        [
+            'text' => 'Information',
+            'icon-color' => 'aqua',
         ],
     ],
 
