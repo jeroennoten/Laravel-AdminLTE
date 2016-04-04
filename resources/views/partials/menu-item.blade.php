@@ -7,8 +7,7 @@
             <span>{{ $item['text'] }}</span>
             @if (isset($item['label']))
                 <span class="label label-{{ $item['label_color'] or 'primary' }} pull-right">{{ $item['label'] }}</span>
-            @endif
-            @if (isset($item['submenu']) && !isset($item['label']))
+            @elseif (isset($item['submenu']))
                 <i class="fa fa-angle-left pull-right"></i>
             @endif
         </a>
