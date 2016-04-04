@@ -3,10 +3,10 @@
 @else
     <li {{ isset($item['submenu']) ? 'class="treeview"' : '' }}>
         <a href="{{ isset($item['url']) ? url($item['url']) : '#' }}">
-            <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon-color']) ? 'text-' . $item['icon-color'] : '' }}"></i>
+            <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             <span>{{ $item['text'] }}</span>
             @if (isset($item['label']))
-                <span class="label label-{{ $item['label-color'] or 'primary' }} pull-right">{{ $item['label'] }}</span>
+                <span class="label label-{{ $item['label_color'] or 'primary' }} pull-right">{{ $item['label'] }}</span>
             @endif
             @if (isset($item['submenu']) && !isset($item['label']))
                 <i class="fa fa-angle-left pull-right"></i>

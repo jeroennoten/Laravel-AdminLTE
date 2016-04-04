@@ -84,7 +84,7 @@ return [
             'url' => 'admin/pages',
             'icon' => 'file',
             'label' => 4,
-            'label-color' => 'success',
+            'label_color' => 'success',
         ],
         'ACCOUNT SETTINGS',
         [
@@ -138,15 +138,15 @@ return [
         'LABELS',
         [
             'text' => 'Important',
-            'icon-color' => 'red',
+            'icon_color' => 'red',
         ],
         [
             'text' => 'Warning',
-            'icon-color' => 'yellow',
+            'icon_color' => 'yellow',
         ],
         [
             'text' => 'Information',
-            'icon-color' => 'aqua',
+            'icon_color' => 'aqua',
         ],
     ],
 
