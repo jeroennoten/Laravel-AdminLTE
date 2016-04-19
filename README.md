@@ -15,6 +15,7 @@ I just want a template to build my admin panel. Therefore, I made this package. 
 - [The `make:adminlte` artisan command](#the-makeadminlte-artisan-command)
 - [Using the authentication views without the `make:adminlte` command](#using-the-authentication-views-without-the-makeadminlte-command)
 - [Configuration](#configuration)
+  - [Menu configuration at runtime](#menu-configuration-at-runtime)
 - [Translations](#translations)
 - [Customize views](#customize-views)
 
@@ -167,6 +168,52 @@ With an array, you specify a menu item. `text` and `url` are required attributes
 The `icon` is optional, you get an [open circle](http://fontawesome.io/icon/circle-o/) if you leave it out.
 The available icons that you can use are those from [Font Awesome](http://fontawesome.io/icons/).
 Just specify the name of the icon and it will appear in front of your menu item.
+
+### Menu configuration at runtime
+
+It is also possible to configure the menu at runtime, e.g. in the boot of any service provider.
+Use this if your menu is not static, for example when it depends on your database or the locale.
+It is also possible to combine both approaches. The menus will simply be concatenated and the order of service providers
+determines the order in the menu.
+
+To configure the menu at runtime, register a handler or callback for the `MenuBuilding` event, for example in the `boot()` method of a service provider:
+
+```php
+    public function boot(Dispatcher $events)
+    {
+        $events->listen(\JeroenNoten\LaravelAdminLte\Events\BuildingMenu::class, function (BuildingMenu $event) {
+            $event->menu->add('MAIN NAVIGATION');
+            $event->menu->add([
+                'text' => 'Blog',
+                'url' => 'admin/blog',
+            ]);
+        });
+    }
+```
+The configuration options are the same as in the static configuration files.
+
+A more practical example that actually uses translations and the database:
+
+```php
+    public function boot(Dispatcher $events)
+    {
+        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+            $event->menu->add(trans('menu.pages'));
+
+            $items = Page::all()->map(function (Page $page) {
+                return [
+                    'text' => $page['title'],
+                    'url' => route('admin.pages.edit', $page)
+                ];
+            });
+
+            $event->menu->add(...$items);
+        });
+    }
+```
+
+This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
+
 
 ## Translations
 

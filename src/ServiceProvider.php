@@ -4,6 +4,8 @@ namespace JeroenNoten\LaravelAdminLte;
 
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Console\MakeAdminLteCommand;
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 
 class ServiceProvider extends BaseServiceProvider
 {
@@ -24,6 +26,10 @@ class ServiceProvider extends BaseServiceProvider
         $this->publishAssets();
 
         $this->registerCommands();
+
+        $this->registerViewComposers();
+
+        $this->registerMenu();
     }
 
     private function loadViews()
@@ -75,6 +81,21 @@ class ServiceProvider extends BaseServiceProvider
     private function registerCommands()
     {
         $this->commands(MakeAdminLteCommand::class);
+    }
+
+    private function registerViewComposers()
+    {
+        $this->app['view']->composer('adminlte::page', AdminLteComposer::class);
+    }
+
+    private function registerMenu()
+    {
+        $events = $this->app['events'];
+
+        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+            $menu = $this->app['config']->get('adminlte.menu');
+            $event->menu->add(...$menu);
+        });
     }
 
 }

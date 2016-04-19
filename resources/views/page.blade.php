@@ -49,7 +49,7 @@
 
                 <!-- Sidebar Menu -->
                 <ul class="sidebar-menu">
-                    @each('adminlte::partials.menu-item', config('adminlte.menu', []), 'item')
+                    @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
