@@ -56,15 +56,15 @@
                 </div>
             </form>
             <div class="auth-links">
-                @if (config('adminlte.register_url', 'register'))
-                    <a href="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}"
-                       class="text-center"
-                    >{{ trans('adminlte::adminlte.i_forgot_my_password') }}</a>
-                    <br>
-                @endif
-                <a href="{{ url(config('adminlte.register_url', 'register')) }}"
+                <a href="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}"
                    class="text-center"
-                >{{ trans('adminlte::adminlte.register_a_new_membership') }}</a>
+                >{{ trans('adminlte::adminlte.i_forgot_my_password') }}</a>
+                <br>
+                @if (config('adminlte.register_url', 'register'))
+                    <a href="{{ url(config('adminlte.register_url', 'register')) }}"
+                       class="text-center"
+                    >{{ trans('adminlte::adminlte.register_a_new_membership') }}</a>
+                @endif
             </div>
         </div>
         <!-- /.login-box-body -->
