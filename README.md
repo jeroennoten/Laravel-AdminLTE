@@ -179,9 +179,14 @@ determines the order in the menu.
 To configure the menu at runtime, register a handler or callback for the `MenuBuilding` event, for example in the `boot()` method of a service provider:
 
 ```php
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+
+class AppServiceProvider extends ServiceProvider
+{
+
     public function boot(Dispatcher $events)
     {
-        $events->listen(\JeroenNoten\LaravelAdminLte\Events\BuildingMenu::class, function (BuildingMenu $event) {
+        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
             $event->menu->add('MAIN NAVIGATION');
             $event->menu->add([
                 'text' => 'Blog',
@@ -189,6 +194,8 @@ To configure the menu at runtime, register a handler or callback for the `MenuBu
             ]);
         });
     }
+    
+}
 ```
 The configuration options are the same as in the static configuration files.
 
