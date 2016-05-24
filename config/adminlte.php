@@ -45,6 +45,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Layout
+    |--------------------------------------------------------------------------
+    |
+    | Choose a layout for your admin panel. The available layout options:
+    | null, 'boxed', 'fixed', 'top-nav'. null is the default, top-nav
+    | removes the sidebar and places your menu in the top navbar
+    |
+    */
+
+    'layout_options' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | URLs
     |--------------------------------------------------------------------------
     |
