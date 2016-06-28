@@ -80,7 +80,10 @@ class ServiceProvider extends BaseServiceProvider
 
     private function registerCommands()
     {
-        $this->commands(MakeAdminLteCommand::class);
+        // Laravel >=5.2 only
+        if (class_exists('Illuminate\\Auth\\Console\\MakeAuthCommand')) {
+            $this->commands(MakeAdminLteCommand::class);
+        }
     }
 
     private function registerViewComposers()
