@@ -94,6 +94,8 @@ You now just return this view from your controller, as usual. Check out [AdminLT
 
 ### The `make:adminlte` artisan command
 
+> Note: only for Laravel 5.2 and higher
+
 This package ships with a `make:adminlte` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
 
 ```
