@@ -2,6 +2,9 @@
 
 namespace JeroenNoten\LaravelAdminLte;
 
+use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Console\MakeAdminLteCommand;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
@@ -15,8 +18,11 @@ class ServiceProvider extends BaseServiceProvider
         //
     }
 
-    public function boot()
-    {
+    public function boot(
+        Factory $view,
+        Dispatcher $events,
+        Repository $config
+    ) {
         $this->loadViews();
 
         $this->loadTranslations();
@@ -27,9 +33,9 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->registerCommands();
 
-        $this->registerViewComposers();
+        $this->registerViewComposers($view);
 
-        $this->registerMenu();
+        static::registerMenu($events, $config);
     }
 
     private function loadViews()
@@ -86,17 +92,15 @@ class ServiceProvider extends BaseServiceProvider
         }
     }
 
-    private function registerViewComposers()
+    private function registerViewComposers(Factory $view)
     {
-        $this->app['view']->composer('adminlte::page', AdminLteComposer::class);
+        $view->composer('adminlte::page', AdminLteComposer::class);
     }
 
-    private function registerMenu()
+    public static function registerMenu(Dispatcher $events, Repository $config)
     {
-        $events = $this->app['events'];
-
-        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $menu = $this->app['config']->get('adminlte.menu');
+        $events->listen(BuildingMenu::class, function (BuildingMenu $event) use ($config) {
+            $menu = $config->get('adminlte.menu');
             $event->menu->add(...$menu);
         });
     }
