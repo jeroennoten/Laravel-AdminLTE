@@ -8,10 +8,12 @@ class Builder
 {
     public $menu = [];
 
-    public function add(...$item)
+    public function add()
     {
-        if (!empty($item)) {
-            array_push($this->menu, ...$item);
+        $items = func_get_args();
+
+        foreach($items as $item) {
+            array_push($this->menu, $item);
         }
     }
 }
