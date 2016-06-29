@@ -101,7 +101,7 @@ class ServiceProvider extends BaseServiceProvider
     {
         $events->listen(BuildingMenu::class, function (BuildingMenu $event) use ($config) {
             $menu = $config->get('adminlte.menu');
-            $event->menu->add(...$menu);
+            call_user_func_array([$event->menu, 'add'], $menu);
         });
     }
 
