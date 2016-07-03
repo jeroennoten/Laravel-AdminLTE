@@ -8,7 +8,9 @@
             @if (isset($item['label']))
                 <span class="label label-{{ $item['label_color'] or 'primary' }} pull-right">{{ $item['label'] }}</span>
             @elseif (isset($item['submenu']))
+                <span class="pull-right-container">
                 <i class="fa fa-angle-left pull-right"></i>
+                </span>
             @endif
         </a>
         @if (isset($item['submenu']))
