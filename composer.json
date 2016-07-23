@@ -1,5 +1,5 @@
 {
-  "name": "MasterBratac/Laravel-AdminLTE",
+  "name": "jeroennoten/laravel-adminlte",
   "description": "Easy AdminLTE integration with Laravel",
   "keywords": ["laravel", "adminlte", "admin", "administrator"],
   "license": "MIT",
@@ -15,7 +15,7 @@
     }
   },
   "require": {
-    "laravel/framework": "5.2.*|5.3.*",
+    "laravel/framework": "5.1.*|5.2.*|5.3.*",
     "php": ">=5.5.9"
   },
   "require-dev": {
