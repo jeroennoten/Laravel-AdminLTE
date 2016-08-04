@@ -1,7 +1,11 @@
 @if (is_string($item))
     <li class="header">{{ $item }}</li>
 @else
-    <li {{ isset($item['submenu']) ? 'class="treeview"' : '' }}>
+    <li {{ isset($item['submenu']) ? 'class="treeview"' : '' }}
+	@if (isset($item['url']))
+		{!! Request::is($item['url']) ?  'class="active"' : null !!}
+	@endif
+		>
         <a href="{{ isset($item['url']) ? url($item['url']) : '#' }}">
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             <span>{{ $item['text'] }}</span>

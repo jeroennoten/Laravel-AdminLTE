@@ -1,5 +1,8 @@
 @if (is_array($item))
     <li @if (isset($item['submenu'])) class="dropdown" @endif
+	@if (isset($item['url']))
+		{!! Request::is($item['url']) ?  'class="active"' : null !!}
+	@endif
     >
         <a href="{{ isset($item['url']) ? url($item['url']) : '#' }}"
            @if (isset($item['submenu'])) class="dropdown-toggle" data-toggle="dropdown" @endif
