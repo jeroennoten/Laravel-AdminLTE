@@ -26,7 +26,7 @@
 
 @yield('body')
 
-<script src="{{ asset('vendor/adminlte/plugins/jQuery/jQuery-2.2.3.min.js') }}"></script>
+<script src="{{ asset('vendor/adminlte/plugins/jQuery/jquery-2.2.3.min.js') }}"></script>
 <script src="{{ asset('vendor/adminlte/bootstrap/js/bootstrap.min.js') }}"></script>
 
 @yield('adminlte_js')
