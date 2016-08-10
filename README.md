@@ -229,7 +229,7 @@ This event-based approach is used to make sure that your code that builds the me
 
 ## Translations
 
-At the moment, Dutch and English translations are available out of the box.
+At the moment, English, German and Dutch translations are available out of the box.
 Just specifiy the language in `config/app.php`.
 If you need to modify the texts or add other languages, you can publish the language files:
 
