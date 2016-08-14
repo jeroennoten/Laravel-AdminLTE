@@ -1,6 +1,6 @@
 # Easy AdminLTE integration with Laravel 5
 
-[![Build Status](https://travis-ci.org/jeroennoten/Laravel-AdminLTE.svg?branch=master)](https://travis-ci.org/JeroenNoten/Laravel-AdminLTE)
+[![Build Status](https://travis-ci.org/jeroennoten/Laravel-AdminLTE.svg?branch=master)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
 
 This package provides an easy way to set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5.
 I really like AdminLTE and I use it in almost all of my Laravel projects.
