@@ -226,6 +226,14 @@ A more practical example that actually uses translations and the database:
 
 This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
 
+### Active menu items
+
+By default, a menu item is considered active if any of the following holds:
+- The current path matches the `url` parameter
+- The current path is a sub-path of the `url` parameter
+- If it has a submenu containing an active menu item
+
+To override this behavior, you can specify an `active` parameter with an array of active URLs, asterisks and regular expressions are supported.
 
 ## Translations
 
