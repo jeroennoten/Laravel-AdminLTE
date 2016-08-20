@@ -1,7 +1,7 @@
 @if (is_string($item))
     <li class="header">{{ $item }}</li>
 @else
-    <li {{ isset($item['submenu']) ? 'class="treeview"' : '' }}
+    <li {!! isset($item['submenu']) ? 'class="treeview"' : ''  !!}
 	@if (isset($item['url']))
 		{!! Request::is($item['url']) ?  'class="active"' : null !!}
 	@endif
