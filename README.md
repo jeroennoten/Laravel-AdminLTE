@@ -234,7 +234,15 @@ By default, a menu item is considered active if any of the following holds:
 - The current path is a sub-path of the `url` parameter
 - If it has a submenu containing an active menu item
 
-To override this behavior, you can specify an `active` parameter with an array of active URLs, asterisks and regular expressions are supported.
+To override this behavior, you can specify an `active` parameter with an array of active URLs, asterisks and regular expressions are supported. Example:
+
+```php
+[
+    'text' => 'Pages'
+    'url' => 'pages',
+    'active' => ['pages', 'content', 'content/*']
+]
+```
 
 ## Translations
 
