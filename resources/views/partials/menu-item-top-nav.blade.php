@@ -1,10 +1,6 @@
 @if (is_array($item))
-    <li @if (isset($item['submenu'])) class="dropdown" @endif
-	@if (isset($item['url']))
-		{!! Request::is($item['url']) ?  'class="active"' : null !!}
-	@endif
-    >
-        <a href="{{ isset($item['url']) ? url($item['url']) : '#' }}"
+    <li class="{{ $item['top_nav_class'] }}">
+        <a href="{{ $item['href'] }}"
            @if (isset($item['submenu'])) class="dropdown-toggle" data-toggle="dropdown" @endif
         >
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
@@ -25,8 +21,8 @@
                             <li class="dropdown-header">{{ $subitem }}</li>
                         @endif
                     @else
-                    <li>
-                        <a href="{{ isset($subitem['url']) ? url($subitem['url']) : '#' }}">
+                    <li class="{{ $subitem['top_nav_class'] }}">
+                        <a href="{{ $subitem['href'] }}">
                             <i class="fa fa-{{ $subitem['icon'] or 'circle-o' }} {{ isset($subitem['icon_color']) ? 'text-' . $subitem['icon_color'] : '' }}"></i>
                             {{ $subitem['text'] }}
                             @if (isset($subitem['label']))

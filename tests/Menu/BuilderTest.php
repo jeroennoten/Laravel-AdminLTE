@@ -1,0 +1,166 @@
+<?php
+
+class BuilderTest extends TestCase
+{
+    public function testAddOneItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/']);
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+    }
+
+    public function testAddMultipleItems()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/']);
+        $builder->add(['text' => 'About', 'url' => '/about']);
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('About', $builder->menu[1]['text']);
+        $this->assertEquals('/about', $builder->menu[1]['url']);
+    }
+
+    public function testAddMultipleItemsAtOnce()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(
+            ['text' => 'Home', 'url' => '/'],
+            ['text' => 'About', 'url' => '/about']
+        );
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('About', $builder->menu[1]['text']);
+        $this->assertEquals('/about', $builder->menu[1]['url']);
+    }
+
+    public function testHrefWillBeAdded()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/']);
+        $builder->add(['text' => 'About', 'url' => '/about']);
+
+        $this->assertEquals('http://example.com', $builder->menu[0]['href']);
+        $this->assertEquals('http://example.com/about', $builder->menu[1]['href']);
+    }
+
+    public function testDefaultHref()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home']);
+
+        $this->assertEquals('#', $builder->menu[0]['href']);
+    }
+
+    public function testSubmenuHref()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add([
+            'text' => 'Home',
+            'submenu' => [
+                ['text' => 'About', 'url' => '/about']
+            ]
+        ]);
+
+        $this->assertEquals('http://example.com/about', $builder->menu[0]['submenu'][0]['href']);
+    }
+
+    public function testMultiLevelSubmenuHref()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add([
+            'text' => 'Home',
+            'submenu' => [
+                [
+                    'text' => 'About',
+                    'url' => '/about',
+                    'submenu' => [
+                        ['text' => 'Test', 'url' => '/test']
+                    ]
+                ]
+            ]
+        ]);
+
+        $this->assertEquals('http://example.com/test', $builder->menu[0]['submenu'][0]['submenu'][0]['href']);
+    }
+
+    public function testActiveClass()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/about');
+
+        $builder->add(['text' => 'About', 'url' => 'about']);
+
+        $this->assertContains('active', $builder->menu[0]['classes']);
+    }
+
+    public function testSubmenuActiveWithHash()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/home');
+
+        $builder->add([
+            'url' => '#',
+            'submenu' => [
+                ['url' => 'home'],
+            ],
+        ]);
+
+        $this->assertTrue($builder->menu[0]['active']);
+    }
+
+    public function testTreeviewClass()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'About', 'submenu' => []]);
+
+        $this->assertContains('treeview', $builder->menu[0]['classes']);
+        $this->assertContains('dropdown', $builder->menu[0]['top_nav_classes']);
+    }
+
+    public function testTreeviewMenuSubmenuClasses()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'About', 'submenu' => []]);
+
+        $this->assertContains('treeview-menu', $builder->menu[0]['submenu_classes']);
+    }
+
+    public function testSubmenuClass()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'About', 'submenu' => []]);
+
+        $this->assertEquals('treeview-menu', $builder->menu[0]['submenu_class']);
+    }
+
+    public function testClass()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/about');
+
+        $builder->add(['text' => 'About', 'url' => 'about']);
+
+        $this->assertEquals('active', $builder->menu[0]['class']);
+    }
+
+    public function testTopNavClass()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/about');
+
+        $builder->add(['text' => 'About', 'url' => 'about']);
+
+        $this->assertEquals('active', $builder->menu[0]['top_nav_class']);
+    }
+
+}

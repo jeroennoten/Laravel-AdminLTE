@@ -5,7 +5,9 @@ namespace JeroenNoten\LaravelAdminLte;
 
 
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Contracts\Routing\UrlGenerator;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class AdminLte
@@ -14,9 +16,15 @@ class AdminLte
     
     private $events;
 
-    public function __construct(Dispatcher $events)
+    private $urlGenerator;
+
+    private $activeChecker;
+
+    public function __construct(Dispatcher $events, UrlGenerator $urlGenerator, ActiveChecker $activeChecker)
     {
         $this->events = $events;
+        $this->urlGenerator = $urlGenerator;
+        $this->activeChecker = $activeChecker;
     }
 
     public function menu()
@@ -30,7 +38,7 @@ class AdminLte
 
     protected function buildMenu()
     {
-        $builder = new Builder;
+        $builder = new Builder($this->urlGenerator, $this->activeChecker);
         
         $this->events->fire(new BuildingMenu($builder));
 

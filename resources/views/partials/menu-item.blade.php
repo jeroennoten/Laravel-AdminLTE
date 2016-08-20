@@ -1,12 +1,8 @@
 @if (is_string($item))
     <li class="header">{{ $item }}</li>
 @else
-    <li {!! isset($item['submenu']) ? 'class="treeview"' : ''  !!}
-	@if (isset($item['url']))
-		{!! Request::is($item['url']) ?  'class="active"' : null !!}
-	@endif
-		>
-        <a href="{{ isset($item['url']) ? url($item['url']) : '#' }}">
+    <li class="{{ $item['class'] }}">
+        <a href="{{ $item['href'] }}">
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             <span>{{ $item['text'] }}</span>
             @if (isset($item['label']))
@@ -18,7 +14,7 @@
             @endif
         </a>
         @if (isset($item['submenu']))
-            <ul class="treeview-menu">
+            <ul class="{{ $item['submenu_class'] }}">
                 @each('adminlte::partials.menu-item', $item['submenu'], 'item')
             </ul>
         @endif

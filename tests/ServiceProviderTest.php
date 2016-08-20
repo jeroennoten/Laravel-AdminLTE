@@ -7,7 +7,7 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\ServiceProvider;
 
-class ServiceProviderTest extends PHPUnit_Framework_TestCase
+class ServiceProviderTest extends TestCase
 {
     public function testRegisterMenu()
     {
@@ -15,7 +15,8 @@ class ServiceProviderTest extends PHPUnit_Framework_TestCase
         $config = new Repository([
             'adminlte.menu' => ['item']
         ]);
-        $menuBuilder = new Builder();
+
+        $menuBuilder = $this->makeMenuBuilder();
 
         ServiceProvider::registerMenu($events, $config);
 
