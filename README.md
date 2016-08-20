@@ -18,6 +18,7 @@ I just want a template to build my admin panel. Therefore, I made this package. 
 - [Using the authentication views without the `make:adminlte` command](#using-the-authentication-views-without-the-makeadminlte-command)
 - [Configuration](#configuration)
   - [Menu configuration at runtime](#menu-configuration-at-runtime)
+  - [Active menu items](#active-menu-items)
 - [Translations](#translations)
 - [Customize views](#customize-views)
 
