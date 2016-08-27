@@ -66,7 +66,7 @@ return [
     | or to false depending on the way you would like the default
     |
     */
-    'collapse_sidebar'=>true,
+    'collapse_sidebar'=>false,
 
     /*
     |--------------------------------------------------------------------------
