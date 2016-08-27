@@ -71,7 +71,7 @@ return [
 
     'logout_url' => 'logout',
 
-    'logout_method' => 'POST',
+    'logout_method' => null,
 
     'login_url' => 'login',
 
