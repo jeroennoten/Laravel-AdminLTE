@@ -162,5 +162,18 @@ return [
             'icon_color' => 'aqua',
         ],
     ],
+    /*
+    |--------------------------------------------------------------------------
+    | Plugins Initialization
+    |--------------------------------------------------------------------------
+    |
+    | Set any option below to true in order to enable the plugin by default
+    | in the master.blade.php file. For instance using an @if directive
+    | setting datatables to true will include the cdn assets for dt.
+    |
+    */
+    'plugins'=>[
+        'datatables'=>true,
+    ],
 
 ];
