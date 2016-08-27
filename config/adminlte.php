@@ -66,7 +66,7 @@ return [
     | this is compatible with layouts except top-nav layout option
     |
     */
-    'collapse_sidebar'=>false,
+    'collapse_sidebar'=> false,
 
 
     /*
