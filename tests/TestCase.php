@@ -1,6 +1,7 @@
 <?php
 
 
+use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
@@ -58,7 +59,7 @@ class TestCase extends PHPUnit_Framework_TestCase
     protected function makeGate()
     {
         return new Gate($this->makeContainer(), function () {
-            return new \Illuminate\Foundation\Auth\User;
+            return new GenericUser([]);
         });
     }
 
