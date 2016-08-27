@@ -33,7 +33,6 @@ class Builder
         }
     }
 
-
     protected function transformItems($items)
     {
         return array_map([$this, 'transformItem'], array_filter($items, [$this, 'isVisible']));
@@ -46,7 +45,6 @@ class Builder
 
     protected function transformItem($item)
     {
-
         if (is_string($item)) {
             return $item;
         }
