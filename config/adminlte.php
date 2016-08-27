@@ -171,9 +171,9 @@ return [
     | Plugins Initialization
     |--------------------------------------------------------------------------
     |
-    | Set any option below to true in order to enable the plugin by default
-    | in the master.blade.php file. For instance using an @if directive
-    | setting datatables to true will include the cdn assets for dt.
+    | Choose which JavaScript plugins should be included. At this moment,
+    | only DataTables is supported as a plugin. Set the value to true
+    | to include the JavaScript file from a CDN via a script tag.
     |
     */
 
