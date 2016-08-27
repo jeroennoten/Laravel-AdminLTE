@@ -57,9 +57,21 @@
 
                     <ul class="nav navbar-nav">
                         <li>
-                            <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
-                                <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
-                            </a>
+                            @if(config('adminlte.logout_method', 'POST') == 'GET')
+                                <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
+                                    <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
+                                </a>
+                            @else
+                                <a href="#"
+                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                                >
+                                    <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
+                                </a>
+                                <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
+                                    {{ method_field(config('adminlte.logout_method', 'POST')) }}
+                                    {{ csrf_field() }}
+                                </form>
+                            @endif
                         </li>
                     </ul>
                 </div>
