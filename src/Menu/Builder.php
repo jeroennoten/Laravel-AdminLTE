@@ -30,20 +30,18 @@ class Builder
 
         foreach ($items as $item) {
             array_push($this->menu, $item);
-       }
+        }
     }
 
 
     protected function transformItems($items)
     {
-        
-       $authItems = array_filter($items,function($item){
-        if(isset($item['can']) && $this->gate->denies($item['can'])){
-            return false;
-        }
-        return true; 
-       });
-        return array_map([$this, 'transformItem'], $authItems);
+        return array_map([$this, 'transformItem'], array_filter($items, [$this, 'isVisible']));
+    }
+
+    protected function isVisible($item)
+    {
+        return !isset($item['can']) || $this->gate->allows($item['can']);
     }
 
     protected function transformItem($item)
@@ -89,7 +87,7 @@ class Builder
         }
 
         if (isset($item['submenu'])) {
-            $classes[] = $topNav ? 'dropdown': 'treeview';
+            $classes[] = $topNav ? 'dropdown' : 'treeview';
         }
 
         return $classes;

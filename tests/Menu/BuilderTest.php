@@ -163,4 +163,30 @@ class BuilderTest extends TestCase
         $this->assertEquals('active', $builder->menu[0]['top_nav_class']);
     }
 
+    public function testCan()
+    {
+        $gate = $this->makeGate();
+        $gate->define('show-about', function () {
+            return true;
+        });
+        $gate->define('show-home', function () {
+            return false;
+        });
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add([
+            'text' => 'About',
+            'url' => 'about',
+            'can' => 'show-about'
+        ], [
+            'text' => 'Home',
+            'url' => '/',
+            'can' => 'show-home'
+        ]);
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertEquals('About', $builder->menu[0]['text']);
+    }
+
 }
