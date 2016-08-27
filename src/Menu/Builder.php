@@ -5,6 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu;
 
 
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class Builder
 {
@@ -14,10 +15,13 @@ class Builder
 
     private $activeChecker;
 
-    public function __construct(UrlGenerator $urlGenerator, ActiveChecker $activeChecker)
+    private $gate;
+
+    public function __construct(UrlGenerator $urlGenerator, ActiveChecker $activeChecker, Gate $gate)
     {
         $this->urlGenerator = $urlGenerator;
         $this->activeChecker = $activeChecker;
+        $this->gate = $gate;
     }
 
     public function add()
@@ -26,16 +30,25 @@ class Builder
 
         foreach ($items as $item) {
             array_push($this->menu, $item);
-        }
+       }
     }
+
 
     protected function transformItems($items)
     {
-        return array_map([$this, 'transformItem'], $items);
+        
+       $authItems = array_filter($items,function($item){
+        if(isset($item['can']) && $this->gate->denies($item['can'])){
+            return false;
+        }
+        return true; 
+       });
+        return array_map([$this, 'transformItem'], $authItems);
     }
 
     protected function transformItem($item)
     {
+
         if (is_string($item)) {
             return $item;
         }

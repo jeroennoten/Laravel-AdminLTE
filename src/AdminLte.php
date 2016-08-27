@@ -9,6 +9,7 @@ use Illuminate\Contracts\Routing\UrlGenerator;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class AdminLte
 {
@@ -20,11 +21,14 @@ class AdminLte
 
     private $activeChecker;
 
-    public function __construct(Dispatcher $events, UrlGenerator $urlGenerator, ActiveChecker $activeChecker)
+    private $gate;
+
+    public function __construct(Dispatcher $events, UrlGenerator $urlGenerator, ActiveChecker $activeChecker, Gate $gate)
     {
         $this->events = $events;
         $this->urlGenerator = $urlGenerator;
         $this->activeChecker = $activeChecker;
+        $this->gate = $gate;
     }
 
     public function menu()
@@ -38,7 +42,7 @@ class AdminLte
 
     protected function buildMenu()
     {
-        $builder = new Builder($this->urlGenerator, $this->activeChecker);
+        $builder = new Builder($this->urlGenerator, $this->activeChecker, $this->gate);
         
         $this->events->fire(new BuildingMenu($builder));
 

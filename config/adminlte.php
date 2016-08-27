@@ -110,7 +110,8 @@ return [
         [
             'text' => 'Change Password',
             'url' => 'admin/settings',
-            'icon' => 'lock'
+            'icon' => 'lock',
+            
         ],
         [
             'text' => 'Multilevel',
@@ -119,6 +120,7 @@ return [
                 [
                     'text' => 'Level One',
                     'url' => '#',
+                    
                 ],
                 [
                     'text' => 'Level One',
