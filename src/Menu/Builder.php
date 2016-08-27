@@ -5,6 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu;
 
 
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Support\Facades\Gate;
 
 class Builder
 {
@@ -25,17 +26,34 @@ class Builder
         $items = $this->transformItems(func_get_args());
 
         foreach ($items as $item) {
-            array_push($this->menu, $item);
+                array_push($this->menu, $item);
+       }
+    }
+
+    protected function authCheck($item)
+    {
+        if(!config('adminlte.check_auth')){return true;}//We are not checking permission
+        if(isset($item['permission']) && Gate::denies($item['permission'])){
+            return false;
         }
+        return true;  
     }
 
     protected function transformItems($items)
     {
-        return array_map([$this, 'transformItem'], $items);
+        foreach($items as $item)
+        {
+            if($this->authCheck($item))
+            {
+                $authItems[] = $item;
+            }
+        }
+        return array_map([$this, 'transformItem'], $authItems);
     }
 
     protected function transformItem($item)
     {
+
         if (is_string($item)) {
             return $item;
         }
@@ -55,7 +73,7 @@ class Builder
         $item['top_nav_classes'] = $this->makeClasses($item, true);
         $item['top_nav_class'] = implode(' ', $item['top_nav_classes']);
 
-        return $item;
+        return $item;       
     }
 
     protected function makeHref($item)
