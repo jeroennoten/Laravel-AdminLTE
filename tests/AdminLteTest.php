@@ -9,8 +9,7 @@ class AdminLteTest extends TestCase
 	
     public function testMenu()
     {
-
-        $adminLte = $this->makeAdminLte($this->gate);
+        $adminLte = $this->makeAdminLte();
 
         $this->getDispatcher()->listen(BuildingMenu::class, function (BuildingMenu $event) {
             $event->menu->add(['text' => 'Home']);
