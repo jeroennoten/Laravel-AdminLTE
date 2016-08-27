@@ -83,6 +83,8 @@ return [
 
     'logout_url' => 'logout',
 
+    'logout_method' => null,
+
     'login_url' => 'login',
 
     'register_url' => 'register',
@@ -133,7 +135,7 @@ return [
             'text' => 'Change Password',
             'url' => 'admin/settings',
             'icon' => 'lock',
-            'permission'=>'no-access',
+            //'permission'=>'no-access',
         ],
         [
             'text' => 'Multilevel',
@@ -142,7 +144,7 @@ return [
                 [
                     'text' => 'Level One - no-access',
                     'url' => '#',
-                    'permission'=>'no-access',
+                    //'permission'=>'no-access',
                 ],
                 [
                     'text' => 'Level One',
