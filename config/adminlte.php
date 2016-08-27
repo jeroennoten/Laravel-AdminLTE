@@ -93,6 +93,7 @@ return [
         [
             'text' => 'Blog',
             'url' => 'admin/blog',
+            'can' => 'manage-blog'
         ],
         [
             'text' => 'Pages',
@@ -111,7 +112,6 @@ return [
             'text' => 'Change Password',
             'url' => 'admin/settings',
             'icon' => 'lock',
-            
         ],
         [
             'text' => 'Multilevel',
@@ -120,7 +120,6 @@ return [
                 [
                     'text' => 'Level One',
                     'url' => '#',
-                    
                 ],
                 [
                     'text' => 'Level One',
@@ -166,6 +165,7 @@ return [
             'icon_color' => 'aqua',
         ],
     ],
+
     /*
     |--------------------------------------------------------------------------
     | Plugins Initialization
@@ -176,8 +176,9 @@ return [
     | setting datatables to true will include the cdn assets for dt.
     |
     */
-    'plugins'=>[
-        'datatables'=>true,
+
+    'plugins' => [
+        'datatables' => true,
     ],
 
 ];
