@@ -68,7 +68,9 @@
                                     <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
                                 </a>
                                 <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
-                                    {{ method_field(config('adminlte.logout_method')) }}
+                                    @if(config('adminlte.logout_method'))
+                                        {{ method_field(config('adminlte.logout_method')) }}
+                                    @endif
                                     {{ csrf_field() }}
                                 </form>
                             @endif
