@@ -91,18 +91,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Enable Gate Checking
-    |--------------------------------------------------------------------------
-    |
-    | Simple authorization checking to remove menu items based on user
-    | permission. Set menu item 'permission' to the permission that
-    | you would like to check for.  Must be  implemented by Gate
-    |
-    */
-   'check_auth'=>true,
-
-    /*
-    |--------------------------------------------------------------------------
     | Menu Items
     |--------------------------------------------------------------------------
     |
@@ -135,16 +123,16 @@ return [
             'text' => 'Change Password',
             'url' => 'admin/settings',
             'icon' => 'lock',
-            //'permission'=>'no-access',
+            
         ],
         [
             'text' => 'Multilevel',
             'icon' => 'share',
             'submenu' => [
                 [
-                    'text' => 'Level One - no-access',
+                    'text' => 'Level One',
                     'url' => '#',
-                    //'permission'=>'no-access',
+                    
                 ],
                 [
                     'text' => 'Level One',

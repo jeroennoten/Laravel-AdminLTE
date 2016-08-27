@@ -9,10 +9,13 @@ use JeroenNoten\LaravelAdminLte\AdminLte;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
+use Illuminate\Auth\Access\Gate;
+
 
 class TestCase extends PHPUnit_Framework_TestCase
 {
     private $dispatcher;
+    
 
     protected function makeMenuBuilder($uri = 'http://example.com')
     {
@@ -31,13 +34,15 @@ class TestCase extends PHPUnit_Framework_TestCase
     {
         return Request::createFromBase(SymfonyRequest::create($uri));
     }
-
-    protected function makeAdminLte()
+    
+    protected function makeAdminLte(Gate $gate)
     {
         return new AdminLte(
             $this->getDispatcher(),
             $this->makeUrlGenerator(),
-            $this->makeActiveChecker()
+            $this->makeActiveChecker(),
+            $gate
+            
         );
     }
 
