@@ -63,10 +63,11 @@ return [
     |
     | Here we choose and option to be able to start with a collapsed side
     | bar. To adjust your sidebar layout simply set this  either true
-    | or to false depending on the way you would like the default
+    | this is compatible with layouts except top-nav layout option
     |
     */
-    'collapse_sidebar' => false,
+    'collapse_sidebar'=>false,
+
 
     /*
     |--------------------------------------------------------------------------
