@@ -58,6 +58,18 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Collapse Sidebar
+    |--------------------------------------------------------------------------
+    |
+    | Here we choose and option to be able to start with a collapsed side
+    | bar. To adjust your sidebar layout simply set this  either true
+    | or to false depending on the way you would like the default
+    |
+    */
+    'collapse_sidebar'=>true,
+
+    /*
+    |--------------------------------------------------------------------------
     | URLs
     |--------------------------------------------------------------------------
     |
@@ -85,7 +97,7 @@ return [
     | you would like to check for.  Must be  implemented by Gate
     |
     */
-   'check_auth'=>false,
+   'check_auth'=>true,
 
     /*
     |--------------------------------------------------------------------------
