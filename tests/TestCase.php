@@ -1,6 +1,7 @@
 <?php
 
 
+use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteCollection;
@@ -15,13 +16,14 @@ use Illuminate\Auth\Access\Gate;
 class TestCase extends PHPUnit_Framework_TestCase
 {
     private $dispatcher;
-    
 
-    protected function makeMenuBuilder($uri = 'http://example.com')
+
+    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
     {
         return new Builder(
             $this->makeUrlGenerator($uri),
-            $this->makeActiveChecker($uri)
+            $this->makeActiveChecker($uri),
+            $gate ?: $this->makeGate()
         );
     }
 
@@ -34,15 +36,14 @@ class TestCase extends PHPUnit_Framework_TestCase
     {
         return Request::createFromBase(SymfonyRequest::create($uri));
     }
-    
-    protected function makeAdminLte(Gate $gate)
+
+    protected function makeAdminLte()
     {
         return new AdminLte(
             $this->getDispatcher(),
             $this->makeUrlGenerator(),
             $this->makeActiveChecker(),
-            $gate
-            
+            $this->makeGate()
         );
     }
 
@@ -52,6 +53,18 @@ class TestCase extends PHPUnit_Framework_TestCase
             new RouteCollection,
             $this->makeRequest($uri)
         );
+    }
+
+    protected function makeGate()
+    {
+        return new Gate($this->makeContainer(), function () {
+            return new \Illuminate\Foundation\Auth\User;
+        });
+    }
+
+    protected function makeContainer()
+    {
+        return new Illuminate\Container\Container();
     }
 
     protected function getDispatcher()

@@ -105,6 +105,7 @@ return [
         [
             'text' => 'Blog',
             'url' => 'admin/blog',
+            'can' => 'manage-blog'
         ],
         [
             'text' => 'Pages',
@@ -123,7 +124,6 @@ return [
             'text' => 'Change Password',
             'url' => 'admin/settings',
             'icon' => 'lock',
-            
         ],
         [
             'text' => 'Multilevel',
@@ -132,7 +132,6 @@ return [
                 [
                     'text' => 'Level One',
                     'url' => '#',
-                    
                 ],
                 [
                     'text' => 'Level One',
@@ -178,18 +177,20 @@ return [
             'icon_color' => 'aqua',
         ],
     ],
+
     /*
     |--------------------------------------------------------------------------
     | Plugins Initialization
     |--------------------------------------------------------------------------
     |
-    | Set any option below to true in order to enable the plugin by default
-    | in the master.blade.php file. For instance using an @if directive
-    | setting datatables to true will include the cdn assets for dt.
+    | Choose which JavaScript plugins should be included. At this moment,
+    | only DataTables is supported as a plugin. Set the value to true
+    | to include the JavaScript file from a CDN via a script tag.
     |
     */
-    'plugins'=>[
-        'datatables'=>true,
+
+    'plugins' => [
+        'datatables' => true,
     ],
 
 ];
