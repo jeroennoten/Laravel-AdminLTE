@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu;
 
 
 use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Contracts\Auth\Access\Gate;
 
 class Builder
 {
@@ -15,10 +15,13 @@ class Builder
 
     private $activeChecker;
 
-    public function __construct(UrlGenerator $urlGenerator, ActiveChecker $activeChecker)
+    private $gate;
+
+    public function __construct(UrlGenerator $urlGenerator, ActiveChecker $activeChecker, Gate $gate)
     {
         $this->urlGenerator = $urlGenerator;
         $this->activeChecker = $activeChecker;
+        $this->gate = $gate;
     }
 
     public function add()
@@ -26,28 +29,20 @@ class Builder
         $items = $this->transformItems(func_get_args());
 
         foreach ($items as $item) {
-                array_push($this->menu, $item);
+            array_push($this->menu, $item);
        }
     }
 
-    protected function authCheck($item)
-    {
-        if(!config('adminlte.check_auth')){return true;}//We are not checking permission
-        if(isset($item['permission']) && Gate::denies($item['permission'])){
-            return false;
-        }
-        return true;  
-    }
 
     protected function transformItems($items)
     {
-        foreach($items as $item)
-        {
-            if($this->authCheck($item))
-            {
-                $authItems[] = $item;
-            }
+        
+       $authItems = array_filter($items,function($item){
+        if(isset($item['can']) && $this->gate->denies($item['can'])){
+            return false;
         }
+        return true; 
+       });
         return array_map([$this, 'transformItem'], $authItems);
     }
 
@@ -73,7 +68,7 @@ class Builder
         $item['top_nav_classes'] = $this->makeClasses($item, true);
         $item['top_nav_class'] = implode(' ', $item['top_nav_classes']);
 
-        return $item;       
+        return $item;
     }
 
     protected function makeHref($item)
