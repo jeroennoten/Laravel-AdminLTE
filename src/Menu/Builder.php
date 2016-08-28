@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte\Menu;
-
 
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Auth\Access\Gate;
@@ -17,11 +15,14 @@ class Builder
 
     private $gate;
 
-    public function __construct(UrlGenerator $urlGenerator, ActiveChecker $activeChecker, Gate $gate)
-    {
-        $this->urlGenerator = $urlGenerator;
+    public function __construct(
+        UrlGenerator $urlGenerator,
+        ActiveChecker $activeChecker,
+        Gate $gate
+    ) {
+        $this->urlGenerator  = $urlGenerator;
         $this->activeChecker = $activeChecker;
-        $this->gate = $gate;
+        $this->gate          = $gate;
     }
 
     public function add()
@@ -35,12 +36,15 @@ class Builder
 
     protected function transformItems($items)
     {
-        return array_map([$this, 'transformItem'], array_filter($items, [$this, 'isVisible']));
+        return array_map(
+            [$this, 'transformItem'],
+            array_filter($items, [$this, 'isVisible'])
+        );
     }
 
     protected function isVisible($item)
     {
-        return !isset($item['can']) || $this->gate->allows($item['can']);
+        return ! isset( $item['can'] ) || $this->gate->allows($item['can']);
     }
 
     protected function transformItem($item)
@@ -49,27 +53,27 @@ class Builder
             return $item;
         }
 
-        $item['href'] = $this->makeHref($item);
+        $item['href']   = $this->makeHref($item);
         $item['active'] = $this->isActive($item);
 
-        if (isset($item['submenu'])) {
-            $item['submenu'] = $this->transformItems($item['submenu']);
-            $item['submenu_open'] = $item['active'];
+        if (isset( $item['submenu'] )) {
+            $item['submenu']         = $this->transformItems($item['submenu']);
+            $item['submenu_open']    = $item['active'];
             $item['submenu_classes'] = $this->makeSubmenuClasses($item);
-            $item['submenu_class'] = implode(' ', $item['submenu_classes']);
+            $item['submenu_class']   = implode(' ', $item['submenu_classes']);
         }
 
-        $item['classes'] = $this->makeClasses($item);
-        $item['class'] = implode(' ', $item['classes']);
+        $item['classes']         = $this->makeClasses($item);
+        $item['class']           = implode(' ', $item['classes']);
         $item['top_nav_classes'] = $this->makeClasses($item, true);
-        $item['top_nav_class'] = implode(' ', $item['top_nav_classes']);
+        $item['top_nav_class']   = implode(' ', $item['top_nav_classes']);
 
         return $item;
     }
 
     protected function makeHref($item)
     {
-        if (!isset($item['url'])) {
+        if ( ! isset( $item['url'] )) {
             return '#';
         }
 
@@ -84,7 +88,7 @@ class Builder
             $classes[] = 'active';
         }
 
-        if (isset($item['submenu'])) {
+        if (isset( $item['submenu'] )) {
             $classes[] = $topNav ? 'dropdown' : 'treeview';
         }
 

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte\Menu;
-
 
 use Illuminate\Http\Request;
 
@@ -17,15 +15,15 @@ class ActiveChecker
 
     public function isActive($item)
     {
-        if (isset($item['active'])) {
+        if (isset( $item['active'] )) {
             return $this->isExplicitActive($item['active']);
         }
 
-        if (isset($item['submenu'])) {
+        if (isset( $item['submenu'] )) {
             return $this->containsActive($item['submenu']);
         }
 
-        if (isset($item['url'])) {
+        if (isset( $item['url'] )) {
             return $this->isActiveUrl($item['url']);
         }
 
@@ -44,7 +42,7 @@ class ActiveChecker
 
     protected function checkSub($url)
     {
-        return $this->request->is($url . '/*');
+        return $this->request->is($url.'/*');
     }
 
     protected function containsActive($items)

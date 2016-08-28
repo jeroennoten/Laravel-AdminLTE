@@ -1,6 +1,5 @@
 <?php
 
-
 use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Events\Dispatcher;
@@ -13,14 +12,14 @@ use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Illuminate\Auth\Access\Gate;
 
-
 class TestCase extends PHPUnit_Framework_TestCase
 {
     private $dispatcher;
 
-
-    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
-    {
+    protected function makeMenuBuilder(
+        $uri = 'http://example.com',
+        GateContract $gate = null
+    ) {
         return new Builder(
             $this->makeUrlGenerator($uri),
             $this->makeActiveChecker($uri),
@@ -51,16 +50,17 @@ class TestCase extends PHPUnit_Framework_TestCase
     protected function makeUrlGenerator($uri = 'http://example.com')
     {
         return new UrlGenerator(
-            new RouteCollection,
-            $this->makeRequest($uri)
+            new RouteCollection, $this->makeRequest($uri)
         );
     }
 
     protected function makeGate()
     {
-        return new Gate($this->makeContainer(), function () {
+        $userResolver = function () {
             return new GenericUser([]);
-        });
+        };
+
+        return new Gate($this->makeContainer(), $userResolver);
     }
 
     protected function makeContainer()
@@ -70,7 +70,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function getDispatcher()
     {
-        if (!$this->dispatcher) {
+        if ( ! $this->dispatcher) {
             $this->dispatcher = new Dispatcher;
         }
 

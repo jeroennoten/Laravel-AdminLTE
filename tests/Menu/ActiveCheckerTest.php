@@ -1,6 +1,5 @@
 <?php
 
-
 class ActiveCheckerTest extends TestCase
 {
     public function testExact()
@@ -42,11 +41,13 @@ class ActiveCheckerTest extends TestCase
     {
         $checker = $this->makeActiveChecker('http://example.com/home');
 
-        $isActive = $checker->isActive([
-            'submenu' => [
-                ['url' => 'home']
+        $isActive = $checker->isActive(
+            [
+                'submenu' => [
+                    ['url' => 'home'],
+                ],
             ]
-        ]);
+        );
 
         $this->assertTrue($isActive);
     }
@@ -55,17 +56,19 @@ class ActiveCheckerTest extends TestCase
     {
         $checker = $this->makeActiveChecker('http://example.com/home');
 
-        $isActive = $checker->isActive([
-            'text' => 'Level 0',
-            'submenu' => [
-                [
-                    'text' => 'Level 1',
-                    'submenu' => [
-                        ['url' => 'home']
-                    ]
-                ]
+        $isActive = $checker->isActive(
+            [
+                'text'    => 'Level 0',
+                'submenu' => [
+                    [
+                        'text'    => 'Level 1',
+                        'submenu' => [
+                            ['url' => 'home'],
+                        ],
+                    ],
+                ],
             ]
-        ]);
+        );
 
         $this->assertTrue($isActive);
     }
@@ -74,9 +77,7 @@ class ActiveCheckerTest extends TestCase
     {
         $checker = $this->makeActiveChecker('http://example.com/home');
 
-        $isActive = $checker->isActive([
-            'active' => ['home']
-        ]);
+        $isActive = $checker->isActive(['active' => ['home']]);
 
         $this->assertTrue($isActive);
     }
@@ -85,9 +86,7 @@ class ActiveCheckerTest extends TestCase
     {
         $checker = $this->makeActiveChecker('http://example.com/home/sub');
 
-        $isActive = $checker->isActive([
-            'active' => ['home/*']
-        ]);
+        $isActive = $checker->isActive(['active' => ['home/*']]);
 
         $this->assertTrue($isActive);
     }

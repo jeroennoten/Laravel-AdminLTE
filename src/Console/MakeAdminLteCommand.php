@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte\Console;
-
 
 use Illuminate\Auth\Console\MakeAuthCommand;
 
@@ -13,11 +11,11 @@ class MakeAdminLteCommand extends MakeAuthCommand
     protected $description = 'Scaffold basic AdminLTE login and registration views and routes';
 
     protected $adminLteViews = [
-        'auth/login.stub' => 'auth/login.blade.php',
-        'auth/register.stub' => 'auth/register.blade.php',
+        'auth/login.stub'           => 'auth/login.blade.php',
+        'auth/register.stub'        => 'auth/register.blade.php',
         'auth/passwords/email.stub' => 'auth/passwords/email.blade.php',
         'auth/passwords/reset.stub' => 'auth/passwords/reset.blade.php',
-        'home.stub' => 'home.blade.php',
+        'home.stub'                 => 'home.blade.php',
     ];
 
     protected function exportViews()
@@ -25,10 +23,8 @@ class MakeAdminLteCommand extends MakeAuthCommand
         parent::exportViews();
 
         foreach ($this->adminLteViews as $key => $value) {
-            copy(
-                __DIR__ . '/stubs/make/views/' . $key,
-                base_path('resources/views/' . $value)
-            );
+            copy(__DIR__.'/stubs/make/views/'.$key,
+                base_path('resources/views/'.$value));
         }
     }
 }

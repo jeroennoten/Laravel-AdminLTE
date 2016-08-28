@@ -48,7 +48,10 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'About', 'url' => '/about']);
 
         $this->assertEquals('http://example.com', $builder->menu[0]['href']);
-        $this->assertEquals('http://example.com/about', $builder->menu[1]['href']);
+        $this->assertEquals(
+            'http://example.com/about',
+            $builder->menu[1]['href']
+        );
     }
 
     public function testDefaultHref()
@@ -64,34 +67,44 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder();
 
-        $builder->add([
-            'text' => 'Home',
-            'submenu' => [
-                ['text' => 'About', 'url' => '/about']
+        $builder->add(
+            [
+                'text'    => 'Home',
+                'submenu' => [
+                    ['text' => 'About', 'url' => '/about'],
+                ],
             ]
-        ]);
+        );
 
-        $this->assertEquals('http://example.com/about', $builder->menu[0]['submenu'][0]['href']);
+        $this->assertEquals(
+            'http://example.com/about',
+            $builder->menu[0]['submenu'][0]['href']
+        );
     }
 
     public function testMultiLevelSubmenuHref()
     {
         $builder = $this->makeMenuBuilder();
 
-        $builder->add([
-            'text' => 'Home',
-            'submenu' => [
-                [
-                    'text' => 'About',
-                    'url' => '/about',
-                    'submenu' => [
-                        ['text' => 'Test', 'url' => '/test']
-                    ]
-                ]
+        $builder->add(
+            [
+                'text'    => 'Home',
+                'submenu' => [
+                    [
+                        'text'    => 'About',
+                        'url'     => '/about',
+                        'submenu' => [
+                            ['text' => 'Test', 'url' => '/test'],
+                        ],
+                    ],
+                ],
             ]
-        ]);
+        );
 
-        $this->assertEquals('http://example.com/test', $builder->menu[0]['submenu'][0]['submenu'][0]['href']);
+        $this->assertEquals(
+            'http://example.com/test',
+            $builder->menu[0]['submenu'][0]['submenu'][0]['href']
+        );
     }
 
     public function testActiveClass()
@@ -107,12 +120,14 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder('http://example.com/home');
 
-        $builder->add([
-            'url' => '#',
-            'submenu' => [
-                ['url' => 'home'],
-            ],
-        ]);
+        $builder->add(
+            [
+                'url'     => '#',
+                'submenu' => [
+                    ['url' => 'home'],
+                ],
+            ]
+        );
 
         $this->assertTrue($builder->menu[0]['active']);
     }
@@ -133,7 +148,10 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'submenu' => []]);
 
-        $this->assertContains('treeview-menu', $builder->menu[0]['submenu_classes']);
+        $this->assertContains(
+            'treeview-menu',
+            $builder->menu[0]['submenu_classes']
+        );
     }
 
     public function testSubmenuClass()
@@ -142,7 +160,10 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'submenu' => []]);
 
-        $this->assertEquals('treeview-menu', $builder->menu[0]['submenu_class']);
+        $this->assertEquals(
+            'treeview-menu',
+            $builder->menu[0]['submenu_class']
+        );
     }
 
     public function testClass()
@@ -166,24 +187,33 @@ class BuilderTest extends TestCase
     public function testCan()
     {
         $gate = $this->makeGate();
-        $gate->define('show-about', function () {
-            return true;
-        });
-        $gate->define('show-home', function () {
-            return false;
-        });
+        $gate->define(
+            'show-about',
+            function () {
+                return true;
+            }
+        );
+        $gate->define(
+            'show-home',
+            function () {
+                return false;
+            }
+        );
 
         $builder = $this->makeMenuBuilder('http://example.com', $gate);
 
-        $builder->add([
-            'text' => 'About',
-            'url' => 'about',
-            'can' => 'show-about'
-        ], [
-            'text' => 'Home',
-            'url' => '/',
-            'can' => 'show-home'
-        ]);
+        $builder->add(
+            [
+                'text' => 'About',
+                'url'  => 'about',
+                'can'  => 'show-about',
+            ],
+            [
+                'text' => 'Home',
+                'url'  => '/',
+                'can'  => 'show-home',
+            ]
+        );
 
         $this->assertCount(1, $builder->menu);
         $this->assertEquals('About', $builder->menu[0]['text']);
