@@ -4,7 +4,6 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 
 class AdminLteTest extends TestCase
 {
-
     public function testMenu()
     {
         $adminLte = $this->makeAdminLte();
