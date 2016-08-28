@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte\Menu;
-
 
 use Illuminate\Http\Request;
 
@@ -44,7 +42,7 @@ class ActiveChecker
 
     protected function checkSub($url)
     {
-        return $this->request->is($url . '/*');
+        return $this->request->is($url.'/*');
     }
 
     protected function containsActive($items)

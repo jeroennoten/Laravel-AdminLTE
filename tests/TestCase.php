@@ -1,6 +1,6 @@
 <?php
 
-
+use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
@@ -12,19 +12,15 @@ use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Illuminate\Auth\Access\Gate;
 
-
 class TestCase extends PHPUnit_Framework_TestCase
 {
     private $dispatcher;
 
-
-    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
-    {
-        return new Builder(
-            $this->makeUrlGenerator($uri),
-            $this->makeActiveChecker($uri),
-            $gate ?: $this->makeGate()
-        );
+    protected function makeMenuBuilder(
+        $uri = 'http://example.com',
+        GateContract $gate = null
+    ) {
+        return new Builder($this->makeUrlGenerator($uri), $this->makeActiveChecker($uri), $gate ?: $this->makeGate());
     }
 
     protected function makeActiveChecker($uri = 'http://example.com')
@@ -40,26 +36,24 @@ class TestCase extends PHPUnit_Framework_TestCase
     protected function makeAdminLte()
     {
         return new AdminLte(
-            $this->getDispatcher(),
-            $this->makeUrlGenerator(),
-            $this->makeActiveChecker(),
-            $this->makeGate()
+            $this->getDispatcher(), $this->makeUrlGenerator(), $this->makeActiveChecker(), $this->makeGate()
         );
     }
 
     protected function makeUrlGenerator($uri = 'http://example.com')
     {
         return new UrlGenerator(
-            new RouteCollection,
-            $this->makeRequest($uri)
+            new RouteCollection, $this->makeRequest($uri)
         );
     }
 
     protected function makeGate()
     {
-        return new Gate($this->makeContainer(), function () {
-            return new \Illuminate\Foundation\Auth\User;
-        });
+        $userResolver = function () {
+            return new GenericUser([]);
+        };
+
+        return new Gate($this->makeContainer(), $userResolver);
     }
 
     protected function makeContainer()
@@ -69,7 +63,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function getDispatcher()
     {
-        if (!$this->dispatcher) {
+        if (! $this->dispatcher) {
             $this->dispatcher = new Dispatcher;
         }
 

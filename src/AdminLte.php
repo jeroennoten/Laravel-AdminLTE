@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte;
-
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Routing\UrlGenerator;
@@ -14,7 +12,7 @@ use Illuminate\Contracts\Auth\Access\Gate;
 class AdminLte
 {
     protected $menu;
-    
+
     private $events;
 
     private $urlGenerator;
@@ -23,8 +21,12 @@ class AdminLte
 
     private $gate;
 
-    public function __construct(Dispatcher $events, UrlGenerator $urlGenerator, ActiveChecker $activeChecker, Gate $gate)
-    {
+    public function __construct(
+        Dispatcher $events,
+        UrlGenerator $urlGenerator,
+        ActiveChecker $activeChecker,
+        Gate $gate
+    ) {
         $this->events = $events;
         $this->urlGenerator = $urlGenerator;
         $this->activeChecker = $activeChecker;
@@ -33,7 +35,7 @@ class AdminLte
 
     public function menu()
     {
-        if (!$this->menu) {
+        if (! $this->menu) {
             $this->menu = $this->buildMenu();
         }
 
@@ -43,7 +45,7 @@ class AdminLte
     protected function buildMenu()
     {
         $builder = new Builder($this->urlGenerator, $this->activeChecker, $this->gate);
-        
+
         $this->events->fire(new BuildingMenu($builder));
 
         return $builder->menu;

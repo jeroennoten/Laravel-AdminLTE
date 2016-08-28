@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte\Events;
-
 
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 

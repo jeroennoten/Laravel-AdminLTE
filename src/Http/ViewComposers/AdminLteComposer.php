@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte\Http\ViewComposers;
-
 
 use Illuminate\View\View;
 use JeroenNoten\LaravelAdminLte\AdminLte;
@@ -14,8 +12,9 @@ class AdminLteComposer
      */
     private $adminlte;
 
-    public function __construct(AdminLte $adminlte)
-    {
+    public function __construct(
+        AdminLte $adminlte
+    ) {
         $this->adminlte = $adminlte;
     }
 

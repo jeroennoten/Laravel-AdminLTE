@@ -1,8 +1,6 @@
 <?php
 
-
 namespace JeroenNoten\LaravelAdminLte\Menu;
-
 
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Contracts\Auth\Access\Gate;
@@ -17,8 +15,11 @@ class Builder
 
     private $gate;
 
-    public function __construct(UrlGenerator $urlGenerator, ActiveChecker $activeChecker, Gate $gate)
-    {
+    public function __construct(
+        UrlGenerator $urlGenerator,
+        ActiveChecker $activeChecker,
+        Gate $gate
+    ) {
         $this->urlGenerator = $urlGenerator;
         $this->activeChecker = $activeChecker;
         $this->gate = $gate;
@@ -33,20 +34,21 @@ class Builder
         }
     }
 
-
     protected function transformItems($items)
     {
-        return array_map([$this, 'transformItem'], array_filter($items, [$this, 'isVisible']));
+        return array_map(
+            [$this, 'transformItem'],
+            array_filter($items, [$this, 'isVisible'])
+        );
     }
 
     protected function isVisible($item)
     {
-        return !isset($item['can']) || $this->gate->allows($item['can']);
+        return ! isset($item['can']) || $this->gate->allows($item['can']);
     }
 
     protected function transformItem($item)
     {
-
         if (is_string($item)) {
             return $item;
         }
@@ -57,7 +59,7 @@ class Builder
         if (isset($item['submenu'])) {
             $item['submenu'] = $this->transformItems($item['submenu']);
             $item['submenu_open'] = $item['active'];
-            $item['submenu_classes'] = $this->makeSubmenuClasses($item);
+            $item['submenu_classes'] = $this->makeSubmenuClasses();
             $item['submenu_class'] = implode(' ', $item['submenu_classes']);
         }
 
@@ -71,7 +73,7 @@ class Builder
 
     protected function makeHref($item)
     {
-        if (!isset($item['url'])) {
+        if (! isset($item['url'])) {
             return '#';
         }
 
@@ -98,7 +100,7 @@ class Builder
         return $this->activeChecker->isActive($item);
     }
 
-    protected function makeSubmenuClasses($item)
+    protected function makeSubmenuClasses()
     {
         $classes = ['treeview-menu'];
 
