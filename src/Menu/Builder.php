@@ -100,7 +100,7 @@ class Builder
         return $this->activeChecker->isActive($item);
     }
 
-    protected function makeSubmenuClasses($item)
+    protected function makeSubmenuClasses()
     {
         $classes = ['treeview-menu'];
 
