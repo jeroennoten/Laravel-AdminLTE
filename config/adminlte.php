@@ -58,6 +58,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Collapse Sidebar
+    |--------------------------------------------------------------------------
+    |
+    | Here we choose and option to be able to start with a collapsed side
+    | bar. To adjust your sidebar layout simply set this  either true
+    | this is compatible with layouts except top-nav layout option
+    |
+    */
+    'collapse_sidebar'=> false,
+
+
+    /*
+    |--------------------------------------------------------------------------
     | URLs
     |--------------------------------------------------------------------------
     |
