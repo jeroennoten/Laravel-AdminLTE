@@ -4,7 +4,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Build Status](https://img.shields.io/travis/jeroennoten/Laravel-AdminLTE/master.svg?style=flat-square)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
 [![StyleCI](https://styleci.io/repos/38200433/shield)](https://styleci.io/repos/38200433)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/ea59a0c7-9e89-46ed-a720-0fab6bac23cf.svg?style=flat-square)](https://insight.sensiolabs.com/projects/ea59a0c7-9e89-46ed-a720-0fab6bac23cf)
+[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/64be4634-446d-473b-b551-b4e4c0e3f97a.svg?style=flat-square)](https://insight.sensiolabs.com/projects/64be4634-446d-473b-b551-b4e4c0e3f97a)
 [![Quality Score](https://img.shields.io/scrutinizer/g/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/jeroennoten/Laravel-AdminLTE/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
