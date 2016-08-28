@@ -20,11 +20,7 @@ class TestCase extends PHPUnit_Framework_TestCase
         $uri = 'http://example.com',
         GateContract $gate = null
     ) {
-        return new Builder(
-            $this->makeUrlGenerator($uri),
-            $this->makeActiveChecker($uri),
-            $gate ?: $this->makeGate()
-        );
+        return new Builder($this->makeUrlGenerator($uri), $this->makeActiveChecker($uri), $gate ?: $this->makeGate());
     }
 
     protected function makeActiveChecker($uri = 'http://example.com')
@@ -40,10 +36,7 @@ class TestCase extends PHPUnit_Framework_TestCase
     protected function makeAdminLte()
     {
         return new AdminLte(
-            $this->getDispatcher(),
-            $this->makeUrlGenerator(),
-            $this->makeActiveChecker(),
-            $this->makeGate()
+            $this->getDispatcher(), $this->makeUrlGenerator(), $this->makeActiveChecker(), $this->makeGate()
         );
     }
 
@@ -70,7 +63,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function getDispatcher()
     {
-        if ( ! $this->dispatcher) {
+        if (! $this->dispatcher) {
             $this->dispatcher = new Dispatcher;
         }
 

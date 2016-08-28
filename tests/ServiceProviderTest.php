@@ -3,7 +3,6 @@
 use Illuminate\Config\Repository;
 use Illuminate\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\ServiceProvider;
 
 class ServiceProviderTest extends TestCase

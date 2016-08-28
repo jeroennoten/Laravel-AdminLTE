@@ -27,15 +27,15 @@ class AdminLte
         ActiveChecker $activeChecker,
         Gate $gate
     ) {
-        $this->events        = $events;
-        $this->urlGenerator  = $urlGenerator;
+        $this->events = $events;
+        $this->urlGenerator = $urlGenerator;
         $this->activeChecker = $activeChecker;
-        $this->gate          = $gate;
+        $this->gate = $gate;
     }
 
     public function menu()
     {
-        if ( ! $this->menu) {
+        if (! $this->menu) {
             $this->menu = $this->buildMenu();
         }
 
@@ -44,8 +44,7 @@ class AdminLte
 
     protected function buildMenu()
     {
-        $builder = new Builder($this->urlGenerator, $this->activeChecker,
-            $this->gate);
+        $builder = new Builder($this->urlGenerator, $this->activeChecker, $this->gate);
 
         $this->events->fire(new BuildingMenu($builder));
 

@@ -90,5 +90,4 @@ class ActiveCheckerTest extends TestCase
 
         $this->assertTrue($isActive);
     }
-
 }

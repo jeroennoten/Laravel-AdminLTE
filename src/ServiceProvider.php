@@ -12,7 +12,6 @@ use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 
 class ServiceProvider extends BaseServiceProvider
 {
-
     public function register()
     {
         //
@@ -97,7 +96,6 @@ class ServiceProvider extends BaseServiceProvider
     private function packagePath($path)
     {
         return __DIR__."/../$path";
-
     }
 
     private function registerCommands()
@@ -119,9 +117,8 @@ class ServiceProvider extends BaseServiceProvider
             BuildingMenu::class,
             function (BuildingMenu $event) use ($config) {
                 $menu = $config->get('adminlte.menu');
-                call_user_func_array([ $event->menu, 'add' ], $menu);
+                call_user_func_array([$event->menu, 'add'], $menu);
             }
         );
     }
-
 }
