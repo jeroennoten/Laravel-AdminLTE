@@ -59,7 +59,7 @@ class Builder
         if (isset($item['submenu'])) {
             $item['submenu'] = $this->transformItems($item['submenu']);
             $item['submenu_open'] = $item['active'];
-            $item['submenu_classes'] = $this->makeSubmenuClasses($item);
+            $item['submenu_classes'] = $this->makeSubmenuClasses();
             $item['submenu_class'] = implode(' ', $item['submenu_classes']);
         }
 
