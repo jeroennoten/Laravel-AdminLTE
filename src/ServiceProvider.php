@@ -43,12 +43,9 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->loadViewsFrom($viewsPath, 'adminlte');
 
-        $this->publishes(
-            [
-                $viewsPath => base_path('resources/views/vendor/adminlte'),
-            ],
-            'views'
-        );
+        $this->publishes([
+            $viewsPath => base_path('resources/views/vendor/adminlte'),
+        ], 'views');
     }
 
     private function loadTranslations()
@@ -57,40 +54,27 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->loadTranslationsFrom($translationsPath, 'adminlte');
 
-        $this->publishes(
-            [
-                $translationsPath => base_path(
-                    'resources/lang/vendor/adminlte'
-                ),
-            ],
-            'translations'
-        );
+        $this->publishes([
+            $translationsPath => base_path('resources/lang/vendor/adminlte'),
+        ], 'translations');
     }
 
     private function publishConfig()
     {
         $configPath = $this->packagePath('config/adminlte.php');
 
-        $this->publishes(
-            [
-                $configPath => config_path('adminlte.php'),
-            ],
-            'config'
-        );
+        $this->publishes([
+            $configPath => config_path('adminlte.php'),
+        ], 'config');
 
         $this->mergeConfigFrom($configPath, 'adminlte');
     }
 
     private function publishAssets()
     {
-        $this->publishes(
-            [
-                $this->packagePath('resources/assets') => public_path(
-                    'vendor/adminlte'
-                ),
-            ],
-            'assets'
-        );
+        $this->publishes([
+            $this->packagePath('resources/assets') => public_path('vendor/adminlte'),
+        ], 'assets');
     }
 
     private function packagePath($path)
@@ -113,12 +97,9 @@ class ServiceProvider extends BaseServiceProvider
 
     public static function registerMenu(Dispatcher $events, Repository $config)
     {
-        $events->listen(
-            BuildingMenu::class,
-            function (BuildingMenu $event) use ($config) {
-                $menu = $config->get('adminlte.menu');
-                call_user_func_array([$event->menu, 'add'], $menu);
-            }
-        );
+        $events->listen(BuildingMenu::class, function (BuildingMenu $event) use ($config) {
+            $menu = $config->get('adminlte.menu');
+            call_user_func_array([$event->menu, 'add'], $menu);
+        });
     }
 }
