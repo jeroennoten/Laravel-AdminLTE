@@ -30,5 +30,4 @@ class ClassesFilter implements Filter
 
         return $classes;
     }
-
 }
