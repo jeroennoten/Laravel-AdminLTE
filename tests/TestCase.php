@@ -9,6 +9,11 @@ use Illuminate\Routing\UrlGenerator;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 use Illuminate\Auth\Access\Gate;
 
@@ -16,11 +21,15 @@ class TestCase extends PHPUnit_Framework_TestCase
 {
     private $dispatcher;
 
-    protected function makeMenuBuilder(
-        $uri = 'http://example.com',
-        GateContract $gate = null
-    ) {
-        return new Builder($this->makeUrlGenerator($uri), $this->makeActiveChecker($uri), $gate ?: $this->makeGate());
+    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
+    {
+        return new Builder([
+            new ActiveFilter($this->makeActiveChecker($uri)),
+            new HrefFilter($this->makeUrlGenerator($uri)),
+            new SubmenuFilter(),
+            new ClassesFilter(),
+            new GateFilter($gate ?: $this->makeGate()),
+        ]);
     }
 
     protected function makeActiveChecker($uri = 'http://example.com')
@@ -35,16 +44,12 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function makeAdminLte()
     {
-        return new AdminLte(
-            $this->getDispatcher(), $this->makeUrlGenerator(), $this->makeActiveChecker(), $this->makeGate()
-        );
+        return new AdminLte($this->getFilters(), $this->getDispatcher(), $this->makeContainer());
     }
 
     protected function makeUrlGenerator($uri = 'http://example.com')
     {
-        return new UrlGenerator(
-            new RouteCollection, $this->makeRequest($uri)
-        );
+        return new UrlGenerator(new RouteCollection, $this->makeRequest($uri));
     }
 
     protected function makeGate()
@@ -68,5 +73,10 @@ class TestCase extends PHPUnit_Framework_TestCase
         }
 
         return $this->dispatcher;
+    }
+
+    private function getFilters()
+    {
+        return [];
     }
 }

@@ -9,20 +9,14 @@ class Builder
 {
     public $menu = [];
 
-    private $urlGenerator;
+    /**
+     * @var array
+     */
+    private $filters;
 
-    private $activeChecker;
-
-    private $gate;
-
-    public function __construct(
-        UrlGenerator $urlGenerator,
-        ActiveChecker $activeChecker,
-        Gate $gate
-    ) {
-        $this->urlGenerator = $urlGenerator;
-        $this->activeChecker = $activeChecker;
-        $this->gate = $gate;
+    public function __construct(array $filters = [])
+    {
+        $this->filters = $filters;
     }
 
     public function add()
@@ -34,76 +28,21 @@ class Builder
         }
     }
 
-    protected function transformItems($items)
+    public function transformItems($items)
     {
-        return array_map(
-            [$this, 'transformItem'],
-            array_filter($items, [$this, 'isVisible'])
-        );
+        return array_filter(array_map([$this, 'applyFilters'], $items));
     }
 
-    protected function isVisible($item)
-    {
-        return ! isset($item['can']) || $this->gate->allows($item['can']);
-    }
-
-    protected function transformItem($item)
+    protected function applyFilters($item)
     {
         if (is_string($item)) {
             return $item;
         }
 
-        $item['href'] = $this->makeHref($item);
-        $item['active'] = $this->isActive($item);
-
-        if (isset($item['submenu'])) {
-            $item['submenu'] = $this->transformItems($item['submenu']);
-            $item['submenu_open'] = $item['active'];
-            $item['submenu_classes'] = $this->makeSubmenuClasses();
-            $item['submenu_class'] = implode(' ', $item['submenu_classes']);
+        foreach ($this->filters as $filter) {
+            $item = $filter->transform($item, $this);
         }
-
-        $item['classes'] = $this->makeClasses($item);
-        $item['class'] = implode(' ', $item['classes']);
-        $item['top_nav_classes'] = $this->makeClasses($item, true);
-        $item['top_nav_class'] = implode(' ', $item['top_nav_classes']);
 
         return $item;
-    }
-
-    protected function makeHref($item)
-    {
-        if (! isset($item['url'])) {
-            return '#';
-        }
-
-        return $this->urlGenerator->to($item['url']);
-    }
-
-    protected function makeClasses($item, $topNav = false)
-    {
-        $classes = [];
-
-        if ($item['active']) {
-            $classes[] = 'active';
-        }
-
-        if (isset($item['submenu'])) {
-            $classes[] = $topNav ? 'dropdown' : 'treeview';
-        }
-
-        return $classes;
-    }
-
-    protected function isActive($item)
-    {
-        return $this->activeChecker->isActive($item);
-    }
-
-    protected function makeSubmenuClasses()
-    {
-        $classes = ['treeview-menu'];
-
-        return $classes;
     }
 }

@@ -2,35 +2,29 @@
 
 namespace JeroenNoten\LaravelAdminLte;
 
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Contracts\Routing\UrlGenerator;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
-use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
-use Illuminate\Contracts\Auth\Access\Gate;
 
 class AdminLte
 {
     protected $menu;
 
-    private $events;
+    protected $filters;
 
-    private $urlGenerator;
+    protected $events;
 
-    private $activeChecker;
-
-    private $gate;
+    protected $container;
 
     public function __construct(
+        array $filters,
         Dispatcher $events,
-        UrlGenerator $urlGenerator,
-        ActiveChecker $activeChecker,
-        Gate $gate
+        Container $container
     ) {
+        $this->filters = $filters;
         $this->events = $events;
-        $this->urlGenerator = $urlGenerator;
-        $this->activeChecker = $activeChecker;
-        $this->gate = $gate;
+        $this->container = $container;
     }
 
     public function menu()
@@ -44,10 +38,15 @@ class AdminLte
 
     protected function buildMenu()
     {
-        $builder = new Builder($this->urlGenerator, $this->activeChecker, $this->gate);
+        $builder = new Builder($this->buildFilters());
 
         $this->events->fire(new BuildingMenu($builder));
 
         return $builder->menu;
+    }
+
+    protected function buildFilters()
+    {
+        return array_map([$this->container, 'make'], $this->filters);
     }
 }

@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte;
 
 use Illuminate\Contracts\Config\Repository;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
@@ -14,7 +15,13 @@ class ServiceProvider extends BaseServiceProvider
 {
     public function register()
     {
-        //
+        $this->app->singleton(AdminLte::class, function (Container $app) {
+            return new AdminLte(
+                $app['config']['adminlte.filters'],
+                $app['events'],
+                $app
+            );
+        });
     }
 
     public function boot(
