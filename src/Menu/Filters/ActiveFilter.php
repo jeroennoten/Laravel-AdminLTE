@@ -17,6 +17,7 @@ class ActiveFilter implements Filter
     public function transform($item, Builder $builder)
     {
         $item['active'] = $this->activeChecker->isActive($item);
+
         return $item;
     }
 }

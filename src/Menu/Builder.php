@@ -2,9 +2,6 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu;
 
-use Illuminate\Contracts\Routing\UrlGenerator;
-use Illuminate\Contracts\Auth\Access\Gate;
-
 class Builder
 {
     public $menu = [];
