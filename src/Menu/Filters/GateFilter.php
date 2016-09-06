@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 use Illuminate\Contracts\Auth\Access\Gate;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
-class GateFilter implements Filter
+class GateFilter implements FilterInterface
 {
     protected $gate;
 

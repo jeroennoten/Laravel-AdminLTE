@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
-class ActiveFilter implements Filter
+class ActiveFilter implements FilterInterface
 {
     private $activeChecker;
 

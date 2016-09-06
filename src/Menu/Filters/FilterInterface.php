@@ -4,7 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
-interface Filter
+interface FilterInterface
 {
     public function transform($item, Builder $builder);
 }

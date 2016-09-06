@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 use Illuminate\Contracts\Routing\UrlGenerator;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
-class HrefFilter implements Filter
+class HrefFilter implements FilterInterface
 {
     protected $urlGenerator;
 

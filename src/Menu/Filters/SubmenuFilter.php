@@ -4,7 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
-class SubmenuFilter implements Filter
+class SubmenuFilter implements FilterInterface
 {
     public function transform($item, Builder $builder)
     {
