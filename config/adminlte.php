@@ -75,7 +75,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Register here your dashboard, logout, login and register URLs. The
-    | first two must respond to a GET request, the last two to a POST.
+    | logout URL automatically sends a POST request in Laravel 5.3 or higher.
+    | You can set the request to a GET or POST with logout_method.
     | Set register_url to null if you don't want a register link.
     |
     */
@@ -97,7 +98,8 @@ return [
     |
     | Specify your menu items to display in the left sidebar. Each menu item
     | should have a text and and a URL. You can also specify an icon from
-    | Font Awesome. A string instead of an array represents a header.
+    | Font Awesome. A string instead of an array represents a header in sidebar
+    | layout. The 'can' is a filter on Laravel's built in Gate functionality.
     |
     */
 
@@ -181,6 +183,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Menu Filters
+    |--------------------------------------------------------------------------
+    |
+    | Choose what filters you want to include for rendering the menu.
+    | You can add your own filters to this array after you've created them.
+    | You can comment out the GateFilter if you don't want to use Laravel's
+    | built in Gate functionality
+    |
+    */
+
+    'filters' => [
+        JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
+        JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+        JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
+        JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+        JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Plugins Initialization
     |--------------------------------------------------------------------------
     |
@@ -193,13 +215,4 @@ return [
     'plugins' => [
         'datatables' => true,
     ],
-
-    'filters' => [
-        JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
-        JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
-        JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
-        JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-        JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
-    ],
-
 ];
