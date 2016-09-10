@@ -7,7 +7,7 @@ return [
     'password'                    => 'Contraseña',
     'retype_password'             => 'Vuelva la contraseña',
     'remember_me'                 => 'Recuérdame',
-    'register'                    => 'Register',
+    'register'                    => 'Registre',
     'register_a_new_membership'   => 'Registre una nueva cuenta',
     'i_forgot_my_password'        => 'Olvidé mi contraseña',
     'i_already_have_a_membership' => 'Ya tengo una cuenta',

@@ -253,7 +253,7 @@ To override this behavior, you can specify an `active` parameter with an array o
 
 ## Translations
 
-At the moment, English, German and Dutch translations are available out of the box.
+At the moment, English, German, Dutch, Portuguese and Spanish translations are available out of the box.
 Just specifiy the language in `config/app.php`.
 If you need to modify the texts or add other languages, you can publish the language files:
 
