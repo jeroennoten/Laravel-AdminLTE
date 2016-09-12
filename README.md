@@ -335,7 +335,7 @@ Now, you can edit the views in `resources/views/vendor/adminlte`.
 
 ## 8. Issues, Questions and Pull Requests
 
-You can report issues and ask issues in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
+You can report issues and ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
 
 If you have a question, check the closed issues first. Over time, I've been able to answer quite a few.
 
