@@ -9,27 +9,24 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/jeroennoten/Laravel-AdminLTE/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5.
-I really like AdminLTE and I use it in almost all of my Laravel projects.
-So I wanted an easy way to pull this in, however I did not want a lot of
-features baked in (like others do, e.g.
-[Orchestra Platform](http://orchestraplatform.com/),
-[SleepingOwl Admin](http://sleeping-owl.github.io/),
-[Administrator](http://administrator.frozennode.com/)).
-I just want a template to build my admin panel. Therefore, I made this package. It also includes a replacement for `make:auth` that uses AdminLTE styled views instead of the default ones.
+This package provides an easy way to quickly set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5. I've removed every plugin but [iCheck](http://icheck.fronteed.com/), so you can start building on your template immediately. You can always add more plugins if you should need them. This package also includes a replacement for `make:auth` that uses AdminLTE styled views instead of the default ones.
 
-- [Installation](#installation)
-- [Updating](#updating)
-- [Usage](#usage)
-- [The `make:adminlte` artisan command](#the-makeadminlte-artisan-command)
-- [Using the authentication views without the `make:adminlte` command](#using-the-authentication-views-without-the-makeadminlte-command)
-- [Configuration](#configuration)
-  - [Menu configuration at runtime](#menu-configuration-at-runtime)
-  - [Active menu items](#active-menu-items)
-- [Translations](#translations)
-- [Customize views](#customize-views)
+1. [Installation](#1-installation)
+2. [Updating](#2-updating)
+3. [Usage](#3-usage)
+4. [The `make:adminlte` artisan command](#4-the-makeadminlte-artisan-command)
+   1. [Using the authentication views without the `make:adminlte` command](#41-using-the-authentication-views-without-the-makeadminlte-command)
+5. [Configuration](#5-configuration)
+   1. [Menu](#51-menu)
+     - [Menu filters](#menu-filters)
+     - [Menu configuration at runtime](#menu-configuration-at-runtime)
+     - [Active menu items](#active-menu-items)
+   2. [Plugins](#52-plugins)
+6. [Translations](#6-translations)
+7. [Customize views](#7-customize-views)
+8. [Issues, Questions and Pull Requests](#8-issues-questions-and-pull-requests)
 
-## Installation
+## 1. Installation
 
 1. Require the package using composer:
 
@@ -49,7 +46,7 @@ I just want a template to build my admin panel. Therefore, I made this package. 
     php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
     ```
 
-## Updating
+## 2. Updating
 
 1. To update this package, first update the composer package:
 
@@ -63,7 +60,7 @@ I just want a template to build my admin panel. Therefore, I made this package. 
     php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets --force
     ```
 
-## Usage
+## 3. Usage
 
 To use the template, create a blade file and extend the layout with `@extends('adminlte::page')`.
 This template yields the following sections:
@@ -100,9 +97,19 @@ All sections are in fact optional. Your blade template could look like the follo
 @stop
 ```
 
+Note that in Laravel 5.2 or higher you can also use `@stack` directive for `css` and `javascript`:
+
+```html
+{{-- resources/views/admin/dashboard.blade.php --}}
+
+@push('css')
+
+@push('js')
+```
+
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
-### The `make:adminlte` artisan command
+## 4. The `make:adminlte` artisan command
 
 > Note: only for Laravel 5.2 and higher
 
@@ -114,7 +121,7 @@ php artisan make:adminlte
 
 This command should be used on fresh applications, just like the `make:auth` command
 
-### Using the authentication views without the `make:adminlte` command
+### 4.1 Using the authentication views without the `make:adminlte` command
 
 If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
 
@@ -138,7 +145,7 @@ If you want to use the included authentication related views manually, you can c
 By default, the login form contains a link to the registration form.
 If you don't want a registration form, set the `register_url` setting to `null` and the link will not be displayed.
 
-## Configuration
+## 5. Configuration
 
 First, publish the configuration file:
 
@@ -147,6 +154,9 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 ```
 
 Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
+
+### 5.1 Menu 
+
 You can configure your menu as follows:
 
 ```php
@@ -181,7 +191,47 @@ The `icon` is optional, you get an [open circle](http://fontawesome.io/icon/circ
 The available icons that you can use are those from [Font Awesome](http://fontawesome.io/icons/).
 Just specify the name of the icon and it will appear in front of your menu item.
 
-### Menu configuration at runtime
+#### Menu filters
+
+Out of the box, a `Gate` filter for the menu is already included. You can easily add your own menu filters to this package. 
+
+For example with Laratrust:
+
+```php
+<?php
+
+namespace MyApp;
+
+use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface;
+
+class MyMenuFilter implements FilterInterface
+{
+    public function transform($item, Builder $builder)
+    {
+        if (isset($item['permission'] && Laratrust::can($item['permission'])) {
+            return false;
+        }
+
+        return $item;
+    }
+}
+```
+
+And then add to `config/adminlte.php`:
+
+```php
+'filters' => [
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class, // Comment this line out if you want
+    MyApp\MyMenuFilter::class,
+]
+```
+
+#### Menu configuration at runtime
 
 It is also possible to configure the menu at runtime, e.g. in the boot of any service provider.
 Use this if your menu is not static, for example when it depends on your database or the locale.
@@ -234,7 +284,7 @@ A more practical example that actually uses translations and the database:
 
 This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
 
-### Active menu items
+#### Active menu items
 
 By default, a menu item is considered active if any of the following holds:
 - The current path matches the `url` parameter
@@ -251,7 +301,17 @@ To override this behavior, you can specify an `active` parameter with an array o
 ]
 ```
 
-## Translations
+### 5.2 Plugins
+
+By default the [DataTables](https://datatables.net/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+]
+```
+
+## 6. Translations
 
 At the moment, English, German, Dutch, Portuguese and Spanish translations are available out of the box.
 Just specifiy the language in `config/app.php`.
@@ -263,7 +323,7 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 
 Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
 
-## Customize views
+## 7. Customize views
 
 If you need full control over the provided views, you can publish them:
 
@@ -272,3 +332,12 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 ```
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.
+
+## 8. Issues, Questions and Pull Requests
+
+You can report issues and ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
+
+If you have a question, check the closed issues first. Over time, I've been able to answer quite a few.
+
+To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more info.
+
