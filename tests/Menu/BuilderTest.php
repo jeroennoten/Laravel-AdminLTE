@@ -218,4 +218,37 @@ class BuilderTest extends TestCase
         $this->assertCount(1, $builder->menu);
         $this->assertEquals('About', $builder->menu[0]['text']);
     }
+
+    public function testCanHeaders()
+    {
+        $gate = $this->makeGate();
+        $gate->define(
+            'show-header',
+            function () {
+                return true;
+            }
+        );
+        $gate->define(
+            'show-settings',
+            function () {
+                return false;
+            }
+        );
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            [
+                'header' => 'HEADER',
+                'can'  => 'show-header',
+            ],
+            [
+                'header' => 'SETTINGS',
+                'can'  => 'show-settings',
+            ]
+        );
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertEquals('HEADER', $builder->menu[0]);
+    }
 }
