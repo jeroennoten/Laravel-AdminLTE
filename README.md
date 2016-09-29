@@ -191,9 +191,25 @@ The `icon` is optional, you get an [open circle](http://fontawesome.io/icon/circ
 The available icons that you can use are those from [Font Awesome](http://fontawesome.io/icons/).
 Just specify the name of the icon and it will appear in front of your menu item.
 
-#### Menu filters
+Use the `can` option if you want conditionally show the menu item. This integrates with Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` option:
 
-Out of the box, a `Gate` filter for the menu is already included. You can easily add your own menu filters to this package. 
+```php
+[
+    [
+        'header' => 'BLOG',
+        'can' => 'manage-blog'
+    ],
+    [
+        'text' => 'Add new post',
+        'url' => 'admin/blog/new',
+        'can' => 'add-blog-post'
+    ],
+]
+```
+
+#### Custom Menu Filters
+
+If you need custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).  
 
 For example with Laratrust:
 
@@ -204,6 +220,7 @@ namespace MyApp;
 
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface;
+use Laratrust;
 
 class MyMenuFilter implements FilterInterface
 {
