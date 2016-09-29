@@ -229,6 +229,10 @@ class MyMenuFilter implements FilterInterface
         if (isset($item['permission'] && Laratrust::can($item['permission'])) {
             return false;
         }
+        
+        if (isset($item['header'])) {
+            $item = $item['header'];
+        }
 
         return $item;
     }
