@@ -24,16 +24,12 @@ class ActiveChecker
         }
 
         if (isset($item['url'])) {
-            return $this->isActiveUrl($item['url']);
+            return $this->checkExact($item['url']) || $this->checkSub($item['url']);
         }
 
         return false;
     }
 
-    protected function isActiveUrl($url)
-    {
-        return $this->checkExact($url) || $this->checkSub($url);
-    }
 
     protected function checkExact($url)
     {
@@ -59,7 +55,7 @@ class ActiveChecker
     private function isExplicitActive($active)
     {
         foreach ($active as $url) {
-            if ($this->isActiveUrl($url)) {
+            if ($this->checkExact($url)) {
                 return true;
             }
         }

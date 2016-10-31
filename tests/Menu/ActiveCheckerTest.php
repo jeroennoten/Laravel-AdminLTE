@@ -90,4 +90,13 @@ class ActiveCheckerTest extends TestCase
 
         $this->assertTrue($isActive);
     }
+
+    public function testExplicitOverridesDefault()
+    {
+        $checker = $this->makeActiveChecker('http://example.com/admin/users');
+
+        $isActive = $checker->isActive(['active' => ['admin']]);
+
+        $this->assertFalse($isActive);
+    }
 }
