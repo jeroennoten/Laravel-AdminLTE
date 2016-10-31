@@ -30,7 +30,6 @@ class ActiveChecker
         return false;
     }
 
-
     protected function checkExact($url)
     {
         return $this->request->is($url);
