@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Routing\Route;
+
 class BuilderTest extends TestCase
 {
     public function testAddOneItem()
@@ -105,6 +107,16 @@ class BuilderTest extends TestCase
             'http://example.com/test',
             $builder->menu[0]['submenu'][0]['submenu'][0]['href']
         );
+    }
+
+    public function testRouteHref()
+    {
+        $builder = $this->makeMenuBuilder();
+        $this->getRouteCollection()->add(new Route('GET', 'about', ['as' => 'pages.about']));
+
+        $builder->add(['text' => 'About', 'route' => 'pages.about']);
+
+        $this->assertEquals('http://example.com/about', $builder->menu[0]['href']);
     }
 
     public function testActiveClass()

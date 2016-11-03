@@ -19,7 +19,7 @@ use Illuminate\Auth\Access\Gate;
 
 class TestCase extends PHPUnit_Framework_TestCase
 {
-    private $dispatcher;
+    private $dispatcher, $routeCollection;
 
     protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
     {
@@ -49,7 +49,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function makeUrlGenerator($uri = 'http://example.com')
     {
-        return new UrlGenerator(new RouteCollection, $this->makeRequest($uri));
+        return new UrlGenerator($this->getRouteCollection(), $this->makeRequest($uri));
     }
 
     protected function makeGate()
@@ -78,5 +78,14 @@ class TestCase extends PHPUnit_Framework_TestCase
     private function getFilters()
     {
         return [];
+    }
+
+    protected function getRouteCollection()
+    {
+        if (! $this->routeCollection) {
+            $this->routeCollection = new RouteCollection();
+        }
+
+        return $this->routeCollection;
     }
 }

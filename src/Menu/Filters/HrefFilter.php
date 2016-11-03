@@ -25,10 +25,14 @@ class HrefFilter implements FilterInterface
 
     protected function makeHref($item)
     {
-        if (! isset($item['url'])) {
-            return '#';
+        if (isset($item['url'])) {
+            return $this->urlGenerator->to($item['url']);
         }
 
-        return $this->urlGenerator->to($item['url']);
+        if (isset($item['route'])) {
+            return $this->urlGenerator->route($item['route']);
+        }
+
+        return '#';
     }
 }
