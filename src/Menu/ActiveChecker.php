@@ -4,6 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Menu;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ActiveChecker
 {
@@ -48,7 +49,9 @@ class ActiveChecker
     {
         $fullUrlPattern = $this->url->to($pattern);
 
-        return $this->request->fullUrlIs($fullUrlPattern);
+        $fullUrl = $this->request->fullUrl();
+
+        return Str::is($fullUrlPattern, $fullUrl);
     }
 
     protected function containsActive($items)
