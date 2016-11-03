@@ -8,12 +8,16 @@ return [
     |--------------------------------------------------------------------------
     |
     | The default title of your admin panel, this goes into the title tag
-    | of your page. You can override it per page with the title section
-    | like so: @section('title', 'Dashboard | My Great Admin Panel')
+    | of your page. You can override it per page with the title section.
+    | You can optionally also specify a title prefix and/or postfix.
     |
     */
 
     'title' => 'AdminLTE 2',
+
+    'title_prefix' => '',
+
+    'title_postfix' => '',
 
     /*
     |--------------------------------------------------------------------------
@@ -194,8 +198,8 @@ return [
     */
 
     'filters' => [
-        JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+        JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
