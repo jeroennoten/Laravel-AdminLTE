@@ -34,7 +34,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function makeActiveChecker($uri = 'http://example.com')
     {
-        return new ActiveChecker($this->makeRequest($uri));
+        return new ActiveChecker($this->makeRequest($uri), $this->makeUrlGenerator($uri));
     }
 
     private function makeRequest($uri)

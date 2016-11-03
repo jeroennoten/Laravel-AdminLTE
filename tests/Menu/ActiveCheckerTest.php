@@ -58,10 +58,10 @@ class ActiveCheckerTest extends TestCase
 
         $isActive = $checker->isActive(
             [
-                'text'    => 'Level 0',
+                'text' => 'Level 0',
                 'submenu' => [
                     [
-                        'text'    => 'Level 1',
+                        'text' => 'Level 1',
                         'submenu' => [
                             ['url' => 'home'],
                         ],
@@ -98,5 +98,32 @@ class ActiveCheckerTest extends TestCase
         $isActive = $checker->isActive(['active' => ['admin']]);
 
         $this->assertFalse($isActive);
+    }
+
+    public function testFullUrl()
+    {
+        $checker = $this->makeActiveChecker('http://example.com/about');
+
+        $isActive = $checker->isActive(['url' => 'http://example.com/about']);
+
+        $this->assertTrue($isActive);
+    }
+
+    public function testFullUrlSub()
+    {
+        $checker = $this->makeActiveChecker('http://example.com/about/sub');
+
+        $isActive = $checker->isActive(['url' => 'http://example.com/about']);
+
+        $this->assertTrue($isActive);
+    }
+
+    public function testHttps()
+    {
+        $checker = $this->makeActiveChecker('https://example.com/about');
+
+        $isActive = $checker->isActive(['url' => 'https://example.com/about']);
+
+        $this->assertTrue($isActive);
     }
 }

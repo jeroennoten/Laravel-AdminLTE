@@ -2,15 +2,19 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu;
 
+use Illuminate\Contracts\Routing\UrlGenerator;
 use Illuminate\Http\Request;
 
 class ActiveChecker
 {
     private $request;
 
-    public function __construct(Request $request)
+    private $url;
+
+    public function __construct(Request $request, UrlGenerator $url)
     {
         $this->request = $request;
+        $this->url = $url;
     }
 
     public function isActive($item)
@@ -32,12 +36,19 @@ class ActiveChecker
 
     protected function checkExact($url)
     {
-        return $this->request->is($url);
+        return $this->checkPattern($url);
     }
 
     protected function checkSub($url)
     {
-        return $this->request->is($url.'/*');
+        return $this->checkPattern($url . '/*');
+    }
+
+    protected function checkPattern($pattern)
+    {
+        $fullUrlPattern = $this->url->to($pattern);
+
+        return $this->request->fullUrlIs($fullUrlPattern);
     }
 
     protected function containsActive($items)
