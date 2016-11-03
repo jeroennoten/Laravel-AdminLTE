@@ -128,6 +128,16 @@ class BuilderTest extends TestCase
         $this->assertContains('active', $builder->menu[0]['classes']);
     }
 
+    public function testActiveRoute()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/about');
+        $this->getRouteCollection()->add(new Route('GET', 'about', ['as' => 'pages.about']));
+
+        $builder->add(['text' => 'About', 'route' => 'pages.about']);
+
+        $this->assertContains('active', $builder->menu[0]['classes']);
+    }
+
     public function testSubmenuActiveWithHash()
     {
         $builder = $this->makeMenuBuilder('http://example.com/home');

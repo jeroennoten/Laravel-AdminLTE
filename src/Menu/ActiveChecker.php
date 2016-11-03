@@ -28,11 +28,20 @@ class ActiveChecker
             return $this->containsActive($item['submenu']);
         }
 
+        if (isset($item['href'])) {
+            return $this->checkExactOrSub($item['href']);
+        }
+
+        // Support URL for backwards compatibility
         if (isset($item['url'])) {
-            return $this->checkExact($item['url']) || $this->checkSub($item['url']);
+            return $this->checkExactOrSub($item['url']);
         }
 
         return false;
+    }
+
+    protected function checkExactOrSub($url) {
+        return $this->checkExact($url) || $this->checkSub($url);
     }
 
     protected function checkExact($url)

@@ -26,8 +26,8 @@ class TestCase extends PHPUnit_Framework_TestCase
     protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
     {
         return new Builder([
-            new ActiveFilter($this->makeActiveChecker($uri)),
             new HrefFilter($this->makeUrlGenerator($uri)),
+            new ActiveFilter($this->makeActiveChecker($uri)),
             new SubmenuFilter(),
             new ClassesFilter(),
             new GateFilter($gate ?: $this->makeGate()),
