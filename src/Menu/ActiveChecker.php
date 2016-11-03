@@ -40,7 +40,8 @@ class ActiveChecker
         return false;
     }
 
-    protected function checkExactOrSub($url) {
+    protected function checkExactOrSub($url)
+    {
         return $this->checkExact($url) || $this->checkSub($url);
     }
 
