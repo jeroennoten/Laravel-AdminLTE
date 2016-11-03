@@ -41,7 +41,7 @@ class ActiveChecker
 
     protected function checkSub($url)
     {
-        return $this->checkPattern($url . '/*');
+        return $this->checkPattern($url.'/*');
     }
 
     protected function checkPattern($pattern)

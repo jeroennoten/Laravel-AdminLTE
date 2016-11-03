@@ -19,7 +19,9 @@ use Illuminate\Auth\Access\Gate;
 
 class TestCase extends PHPUnit_Framework_TestCase
 {
-    private $dispatcher, $routeCollection;
+    private $dispatcher;
+
+    private $routeCollection;
 
     protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
     {
