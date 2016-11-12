@@ -174,7 +174,7 @@ You can configure your menu as follows:
     [
         'text' => 'Show my website',
         'url' => '/',
-        'target => '_blank'
+        'target' => '_blank'
     ],
     'ACCOUNT SETTINGS',
     [
