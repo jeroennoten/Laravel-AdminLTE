@@ -171,6 +171,11 @@ You can configure your menu as follows:
         'url' => 'admin/pages',
         'icon' => 'file'
     ],
+    [
+        'text' => 'Show my website',
+        'url' => '/',
+        'target => '_blank'
+    ],
     'ACCOUNT SETTINGS',
     [
         'text' => 'Profile',
