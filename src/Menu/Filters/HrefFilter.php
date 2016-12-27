@@ -16,17 +16,23 @@ class HrefFilter implements FilterInterface
 
     public function transform($item, Builder $builder)
     {
-        $item['href'] = $this->makeHref($item);
+        if (! isset($item['header'])) {
+            $item['href'] = $this->makeHref($item);
+        }
 
         return $item;
     }
 
     protected function makeHref($item)
     {
-        if (! isset($item['url'])) {
-            return '#';
+        if (isset($item['url'])) {
+            return $this->urlGenerator->to($item['url']);
         }
 
-        return $this->urlGenerator->to($item['url']);
+        if (isset($item['route'])) {
+            return $this->urlGenerator->route($item['route']);
+        }
+
+        return '#';
     }
 }

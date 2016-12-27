@@ -16,7 +16,9 @@ class ActiveFilter implements FilterInterface
 
     public function transform($item, Builder $builder)
     {
-        $item['active'] = $this->activeChecker->isActive($item);
+        if (! isset($item['header'])) {
+            $item['active'] = $this->activeChecker->isActive($item);
+        }
 
         return $item;
     }

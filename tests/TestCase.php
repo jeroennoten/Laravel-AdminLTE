@@ -21,11 +21,13 @@ class TestCase extends PHPUnit_Framework_TestCase
 {
     private $dispatcher;
 
+    private $routeCollection;
+
     protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
     {
         return new Builder([
-            new ActiveFilter($this->makeActiveChecker($uri)),
             new HrefFilter($this->makeUrlGenerator($uri)),
+            new ActiveFilter($this->makeActiveChecker($uri)),
             new SubmenuFilter(),
             new ClassesFilter(),
             new GateFilter($gate ?: $this->makeGate()),
@@ -34,7 +36,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function makeActiveChecker($uri = 'http://example.com')
     {
-        return new ActiveChecker($this->makeRequest($uri));
+        return new ActiveChecker($this->makeRequest($uri), $this->makeUrlGenerator($uri));
     }
 
     private function makeRequest($uri)
@@ -49,7 +51,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     protected function makeUrlGenerator($uri = 'http://example.com')
     {
-        return new UrlGenerator(new RouteCollection, $this->makeRequest($uri));
+        return new UrlGenerator($this->getRouteCollection(), $this->makeRequest($uri));
     }
 
     protected function makeGate()
@@ -78,5 +80,14 @@ class TestCase extends PHPUnit_Framework_TestCase
     private function getFilters()
     {
         return [];
+    }
+
+    protected function getRouteCollection()
+    {
+        if (! $this->routeCollection) {
+            $this->routeCollection = new RouteCollection();
+        }
+
+        return $this->routeCollection;
     }
 }

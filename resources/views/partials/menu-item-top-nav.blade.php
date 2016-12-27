@@ -2,6 +2,7 @@
     <li class="{{ $item['top_nav_class'] }}">
         <a href="{{ $item['href'] }}"
            @if (isset($item['submenu'])) class="dropdown-toggle" data-toggle="dropdown" @endif
+           @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             {{ $item['text'] }}
