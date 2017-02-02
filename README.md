@@ -339,7 +339,7 @@ By default the [DataTables](https://datatables.net/) plugin is supported. If set
 
 ## 6. Translations
 
-At the moment, English, German, Dutch, Portuguese and Spanish translations are available out of the box.
+At the moment, English, German, French, Dutch, Portuguese and Spanish translations are available out of the box.
 Just specifiy the language in `config/app.php`.
 If you need to modify the texts or add other languages, you can publish the language files:
 
