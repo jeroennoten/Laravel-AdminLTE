@@ -231,7 +231,7 @@ class MyMenuFilter implements FilterInterface
 {
     public function transform($item, Builder $builder)
     {
-        if (isset($item['permission'] && ! Laratrust::can($item['permission'])) {
+        if (isset($item['permission']) && ! Laratrust::can($item['permission'])) {
             return false;
         }
         
