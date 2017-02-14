@@ -18,7 +18,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
    1. [Using the authentication views without the `make:adminlte` command](#41-using-the-authentication-views-without-the-makeadminlte-command)
 5. [Configuration](#5-configuration)
    1. [Menu](#51-menu)
-     - [Menu filters](#menu-filters)
+     - [Custom menu filters](#custom-menu-filters)
      - [Menu configuration at runtime](#menu-configuration-at-runtime)
      - [Active menu items](#active-menu-items)
    2. [Plugins](#52-plugins)
