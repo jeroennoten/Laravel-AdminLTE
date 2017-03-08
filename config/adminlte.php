@@ -108,7 +108,7 @@ return [
     */
 
     'menu' => [
-        'main_navigation',
+        ['header' => 'main_navigation'],
         [
             'lang' => 'blog',
             'url'  => 'admin/blog',
@@ -121,7 +121,7 @@ return [
             'label'       => 4,
             'label_color' => 'success',
         ],
-        'ACCOUNT SETTINGS',
+        ['header' => 'account_settings'],
         [
             'lang' => 'profile',
             'url'  => 'admin/settings',
@@ -170,7 +170,7 @@ return [
                 ],
             ],
         ],
-        'LABELS',
+        ['header' => 'labels'],
         [
             'lang'       => 'important',
             'icon_color' => 'red',
