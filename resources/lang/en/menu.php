@@ -16,3 +16,4 @@ return [
     'Important'                     => 'Important',
     'Warning'                       => 'Warning',
     'Information'                   => 'Information',
+]
