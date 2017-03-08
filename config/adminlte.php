@@ -110,12 +110,12 @@ return [
     'menu' => [
         'main_navigation',
         [
-            'text' => 'blog',
+            'lang' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'pages',
+            'lang'        => 'pages',
             'url'         => 'admin/pages',
             'icon'        => 'file',
             'label'       => 4,
@@ -123,41 +123,41 @@ return [
         ],
         'ACCOUNT SETTINGS',
         [
-            'text' => 'profile',
+            'lang' => 'profile',
             'url'  => 'admin/settings',
             'icon' => 'user',
         ],
         [
-            'text' => 'change_password',
+            'lang' => 'change_password',
             'url'  => 'admin/settings',
             'icon' => 'lock',
         ],
         [
-            'text'    => 'multilevel',
+            'lang'    => 'multilevel',
             'icon'    => 'share',
             'submenu' => [
                 [
-                    'text' => 'level_one',
+                    'lang' => 'level_one',
                     'url'  => '#',
                 ],
                 [
-                    'text'    => 'level_one',
+                    'lang'    => 'level_one',
                     'url'     => '#',
                     'submenu' => [
                         [
-                            'text' => 'level_two',
+                            'lang' => 'level_two',
                             'url'  => '#',
                         ],
                         [
-                            'text'    => 'level_two',
+                            'lang'    => 'level_two',
                             'url'     => '#',
                             'submenu' => [
                                 [
-                                    'text' => 'level_three',
+                                    'lang' => 'level_three',
                                     'url'  => '#',
                                 ],
                                 [
-                                    'text' => 'level_three',
+                                    'lang' => 'level_three',
                                     'url'  => '#',
                                 ],
                             ],
@@ -165,22 +165,22 @@ return [
                     ],
                 ],
                 [
-                    'text' => 'level_one',
+                    'lang' => 'level_one',
                     'url'  => '#',
                 ],
             ],
         ],
         'LABELS',
         [
-            'text'       => 'important',
+            'lang'       => 'important',
             'icon_color' => 'red',
         ],
         [
-            'text'       => 'warning',
+            'lang'       => 'warning',
             'icon_color' => 'yellow',
         ],
         [
-            'text'       => 'information',
+            'lang'       => 'information',
             'icon_color' => 'aqua',
         ],
     ],
