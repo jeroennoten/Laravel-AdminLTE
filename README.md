@@ -23,6 +23,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
      - [Active menu items](#active-menu-items)
    2. [Plugins](#52-plugins)
 6. [Translations](#6-translations)
+    1. [Menu Translations](#51-menu-translations)
 7. [Customize views](#7-customize-views)
 8. [Issues, Questions and Pull Requests](#8-issues-questions-and-pull-requests)
 
@@ -321,11 +322,12 @@ To override this behavior, you can specify an `active` parameter with an array o
 
 ```php
 [
-    'text' => 'Pages'
+    'text' => 'Pages',
     'url' => 'pages',
     'active' => ['pages', 'content', 'content/*']
 ]
 ```
+
 
 ### 5.2 Plugins
 
@@ -348,6 +350,68 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 ```
 
 Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
+
+### 6.1. Menu Translations
+
+This resource allow you to use lang files, and is active by default.
+
+#### Configurating Menu Using Lang:
+
+First, configure the menu using the `lang` param instead `text`
+This is an example of configuration:
+
+```php
+    [
+        'header' => 'account_settings'
+    ],
+        [
+            'lang' => 'profile',
+            'url'  => 'admin/settings',
+            'icon' => 'user',
+        ],
+```
+
+#### Lang Files
+
+All the translation strings must be added in the `menu.php` file of each language needed.
+The translations files are located at `resources/lang/vendor/adminlte/`
+
+This is an example of the `menu.php` lang file:
+
+```php
+return [
+    'account_settings'  => 'ACCOUNT SETTINGS',
+    'profile'           => 'Profile',
+];
+
+```
+
+To translate the menu headers, just use the `header` param. Example:
+
+```php
+    [
+        'header' => 'account_settings'
+    ],
+        [
+            'lang' => 'profile',
+            'url'  => 'admin/settings',
+            'icon' => 'user',
+        ],
+```
+
+
+To override the language file, you just need to keep the `text` param. Example:
+
+```php
+[
+    'text' => 'Pages',  //This text will apear in menu
+    'lang' => 'pages',  //Will not be translated
+    'url' => 'pages',
+    'active' => ['pages', 'content', 'content/*']
+]
+
+```
+
 
 ## 7. Customize views
 
