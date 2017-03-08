@@ -1,5 +1,7 @@
 @if (is_string($item))
     <li class="header">{{ trans('adminlte::menu.'.$item) }}</li>
+@elseif (isset($item['header']))
+    <li class="header">{{ trans('adminlte::menu.'.$item['header']) }}</li>
 @else
     <li class="{{ $item['class'] }}">
         <a href="{{ $item['href'] }}"
