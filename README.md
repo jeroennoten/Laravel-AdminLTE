@@ -23,7 +23,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
      - [Active menu items](#active-menu-items)
    2. [Plugins](#52-plugins)
 6. [Translations](#6-translations)
-    1. [Menu Translations](#51-menu-translations)
+    1. [Menu Translations](#61-menu-translations)
 7. [Customize views](#7-customize-views)
 8. [Issues, Questions and Pull Requests](#8-issues-questions-and-pull-requests)
 
