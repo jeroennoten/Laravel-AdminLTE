@@ -20,10 +20,6 @@ class GateFilter implements FilterInterface
             return false;
         }
 
-        if (isset($item['header'])) {
-            $item = $item['header'];
-        }
-
         return $item;
     }
 
