@@ -40,6 +40,10 @@ class Builder
             $item = $filter->transform($item, $this);
         }
 
+        if (isset($item['header'])) {
+            $item = $item['header'];
+        }
+
         return $item;
     }
 }
