@@ -36,6 +36,8 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
 
 2. Add the service provider to the `providers` in `config/app.php`:
 
+    > Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider
+
     ```php
     JeroenNoten\LaravelAdminLte\ServiceProvider::class,
     ```
