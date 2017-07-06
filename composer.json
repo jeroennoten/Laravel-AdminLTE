@@ -32,5 +32,12 @@
   },
   "require-dev": {
     "phpunit/phpunit": "~4.0"
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "JeroenNoten\\LaravelAdminLte\\ServiceProvider"
+      ]
+    }
   }
 }
