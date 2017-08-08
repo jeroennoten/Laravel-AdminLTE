@@ -98,7 +98,6 @@ class ServiceProvider extends BaseServiceProvider
         } elseif (class_exists('Illuminate\\Auth\\Console\\AuthMakeCommand')) {
             $this->commands(AdminLteMakeCommand::class);
         }
-
     }
 
     private function registerViewComposers(Factory $view)
