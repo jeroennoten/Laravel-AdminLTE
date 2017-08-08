@@ -8,6 +8,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Container\Container;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Console\MakeAdminLteCommand;
+use JeroenNoten\LaravelAdminLte\Console\AdminLteMakeCommand;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 
@@ -94,7 +95,10 @@ class ServiceProvider extends BaseServiceProvider
         // Laravel >=5.2 only
         if (class_exists('Illuminate\\Auth\\Console\\MakeAuthCommand')) {
             $this->commands(MakeAdminLteCommand::class);
+        } else if (class_exists('Illuminate\\Auth\\Console\\AuthMakeCommand')) {
+            $this->commands(AdminLteMakeCommand::class);
         }
+
     }
 
     private function registerViewComposers(Factory $view)
