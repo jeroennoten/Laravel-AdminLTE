@@ -6,17 +6,16 @@ use Illuminate\Auth\GenericUser;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Routing\RouteCollection;
-use Illuminate\Translation\Translator;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
-use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class TestCase extends PHPUnit_Framework_TestCase
@@ -25,9 +24,7 @@ class TestCase extends PHPUnit_Framework_TestCase
 
     private $routeCollection;
 
-    private $translationLoader;
-
-    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
+    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null, $locale = 'en')
     {
         return new Builder([
             new HrefFilter($this->makeUrlGenerator($uri)),
@@ -35,19 +32,15 @@ class TestCase extends PHPUnit_Framework_TestCase
             new SubmenuFilter(),
             new ClassesFilter(),
             new GateFilter($gate ?: $this->makeGate()),
-            new LangFilter($this->makeTranslator()),
+            new LangFilter($this->makeTranslator($locale)),
         ]);
     }
 
-    protected function makeTranslator()
+    protected function makeTranslator($locale = 'en')
     {
-        $this->translationLoader = new \Illuminate\Translation\ArrayLoader();
-        return new Translator($this->translationLoader, 'en');
-    }
+        $translationLoader = new Illuminate\Translation\FileLoader(new Illuminate\Filesystem\Filesystem, 'resources/lang/');
 
-    public function getTranslationLoader()
-    {
-        return $this->translationLoader;
+        return new Illuminate\Translation\Translator($translationLoader, $locale);
     }
 
     protected function makeActiveChecker($uri = 'http://example.com')

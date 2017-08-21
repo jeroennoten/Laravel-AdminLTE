@@ -2,8 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
+use Illuminate\Translation\Translator;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
-use Illuminate\Contracts\Translation\Translator;
 
 class LangFilter implements FilterInterface
 {
@@ -22,6 +22,7 @@ class LangFilter implements FilterInterface
         if (isset($item['text'])) {
             $item['text'] = $this->langGenerator->trans($item['text']);
         }
+
         return $item;
     }
 }
