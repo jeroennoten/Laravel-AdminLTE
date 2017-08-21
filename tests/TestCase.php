@@ -6,6 +6,7 @@ use Illuminate\Auth\GenericUser;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Routing\UrlGenerator;
 use Illuminate\Routing\RouteCollection;
+use Illuminate\Translation\Translator;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
@@ -15,6 +16,7 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class TestCase extends PHPUnit_Framework_TestCase
@@ -22,6 +24,8 @@ class TestCase extends PHPUnit_Framework_TestCase
     private $dispatcher;
 
     private $routeCollection;
+
+    private $translationLoader;
 
     protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
     {
@@ -31,7 +35,19 @@ class TestCase extends PHPUnit_Framework_TestCase
             new SubmenuFilter(),
             new ClassesFilter(),
             new GateFilter($gate ?: $this->makeGate()),
+            new LangFilter($this->makeTranslator()),
         ]);
+    }
+
+    protected function makeTranslator()
+    {
+        $this->translationLoader = new \Illuminate\Translation\ArrayLoader();
+        return new Translator($this->translationLoader, 'en');
+    }
+
+    public function getTranslationLoader()
+    {
+        return $this->translationLoader;
     }
 
     protected function makeActiveChecker($uri = 'http://example.com')

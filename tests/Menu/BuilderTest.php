@@ -273,4 +273,21 @@ class BuilderTest extends TestCase
         $this->assertCount(1, $builder->menu);
         $this->assertEquals('HEADER', $builder->menu[0]);
     }
+
+    public function testLangTranslate()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com');
+        $translationloader = $this->getTranslationLoader();
+        $t= array('home' => 'translatedHome', 'header' => 'translatedHeader');
+        $translationloader->addMessages('en', 'test', $t);
+        $builder->add(['header' => 'HEADER']);
+        $builder->add(['text' => 'test.home', 'url' => '/']);
+        $builder->add(['header' => 'test.header']);
+        $builder->add(['text' => 'About', 'url' => '/about']);
+        $this->assertCount(4, $builder->menu);
+        $this->assertEquals('HEADER', $builder->menu[0]);
+        $this->assertEquals('translatedHeader', $builder->menu[2]);
+        $this->assertEquals('translatedHome', $builder->menu[1]['text']);
+        $this->assertEquals('About', $builder->menu[3]['text']);
+    }
 }
