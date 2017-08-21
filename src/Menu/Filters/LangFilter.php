@@ -22,6 +22,7 @@ class LangFilter implements FilterInterface
         if (isset($item['text'])) {
             $item['text'] = $this->langGenerator->trans($item['text']);
         }
+
         return $item;
     }
 }

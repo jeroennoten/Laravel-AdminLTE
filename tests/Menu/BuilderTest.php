@@ -278,7 +278,7 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder('http://example.com');
         $translationloader = $this->getTranslationLoader();
-        $t= array('home' => 'translatedHome', 'header' => 'translatedHeader');
+        $t= ['home' => 'translatedHome', 'header' => 'translatedHeader'];
         $translationloader->addMessages('en', 'test', $t);
         $builder->add(['header' => 'HEADER']);
         $builder->add(['text' => 'test.home', 'url' => '/']);
