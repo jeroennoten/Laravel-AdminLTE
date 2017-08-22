@@ -2,9 +2,9 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console;
 
-use Illuminate\Auth\Console\MakeAuthCommand;
+use Illuminate\Auth\Console\AuthMakeCommand;
 
-class MakeAdminLteCommand extends MakeAuthCommand
+class MakeAdminLteCommand extends AuthMakeCommand
 {
     protected $signature = 'make:adminlte {--views : Only scaffold the authentication views}{--force : Overwrite existing views by default}';
 
