@@ -335,6 +335,16 @@ By default the [DataTables](https://datatables.net/) plugin is supported. If set
 ]
 ```
 
+Also the [Select2](https://select2.github.io/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'select2' => true,
+]
+```
+
+
 ## 6. Translations
 
 At the moment, English, German, French, Dutch, Portuguese and Spanish translations are available out of the box.
