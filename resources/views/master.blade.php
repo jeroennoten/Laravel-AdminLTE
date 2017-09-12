@@ -22,7 +22,7 @@
 
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
-
+    
     @if(config('adminlte.plugins.datatables'))
         <!-- DataTables -->
         <link rel="stylesheet" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
