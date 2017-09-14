@@ -209,8 +209,7 @@ Use the `can` option if you want conditionally show the menu item. This integrat
     [
         'text' => 'Add new post',
         'url' => 'admin/blog/new',
-        'can' => 'add-blog-post',
-        'model' => $model
+        'can' => 'add-blog-post'
     ],
 ]
 ```
