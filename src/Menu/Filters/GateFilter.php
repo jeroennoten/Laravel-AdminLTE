@@ -25,7 +25,7 @@ class GateFilter implements FilterInterface
 
     protected function isVisible($item)
     {
-        if (!isset($item['can'])) {
+        if (! isset($item['can'])) {
             return true;
         }
 
