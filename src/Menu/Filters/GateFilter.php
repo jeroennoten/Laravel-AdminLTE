@@ -28,7 +28,7 @@ class GateFilter implements FilterInterface
         if (isset($item['model'])) {
             return ! isset($item['can']) || $this->gate->allows($item['can'], $item['model']);
         }
-        
+
         return ! isset($item['can']) || $this->gate->allows($item['can']);
     }
 }
