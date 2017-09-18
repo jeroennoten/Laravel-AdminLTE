@@ -25,6 +25,14 @@ class GateFilter implements FilterInterface
 
     protected function isVisible($item)
     {
-        return ! isset($item['can']) || $this->gate->allows($item['can']);
+        if (! isset($item['can'])) {
+            return true;
+        }
+
+        if (isset($item['model'])) {
+            return $this->gate->allows($item['can'], $item['model']);
+        }
+
+        return $this->gate->allows($item['can']);
     }
 }
