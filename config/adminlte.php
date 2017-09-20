@@ -41,7 +41,7 @@ return [
     |
     | Choose a skin color for your admin panel. The available skin colors:
     | blue, black, purple, yellow, red, and green. Each skin also has a
-    | ligth variant: blue-light, purple-light, purple-light, etc.
+    | light variant: blue-light, purple-light, purple-light, etc.
     |
     */
 
@@ -101,8 +101,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | Specify your menu items to display in the left sidebar. Each menu item
-    | should have a text and and a URL. You can also specify an icon from
-    | Font Awesome. A string instead of an array represents a header in sidebar
+    | should have a text and a URL. You can also specify an icon from Font 
+    | Awesome. A string instead of an array represents a header in sidebar
     | layout. The 'can' is a filter on Laravel's built in Gate functionality.
     |
     */
