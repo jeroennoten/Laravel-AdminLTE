@@ -104,7 +104,6 @@ return [
     | should have a text and a URL. You can also specify an icon from Font 
     | Awesome. A string instead of an array represents a header in sidebar
     | layout. The 'can' is a filter on Laravel's built in Gate functionality.
-    |
     */
 
     'menu' => [
