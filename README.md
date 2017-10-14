@@ -22,6 +22,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
 6. [Translations](#6-translations)
 7. [Customize views](#7-customize-views)
 8. [Issues, Questions and Pull Requests](#8-issues-questions-and-pull-requests)
+9. [Screentshots](#9-screenshots)
 
 ## 1. Installation
 
@@ -371,4 +372,9 @@ You can report issues and ask questions in the [issues section](https://github.c
 If you have a question, check the closed issues first. Over time, I've been able to answer quite a few.
 
 To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more info.
+
+## 9. Screenshots
+
+![Screenshot AdminLTE](https://i.imgur.com/kQaPf2B.png)
+
 
