@@ -117,7 +117,7 @@ return [
         [
             'text'        => 'Pages',
             'url'         => 'admin/pages',
-            'icon'        => 'file',
+            'icon_class'        => 'fa fw fa-file',
             'label'       => 4,
             'label_color' => 'success',
         ],
@@ -125,20 +125,21 @@ return [
         [
             'text' => 'Profile',
             'url'  => 'admin/settings',
-            'icon' => 'user',
+            'icon_class' => 'fa fw fa-user',
         ],
         [
             'text' => 'Change Password',
             'url'  => 'admin/settings',
-            'icon' => 'lock',
+            'icon_class' => 'fa fw fa-lock',
         ],
         [
             'text'    => 'Multilevel',
-            'icon'    => 'share',
+            'icon_class'    => 'fa fw fa-share',
             'submenu' => [
                 [
                     'text' => 'Level One',
                     'url'  => '#',
+                    'icon_class' => 'fa fw fa-cog'
                 ],
                 [
                     'text'    => 'Level One',
