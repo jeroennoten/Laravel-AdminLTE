@@ -341,6 +341,15 @@ Also the [Select2](https://select2.github.io/) plugin is supported. If set to `t
 ]
 ```
 
+Also the [ChartJS](https://www.chartjs.org/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'chartjs' => true,
+]
+```
+
 
 ## 6. Translations
 
