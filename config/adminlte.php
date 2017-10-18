@@ -220,5 +220,26 @@ return [
         'datatables' => true,
         'select2'    => true,
         'chartjs'    => true,
+        'pace'       => true,
+    ],
+
+    /*
+     |--------------------------------------------------------------------------
+     | Pace Plugins Initialization
+     |--------------------------------------------------------------------------
+     |
+     | Set color & type value to include the theme file from a CDN via a script tag.
+     |
+     | color options are black, blue, green, orange, pink, purple, red, silver,
+     |   white & yellow
+     |
+     | type options are barber-shop, big-counter, bounce, center-atom, center-circle,
+     |   center-radar, center-simple, corner-indicator, fill-left, flash, flat-top,
+     |   loading-bar, mac-osx, minimal
+     */
+
+    'pace' => [
+        'color' => 'green',
+        'type' => 'center-radar',
     ],
 ];
