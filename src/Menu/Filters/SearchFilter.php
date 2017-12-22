@@ -20,7 +20,7 @@ class SearchFilter implements FilterInterface
                 $item['input_name'] = 'q';
             }
         }
-        
+
         return $item;
     }
 }
