@@ -13,6 +13,8 @@ class SearchFilter implements FilterInterface
         } elseif ($item['search'] === true) {
             if (! isset($item['method'])) {
                 $item['method'] = 'get';
+            } elseif (isset($item['method']) && $item['method'] !== 'post' && $item['method'] !== 'get') {
+                $item['method'] = 'get';
             }
             if (! isset($item['input_name'])) {
                 $item['input_name'] = 'q';
