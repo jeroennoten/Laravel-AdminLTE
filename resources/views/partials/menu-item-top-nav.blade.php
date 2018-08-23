@@ -5,7 +5,7 @@
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
-            {{ trans($item['text') }}
+            {{ trans($item['text']) }}
             @if (isset($item['label']))
                 <span class="label label-{{ $item['label_color'] or 'primary' }}">{{ trans($item['label']) }}</span>
             @elseif (isset($item['submenu']))
