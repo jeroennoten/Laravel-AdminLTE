@@ -1,15 +1,15 @@
 @if (is_string($item))
-    <li class="header">{{ $item }}</li>
+    <li class="header">{{ trans($item) }}</li>
 @else
     <li class="{{ $item['class'] }}">
         <a href="{{ $item['href'] }}"
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
-            <span>{{ $item['text'] }}</span>
+            <span>{{ trans($item['text']) }}</span>
             @if (isset($item['label']))
                 <span class="pull-right-container">
-                    <span class="label label-{{ $item['label_color'] or 'primary' }} pull-right">{{ $item['label'] }}</span>
+                    <span class="label label-{{ $item['label_color'] or 'primary' }} pull-right">{{ trans($item['label']) }}</span>
                 </span>
             @elseif (isset($item['submenu']))
                 <span class="pull-right-container">
