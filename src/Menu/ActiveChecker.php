@@ -77,7 +77,7 @@ class ActiveChecker
 
     private function isExplicitActive($active)
     {
-        if (!is_array($active)) {
+        if (! is_array($active)) {
             return $active;
         }
 
