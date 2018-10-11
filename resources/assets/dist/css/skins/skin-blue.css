@@ -78,7 +78,7 @@
   color: #ffffff;
   background: #1e282c;
 }
-.skin-blue .sidebar-menu > li.active > a {
+.skin-blue .sidebar-menu > li.active:not(.menu-open) > a {
   border-left-color: #3c8dbc;
 }
 .skin-blue .sidebar-menu > li > .treeview-menu {
