@@ -20,12 +20,12 @@ class ActiveChecker
 
     public function isActive($item)
     {
-        if (isset($item['active'])) {
-            return $this->isExplicitActive($item['active']);
-        }
-
         if (isset($item['submenu'])) {
             return $this->containsActive($item['submenu']);
+        }
+
+        if (isset($item['active'])) {
+            return $this->isExplicitActive($item['active']);
         }
 
         if (isset($item['href'])) {
@@ -77,6 +77,9 @@ class ActiveChecker
 
     private function isExplicitActive($active)
     {
+        if (!is_array($active));
+            return $active;
+
         foreach ($active as $url) {
             if ($this->checkExact($url)) {
                 return true;
