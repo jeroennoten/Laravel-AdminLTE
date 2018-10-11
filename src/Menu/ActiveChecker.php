@@ -77,8 +77,9 @@ class ActiveChecker
 
     private function isExplicitActive($active)
     {
-        if (!is_array($active));
+        if (!is_array($active)) {
             return $active;
+        }
 
         foreach ($active as $url) {
             if ($this->checkExact($url)) {
