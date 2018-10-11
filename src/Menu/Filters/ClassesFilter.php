@@ -27,7 +27,6 @@ class ClassesFilter implements FilterInterface
         }
 
         if (isset($item['submenu'])) {
-
             if ($topNav) {
                 $classes[] = 'dropdown';
             } else {
@@ -36,7 +35,6 @@ class ClassesFilter implements FilterInterface
                     $classes[] = 'active';
                 }
             }
-            
         }
 
         return $classes;
