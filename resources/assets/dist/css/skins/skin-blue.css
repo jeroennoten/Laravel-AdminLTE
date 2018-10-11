@@ -92,7 +92,11 @@
   text-decoration: none;
 }
 .skin-blue .sidebar-menu .treeview-menu > li > a {
+  border-left: 3px solid transparent;  
   color: #8aa4af;
+}
+.skin-blue .sidebar-menu .treeview-menu > li.active > a {
+  border-left-color: #3c8dbc;
 }
 .skin-blue .sidebar-menu .treeview-menu > li.active > a,
 .skin-blue .sidebar-menu .treeview-menu > li > a:hover {
