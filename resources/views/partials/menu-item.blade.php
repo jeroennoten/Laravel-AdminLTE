@@ -1,5 +1,5 @@
 @if (is_string($item))
-    <li class="header">{{ $item }}</li>
+    <li class="header">@lang($item)</li>
 @else
     <li class="{{ $item['class'] }}">
         <a href="{{ $item['href'] }}"
