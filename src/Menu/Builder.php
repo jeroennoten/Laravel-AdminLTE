@@ -25,6 +25,14 @@ class Builder
         }
     }
 
+    public function addIn(array $items, $position){
+        $items = $this->transformItems($items);
+
+        foreach ($items as $item) {
+            array_splice($this->menu, $position, 0, $item);
+        }
+    }
+
     public function transformItems($items)
     {
         return array_filter(array_map([$this, 'applyFilters'], $items));
