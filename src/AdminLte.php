@@ -42,8 +42,7 @@ class AdminLte
 
         if (method_exists($this->events,'dispatch')) {
             $this->events->dispatch(new BuildingMenu($builder));
-        }
-        else {
+        } else {
             $this->events->fire(new BuildingMenu($builder));
         }
 

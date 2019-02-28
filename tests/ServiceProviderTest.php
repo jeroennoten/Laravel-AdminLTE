@@ -20,8 +20,7 @@ class ServiceProviderTest extends TestCase
 
         if (method_exists($events,'dispatch')) {
             $events->dispatch(new BuildingMenu($menuBuilder));
-        }
-        else {
+        } else {
             $events->fire(new BuildingMenu($menuBuilder));
         }
 
