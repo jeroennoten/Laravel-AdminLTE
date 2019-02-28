@@ -18,10 +18,12 @@ class ServiceProviderTest extends TestCase
 
         ServiceProvider::registerMenu($events, $config);
 
-        if (method_exists($events,'dispatch'))
+        if (method_exists($events,'dispatch')) {
             $events->dispatch(new BuildingMenu($menuBuilder));
-        else
+        }
+        else {
             $events->fire(new BuildingMenu($menuBuilder));
+        }
 
         $this->assertEquals(['item'], $menuBuilder->menu);
     }
