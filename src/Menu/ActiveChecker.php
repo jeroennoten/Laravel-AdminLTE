@@ -61,15 +61,14 @@ class ActiveChecker
 
         $fullUrl = $this->request->fullUrl();
 
-        if(mb_substr($pattern, 0, 6) === "regex:") {
+        if(mb_substr($pattern, 0, 6) === 'regex:') {
+            $regex = mb_substr($pattern, 6);
 
-          $regex = mb_substr($pattern, 6);
-
-          if(preg_match($regex, request()->path()) == 1) {
-            return true;
-          }
-
-          return false;
+            if(preg_match($regex, request()->path()) == 1) {
+                return true;
+            }
+            
+            return false;
         }
         return Str::is($fullUrlPattern, $fullUrl);
     }
