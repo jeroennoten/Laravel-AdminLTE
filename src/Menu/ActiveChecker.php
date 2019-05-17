@@ -70,6 +70,7 @@ class ActiveChecker
             
             return false;
         }
+        
         return Str::is($fullUrlPattern, $fullUrl);
     }
 
