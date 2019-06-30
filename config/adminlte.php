@@ -41,7 +41,7 @@ return [
     |
     | Choose a skin color for your admin panel. The available skin colors:
     | blue, black, purple, yellow, red, and green. Each skin also has a
-    | ligth variant: blue-light, purple-light, purple-light, etc.
+    | light variant: blue-light, purple-light, purple-light, etc.
     |
     */
 
@@ -101,13 +101,16 @@ return [
     |--------------------------------------------------------------------------
     |
     | Specify your menu items to display in the left sidebar. Each menu item
-    | should have a text and and a URL. You can also specify an icon from
-    | Font Awesome. A string instead of an array represents a header in sidebar
+    | should have a text and a URL. You can also specify an icon from Font
+    | Awesome. A string instead of an array represents a header in sidebar
     | layout. The 'can' is a filter on Laravel's built in Gate functionality.
-    |
     */
 
     'menu' => [
+        [
+            'search' => true,
+            'text' => 'Search...',
+        ],
         'MAIN NAVIGATION',
         [
             'text' => 'Blog',
@@ -117,7 +120,7 @@ return [
         [
             'text'        => 'Pages',
             'url'         => 'admin/pages',
-            'icon'        => 'file',
+            'icon'        => 'far fa-file',
             'label'       => 4,
             'label_color' => 'success',
         ],
@@ -199,6 +202,7 @@ return [
 
     'filters' => [
         JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+        JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
         JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
@@ -211,7 +215,7 @@ return [
     |--------------------------------------------------------------------------
     |
     | Choose which JavaScript plugins should be included. At this moment,
-    | only DataTables is supported as a plugin. Set the value to true
+    | DataTables,Select2, Chartjs and SweetAlert are supported as a plugin. Set the value to true
     | to include the JavaScript file from a CDN via a script tag.
     |
     */
@@ -221,6 +225,7 @@ return [
         'select2'    => true,
         'chartjs'    => true,
         'pace'       => true,
+        'sweetalert' => true,
     ],
 
     /*
