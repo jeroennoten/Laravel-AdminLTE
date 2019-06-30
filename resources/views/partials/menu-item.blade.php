@@ -1,5 +1,16 @@
 @if (is_string($item))
     <li class="header">{{ $item }}</li>
+@elseif ($item['search'] === true)
+    <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="{{ $item['input_name'] }}" class="form-control" placeholder="{{ $item['text'] }}">
+          <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
 @else
     <li class="{{ $item['class'] }}">
         <a href="{{ $item['href'] }}"
