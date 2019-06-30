@@ -350,6 +350,22 @@ Also the [ChartJS](https://www.chartjs.org/) plugin is supported. If set to `tru
 ]
 ```
 
+Also the [Pace](http://github.hubspot.com/pace/docs/welcome/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'pace' => true,
+]
+```
+
+Now, edit `config/adminlte.php` to configure the Pace plugin color and type
+```php
+'pace' => [
+    'color' => blue,
+    'type' => center-radar,
+]
+```
 
 ## 6. Translations
 
