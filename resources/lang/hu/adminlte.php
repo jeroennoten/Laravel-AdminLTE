@@ -1,4 +1,5 @@
 <?php
+
 return [
     'full_name'                   => 'Teljes név',
     'email'                       => 'Email',
