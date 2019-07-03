@@ -273,4 +273,29 @@ class BuilderTest extends TestCase
         $this->assertCount(1, $builder->menu);
         $this->assertEquals('HEADER', $builder->menu[0]);
     }
+
+    public function testLangTranslate()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder->add(['header' => 'HEADER']);
+        $builder->add(['text' => 'adminlte.email', 'url' => '/']);
+        $builder->add(['header' => 'adminlte.email']);
+        $builder->add(['text' => 'About', 'url' => '/about']);
+        $this->assertCount(4, $builder->menu);
+        $this->assertEquals('HEADER', $builder->menu[0]);
+        $this->assertEquals('Email', $builder->menu[2]);
+        $this->assertEquals('Email', $builder->menu[1]['text']);
+        $this->assertEquals('About', $builder->menu[3]['text']);
+
+        $builder = $this->makeMenuBuilder('http://example.com', null, 'de');
+        $builder->add(['header' => 'HEADER']);
+        $builder->add(['text' => 'adminlte.email', 'url' => '/']);
+        $builder->add(['header' => 'adminlte.email']);
+        $builder->add(['text' => 'About', 'url' => '/about']);
+        $this->assertCount(4, $builder->menu);
+        $this->assertEquals('HEADER', $builder->menu[0]);
+        $this->assertEquals('E-Mail', $builder->menu[2]);
+        $this->assertEquals('E-Mail', $builder->menu[1]['text']);
+        $this->assertEquals('About', $builder->menu[3]['text']);
+    }
 }
