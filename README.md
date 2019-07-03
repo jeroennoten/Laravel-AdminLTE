@@ -1,15 +1,12 @@
 # Easy AdminLTE integration with Laravel 5
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Build Status](https://img.shields.io/travis/jeroennoten/Laravel-AdminLTE/master.svg?style=flat-square)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
-[![StyleCI](https://styleci.io/repos/38200433/shield)](https://styleci.io/repos/38200433)
-[![SensioLabsInsight](https://img.shields.io/sensiolabs/i/64be4634-446d-473b-b551-b4e4c0e3f97a.svg?style=flat-square)](https://insight.sensiolabs.com/projects/64be4634-446d-473b-b551-b4e4c0e3f97a)
+[![Build Status](https://travis-ci.org/jeroennoten/Laravel-AdminLTE.svg?branch=master)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
 [![Quality Score](https://img.shields.io/scrutinizer/g/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/jeroennoten/Laravel-AdminLTE/master.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE/?branch=master)
+[![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to quickly set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5. I've removed every plugin but [iCheck](http://icheck.fronteed.com/), so you can start building on your template immediately. You can always add more plugins if you should need them. This package also includes a replacement for `make:auth` that uses AdminLTE styled views instead of the default ones.
+This package provides an easy way to quickly set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
 1. [Installation](#1-installation)
 2. [Updating](#2-updating)
@@ -36,6 +33,8 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
     ```
 
 2. Add the service provider to the `providers` in `config/app.php`:
+
+    > Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider
 
     ```php
     JeroenNoten\LaravelAdminLte\ServiceProvider::class,
@@ -156,7 +155,7 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 
 Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
 
-### 5.1 Menu 
+### 5.1 Menu
 
 You can configure your menu as follows:
 
@@ -215,7 +214,7 @@ Use the `can` option if you want conditionally show the menu item. This integrat
 
 #### Custom Menu Filters
 
-If you need custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).  
+If you need custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).
 
 For example with Laratrust:
 
@@ -235,10 +234,6 @@ class MyMenuFilter implements FilterInterface
         if (isset($item['permission']) && ! Laratrust::can($item['permission'])) {
             return false;
         }
-        
-        if (isset($item['header'])) {
-            $item = $item['header'];
-        }
 
         return $item;
     }
@@ -253,7 +248,7 @@ And then add to `config/adminlte.php`:
     JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class, // Comment this line out if you want
+    //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class, Comment this line out
     MyApp\MyMenuFilter::class,
 ]
 ```
@@ -284,7 +279,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
     }
-    
+
 }
 ```
 The configuration options are the same as in the static configuration files.
@@ -336,6 +331,41 @@ By default the [DataTables](https://datatables.net/) plugin is supported. If set
 ```php
 'plugins' => [
     'datatables' => true,
+]
+```
+
+Also the [Select2](https://select2.github.io/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'select2' => true,
+]
+```
+
+Also the [ChartJS](https://www.chartjs.org/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'chartjs' => true,
+]
+```
+
+Also the [Pace](http://github.hubspot.com/pace/docs/welcome/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'pace' => true,
+]
+```
+
+Now, edit `config/adminlte.php` to configure the Pace plugin color and type
+```php
+'pace' => [
+    'color' => blue,
+    'type' => center-radar,
 ]
 ```
 

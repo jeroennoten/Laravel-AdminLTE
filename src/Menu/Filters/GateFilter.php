@@ -20,15 +20,19 @@ class GateFilter implements FilterInterface
             return false;
         }
 
-        if (isset($item['header'])) {
-            $item = $item['header'];
-        }
-
         return $item;
     }
 
     protected function isVisible($item)
     {
-        return ! isset($item['can']) || $this->gate->allows($item['can']);
+        if (! isset($item['can'])) {
+            return true;
+        }
+
+        if (isset($item['model'])) {
+            return $this->gate->allows($item['can'], $item['model']);
+        }
+
+        return $this->gate->allows($item['can']);
     }
 }

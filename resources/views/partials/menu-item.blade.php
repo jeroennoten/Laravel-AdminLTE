@@ -2,6 +2,24 @@
     <li class="header">{{ trans('adminlte::menu.'.$item) }}</li>
 @elseif (isset($item['header']))
     <li class="header">{{ trans('adminlte::menu.'.$item['header']) }}</li>
+
+@elseif ($item['search'] === true)
+    <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="sidebar-form">
+        <div class="input-group">
+          <input type="text" name="{{ $item['input_name'] }}" class="form-control" placeholder="
+          @if (isset($item['text']))
+            {{ $item['text'] }}
+          @else
+            {{ trans('adminlte::menu.'.$item['lang']) }}
+          @endif
+          ">
+          <span class="input-group-btn">
+                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+                  <i class="fa fa-search"></i>
+                </button>
+              </span>
+        </div>
+      </form>
 @else
     <li class="{{ $item['class'] }}">
         <a href="{{ $item['href'] }}"
@@ -10,14 +28,15 @@
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             <span>
                 @if (isset($item['text']))
-                    $item['text']
+                    {{ $item['text'] }}
                 @else
                     {{ trans('adminlte::menu.'.$item['lang']) }}
                 @endif
             </span>
+
             @if (isset($item['label']))
                 <span class="pull-right-container">
-                    <span class="label label-{{ $item['label_color'] or 'primary' }} pull-right">{{ $item['label'] }}</span>
+                    <span class="label label-{{ isset($item['label_color']) ? $item['label_color'] : 'primary' }} pull-right">{{ $item['label'] }}</span>
                 </span>
             @elseif (isset($item['submenu']))
                 <span class="pull-right-container">
