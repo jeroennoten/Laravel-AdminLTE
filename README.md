@@ -387,7 +387,7 @@ This resource allow you to use lang files, and is active by default.
 
 #### Configurating Menu Using Lang:
 
-First, configure the menu using the `lang` param instead `text`
+First, configure the menu using the key `text` as translation string.
 This is an example of configuration:
 
 ```php
@@ -395,7 +395,7 @@ This is an example of configuration:
         'header' => 'account_settings'
     ],
         [
-            'lang' => 'profile',
+            'text' => 'profile',
             'url'  => 'admin/settings',
             'icon' => 'user',
         ],
@@ -423,23 +423,10 @@ To translate the menu headers, just use the `header` param. Example:
         'header' => 'account_settings'
     ],
         [
-            'lang' => 'profile',
+            'text' => 'profile',
             'url'  => 'admin/settings',
             'icon' => 'user',
         ],
-```
-
-
-To override the language file, you just need to keep the `text` param. Example:
-
-```php
-[
-    'text' => 'Pages',  //This text will apear in menu
-    'lang' => 'pages',  //Will not be translated
-    'url' => 'pages',
-    'active' => ['pages', 'content', 'content/*']
-]
-
 ```
 
 
