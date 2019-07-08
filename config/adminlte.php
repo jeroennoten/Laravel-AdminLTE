@@ -108,59 +108,59 @@ return [
 
     'menu' => [
         [
+            'lang' => 'search',
             'search' => true,
-            'text' => 'Search...',
         ],
-        'MAIN NAVIGATION',
+        ['header' => 'main_navigation'],
         [
-            'text' => 'Blog',
+            'lang' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
         ],
         [
-            'text'        => 'Pages',
+            'lang'        => 'pages',
             'url'         => 'admin/pages',
             'icon'        => 'far fa-file',
             'label'       => 4,
             'label_color' => 'success',
         ],
-        'ACCOUNT SETTINGS',
+        ['header' => 'account_settings'],
         [
-            'text' => 'Profile',
+            'lang' => 'profile',
             'url'  => 'admin/settings',
             'icon' => 'user',
         ],
         [
-            'text' => 'Change Password',
+            'lang' => 'change_password',
             'url'  => 'admin/settings',
             'icon' => 'lock',
         ],
         [
-            'text'    => 'Multilevel',
+            'lang'    => 'multilevel',
             'icon'    => 'share',
             'submenu' => [
                 [
-                    'text' => 'Level One',
+                    'lang' => 'level_one',
                     'url'  => '#',
                 ],
                 [
-                    'text'    => 'Level One',
+                    'lang'    => 'level_one',
                     'url'     => '#',
                     'submenu' => [
                         [
-                            'text' => 'Level Two',
+                            'lang' => 'level_two',
                             'url'  => '#',
                         ],
                         [
-                            'text'    => 'Level Two',
+                            'lang'    => 'level_two',
                             'url'     => '#',
                             'submenu' => [
                                 [
-                                    'text' => 'Level Three',
+                                    'lang' => 'level_three',
                                     'url'  => '#',
                                 ],
                                 [
-                                    'text' => 'Level Three',
+                                    'lang' => 'level_three',
                                     'url'  => '#',
                                 ],
                             ],
@@ -168,22 +168,22 @@ return [
                     ],
                 ],
                 [
-                    'text' => 'Level One',
+                    'lang' => 'level_one',
                     'url'  => '#',
                 ],
             ],
         ],
-        'LABELS',
+        ['header' => 'labels'],
         [
-            'text'       => 'Important',
+            'lang'       => 'important',
             'icon_color' => 'red',
         ],
         [
-            'text'       => 'Warning',
+            'lang'       => 'warning',
             'icon_color' => 'yellow',
         ],
         [
-            'text'       => 'Information',
+            'lang'       => 'information',
             'icon_color' => 'aqua',
         ],
     ],
