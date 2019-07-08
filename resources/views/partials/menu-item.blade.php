@@ -1,17 +1,13 @@
 @if (is_string($item))
-    <li class="header">{{ trans('adminlte::menu.'.$item) }}</li>
+    <li class="header">{{ $item }}</li>
 @elseif (isset($item['header']))
-    <li class="header">{{ trans('adminlte::menu.'.$item['header']) }}</li>
+    <li class="header">{{ $item['header'] }}</li>
 
 @elseif ($item['search'] === true)
     <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="{{ $item['input_name'] }}" class="form-control" placeholder="
-          @if (isset($item['text']))
             {{ $item['text'] }}
-          @else
-            {{ trans('adminlte::menu.'.$item['lang']) }}
-          @endif
           ">
           <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat">
@@ -27,11 +23,7 @@
         >
             <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             <span>
-                @if (isset($item['text']))
-                    {{ $item['text'] }}
-                @else
-                    {{ trans('adminlte::menu.'.$item['lang']) }}
-                @endif
+				{{ $item['text'] }}
             </span>
 
             @if (isset($item['label']))
