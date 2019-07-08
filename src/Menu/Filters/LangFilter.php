@@ -17,10 +17,10 @@ class LangFilter implements FilterInterface
     public function transform($item, Builder $builder)
     {
         if (isset($item['header'])) {
-            $item['header'] = $this->langGenerator->trans('adminlte::menu:' . $item['header']);
+            $item['header'] = $this->langGenerator->trans('adminlte::menu:'.$item['header']);
         }
         if (isset($item['text'])) {
-            $item['text'] = $this->langGenerator->trans('adminlte::menu:' . $item['text']);
+            $item['text'] = $this->langGenerator->trans('adminlte::menu:'.$item['text']);
         }
 
         return $item;
