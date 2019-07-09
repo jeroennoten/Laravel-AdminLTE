@@ -20,7 +20,7 @@
                         @if($subitem == '-')
                             <li role="separator" class="divider"></li>
                         @else
-                            <li class="dropdown-header">{{ trans('adminlte::menu.'.$subitem) }}</li>
+                            <li class="dropdown-header">{{ $subitem }}</li>
                         @endif
                     @else
                     <li class="{{ $subitem['top_nav_class'] }}">
