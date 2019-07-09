@@ -39,9 +39,9 @@ class TestCase extends PHPUnit_Framework_TestCase
     protected function makeTranslator($locale = 'en')
     {
         $translationLoader = new Illuminate\Translation\FileLoader(new Illuminate\Filesystem\Filesystem, 'resources/lang/');
-		
-		$translator = new Illuminate\Translation\Translator($translationLoader, $locale);
-		$translator->addNamespace('adminlte', 'resources/lang/');
+
+        $translator = new Illuminate\Translation\Translator($translationLoader, $locale);
+        $translator->addNamespace('adminlte', 'resources/lang/');
 
         return $translator;
     }
