@@ -40,7 +40,7 @@ class TestCase extends PHPUnit_Framework_TestCase
     {
         $translationLoader = new Illuminate\Translation\FileLoader(new Illuminate\Filesystem\Filesystem, 'resources/lang/');
 		
-		$translator = Illuminate\Translation\Translator($translationLoader, $locale);
+		$translator = new Illuminate\Translation\Translator($translationLoader, $locale);
 		$translator->addNamespace('adminlte', 'resources/lang/');
 
         return $translator;
