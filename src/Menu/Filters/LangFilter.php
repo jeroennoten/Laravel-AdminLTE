@@ -17,10 +17,10 @@ class LangFilter implements FilterInterface
     public function transform($item, Builder $builder)
     {
         if (isset($item['header'])) {
-            $item['header'] = ($this->langGenerator->has('menu.' . $item['header'])) ? $this->langGenerator->trans('menu.' . $item['header']) : $item['header'];
+            $item['header'] = ($this->langGenerator->has('menu.'.$item['header'])) ? $this->langGenerator->trans('menu.'.$item['header']) : $item['header'];
         }
         if (isset($item['text'])) {
-            $item['text'] = ($this->langGenerator->has('menu.' . $item['text'])) ? $this->langGenerator->trans('menu.' . $item['text']) : $item['text'];
+            $item['text'] = ($this->langGenerator->has('menu.'.$item['text'])) ? $this->langGenerator->trans('menu.'.$item['text']) : $item['text'];
         }
 
         return $item;
