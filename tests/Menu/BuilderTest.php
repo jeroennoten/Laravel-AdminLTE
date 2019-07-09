@@ -276,30 +276,30 @@ class BuilderTest extends TestCase
 
     public function testLangTranslate()
     {
-        $builder = $this->makeMenuBuilder('http://example.com');
-        $builder->add(['header' => 'main_navigation']);
-        $builder->add(['text' => 'profile', 'url' => '/profile']);
-        $builder->add(['header' => 'profile']);
-        $builder->add(['text' => 'blog', 'url' => '/blog']);
+		$builder = $this->makeMenuBuilder('http://example.com');
+		$builder->add(['header' => 'main_navigation']);
+		$builder->add(['text' => 'profile', 'url' => '/profile']);
+		$builder->add(['header' => 'profile']);
+		$builder->add(['text' => 'blog', 'url' => '/blog']);
 		$builder->add(['header' => 'TEST']);
-        $this->assertCount(5, $builder->menu);
-        $this->assertEquals('MAIN NAVIGATION', $builder->menu[0]);
-        $this->assertEquals('Profile', $builder->menu[2]);
-        $this->assertEquals('Profile', $builder->menu[1]['text']);
-        $this->assertEquals('Blog', $builder->menu[3]['text']);
+		$this->assertCount(5, $builder->menu);
+		$this->assertEquals('MAIN NAVIGATION', $builder->menu[0]);
+		$this->assertEquals('Profile', $builder->menu[2]);
+		$this->assertEquals('Profile', $builder->menu[1]['text']);
+		$this->assertEquals('Blog', $builder->menu[3]['text']);
 		$this->assertEquals('TEST', $builder->menu[4]);
 
-        $builder = $this->makeMenuBuilder('http://example.com', null, 'de');
-        $builder->add(['header' => 'main_navigation']);
-        $builder->add(['text' => 'profile', 'url' => '/profile']);
-        $builder->add(['header' => 'profile']);
-        $builder->add(['text' => 'blog', 'url' => '/blog']);
+		$builder = $this->makeMenuBuilder('http://example.com', null, 'de');
+		$builder->add(['header' => 'main_navigation']);
+		$builder->add(['text' => 'profile', 'url' => '/profile']);
+		$builder->add(['header' => 'profile']);
+		$builder->add(['text' => 'blog', 'url' => '/blog']);
 		$builder->add(['header' => 'TEST']);
-        $this->assertCount(5, $builder->menu);
-        $this->assertEquals('HAUPTMENÜ', $builder->menu[0]);
-        $this->assertEquals('Profil', $builder->menu[2]);
-        $this->assertEquals('Profil', $builder->menu[1]['text']);
-        $this->assertEquals('Blog', $builder->menu[3]['text']);
+		$this->assertCount(5, $builder->menu);
+		$this->assertEquals('HAUPTMENÜ', $builder->menu[0]);
+		$this->assertEquals('Profil', $builder->menu[2]);
+		$this->assertEquals('Profil', $builder->menu[1]['text']);
+		$this->assertEquals('Blog', $builder->menu[3]['text']);
 		$this->assertEquals('TEST', $builder->menu[4]);
     }
 }
