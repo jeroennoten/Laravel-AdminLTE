@@ -28,7 +28,7 @@ class TestCase extends PHPUnit_Framework_TestCase
         return new Builder([
             new HrefFilter($this->makeUrlGenerator($uri)),
             new ActiveFilter($this->makeActiveChecker($uri)),
-            new SubmenuFilter(new ActiveFilter($this->makeActiveChecker($uri))),
+            new SubmenuFilter($this->makeActiveChecker($uri)),
             new ClassesFilter(),
             new GateFilter($gate ?: $this->makeGate()),
         ]);
