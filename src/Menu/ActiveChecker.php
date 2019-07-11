@@ -63,7 +63,7 @@ class ActiveChecker
     private function isExplicitActive($active)
     {
         foreach ($active as $url) {
-            if ($this->checkExact($url)) {
+            if ($this->checkPattern($url)) {
                 return true;
             }
         }
