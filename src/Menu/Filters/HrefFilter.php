@@ -21,7 +21,7 @@ class HrefFilter implements FilterInterface
         }
 
         if (isset($item['submenu'])) {
-            $item['submenu'] = array_map(function($subitem) use ($builder) {
+            $item['submenu'] = array_map(function ($subitem) use ($builder) {
                 return $this->transform($subitem, $builder);
             }, $item['submenu']);
         }
