@@ -1,10 +1,10 @@
 # Easy AdminLTE integration with Laravel 5
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/spatie/laravel-fractal.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-fractal)
-[![Build Status](https://travis-ci.org/spatie/laravel-fractal.svg?branch=master)](https://travis-ci.org/spatie/laravel-fractal)
-[![Quality Score](https://img.shields.io/scrutinizer/g/spatie/laravel-fractal.svg?style=flat-square)](https://scrutinizer-ci.com/g/spatie/laravel-fractal)
-[![StyleCI](https://styleci.io/repos/43743138/shield?branch=master)](https://styleci.io/repos/43743138)
-[![Total Downloads](https://img.shields.io/packagist/dt/spatie/laravel-fractal.svg?style=flat-square)](https://packagist.org/packages/spatie/laravel-fractal)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
+[![Build Status](https://travis-ci.org/jeroennoten/Laravel-AdminLTE.svg?branch=master)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
+[![Quality Score](https://img.shields.io/scrutinizer/g/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
+[![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
+[![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
 This package provides an easy way to quickly set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
@@ -20,6 +20,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
      - [Active menu items](#active-menu-items)
    2. [Plugins](#52-plugins)
 6. [Translations](#6-translations)
+    1. [Menu Translations](#61-menu-translations)
 7. [Customize views](#7-customize-views)
 8. [Issues, Questions and Pull Requests](#8-issues-questions-and-pull-requests)
 
@@ -316,11 +317,12 @@ To override this behavior, you can specify an `active` parameter with an array o
 
 ```php
 [
-    'text' => 'Pages'
+    'text' => 'Pages',
     'url' => 'pages',
     'active' => ['pages', 'content', 'content/*']
 ]
 ```
+
 
 ### 5.2 Plugins
 
@@ -341,6 +343,31 @@ Also the [Select2](https://select2.github.io/) plugin is supported. If set to `t
 ]
 ```
 
+Also the [ChartJS](https://www.chartjs.org/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'chartjs' => true,
+]
+```
+
+Also the [Pace](http://github.hubspot.com/pace/docs/welcome/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+
+```php
+'plugins' => [
+    'datatables' => true,
+    'pace' => true,
+]
+```
+
+Now, edit `config/adminlte.php` to configure the Pace plugin color and type
+```php
+'pace' => [
+    'color' => blue,
+    'type' => center-radar,
+]
+```
 
 ## 6. Translations
 
@@ -353,6 +380,55 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 ```
 
 Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
+
+### 6.1. Menu Translations
+
+This resource allow you to use lang files, and is active by default.
+
+#### Configurating Menu Using Lang:
+
+First, configure the menu using the key `text` as translation string.
+This is an example of configuration:
+
+```php
+    [
+        'header' => 'account_settings'
+    ],
+        [
+            'text' => 'profile',
+            'url'  => 'admin/settings',
+            'icon' => 'user',
+        ],
+```
+
+#### Lang Files
+
+All the translation strings must be added in the `menu.php` file of each language needed.
+The translations files are located at `resources/lang/vendor/adminlte/`
+
+This is an example of the `menu.php` lang file:
+
+```php
+return [
+    'account_settings'  => 'ACCOUNT SETTINGS',
+    'profile'           => 'Profile',
+];
+
+```
+
+To translate the menu headers, just use the `header` param. Example:
+
+```php
+    [
+        'header' => 'account_settings'
+    ],
+        [
+            'text' => 'profile',
+            'url'  => 'admin/settings',
+            'icon' => 'user',
+        ],
+```
+
 
 ## 7. Customize views
 
