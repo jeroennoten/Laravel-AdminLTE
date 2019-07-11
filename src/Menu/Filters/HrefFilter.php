@@ -19,11 +19,11 @@ class HrefFilter implements FilterInterface
         if (! isset($item['header'])) {
             $item['href'] = $this->makeHref($item);
         }
-        
+
         if (isset($item['submenu'])) {
-	        $item['submenu'] = array_map(function($subitem) use ($builder) {
-		        return $this->transform($subitem, $builder);
-		    }, $item['submenu']);
+            $item['submenu'] = array_map(function($subitem) use ($builder) {
+                return $this->transform($subitem, $builder);
+            }, $item['submenu']);
         }
 
         return $item;
