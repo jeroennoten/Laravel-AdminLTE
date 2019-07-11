@@ -126,6 +126,12 @@
         </div>
         <!-- /.content-wrapper -->
 
+        @hasSection('footer')
+        <footer class="main-footer">
+            @yield('footer')
+        </footer>
+        @endif
+
     </div>
     <!-- ./wrapper -->
 @stop
