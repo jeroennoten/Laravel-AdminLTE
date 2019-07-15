@@ -143,8 +143,8 @@ class ActiveCheckerTest extends TestCase
     
     public function testRegex()
     {
-		$checker = $this->makeActiveChecker('http://example.com/post/1');
+        $checker = $this->makeActiveChecker('http://example.com/posts/1');
 
-        $this->assertTrue($checker->isActive(['active' => 'regex:@^post/[0-9]+$@']));
+        $this->assertTrue($checker->isActive(['active' => ['regex:@^posts/[0-9]+$@']]));
 	}
 }
