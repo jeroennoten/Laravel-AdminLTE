@@ -64,7 +64,7 @@ class ActiveChecker
         if (mb_substr($pattern, 0, 6) === 'regex:') {
             $regex = mb_substr($pattern, 6);
 
-            if (preg_match($regex, request()->path()) == 1) {
+            if (preg_match($regex, $this->request->path()) == 1) {
                 return true;
             }
 
