@@ -67,10 +67,10 @@ class ActiveChecker
             if (preg_match($regex, request()->path()) == 1) {
                 return true;
             }
-            
+
             return false;
         }
-        
+
         return Str::is($fullUrlPattern, $fullUrl);
     }
 
