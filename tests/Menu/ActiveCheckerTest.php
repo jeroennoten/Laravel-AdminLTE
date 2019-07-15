@@ -140,4 +140,11 @@ class ActiveCheckerTest extends TestCase
 
         $this->assertTrue($checker->isActive(['url' => 'menu/item1']));
     }
+
+    public function testExplicitActiveRegexEvaluation()
+    {
+        $checker = $this->makeActiveChecker('http://example.com/posts/1');
+
+        $this->assertTrue($checker->isActive(['active' => ['regex:@^posts/[0-9]+$@']]));
+    }
 }

@@ -313,13 +313,15 @@ By default, a menu item is considered active if any of the following holds:
 - The current path is a sub-path of the `url` parameter
 - If it has a submenu containing an active menu item
 
-To override this behavior, you can specify an `active` parameter with an array of active URLs, asterisks and regular expressions are supported. Example:
+To override this behavior, you can specify an `active` parameter with an array of active URLs, asterisks and regular expressions are supported. 
+
+To utilize regex, simply prefix your pattern with `regex:` and it will get evaluated automatically. The pattern will attempt to match the path of the URL, returned by `request()->path()`, which returns the current URL without the domain name. Example:
 
 ```php
 [
     'text' => 'Pages',
     'url' => 'pages',
-    'active' => ['pages', 'content', 'content/*']
+    'active' => ['pages', 'content', 'content/*', 'regex:@^content/[0-9]+$@']
 ]
 ```
 
