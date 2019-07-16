@@ -34,7 +34,7 @@ class ActiveCheckerTest extends TestCase
     {
         $checker = $this->makeActiveChecker('http://example.com/about/sub');
 
-        $this->assertTrue($checker->isActive(['url' => 'about']));
+        $this->assertTrue($checker->isActive(['url' => 'about/sub']));
     }
 
     public function testSubmenu()
@@ -113,7 +113,7 @@ class ActiveCheckerTest extends TestCase
     {
         $checker = $this->makeActiveChecker('http://example.com/about/sub');
 
-        $isActive = $checker->isActive(['url' => 'http://example.com/about']);
+        $isActive = $checker->isActive(['url' => 'http://example.com/about/sub']);
 
         $this->assertTrue($isActive);
     }
@@ -131,14 +131,14 @@ class ActiveCheckerTest extends TestCase
     {
         $checker = $this->makeActiveChecker('http://example.com/menu?param=option');
 
-        $this->assertTrue($checker->isActive(['url' => 'menu']));
+        $this->assertTrue($checker->isActive(['url' => 'menu?*']));
     }
 
     public function testSubParams()
     {
         $checker = $this->makeActiveChecker('http://example.com/menu/item1?param=option');
 
-        $this->assertTrue($checker->isActive(['url' => 'menu/item1']));
+        $this->assertTrue($checker->isActive(['url' => 'menu/item1?*']));
     }
 
     public function testExplicitActiveRegexEvaluation()

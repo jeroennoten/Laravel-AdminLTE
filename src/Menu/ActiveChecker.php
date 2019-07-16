@@ -29,30 +29,15 @@ class ActiveChecker
         }
 
         if (isset($item['href'])) {
-            return $this->checkExactOrSub($item['href']);
+            return $this->checkPattern($item['href']);
         }
 
         // Support URL for backwards compatibility
         if (isset($item['url'])) {
-            return $this->checkExactOrSub($item['url']);
+            return $this->checkPattern($item['url']);
         }
 
         return false;
-    }
-
-    protected function checkExactOrSub($url)
-    {
-        return $this->checkExact($url) || $this->checkSub($url);
-    }
-
-    protected function checkExact($url)
-    {
-        return $this->checkPattern($url);
-    }
-
-    protected function checkSub($url)
-    {
-        return $this->checkPattern($url.'/*') || $this->checkPattern($url.'?*');
     }
 
     protected function checkPattern($pattern)
@@ -92,7 +77,7 @@ class ActiveChecker
         }
 
         foreach ($active as $url) {
-            if ($this->checkExact($url)) {
+            if ($this->checkPattern($url)) {
                 return true;
             }
         }
