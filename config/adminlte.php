@@ -128,12 +128,12 @@ return [
         [
             'text' => 'profile',
             'url'  => 'admin/settings',
-            'icon' => 'user',
+            'icon' => 'fa fa-fw fa-user',
         ],
         [
             'text' => 'change_password',
             'url'  => 'admin/settings',
-            'icon' => 'lock',
+            'icon' => 'fa fa-fw fa-lock',
         ],
         [
             'text'    => 'multilevel',
