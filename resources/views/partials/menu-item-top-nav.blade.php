@@ -5,7 +5,7 @@
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
             <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
-			$item['text']
+			{{ $item['text'] }}
 
             @if (isset($item['label']))
                 <span class="label label-{{ $item['label_color'] ?? 'primary' }}">{{ $item['label'] }}</span>
@@ -27,7 +27,7 @@
                         <a href="{{ $subitem['href'] }}">
 
                             <i class="{{ $subitem['icon'] ?? 'far fa-circle' }} {{ isset($subitem['icon_color']) ? 'text-' . $subitem['icon_color'] : '' }}"></i>
-                            $subitem['text']
+                            {{ $subitem['text'] }}
 
                             @if (isset($subitem['label']))
                                 <span class="label label-{{ $subitem['label_color'] ?? 'primary' }}">{{ $subitem['label'] }}</span>

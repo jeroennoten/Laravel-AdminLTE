@@ -2,7 +2,7 @@
     <li class="header">{{ $item }}</li>
 @elseif (isset($item['header']))
     <li class="header">{{ $item['header'] }}</li>
-@elseif (isset($item['search']))
+@elseif (isset($item['search']) && $item['search'])
     <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="{{ $item['input_name'] }}" class="form-control" placeholder="
@@ -10,7 +10,7 @@
           ">
           <span class="input-group-btn">
                 <button type="submit" name="search" id="search-btn" class="btn btn-flat">
-                  <i class="fa fa-search"></i>
+                  <i class="fas fa-search"></i>
                 </button>
               </span>
         </div>
@@ -20,9 +20,9 @@
         <a href="{{ $item['href'] }}"
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
-            <i class="fa fa-fw fa-{{ $item['icon'] ?? 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
+            <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             <span>
-				{{ $item['text'] }}
+                {{ $item['text'] }}
             </span>
 
             @if (isset($item['label']))
@@ -31,7 +31,7 @@
                 </span>
             @elseif (isset($item['submenu']))
                 <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
+                    <i class="fas fa-angle-left pull-right"></i>
                 </span>
             @endif
         </a>
