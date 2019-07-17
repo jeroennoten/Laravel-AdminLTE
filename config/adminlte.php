@@ -128,16 +128,16 @@ return [
         [
             'text' => 'profile',
             'url'  => 'admin/settings',
-            'icon' => 'fa fa-fw fa-user',
+            'icon' => 'fas fa-fw fa-user',
         ],
         [
             'text' => 'change_password',
             'url'  => 'admin/settings',
-            'icon' => 'fa fa-fw fa-lock',
+            'icon' => 'fas fa-fw fa-lock',
         ],
         [
             'text'    => 'multilevel',
-            'icon'    => 'share',
+            'icon'    => 'fas fa-fw fa-share',
             'submenu' => [
                 [
                     'text' => 'level_one',
