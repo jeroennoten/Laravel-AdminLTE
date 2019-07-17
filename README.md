@@ -175,7 +175,7 @@ You can configure your menu as follows:
     [
         'text' => 'Pages',
         'url' => 'admin/pages',
-        'icon' => 'fa fa-fw fa-file'
+        'icon' => 'fas fa-fw fa-file'
     ],
     [
         'text' => 'Show my website',
@@ -186,12 +186,12 @@ You can configure your menu as follows:
     [
         'text' => 'Profile',
         'route' => 'admin.profile',
-        'icon' => 'fa fa-fw fa-user'
+        'icon' => 'fas fa-fw fa-user'
     ],
     [
         'text' => 'Change Password',
         'route' => 'admin.password',
-        'icon' => 'fa fa-fw fa-lock'
+        'icon' => 'fas fa-fw fa-lock'
     ],
 ],
 ```
