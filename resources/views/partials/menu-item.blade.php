@@ -2,8 +2,7 @@
     <li class="header">{{ $item }}</li>
 @elseif (isset($item['header']))
     <li class="header">{{ $item['header'] }}</li>
-
-@elseif ($item['search'] === true)
+@elseif (isset($item['search']))
     <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="{{ $item['input_name'] }}" class="form-control" placeholder="
@@ -21,14 +20,14 @@
         <a href="{{ $item['href'] }}"
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
-            <i class="fa fa-fw fa-{{ $item['icon'] or 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
+            <i class="fa fa-fw fa-{{ $item['icon'] ?? 'circle-o' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             <span>
 				{{ $item['text'] }}
             </span>
 
             @if (isset($item['label']))
                 <span class="pull-right-container">
-                    <span class="label label-{{ isset($item['label_color']) ? $item['label_color'] : 'primary' }} pull-right">{{ $item['label'] }}</span>
+                    <span class="label label-{{ $item['label_color'] ?? 'primary' }} pull-right">{{ $item['label'] }}</span>
                 </span>
             @elseif (isset($item['submenu']))
                 <span class="pull-right-container">
