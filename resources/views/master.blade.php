@@ -45,11 +45,6 @@
 
 @include('adminlte::plugins', ['type' => 'js'])
 
-@if(config('adminlte.pace.active'))
-    <!-- Pace  -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js"></script>
-@endif
-
 @yield('adminlte_js')
 
 </body>

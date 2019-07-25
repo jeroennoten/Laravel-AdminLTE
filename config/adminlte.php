@@ -279,27 +279,21 @@ return [
 				],
 			],
 		],
-
-	],
-
-	/*
-	 |--------------------------------------------------------------------------
-	 | Pace Plugins Initialization
-	 |--------------------------------------------------------------------------
-	 |
-	 | Set color & type value to include the theme file from a CDN via a script tag.
-	 |
-	 | color options are black, blue, green, orange, pink, purple, red, silver,
-	 |   white & yellow
-	 |
-	 | type options are barber-shop, big-counter, bounce, center-atom, center-circle,
-	 |   center-radar, center-simple, corner-indicator, fill-left, flash, flat-top,
-	 |   loading-bar, mac-osx, minimal
-	 */
-
-	'pace' => [
-		'active' => true,
-		'color' => 'green',
-		'type' => 'center-radar',
+        [
+            'name' => 'Pace',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-center-radar.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
 	],
 ];

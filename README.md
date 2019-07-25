@@ -328,48 +328,47 @@ To utilize regex, simply prefix your pattern with `regex:` and it will get evalu
 
 ### 5.2 Plugins
 
-By default the [DataTables](https://datatables.net/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and active, automatically injecting their CDN files. 
+
+You can also add and configure new plugins, modifying the plugin variable using the example structure below:
 
 ```php
 'plugins' => [
-    'datatables' => true,
+    [
+        'name' => 'Plugin Name',
+        'active' => true,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => false,
+                'location' => '//cdn.plugin.net/plugin.min.js',
+            ],
+            [
+                'type' => 'css',
+                'asset' => true,
+                'location' => 'css/plugin.min.css',
+            ],
+        ],
+    ],
 ]
 ```
 
-Also the [Select2](https://select2.github.io/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+With the name string you specify the plugin name, and the active value will enable/disable the plugin injection.
+Each plugin have a files array, with contain arrays with file type (`js` or `css`), and `location`. 
 
-```php
-'plugins' => [
-    'datatables' => true,
-    'select2' => true,
-]
+If the asset value is `true`, the injection will use the asset() function.
+
+#### 5.2.1 Pace Plugin Configuration
+
+You can change the Pace plugin appearence, when using the CDN injection modifying the css file location.
 ```
+    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
+``` 
 
-Also the [ChartJS](https://www.chartjs.org/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+Color values: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
 
-```php
-'plugins' => [
-    'datatables' => true,
-    'chartjs' => true,
-]
-```
+Theme values: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
 
-Also the [Pace](http://github.hubspot.com/pace/docs/welcome/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
-
-```php
-'plugins' => [
-    'datatables' => true,
-    'pace' => true,
-]
-```
-
-Now, edit `config/adminlte.php` to configure the Pace plugin color and type
-```php
-'pace' => [
-    'color' => blue,
-    'type' => center-radar,
-]
-```
 
 ## 6. Translations
 
