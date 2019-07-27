@@ -6,25 +6,31 @@
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to quickly set up [AdminLTE](https://almsaeedstudio.com) with Laravel 5. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
+This package provides an easy way to quickly set up [AdminLTE](https://adminlte.io) with Laravel 5. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
-1. [Installation](#1-installation)
-2. [Updating](#2-updating)
-3. [Usage](#3-usage)
-4. [The `make:adminlte` artisan command](#4-the-makeadminlte-artisan-command)
+1. [Requirements](#1-requirements)
+2. [Installation](#2-installation)
+3. [Updating](#3-updating)
+4. [Usage](#4-usage)
+5. [The `make:adminlte` artisan command](#5-the-makeadminlte-artisan-command)
    1. [Using the authentication views without the `make:adminlte` command](#41-using-the-authentication-views-without-the-makeadminlte-command)
-5. [Configuration](#5-configuration)
-   1. [Menu](#51-menu)
+6. [Configuration](#6-configuration)
+   1. [Menu](#61-menu)
      - [Custom menu filters](#custom-menu-filters)
      - [Menu configuration at runtime](#menu-configuration-at-runtime)
      - [Active menu items](#active-menu-items)
-   2. [Plugins](#52-plugins)
-6. [Translations](#6-translations)
-    1. [Menu Translations](#61-menu-translations)
-7. [Customize views](#7-customize-views)
-8. [Issues, Questions and Pull Requests](#8-issues-questions-and-pull-requests)
+   2. [Plugins](#62-plugins)
+7. [Translations](#7-translations)
+    1. [Menu Translations](#71-menu-translations)
+8. [Customize views](#8-customize-views)
+9. [Issues, Questions and Pull Requests](#9-issues-questions-and-pull-requests)
 
-## 1. Installation
+## 1. Requirements
+
+Laravel 5.5.x to 5.8.x
+PHP >= 7.0.0
+
+## 2. Installation
 
 1. Require the package using composer:
 
@@ -46,7 +52,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
     php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
     ```
 
-## 2. Updating
+## 3. Updating
 
 1. To update this package, first update the composer package:
 
@@ -60,7 +66,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://almsaeeds
     php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets --force
     ```
 
-## 3. Usage
+## 4. Usage
 
 To use the template, create a blade file and extend the layout with `@extends('adminlte::page')`.
 This template yields the following sections:
@@ -109,7 +115,7 @@ Note that in Laravel 5.2 or higher you can also use `@stack` directive for `css`
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
-## 4. The `make:adminlte` artisan command
+## 5. The `make:adminlte` artisan command
 
 > Note: only for Laravel 5.2 and higher
 
@@ -121,7 +127,7 @@ php artisan make:adminlte
 
 This command should be used on fresh applications, just like the `make:auth` command
 
-### 4.1 Using the authentication views without the `make:adminlte` command
+### 5.1 Using the authentication views without the `make:adminlte` command
 
 If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
 
@@ -145,7 +151,7 @@ If you want to use the included authentication related views manually, you can c
 By default, the login form contains a link to the registration form.
 If you don't want a registration form, set the `register_url` setting to `null` and the link will not be displayed.
 
-## 5. Configuration
+## 6. Configuration
 
 First, publish the configuration file:
 
@@ -155,7 +161,7 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 
 Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
 
-### 5.1 Menu
+### 6.1 Menu
 
 You can configure your menu as follows:
 
@@ -169,7 +175,7 @@ You can configure your menu as follows:
     [
         'text' => 'Pages',
         'url' => 'admin/pages',
-        'icon' => 'file'
+        'icon' => 'fas fa-fw fa-file'
     ],
     [
         'text' => 'Show my website',
@@ -180,20 +186,20 @@ You can configure your menu as follows:
     [
         'text' => 'Profile',
         'route' => 'admin.profile',
-        'icon' => 'user'
+        'icon' => 'fas fa-fw fa-user'
     ],
     [
         'text' => 'Change Password',
         'route' => 'admin.password',
-        'icon' => 'lock'
+        'icon' => 'fas fa-fw fa-lock'
     ],
 ],
 ```
 
 With a single string, you specify a menu header item to separate the items.
 With an array, you specify a menu item. `text` and `url` or `route` are required attributes.
-The `icon` is optional, you get an [open circle](http://fontawesome.io/icon/circle-o/) if you leave it out.
-The available icons that you can use are those from [Font Awesome](http://fontawesome.io/icons/).
+The `icon` is optional, you get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out.
+The available icons that you can use are those from [Font Awesome](https://fontawesome.io/icons/).
 Just specify the name of the icon and it will appear in front of your menu item.
 
 Use the `can` option if you want conditionally show the menu item. This integrates with Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` option:
@@ -326,52 +332,51 @@ To utilize regex, simply prefix your pattern with `regex:` and it will get evalu
 ```
 
 
-### 5.2 Plugins
+### 6.2 Plugins
 
-By default the [DataTables](https://datatables.net/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and active, automatically injecting their CDN files. 
 
-```php
-'plugins' => [
-    'datatables' => true,
-]
-```
-
-Also the [Select2](https://select2.github.io/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+You can also add and configure new plugins, modifying the plugin variable using the example structure below:
 
 ```php
 'plugins' => [
-    'datatables' => true,
-    'select2' => true,
+    [
+        'name' => 'Plugin Name',
+        'active' => true,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => false,
+                'location' => '//cdn.plugin.net/plugin.min.js',
+            ],
+            [
+                'type' => 'css',
+                'asset' => true,
+                'location' => 'css/plugin.min.css',
+            ],
+        ],
+    ],
 ]
 ```
 
-Also the [ChartJS](https://www.chartjs.org/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+With the name string you specify the plugin name, and the active value will enable/disable the plugin injection.
+Each plugin have a files array, with contain arrays with file type (`js` or `css`), and `location`. 
 
-```php
-'plugins' => [
-    'datatables' => true,
-    'chartjs' => true,
-]
+If the asset value is `true`, the injection will use the asset() function.
+
+#### 5.2.1 Pace Plugin Configuration
+
+You can change the Pace plugin appearence, when using the CDN injection modifying the css file location.
 ```
+    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
+``` 
 
-Also the [Pace](http://github.hubspot.com/pace/docs/welcome/) plugin is supported. If set to `true`, the necessary javascript CDN script tags will automatically be injected into the `adminlte::page.blade` file.
+Color values: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
 
-```php
-'plugins' => [
-    'datatables' => true,
-    'pace' => true,
-]
-```
+Theme values: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
 
-Now, edit `config/adminlte.php` to configure the Pace plugin color and type
-```php
-'pace' => [
-    'color' => blue,
-    'type' => center-radar,
-]
-```
 
-## 6. Translations
+## 7. Translations
 
 At the moment, English, German, French, Dutch, Portuguese and Spanish translations are available out of the box.
 Just specifiy the language in `config/app.php`.
@@ -383,7 +388,7 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 
 Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
 
-### 6.1. Menu Translations
+### 7.1. Menu Translations
 
 This resource allow you to use lang files, and is active by default.
 
@@ -432,7 +437,7 @@ To translate the menu headers, just use the `header` param. Example:
 ```
 
 
-## 7. Customize views
+## 8. Customize views
 
 If you need full control over the provided views, you can publish them:
 
@@ -442,11 +447,10 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvid
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.
 
-## 8. Issues, Questions and Pull Requests
+## 9. Issues, Questions and Pull Requests
 
 You can report issues and ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
 
 If you have a question, check the closed issues first. Over time, I've been able to answer quite a few.
 
 To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more info.
-

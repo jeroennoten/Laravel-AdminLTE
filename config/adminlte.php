@@ -215,37 +215,85 @@ return [
     | Plugins Initialization
     |--------------------------------------------------------------------------
     |
-    | Choose which JavaScript plugins should be included. At this moment,
-    | DataTables,Select2, Chartjs and SweetAlert are supported as a plugin. Set the value to true
-    | to include the JavaScript file from a CDN via a script tag.
+    | Configure which JavaScript plugins should be included. At this moment,
+    | DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box,
+    | including the Javascript and CSS files from a CDN via script and link tag.
+    | Plugin Name, active status and files array (even empty) are required.
+    | Files, when added, need to have type (js or css), asset (true or false) and location (string).
+    | When asset is set to true, the location will be output using asset() function.
     |
     */
 
     'plugins' => [
-        'datatables' => true,
-        'select2'    => true,
-        'chartjs'    => true,
-        'pace'       => true,
-        'sweetalert' => true,
-    ],
-
-    /*
-     |--------------------------------------------------------------------------
-     | Pace Plugins Initialization
-     |--------------------------------------------------------------------------
-     |
-     | Set color & type value to include the theme file from a CDN via a script tag.
-     |
-     | color options are black, blue, green, orange, pink, purple, red, silver,
-     |   white & yellow
-     |
-     | type options are barber-shop, big-counter, bounce, center-atom, center-circle,
-     |   center-radar, center-simple, corner-indicator, fill-left, flash, flat-top,
-     |   loading-bar, mac-osx, minimal
-     */
-
-    'pace' => [
-        'color' => 'green',
-        'type' => 'center-radar',
+        [
+            'name' => 'Datatables',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.css',
+                ],
+            ],
+        ],
+        [
+            'name' => 'Select2',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
+                ],
+            ],
+        ],
+        [
+            'name' => 'Chartjs',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
+                ],
+            ],
+        ],
+        [
+            'name' => 'Sweetalert2',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//unpkg.com/sweetalert/dist/sweetalert.min.js',
+                ],
+            ],
+        ],
+        [
+            'name' => 'Pace',
+            'active' => true,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/blue/pace-theme-center-radar.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
     ],
 ];
