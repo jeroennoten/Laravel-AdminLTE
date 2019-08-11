@@ -17,11 +17,6 @@
 
     @include('adminlte::plugins', ['type' => 'css'])
 
-    @if(config('adminlte.pace.active'))
-        <!-- Pace -->
-        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{config('adminlte.pace.color', 'blue')}}/pace-theme-{{config('adminlte.pace.type', 'center-radar')}}.min.css">
-    @endif
-
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/AdminLTE.min.css') }}">
 
