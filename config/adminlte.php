@@ -88,7 +88,7 @@ return [
     */
 
     'right_sidebar' => false,
-    'right_sidebar_icon' => 'fas fa-gears',
+    'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
 
     /*
