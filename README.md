@@ -27,8 +27,8 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
 
 ## 1. Requirements
 
-Laravel 5.5.x to 5.8.x
-PHP >= 7.0.0
+- Laravel 5.5.x to 5.8.x
+- PHP >= 7.0.0
 
 ## 2. Installation
 
@@ -65,6 +65,16 @@ PHP >= 7.0.0
     ```
     php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets --force
     ```
+   
+### 3.1 Breaking Changes
+
+1. Version 1.25.1 to 1.26 and up:
+
+- Plugins configuration was modified, check the new usage here: [Plugins](#62-plugins)
+
+2. Version 1.26 to 1.2x and up:
+
+- iCheck plugin was replaced with [icheck-bootstrap](https://github.com/bantikyan/icheck-bootstrap). If you use the iCheck assets, make sure to check/modify the asset location.   
 
 ## 4. Usage
 
@@ -217,6 +227,19 @@ Use the `can` option if you want conditionally show the menu item. This integrat
     ],
 ]
 ```
+#### Adding a Search Input
+
+It's possible to add a search input in your menu, using a menu item with the following configuration:
+
+```php
+        [
+            'search' => true,
+            'href' => 'test',  //form action
+            'method' => 'POST', //form method
+            'input_name' => 'menu-search-input', //input name
+            'text' => 'Search', //input placeholder
+        ],
+```
 
 #### Custom Menu Filters
 
@@ -364,7 +387,7 @@ Each plugin have a files array, with contain arrays with file type (`js` or `css
 
 If the asset value is `true`, the injection will use the asset() function.
 
-#### 5.2.1 Pace Plugin Configuration
+#### 6.2.1 Pace Plugin Configuration
 
 You can change the Pace plugin appearence, when using the CDN injection modifying the css file location.
 ```

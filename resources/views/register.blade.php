@@ -1,7 +1,6 @@
 @extends('adminlte::master')
 
 @section('adminlte_css')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/auth.css') }}">
     @yield('css')
 @stop
 
@@ -16,7 +15,7 @@
         <div class="register-box-body">
             <p class="login-box-msg">{{ trans('adminlte::adminlte.register_message') }}</p>
             <form action="{{ url(config('adminlte.register_url', 'register')) }}" method="post">
-                {!! csrf_field() !!}
+                {{ csrf_field() }}
 
                 <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
                     <input type="text" name="name" class="form-control" value="{{ old('name') }}"
@@ -58,14 +57,16 @@
                         </span>
                     @endif
                 </div>
-                <button type="submit"
-                        class="btn btn-primary btn-block btn-flat"
-                >{{ trans('adminlte::adminlte.register') }}</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat">
+                    {{ trans('adminlte::adminlte.register') }}
+                </button>
             </form>
-            <div class="auth-links">
-                <a href="{{ url(config('adminlte.login_url', 'login')) }}"
-                   class="text-center">{{ trans('adminlte::adminlte.i_already_have_a_membership') }}</a>
-            </div>
+            <br>
+            <p>
+                <a href="{{ url(config('adminlte.login_url', 'login')) }}" class="text-center">
+                    {{ trans('adminlte::adminlte.i_already_have_a_membership') }}
+                </a>
+            </p>
         </div>
         <!-- /.form-box -->
     </div><!-- /.register-box -->
