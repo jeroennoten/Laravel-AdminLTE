@@ -16,9 +16,10 @@ use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends BaseTestCase
 {
     private $dispatcher;
 
