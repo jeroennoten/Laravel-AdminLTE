@@ -28,7 +28,7 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
 ## 1. Requirements
 
 - Laravel 5.5.x to 5.8.x
-- PHP >= 7.0.0
+- PHP >= 5.6 <= 7.2
 
 ## 2. Installation
 
