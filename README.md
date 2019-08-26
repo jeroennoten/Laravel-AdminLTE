@@ -1,4 +1,4 @@
-# Easy AdminLTE integration with Laravel 5
+# Easy AdminLTE integration with Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 [![Build Status](https://travis-ci.org/jeroennoten/Laravel-AdminLTE.svg?branch=master)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
@@ -27,8 +27,8 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
 
 ## 1. Requirements
 
-- Laravel 5.5.x to 5.8.x
-- PHP >= 5.6 <= 7.2
+- Laravel 5.5.x to 6.0.x
+- PHP >= 7.0
 
 ## 2. Installation
 
