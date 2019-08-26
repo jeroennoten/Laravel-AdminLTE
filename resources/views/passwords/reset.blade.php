@@ -1,7 +1,6 @@
 @extends('adminlte::master')
 
 @section('adminlte_css')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/auth.css') }}">
     @yield('css')
 @stop
 
@@ -16,7 +15,7 @@
         <div class="login-box-body">
             <p class="login-box-msg">{{ trans('adminlte::adminlte.password_reset_message') }}</p>
             <form action="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}" method="post">
-                {!! csrf_field() !!}
+                {{ csrf_field() }}
 
                 <input type="hidden" name="token" value="{{ $token }}">
 
@@ -50,9 +49,9 @@
                         </span>
                     @endif
                 </div>
-                <button type="submit"
-                        class="btn btn-primary btn-block btn-flat"
-                >{{ trans('adminlte::adminlte.reset_password') }}</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat">
+                    {{ trans('adminlte::adminlte.reset_password') }}
+                </button>
             </form>
         </div>
         <!-- /.login-box-body -->
