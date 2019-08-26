@@ -79,7 +79,9 @@
                         @if(config('adminlte.right_sidebar') and (config('adminlte.layout') != 'top-nav'))
                         <!-- Control Sidebar Toggle Button -->
                             <li>
-                                <a href="#" data-toggle="control-sidebar"><i class="{{config('adminlte.right_sidebar_icon')}}"></i></a>
+                                <a href="#" data-toggle="control-sidebar" @if(!config('adminlte.right_sidebar_slide')) data-controlsidebar-slide="false" @endif>
+                                    <i class="{{config('adminlte.right_sidebar_icon')}}"></i>
+                                </a>
                             </li>
                         @endif
                     </ul>
