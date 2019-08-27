@@ -7,5 +7,6 @@ Route::get('adminlte/skins/{skin}', function ($skin) {
         $user->skin_light = in_array($skin, ['dark', 'light']) ? ($skin == 'light') ? true : false : $user->skin_light;
         $user->save();
     }
+
     return redirect()->back();
 })->name('adminlteskinchange')->middleware(['web', 'auth']);
