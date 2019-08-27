@@ -39,12 +39,20 @@ return [
     | Skin Color
     |--------------------------------------------------------------------------
     |
-    | Choose a skin color for your admin panel. The available skin colors:
+    | Choose a skin color for your admin panel.
+    | Skin mode can be 'fixed', or 'user'.
+    | The available skin colors for fixed mode are:
     | blue, black, purple, yellow, red, and green. Each skin also has a
     | light variant: blue-light, purple-light, purple-light, etc.
     |
+    | When user based, the user can choose the color from the Top Menu Icon
+    | and it will be stored in the database. Don't forget to run the migration
+    | to enable the user based skin.
+    |
     */
 
+    'skin_mode' => 'fixed', // 'user'
+    'skin_icon' => 'fas fa-palette',
     'skin' => 'blue',
 
     /*

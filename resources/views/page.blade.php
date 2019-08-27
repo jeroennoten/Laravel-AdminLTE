@@ -1,13 +1,18 @@
 @extends('adminlte::master')
 
 @section('adminlte_css')
-    <link rel="stylesheet"
-          href="{{ asset('vendor/adminlte/dist/css/skins/skin-' . config('adminlte.skin', 'blue') . '.min.css')}} ">
+    @if(config('adminlte.skin_mode') == 'user')
+        <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/skins/skin-' . Auth::user()->skin . (Auth::user()->skin_light ? '-light' : '') . '.min.css')}} ">
+    @else
+        <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/skins/skin-' . config('adminlte.skin', 'blue') . '.min.css')}} ">
+    @endif
     @stack('css')
     @yield('css')
 @stop
 
-@section('body_class', 'skin-' . config('adminlte.skin', 'blue') . ' sidebar-mini ' . (config('adminlte.layout') ? [
+@section('body_class', 'skin-' .
+    ((config('adminlte.skin_mode') == 'user') ? Auth::user()->skin . (Auth::user()->skin_light ? '-light' : '') : config('adminlte.skin', 'blue')) .
+    ' sidebar-mini ' . (config('adminlte.layout') ? [
     'boxed' => 'layout-boxed',
     'fixed' => 'fixed',
     'top-nav' => 'layout-top-nav'
@@ -55,8 +60,8 @@
             @endif
                 <!-- Navbar Right Menu -->
                 <div class="navbar-custom-menu">
-
                     <ul class="nav navbar-nav">
+                        @include('adminlte::partials.skins')
                         <li>
                             @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
                                 <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">

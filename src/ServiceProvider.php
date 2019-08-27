@@ -38,11 +38,16 @@ class ServiceProvider extends BaseServiceProvider
 
         $this->publishAssets();
 
+        $this->publishMigrations();
+
         $this->registerCommands();
 
         $this->registerViewComposers($view);
 
+        $this->loadRoutesFrom(__DIR__.'/Routes/routes.php');
+
         static::registerMenu($events, $config);
+
     }
 
     private function loadViews()
@@ -84,6 +89,14 @@ class ServiceProvider extends BaseServiceProvider
             $this->packagePath('resources/assets') => public_path('vendor/adminlte'),
         ], 'assets');
     }
+
+    private function publishMigrations()
+    {
+        $this->publishes([
+            $this->packagePath('src/Migrations') => database_path('migrations'),
+        ], 'migrations');
+    }
+
 
     private function packagePath($path)
     {
