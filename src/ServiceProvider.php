@@ -47,7 +47,6 @@ class ServiceProvider extends BaseServiceProvider
         $this->loadRoutesFrom(__DIR__.'/Routes/routes.php');
 
         static::registerMenu($events, $config);
-
     }
 
     private function loadViews()
@@ -96,7 +95,6 @@ class ServiceProvider extends BaseServiceProvider
             $this->packagePath('src/Migrations') => database_path('migrations'),
         ], 'migrations');
     }
-
 
     private function packagePath($path)
     {
