@@ -19,7 +19,8 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
      - [Custom menu filters](#custom-menu-filters)
      - [Menu configuration at runtime](#menu-configuration-at-runtime)
      - [Active menu items](#active-menu-items)
-   2. [Plugins](#62-plugins)
+   2. [Skins](#62-skins)
+   3. [Plugins](#63-plugins)
 7. [Translations](#7-translations)
     1. [Menu Translations](#71-menu-translations)
 8. [Customize views](#8-customize-views)
@@ -354,8 +355,37 @@ To utilize regex, simply prefix your pattern with `regex:` and it will get evalu
 ]
 ```
 
+### 6.2 Skins
 
-### 6.2 Plugins
+By default, the AdminLTE skin will be fixed, but you can enable your users to choose the skin color they like.
+
+> Warning! That is only valid when you have Authentication and a table named 'users';
+
+To do that you need a few extra fields in the users table in your database, so publish our migration:
+
+```
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=migrations
+```
+
+and run it:
+
+```
+php artisan migrate
+```
+
+After that, you can modify your config file, changing 'skin_mode' to 'user'.
+
+```php
+[
+    'skin_mode' => 'user', // was 'fixed'
+    'skin_icon' => 'fas fa-palette',
+    'skin_color' => 'blue',
+]
+```
+
+And that's it!
+
+### 6.3 Plugins
 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and active, automatically injecting their CDN files. 
 
@@ -387,7 +417,7 @@ Each plugin have a files array, with contain arrays with file type (`js` or `css
 
 If the asset value is `true`, the injection will use the asset() function.
 
-#### 6.2.1 Pace Plugin Configuration
+#### 6.3.1 Pace Plugin Configuration
 
 You can change the Pace plugin appearence, when using the CDN injection modifying the css file location.
 ```
