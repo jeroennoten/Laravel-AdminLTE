@@ -296,7 +296,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//unpkg.com/sweetalert/dist/sweetalert.min.js',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
             ],
         ],
