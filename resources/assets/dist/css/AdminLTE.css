@@ -1,5 +1,5 @@
 /*!
- * AdminLTE v2.4.17
+ * AdminLTE v2.4.18
  * 
  *   Author:  Colorlib
  *   Support: <https://github.com/ColorlibHQ/AdminLTE/issues>
@@ -1793,9 +1793,9 @@ a:focus {
   margin-right: 5px;
 }
 .box-header > .box-tools {
-  position: absolute;
-  right: 10px;
-  top: 5px;
+  float: right;
+  margin-top: -5px;
+  margin-bottom: -5px;
 }
 .box-header > .box-tools [data-toggle="tooltip"] {
   position: relative;
