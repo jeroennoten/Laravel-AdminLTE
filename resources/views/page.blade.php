@@ -11,7 +11,9 @@
     'boxed' => 'layout-boxed',
     'fixed' => 'layout-fixed',
     'top-nav' => 'layout-top-nav'
-][config('adminlte.layout')] : '') . (config('adminlte.collapse_sidebar') ? ' sidebar-collapse ' : '') . ' ' . config('adminlte.body_class'))
+][config('adminlte.layout')] : '') . (config('adminlte.sidebar_collapse') ? ' sidebar-collapse ' : '') . ' ' . config('adminlte.body_class'))
+
+@section('body_data', (config('adminlte.sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light' ? 'data-scrollbar-theme=' . config('adminlte.sidebar_scrollbar_theme')  : '') . ' ' . (config('adminlte.sidebar_scrollbar_auto_hide', 'l') != 'l' ? 'data-scrollbar-auto-hide=' . config('adminlte.sidebar_scrollbar_auto_hide')   : ''))
 
 @section('body')
     <div class="wrapper">
@@ -35,7 +37,7 @@
             <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_classes', 'navbar-white navbar-light')}}">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="pushmenu" href="#">
+                        <a class="nav-link" data-widget="pushmenu" href="#" @if(config('adminlte.sidebar_collapse_remember')) data-enable-remember="true" @endif @if(!config('adminlte.sidebar_collapse_remember_no_transition')) data-no-transition-after-reload="false" @endif @if(config('adminlte.sidebar_collapse_screen_collapse_size', 768) != 768) data-screen-collapse-size="{{config('adminlte.sidebar_collapse_screen_collapse_size')}}" @endif @if(config('adminlte.sidebar_collapse_auto_size')) data-auto-collapse-size="{{config('adminlte.sidebar_collapse_auto_size')}}" @endif>
                             <i class="fas fa-bars"></i>
                             <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
                         </a>
@@ -64,7 +66,7 @@
                     </li>
                     @if(config('adminlte.right_sidebar') and (config('adminlte.layout') != 'top-nav'))
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-widget="control-sidebar" @if(!config('adminlte.right_sidebar_slide')) data-controlsidebar-slide="false" @endif @if(!config('adminlte.right_sidebar_scrollbar_theme')) data-scrollbar-theme="{{config('adminlte.right_sidebar_scrollbar_theme')}}" @endif @if(!config('adminlte.right_sidebar_scrollbar_auto_hide')) data-scrollbar-auto-hide="{{config('adminlte.right_sidebar_scrollbar_auto_hide')}}" @endif>
+                            <a class="nav-link" href="#" data-widget="control-sidebar" @if(!config('adminlte.right_sidebar_slide')) data-controlsidebar-slide="false" @endif @if(config('adminlte.right_sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light') data-scrollbar-theme="{{config('adminlte.right_sidebar_scrollbar_theme')}}" @endif @if(config('adminlte.right_sidebar_scrollbar_auto_hide', 'l') != 'l') data-scrollbar-auto-hide="{{config('adminlte.right_sidebar_scrollbar_auto_hide')}}" @endif>
                                 <i class="{{config('adminlte.right_sidebar_icon')}}"></i>
                             </a>
                         </li>
@@ -82,7 +84,7 @@
             </a>
             <div class="sidebar">
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column {{config('adminlte.sidebar_nav_classes', '')}}" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column {{config('adminlte.sidebar_nav_classes', '')}}" data-widget="treeview" role="menu" @if(config('adminlte.sidebar_nav_animation_speed') != 300) data-animation-speed="{{config('adminlte.sidebar_nav_animation_speed')}}" @endif @if(!config('adminlte.sidebar_nav_accordion')) data-accordion="false" @endif>
                         @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
                     </ul>
                 </nav>
