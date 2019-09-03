@@ -22,6 +22,7 @@
             <div class="{{config('adminlte.topnav_container', 'container')}}">
                 <nav class="navbar navbar-static-top">
                     <div class="navbar-header">
+                        <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
                         <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand">
                             {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                         </a>
@@ -80,6 +81,7 @@
         @if(config('adminlte.layout') != 'top-nav')
         <aside class="main-sidebar {{config('adminlte.sidebar_classes', 'sidebar-dark-primary elevation-4')}}">
             <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link {{config('adminlte.brand_classes', '')}}">
+                <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt=" {{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
                 <span class="brand-text font-weight-light">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</span>
             </a>
             <div class="sidebar">

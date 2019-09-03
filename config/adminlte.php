@@ -31,7 +31,8 @@ return [
     */
 
     'logo' => '<b>Admin</b>LTE',
-
+    'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img_alt' => 'AdminLTE',
     /*
     |--------------------------------------------------------------------------
     | Extra Classes
@@ -145,6 +146,11 @@ return [
         ],
         ['header' => 'main_navigation'],
         [
+            'text' => 'home',
+            'url'  => 'home',
+            'icon' => 'fas fa-fw fa-home',
+        ],
+        [
             'text' => 'blog',
             'url'  => 'admin/blog',
             'can'  => 'manage-blog',
@@ -152,7 +158,7 @@ return [
         [
             'text'        => 'pages',
             'url'         => 'admin/pages',
-            'icon'        => 'far fa-file',
+            'icon'        => 'far fa-fw fa-file',
             'label'       => 4,
             'label_color' => 'success',
         ],
