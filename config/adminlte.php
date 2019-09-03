@@ -41,11 +41,11 @@ return [
     |
     */
 
-    'body_class' => 'layout-navbar-fixed',
-    'brand_classes' => 'bg-primary',
-    'sidebar_classes' => 'sidebar-light-primary elevation-4',
+    'body_class' => '',
+    'brand_classes' => '',
+    'sidebar_classes' => 'sidebar-dark-primary elevation-4',
     'sidebar_nav_classes' => '',
-    'topnav_classes' => 'navbar-primary navbar-light',
+    'topnav_classes' => 'navbar-white navbar-light',
     'topnav_container' => 'container',
 
     /*
@@ -59,7 +59,7 @@ return [
     |
     */
 
-    'layout' => 'fixed',
+    'layout' => null,
 
     /*
     |--------------------------------------------------------------------------
