@@ -94,6 +94,8 @@ return [
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
     'right_sidebar_slide' => true,
+    'right_sidebar_scrollbar_theme' => null,
+    'right_sidebar_scrollbar_auto_hide' => null,
 
     /*
     |--------------------------------------------------------------------------
