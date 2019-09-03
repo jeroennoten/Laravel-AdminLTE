@@ -160,7 +160,7 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'submenu' => []]);
 
-        $this->assertContains('treeview', $builder->menu[0]['classes']);
+        $this->assertContains(['nav-item','has-treeview'], $builder->menu[0]['classes']);
         $this->assertContains('dropdown', $builder->menu[0]['top_nav_classes']);
     }
 
@@ -171,7 +171,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'About', 'submenu' => []]);
 
         $this->assertContains(
-            'treeview-menu',
+            'has-treeview',
             $builder->menu[0]['submenu_classes']
         );
     }
@@ -183,7 +183,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'About', 'submenu' => []]);
 
         $this->assertEquals(
-            'treeview-menu',
+            'has-treeview',
             $builder->menu[0]['submenu_class']
         );
     }
