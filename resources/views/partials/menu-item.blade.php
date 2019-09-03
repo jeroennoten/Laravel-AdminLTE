@@ -1,42 +1,39 @@
 @if (is_string($item))
-    <li class="header">{{ $item }}</li>
+    <li class="nav-header">{{ $item }}</li>
 @elseif (isset($item['header']))
-    <li class="header">{{ $item['header'] }}</li>
+    <li class="nav-header">{{ $item['header'] }}</li>
 @elseif (isset($item['search']) && $item['search'])
-    <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="sidebar-form">
+    <!-- <form action="{{ $item['href'] }}" method="{{ $item['method'] }}">
         <div class="input-group">
           <input type="text" name="{{ $item['input_name'] }}" class="form-control" placeholder="
             {{ $item['text'] }}
           ">
-          <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat">
+            <div class="input-group-append">
+                <button type="submit" name="search" id="search-btn" class="btn btn-light">
                   <i class="fas fa-search"></i>
                 </button>
-              </span>
+            </div>
         </div>
-      </form>
+      </form> -->
 @else
-    <li class="{{ $item['class'] }}">
-        <a href="{{ $item['href'] }}"
+    <li class="nav-item">
+        <a class="nav-link {{ $item['class'] }} @if (isset($item['submenu'])){{ $item['submenu_class'] }}@endif" href="{{ $item['href'] }}"
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
             <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
-            <span>
+            <p>
                 {{ $item['text'] }}
-            </span>
 
-            @if (isset($item['label']))
-                <span class="pull-right-container">
-                    <span class="label label-{{ $item['label_color'] ?? 'primary' }} pull-right">{{ $item['label'] }}</span>
-                </span>
-            @elseif (isset($item['submenu']))
-                <span class="pull-right-container">
-                    <i class="fas fa-angle-left pull-right"></i>
-                </span>
-            @endif
+                @if (isset($item['submenu']))
+                    <i class="fas fa-angle-left right"></i>
+                @endif
+                @if (isset($item['label']))
+                    <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} right">{{ $item['label'] }}</span>
+                @endif
+            </p>
         </a>
         @if (isset($item['submenu']))
-            <ul class="{{ $item['submenu_class'] }}">
+            <ul class="nav nav-treeview">
                 @each('adminlte::partials.menu-item', $item['submenu'], 'item')
             </ul>
         @endif

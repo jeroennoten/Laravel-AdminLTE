@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'title' => 'AdminLTE 2',
+    'title' => 'AdminLTE 3',
 
     'title_prefix' => '',
 
@@ -32,20 +32,21 @@ return [
 
     'logo' => '<b>Admin</b>LTE',
 
-    'logo_mini' => '<b>A</b>LT',
-
     /*
     |--------------------------------------------------------------------------
-    | Skin Color
+    | Extra Classes
     |--------------------------------------------------------------------------
     |
-    | Choose a skin color for your admin panel. The available skin colors:
-    | blue, black, purple, yellow, red, and green. Each skin also has a
-    | light variant: blue-light, purple-light, purple-light, etc.
+    | TEXT NEEDED
     |
     */
 
-    'skin' => 'blue',
+    'body_class' => 'layout-navbar-fixed',
+    'brand_classes' => 'bg-primary',
+    'sidebar_classes' => 'sidebar-light-primary elevation-4',
+    'sidebar_nav_classes' => '',
+    'topnav_classes' => 'navbar-primary navbar-light',
+    'topnav_container' => 'container',
 
     /*
     |--------------------------------------------------------------------------
@@ -58,7 +59,7 @@ return [
     |
     */
 
-    'layout' => null,
+    'layout' => 'fixed',
 
     /*
     |--------------------------------------------------------------------------

@@ -1,12 +1,11 @@
-@if (isset($item['search']) && $item['search'])
-@elseif (is_array($item))
-    <li class="nav-item {{ $item['top_nav_class'] }}">
-        <a class="nav-link @if (isset($item['submenu']))dropdown-item dropdown-toggle @endif" href="{{ $item['href'] }}"
+@if (is_array($item))
+    <li class="@if (isset($item['submenu']))dropdown-submenu @endif">
+        <a class="dropdown-item @if (isset($item['submenu']))dropdown-toggle @endif" href="{{ $item['href'] }}"
            @if (isset($item['submenu'])) data-toggle="dropdown" @endif
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
         >
             <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
-			{{ $item['text'] }}
+            {{ $item['text'] }}
 
             @if (isset($item['label']))
                 <span class="badge badge-{{ $item['label_color'] ?? 'primary' }}">{{ $item['label'] }}</span>

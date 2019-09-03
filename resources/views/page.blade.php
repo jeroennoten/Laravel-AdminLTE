@@ -7,135 +7,109 @@
     @yield('css')
 @stop
 
-@section('body_class', 'skin-' . config('adminlte.skin', 'blue') . ' sidebar-mini ' . (config('adminlte.layout') ? [
+@section('body_class', 'sidebar-mini ' . (config('adminlte.layout') ? [
     'boxed' => 'layout-boxed',
-    'fixed' => 'fixed',
+    'fixed' => 'layout-fixed',
     'top-nav' => 'layout-top-nav'
-][config('adminlte.layout')] : '') . (config('adminlte.collapse_sidebar') ? ' sidebar-collapse ' : ''))
+][config('adminlte.layout')] : '') . (config('adminlte.collapse_sidebar') ? ' sidebar-collapse ' : '') . ' ' . config('adminlte.body_class'))
 
 @section('body')
     <div class="wrapper">
-
-        <!-- Main Header -->
-        <header class="main-header">
-            @if(config('adminlte.layout') == 'top-nav')
-            <nav class="navbar navbar-static-top">
-                <div class="container">
+        @if(config('adminlte.layout') == 'top-nav')
+        <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_color', 'navbar-white navbar-light')}}">
+            <div class="{{config('adminlte.topnav_container', 'container')}}">
+                <nav class="navbar navbar-static-top">
                     <div class="navbar-header">
                         <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand">
                             {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                         </a>
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse">
-                            <i class="fa fa-bars"></i>
-                        </button>
                     </div>
 
-                    <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
                         <ul class="nav navbar-nav">
                             @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
                         </ul>
                     </div>
-                    <!-- /.navbar-collapse -->
+                </nav>
             @else
-            <!-- Logo -->
-            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="logo">
-                <!-- mini logo for sidebar mini 50x50 pixels -->
-                <span class="logo-mini">{!! config('adminlte.logo_mini', '<b>A</b>LT') !!}</span>
-                <!-- logo for regular state and mobile devices -->
-                <span class="logo-lg">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</span>
-            </a>
-
-            <!-- Header Navbar -->
-            <nav class="navbar navbar-static-top" role="navigation">
-                <!-- Sidebar toggle button-->
-                <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu" role="button">
-                    <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
-                </a>
+            <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_classes', 'navbar-white navbar-light')}}">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="pushmenu" href="#">
+                            <i class="fas fa-bars"></i>
+                            <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
+                        </a>
+                    </li>
+                </ul>
             @endif
-                <!-- Navbar Right Menu -->
-                <div class="navbar-custom-menu">
-
-                    <ul class="nav navbar-nav">
-                        <li>
-                            @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
-                                <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
-                                    <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
-                                </a>
-                            @else
-                                <a href="#"
-                                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                                >
-                                    <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
-                                </a>
-                                <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
-                                    @if(config('adminlte.logout_method'))
-                                        {{ method_field(config('adminlte.logout_method')) }}
-                                    @endif
-                                    {{ csrf_field() }}
-                                </form>
-                            @endif
-                        </li>
-                        @if(config('adminlte.right_sidebar') and (config('adminlte.layout') != 'top-nav'))
-                        <!-- Control Sidebar Toggle Button -->
-                            <li>
-                                <a href="#" data-toggle="control-sidebar" @if(!config('adminlte.right_sidebar_slide')) data-controlsidebar-slide="false" @endif>
-                                    <i class="{{config('adminlte.right_sidebar_icon')}}"></i>
-                                </a>
-                            </li>
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
+                            <a class="nav-link" href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
+                                <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
+                            </a>
+                        @else
+                            <a class="nav-link" href="#"
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+                            >
+                                <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
+                            </a>
+                            <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
+                                @if(config('adminlte.logout_method'))
+                                    {{ method_field(config('adminlte.logout_method')) }}
+                                @endif
+                                {{ csrf_field() }}
+                            </form>
                         @endif
-                    </ul>
-                </div>
+                    </li>
+                    @if(config('adminlte.right_sidebar') and (config('adminlte.layout') != 'top-nav'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-widget="control-sidebar" @if(!config('adminlte.right_sidebar_slide')) data-controlsidebar-slide="false" @endif>
+                                <i class="{{config('adminlte.right_sidebar_icon')}}"></i>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
                 @if(config('adminlte.layout') == 'top-nav')
-                </div>
+                </nav>
                 @endif
             </nav>
         </header>
-
         @if(config('adminlte.layout') != 'top-nav')
-        <!-- Left side column. contains the logo and sidebar -->
-        <aside class="main-sidebar">
-
-            <!-- sidebar: style can be found in sidebar.less -->
-            <section class="sidebar">
-
-                <!-- Sidebar Menu -->
-                <ul class="sidebar-menu" data-widget="tree">
-                    @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
-                </ul>
-                <!-- /.sidebar-menu -->
-            </section>
-            <!-- /.sidebar -->
+        <aside class="main-sidebar {{config('adminlte.sidebar_classes', 'sidebar-dark-primary elevation-4')}}">
+            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link {{config('adminlte.brand_classes', '')}}">
+                <span class="brand-text font-weight-light">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</span>
+            </a>
+            <div class="sidebar">
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column {{config('adminlte.sidebar_nav_classes', '')}}" data-widget="treeview" role="menu" data-accordion="false">
+                        @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
+                    </ul>
+                </nav>
+            </div>
         </aside>
         @endif
 
-        <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             @if(config('adminlte.layout') == 'top-nav')
             <div class="container">
             @endif
 
-            <!-- Content Header (Page header) -->
-            <section class="content-header">
+            <div class="content-header">
                 @yield('content_header')
-            </section>
+            </div>
 
-            <!-- Main content -->
-            <section class="content">
-
+            <div class="content">
                 @yield('content')
-
-            </section>
-            <!-- /.content -->
+            </div>
             @if(config('adminlte.layout') == 'top-nav')
             </div>
-            <!-- /.container -->
             @endif
         </div>
-        <!-- /.content-wrapper -->
 
         @hasSection('footer')
         <footer class="main-footer">
+
             @yield('footer')
         </footer>
         @endif
@@ -144,13 +118,9 @@
             <aside class="control-sidebar control-sidebar-{{config('adminlte.right_sidebar_theme')}}">
                 @yield('right-sidebar')
             </aside>
-            <!-- /.control-sidebar -->
-            <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
-            <div class="control-sidebar-bg"></div>
         @endif
 
     </div>
-    <!-- ./wrapper -->
 @stop
 
 @section('adminlte_js')
