@@ -9,6 +9,7 @@ use Illuminate\Contracts\Container\Container;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteMakeCommand;
 use JeroenNoten\LaravelAdminLte\Console\MakeAdminLteCommand;
+use JeroenNoten\LaravelAdminLte\Console\L6MakeAdminLteCommand;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 
