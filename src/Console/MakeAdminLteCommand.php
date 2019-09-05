@@ -67,7 +67,6 @@ class MakeAdminLteCommand extends Command
             );
         }
         $this->info('Authentication views generated successfully.');
-
     }
 
     /**
@@ -80,7 +79,7 @@ class MakeAdminLteCommand extends Command
         if (! $this->option('views')) {
             file_put_contents(
                 base_path('routes/web.php'),
-                file_get_contents(__DIR__ . '/stubs/make/routes.stub'),
+                file_get_contents(__DIR__.'/stubs/make/routes.stub'),
                 FILE_APPEND
             );
         }
