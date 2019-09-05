@@ -6,7 +6,7 @@
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to quickly set up [AdminLTE v2](https://adminlte.io) with 6. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
+This package provides an easy way to quickly set up [AdminLTE v2](https://adminlte.io) with Laravel 6. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
 1. [Requirements](#1-requirements)
 2. [Installation](#2-installation)
@@ -38,15 +38,7 @@ This package provides an easy way to quickly set up [AdminLTE v2](https://adminl
     composer require jeroennoten/laravel-adminlte
     ```
 
-2. Add the service provider to the `providers` in `config/app.php`:
-
-    > Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider
-
-    ```php
-    JeroenNoten\LaravelAdminLte\ServiceProvider::class,
-    ```
-
-3. Publish the public assets:
+2. Publish the public assets:
 
     ```
     php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
@@ -113,7 +105,7 @@ All sections are in fact optional. Your blade template could look like the follo
 @stop
 ```
 
-Note that in Laravel 5.2 or higher you can also use `@stack` directive for `css` and `javascript`:
+Note that you can also use `@stack` directive for `css` and `javascript`:
 
 ```html
 {{-- resources/views/admin/dashboard.blade.php --}}
@@ -126,8 +118,6 @@ Note that in Laravel 5.2 or higher you can also use `@stack` directive for `css`
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
 ## 5. The `make:adminlte` artisan command
-
-> Note: only for Laravel 5.2 and higher
 
 This package ships with a `make:adminlte` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
 
@@ -354,7 +344,6 @@ To utilize regex, simply prefix your pattern with `regex:` and it will get evalu
 ]
 ```
 
-
 ### 6.2 Plugins
 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and active, automatically injecting their CDN files. 
@@ -397,7 +386,6 @@ You can change the Pace plugin appearence, when using the CDN injection modifyin
 Color values: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
 
 Theme values: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
-
 
 ## 7. Translations
 
@@ -458,7 +446,6 @@ To translate the menu headers, just use the `header` param. Example:
             'icon' => 'user',
         ],
 ```
-
 
 ## 8. Customize views
 
