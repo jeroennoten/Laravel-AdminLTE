@@ -14,7 +14,8 @@ class LangFilter implements FilterInterface
         $this->langGenerator = $langGenerator;
     }
 
-    private function trans($identifier) {
+    private function trans($identifier)
+    {
         return method_exists($this->langGenerator, 'trans') ? $this->langGenerator->trans($identifier) : $this->langGenerator->get($identifier);
     }
 
