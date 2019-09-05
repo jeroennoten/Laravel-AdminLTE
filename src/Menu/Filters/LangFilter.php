@@ -15,7 +15,7 @@ class LangFilter implements FilterInterface
     }
 
     private function trans($identifier) {
-        return method_exists($this->langGenerator, 'trans') ? $this->langGenerator->trans('adminlte::menu.'.$item['header']) : $this->langGenerator->get('adminlte::menu.'.$item['header']);
+        return method_exists($this->langGenerator, 'trans') ? $this->langGenerator->trans($identifier) : $this->langGenerator->get($identifier);
     }
 
     public function transform($item, Builder $builder)
