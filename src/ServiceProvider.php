@@ -97,6 +97,9 @@ class ServiceProvider extends BaseServiceProvider
             $this->commands(MakeAdminLteCommand::class);
         } elseif (class_exists('Illuminate\\Auth\\Console\\AuthMakeCommand')) {
             $this->commands(AdminLteMakeCommand::class);
+        } else {
+            //Laravel 6 don't have those classes, so we can't extend and need a class that do everything
+            $this->commands(L6MakeAdminLteCommand::class);
         }
     }
 
