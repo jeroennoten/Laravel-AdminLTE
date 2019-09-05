@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 
 class L6MakeAdminLteCommand extends Command
 {
-
     protected $signature = 'make:adminlte {--views : Only scaffold the authentication views}{--force : Overwrite existing views by default}';
 
     protected $description = 'Scaffold basic AdminLTE login and registration views and routes';
@@ -31,7 +30,6 @@ class L6MakeAdminLteCommand extends Command
         $this->exportViews();
 
         if (! $this->option('views')) {
-
             file_put_contents(
                 base_path('routes/web.php'),
                 file_get_contents(__DIR__.'/stubs/make/routes.stub'),
@@ -49,7 +47,7 @@ class L6MakeAdminLteCommand extends Command
      */
     protected function createDirectories()
     {
-        if (!is_dir($directory = $this->getViewPath('auth/passwords'))) {
+        if (! is_dir($directory = $this->getViewPath('auth/passwords'))) {
             mkdir($directory, 0755, true);
         }
     }
@@ -74,5 +72,4 @@ class L6MakeAdminLteCommand extends Command
             config('view.paths')[0] ?? resource_path('views'), $path,
         ]);
     }
-
 }
