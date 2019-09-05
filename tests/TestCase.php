@@ -8,6 +8,7 @@ use Illuminate\Routing\UrlGenerator;
 use Illuminate\Routing\RouteCollection;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
@@ -18,7 +19,7 @@ use JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends BaseTestCase
 {
     private $dispatcher;
 

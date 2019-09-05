@@ -1,7 +1,6 @@
 @extends('adminlte::master')
 
 @section('adminlte_css')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/css/auth.css') }}">
     @yield('css')
 @stop
 
@@ -21,7 +20,7 @@
                 </div>
             @endif
             <form action="{{ url(config('adminlte.password_email_url', 'password/email')) }}" method="post">
-                {!! csrf_field() !!}
+                {{ csrf_field() }}
 
                 <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
                     <input type="email" name="email" class="form-control" value="{{ isset($email) ? $email : old('email') }}"
@@ -33,9 +32,9 @@
                         </span>
                     @endif
                 </div>
-                <button type="submit"
-                        class="btn btn-primary btn-block btn-flat"
-                >{{ trans('adminlte::adminlte.send_password_reset_link') }}</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat">
+                    {{ trans('adminlte::adminlte.send_password_reset_link') }}
+                </button>
             </form>
         </div>
         <!-- /.login-box-body -->

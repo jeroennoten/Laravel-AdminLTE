@@ -75,6 +75,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Control Sidebar (Right Sidebar)
+    |--------------------------------------------------------------------------
+    |
+    | Here we have the option to enable a right sidebar.
+    | When active, you can use @section('right-sidebar')
+    | The icon you configured will be displayed at the end of the top menu,
+    | and will show/hide de sidebar.
+    | The slide option will slide the sidebar over the content, while false
+    | will push the content, and have no animation.
+    | You can also choose the sidebar theme (dark or light).
+    | The right Sidebar can only be used if layout is not top-nav.
+    |
+    */
+
+    'right_sidebar' => false,
+    'right_sidebar_icon' => 'fas fa-cogs',
+    'right_sidebar_theme' => 'dark',
+    'right_sidebar_slide' => true,
+
+    /*
+    |--------------------------------------------------------------------------
     | URLs
     |--------------------------------------------------------------------------
     |
@@ -275,7 +296,7 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//unpkg.com/sweetalert/dist/sweetalert.min.js',
+                    'location' => '//cdn.jsdelivr.net/npm/sweetalert2@8',
                 ],
             ],
         ],
