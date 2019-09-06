@@ -22,7 +22,7 @@
   "extra": {
       "laravel": {
           "providers": [
-              "JeroenNoten\\LaravelAdminLte\\ServiceProvider"
+              "JeroenNoten\\LaravelAdminLte\\AdminLteServiceProvider"
           ]
       }
   },
