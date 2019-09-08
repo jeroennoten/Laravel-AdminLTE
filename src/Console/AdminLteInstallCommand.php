@@ -3,7 +3,6 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\AdminLteServiceProvider;
 
 class AdminLteInstallCommand extends Command
 {
@@ -52,19 +51,18 @@ class AdminLteInstallCommand extends Command
      */
     protected function exportAuthViews()
     {
-        if (!$this->option('basic')) {
+        if (! $this->option('basic')) {
             if ($this->option('interactive')) {
-                if (! $this->confirm("Install AdminLTE authentication views?")) {
+                if (! $this->confirm('Install AdminLTE authentication views?')) {
                     return;
                 }
             }
             $this->ensureDirectoriesExist($this->getViewPath('auth/passwords'));
-            foreach($this->authViews as $file => $content) {
+            foreach ($this->authViews as $file => $content) {
                 file_put_contents($this->getViewPath($file), $content);
             }
             $this->comment('Authentication views installed successfully.');
         }
-
     }
 
     /**
@@ -75,7 +73,7 @@ class AdminLteInstallCommand extends Command
     protected function exportBasicViews()
     {
         if ($this->option('interactive')) {
-            if (! $this->confirm("Install AdminLTE basic views?")) {
+            if (! $this->confirm('Install AdminLTE basic views?')) {
                 return;
             }
         }
@@ -102,27 +100,26 @@ class AdminLteInstallCommand extends Command
     {
         if (! $this->option('basic')) {
             if ($this->option('interactive')) {
-                if (! $this->confirm("Install AdminLTE authentication routes?")) {
+                if (! $this->confirm('Install AdminLTE authentication routes?')) {
                     return;
                 }
             }
             file_put_contents(
                 base_path('routes/web.php'),
-                file_get_contents(__DIR__ . '/stubs/routes.stub'),
+                file_get_contents(__DIR__.'/stubs/routes.stub'),
                 FILE_APPEND
             );
             $this->comment('Authentication routes installed successfully.');
         }
-
     }
 
     /**
-     * Copy all the content of the Assets Folder to Public Directory
+     * Copy all the content of the Assets Folder to Public Directory.
      */
     protected function exportAssets()
     {
         if ($this->option('interactive')) {
-            if (! $this->confirm("Install the package assets?")) {
+            if (! $this->confirm('Install the package assets?')) {
                 return;
             }
         }
@@ -131,17 +128,17 @@ class AdminLteInstallCommand extends Command
     }
 
     /**
-     * Install the config file
+     * Install the config file.
      */
     protected function exportConfig()
     {
         if ($this->option('interactive')) {
-            if (! $this->confirm("Install the package config file?")) {
+            if (! $this->confirm('Install the package config file?')) {
                 return;
             }
         }
         if (file_exists(config_path('adminlte.php')) && ! $this->option('force')) {
-            if (! $this->confirm("The AdminLTE configuration file already exists. Do you want to replace it?")) {
+            if (! $this->confirm('The AdminLTE configuration file already exists. Do you want to replace it?')) {
                 return;
             }
         }
@@ -181,7 +178,7 @@ class AdminLteInstallCommand extends Command
     }
 
     /**
-     * Recursive function that copies an entire directory to a destination
+     * Recursive function that copies an entire directory to a destination.
      *
      * @param $source_directory
      * @param $destination_directory
@@ -192,22 +189,20 @@ class AdminLteInstallCommand extends Command
         $this->ensureDirectoriesExist($destination_directory);
         //Open source directory
         $directory = opendir($source_directory);
-        while(false !== ( $file = readdir($directory)) ) {
-            if (( $file != '.' ) && ( $file != '..' )) {
-                if ( is_dir($source_directory . '/' . $file) && $recursive) {
-                    $this->directoryCopy($source_directory . '/' . $file, $destination_directory . '/' . $file, true);
-                }
-                else {
-                    if (file_exists($destination_directory . '/' . $file) && ! $this->option('force')) {
-                        if (!$this->confirm("The [{$file}] file already exists. Do you want to replace it?")) {
+        while (false !== ($file = readdir($directory))) {
+            if (($file != '.') && ($file != '..')) {
+                if (is_dir($source_directory.'/'.$file) && $recursive) {
+                    $this->directoryCopy($source_directory.'/'.$file, $destination_directory.'/'.$file, true);
+                } else {
+                    if (file_exists($destination_directory.'/'.$file) && ! $this->option('force')) {
+                        if (! $this->confirm("The [{$file}] file already exists. Do you want to replace it?")) {
                             continue;
                         }
                     }
-                    copy($source_directory . '/' . $file,$destination_directory . '/' . $file);
+                    copy($source_directory.'/'.$file,$destination_directory.'/'.$file);
                 }
             }
         }
         closedir($directory);
     }
-
 }
