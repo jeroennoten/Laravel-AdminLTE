@@ -86,7 +86,7 @@ class AdminLteInstallCommand extends Command
                 }
             }
             copy(
-                __DIR__.'/stubs/make/views/'.$key,
+                __DIR__.'/stubs/'.$key,
                 $view
             );
         }
@@ -108,7 +108,7 @@ class AdminLteInstallCommand extends Command
             }
             file_put_contents(
                 base_path('routes/web.php'),
-                file_get_contents(__DIR__.'/stubs/make/routes.stub'),
+                file_get_contents(__DIR__ . '/stubs/routes.stub'),
                 FILE_APPEND
             );
             $this->comment('Authentication routes installed successfully.');
@@ -126,7 +126,7 @@ class AdminLteInstallCommand extends Command
                 return;
             }
         }
-        $this->directoryCopy(__DIR__.'/../../resources/assets/', public_path('adminlte'), true);
+        $this->directoryCopy(__DIR__.'/../../resources/assets/', public_path(), true);
         $this->comment('Assets Installation complete.');
     }
 
