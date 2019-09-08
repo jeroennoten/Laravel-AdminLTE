@@ -199,7 +199,7 @@ class AdminLteInstallCommand extends Command
                             continue;
                         }
                     }
-                    copy($source_directory.'/'.$file,$destination_directory.'/'.$file);
+                    copy($source_directory.'/'.$file, $destination_directory.'/'.$file);
                 }
             }
         }
