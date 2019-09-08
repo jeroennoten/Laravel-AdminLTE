@@ -92,7 +92,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
 
     private function registerCommands()
     {
-        $this->commands(MakeAdminLteCommand::class);
         $this->commands(AdminLteInstallCommand::class);
     }
 

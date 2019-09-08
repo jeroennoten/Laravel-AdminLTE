@@ -38,11 +38,17 @@ This package provides an easy way to quickly set up [AdminLTE v2](https://adminl
     composer require jeroennoten/laravel-adminlte
     ```
 
-2. Publish the public assets:
+2. Install the package using the command:
 
     ```
-    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
+    php artisan adminlte:install
     ```
+   
+> You can use --basic to avoid authentication scaffolding installation
+>
+> You can use --force to overwrite any file
+>
+> You can also use --interactive to be guided through the process and choose what you want to install
 
 ## 3. Updating
 
@@ -64,9 +70,11 @@ This package provides an easy way to quickly set up [AdminLTE v2](https://adminl
 
 - Plugins configuration was modified, check the new usage here: [Plugins](#62-plugins)
 
-2. Version 1.26 to 1.2x and up:
+2. Version 1.26 to 1.27 and up:
 
 - iCheck plugin was replaced with [icheck-bootstrap](https://github.com/bantikyan/icheck-bootstrap). If you use the iCheck assets, make sure to check/modify the asset location.   
+
+3. Laravel 6 version moved the assets file. Check the locations.
 
 ## 4. Usage
 
@@ -117,49 +125,11 @@ Note that you can also use `@stack` directive for `css` and `javascript`:
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
-## 5. The `make:adminlte` artisan command
-
-This package ships with a `make:adminlte` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
-
-```
-php artisan make:adminlte
-```
-
-This command should be used on fresh applications, just like the `make:auth` command
-
-### 5.1 Using the authentication views without the `make:adminlte` command
-
-If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
-
-- `resources/views/auth/login.blade.php`:
-```
-@extends('adminlte::login')
-```
-- `resources/views/auth/register.blade.php`
-```
-@extends('adminlte::register')
-```
-- `resources/views/auth/passwords/email.blade.php`
-```
-@extends('adminlte::passwords.email')
-```
-- `resources/views/auth/passwords/reset.blade.php`
-```
-@extends('adminlte::passwords.reset')
-```
-
-By default, the login form contains a link to the registration form.
-If you don't want a registration form, set the `register_url` setting to `null` and the link will not be displayed.
-
 ## 6. Configuration
 
-First, publish the configuration file:
+After the installation, you will notice a adminlte.php file in you config folder. 
 
-```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=config
-```
-
-Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
+Use it to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments.
 
 ### 6.1 Menu
 
