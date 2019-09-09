@@ -99,9 +99,9 @@ return [
     | URLs
     |--------------------------------------------------------------------------
     |
-    | Register here your dashboard, logout, login and register URLs. The
+    | Register here your dashboard, logout, login and register URLs.
+    | This was automatically set on install, only change if you really need.
     | logout URL automatically sends a POST request in Laravel 5.3 or higher.
-    | You can set the request to a GET or POST with logout_method.
     | Set register_url to null if you don't want a register link.
     |
     */
@@ -109,8 +109,6 @@ return [
     'dashboard_url' => 'home',
 
     'logout_url' => 'logout',
-
-    'logout_method' => null,
 
     'login_url' => 'login',
 
