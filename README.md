@@ -38,7 +38,7 @@ This package provides an easy way to quickly set up [AdminLTE v2](https://adminl
     composer require jeroennoten/laravel-adminlte
     ```
 
-2. Install the package using the command:
+2. Install the package using the command (For fresh laravel installations):
 
     ```
     php artisan adminlte:install
@@ -58,11 +58,28 @@ This package provides an easy way to quickly set up [AdminLTE v2](https://adminl
     composer update jeroennoten/laravel-adminlte
     ```
 
-2. Then, publish the public assets with the `--force` flag to overwrite existing files
+2. Then, we need to update the assets
 
+    > If you using AdminLTE for Laravel 5.x and are upgrading Laravel 6 version, delete the folder adminlte inside your public/vendor folder.
+    
+    And then use this command to publish new assets
+    
     ```
-    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets --force
+    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=assets --force
     ```
+   
+3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too.
+
+    Option 1:
+    - Make a copy of the views you modified.
+    - Publish the views again, using
+        ```
+       php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
+        ```
+   - Redo the modifications you did.
+  
+   Option 2:
+   - Modify in the css, js and other assets location in the master and page views.
    
 ### 3.1 Breaking Changes
 
@@ -75,6 +92,8 @@ This package provides an easy way to quickly set up [AdminLTE v2](https://adminl
 - iCheck plugin was replaced with [icheck-bootstrap](https://github.com/bantikyan/icheck-bootstrap). If you use the iCheck assets, make sure to check/modify the asset location.   
 
 3. Laravel 6 version moved the assets file. Check the locations.
+
+- If you modified the default views, edit then fixing the assets injection.
 
 ## 4. Usage
 
@@ -364,7 +383,7 @@ Just specifiy the language in `config/app.php`.
 If you need to modify the texts or add other languages, you can publish the language files:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=translations
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=translations
 ```
 
 Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
@@ -422,7 +441,7 @@ To translate the menu headers, just use the `header` param. Example:
 If you need full control over the provided views, you can publish them:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=views
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
 ```
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.

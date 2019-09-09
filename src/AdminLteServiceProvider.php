@@ -80,7 +80,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function publishAssets()
     {
         $this->publishes([
-            $this->packagePath('resources/assets') => public_path('vendor/adminlte'),
+            $this->packagePath('resources/assets') => public_path(),
         ], 'assets');
     }
 
