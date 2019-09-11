@@ -25,14 +25,21 @@ return [
     |--------------------------------------------------------------------------
     |
     | This logo is displayed at the upper left corner of your admin panel.
-    | You can use basic HTML here if you want. The logo has also a mini
-    | variant, used for the mini side bar. Make it 3 letters or so
+    | You can use basic HTML here if you want for a simple text logo with a
+    | small image logo (e.g. 50 x 50 pixels), or you  can use two images
+    | one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels).
+    | You can also change the sizes of the images and the alt text for both
+    | logos.
     |
     */
 
     'logo' => '<b>Admin</b>LTE',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'logo_img_class' => 'brand-image-xl',
+    'logo_img_xl' => null,
+    'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'AdminLTE',
+
     /*
     |--------------------------------------------------------------------------
     | Extra Classes

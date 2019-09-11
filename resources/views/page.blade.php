@@ -22,10 +22,17 @@
             <div class="{{config('adminlte.topnav_container', 'container')}}">
                 <nav class="navbar navbar-static-top">
                     <div class="navbar-header">
+                        @if(config('adminlte.logo_img_xl'))
+                            <a href="/docs/3.0/index.html" class="brand-link logo-switch">
+                                <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
+                                <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
+                            </a>
+                        @else
                         <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
                         <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand">
                             {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                         </a>
+                        @endif
                     </div>
 
                     <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
