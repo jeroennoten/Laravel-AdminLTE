@@ -159,8 +159,7 @@ class BuilderTest extends TestCase
         $builder = $this->makeMenuBuilder();
 
         $builder->add(['text' => 'About', 'submenu' => []]);
-
-        $this->assertContains(['nav-item','has-treeview'], $builder->menu[0]['classes']);
+        $this->assertContains('has-treeview', $builder->menu[0]['classes']);
         $this->assertContains('dropdown', $builder->menu[0]['top_nav_classes']);
     }
 
