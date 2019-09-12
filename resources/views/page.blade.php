@@ -58,6 +58,12 @@
 
                     <ul class="nav navbar-nav">
                         <li>
+                            <a href="">
+                             <span><img class="img-circle"  width="20" height="20" src="{{asset(Auth::user()->photo->file)}}"></span>   {{Auth::user()->name}}
+                            </a>
+
+                        </li>
+                        <li>
                             @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
                                 <a href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
                                     <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
@@ -76,6 +82,7 @@
                                 </form>
                             @endif
                         </li>
+
                         @if(config('adminlte.right_sidebar') and (config('adminlte.layout') != 'top-nav'))
                         <!-- Control Sidebar Toggle Button -->
                             <li>
