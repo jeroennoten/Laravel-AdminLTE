@@ -3,18 +3,18 @@
 @elseif (isset($item['header']))
     <li class="nav-header">{{ $item['header'] }}</li>
 @elseif (isset($item['search']) && $item['search'])
-    <!-- <form action="{{ $item['href'] }}" method="{{ $item['method'] }}">
-        <div class="input-group">
-          <input type="text" name="{{ $item['input_name'] }}" class="form-control" placeholder="
-            {{ $item['text'] }}
-          ">
+    <li>
+        <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="form-inline mb-3">
+          <div class="input-group">
+            <input class="form-control form-control-sidebar" type="search" name="{{ $item['input_name'] }}" placeholder="{{ $item['text'] }}" aria-label="{{ $item['aria-label'] }}">
             <div class="input-group-append">
-                <button type="submit" name="search" id="search-btn" class="btn btn-light">
-                  <i class="fas fa-search"></i>
-                </button>
+              <button class="btn btn-sidebar" type="submit">
+                <i class="fas fa-search"></i>
+              </button>
             </div>
-        </div>
-      </form> -->
+          </div>
+        </form>
+    </li>
 @else
     <li class="nav-item">
         <a class="nav-link {{ $item['class'] }} @if (isset($item['submenu'])){{ $item['submenu_class'] }}@endif" href="{{ $item['href'] }}"

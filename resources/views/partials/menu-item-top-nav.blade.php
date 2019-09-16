@@ -1,4 +1,14 @@
 @if (isset($item['search']) && $item['search'])
+    <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="form-inline ml-2 mr-2">
+      <div class="input-group">
+        <input class="form-control form-control-navbar" type="search" name="{{ $item['input_name'] }}" placeholder="{{ $item['text'] }}" aria-label="{{ $item['aria-label'] }}">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
 @elseif (is_array($item))
     <li class="nav-item {{ $item['top_nav_class'] }}">
         <a class="nav-link @if (isset($item['submenu']))dropdown-item dropdown-toggle @endif" href="{{ $item['href'] }}"
