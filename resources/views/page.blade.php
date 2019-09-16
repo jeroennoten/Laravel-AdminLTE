@@ -75,6 +75,8 @@
                             <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
                         </a>
                     </li>
+
+                    @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
                 </ul>
             @endif
                 <ul class="navbar-nav ml-auto">

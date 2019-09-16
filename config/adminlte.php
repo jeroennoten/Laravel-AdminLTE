@@ -157,12 +157,7 @@ return [
         [
             'text' => 'search',
             'search' => true,
-        ],
-        ['header' => 'main_navigation'],
-        [
-            'text' => 'home',
-            'url'  => 'home',
-            'icon' => 'fas fa-fw fa-home',
+            'topnav' => true,
         ],
         [
             'text' => 'blog',
