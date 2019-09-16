@@ -45,7 +45,9 @@ return [
     | Extra Classes
     |--------------------------------------------------------------------------
     |
-    | TEXT NEEDED
+    | Here you can change the look and behavior of the admin panel, you can add
+    | extra classes to body, brand, sidebar, sidebar navigation, top navigation
+    | and top navigation container.
     |
     */
 
@@ -67,7 +69,11 @@ return [
     |
     */
 
-    'layout' => null,
+    'layout_topnav' => null,
+    'layout_boxed' => null,
+    'layout_fixed_sidebar' => null,
+    'layout_fixed_navbar' => null,
+    'layout_fixed_footer' => null,
 
     /*
     |--------------------------------------------------------------------------
@@ -80,6 +86,7 @@ return [
     |
     */
 
+    'sidebar_mini' => true,
     'sidebar_collapse' => false,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_screen_collapse_size' => 768,

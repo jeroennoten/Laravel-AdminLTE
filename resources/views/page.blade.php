@@ -7,30 +7,55 @@
     @yield('css')
 @stop
 
-@section('body_class', 'sidebar-mini ' . (config('adminlte.layout') ? [
-    'boxed' => 'layout-boxed',
-    'fixed' => 'layout-fixed',
-    'top-nav' => 'layout-top-nav'
-][config('adminlte.layout')] : '') . (config('adminlte.sidebar_collapse') ? ' sidebar-collapse ' : '') . ' ' . config('adminlte.body_class'))
+@section('body_class',
+    (config('adminlte.sidebar_mini', true) ? 'sidebar-mini ' : '') .
+    (config('adminlte.layout_topnav') ? 'layout-top-nav ' : '') .
+    (config('adminlte.layout_boxed') ? 'layout-boxed ' : '') .
+    (!config('adminlte.layout_topnav') ?
+        (config('adminlte.layout_fixed_sidebar') ? 'layout-fixed ' : '') .
+        (config('adminlte.layout_fixed_navbar') === true ?
+            'layout-navbar-fixed ' :
+            (isset(config('adminlte.layout_fixed_navbar')['xs']) ? (config('adminlte.layout_fixed_navbar')['xs'] == true ? 'layout-navbar-fixed ' : 'layout-navbar-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_navbar')['sm']) ? (config('adminlte.layout_fixed_navbar')['sm'] == true ? 'layout-sm-navbar-fixed ' : 'layout-sm-navbar-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_navbar')['md']) ? (config('adminlte.layout_fixed_navbar')['md'] == true ? 'layout-md-navbar-fixed ' : 'layout-md-navbar-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_navbar')['lg']) ? (config('adminlte.layout_fixed_navbar')['lg'] == true ? 'layout-lg-navbar-fixed ' : 'layout-lg-navbar-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_navbar')['xl']) ? (config('adminlte.layout_fixed_navbar')['xl'] == true ? 'layout-xl-navbar-fixed ' : 'layout-xl-navbar-not-fixed ') : '')
+        ) .
+        (config('adminlte.layout_fixed_footer') === true ?
+            'layout-footer-fixed ' :
+            (isset(config('adminlte.layout_fixed_footer')['xs']) ? (config('adminlte.layout_fixed_footer')['xs'] == true ? 'layout-footer-fixed ' : 'layout-footer-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_footer')['sm']) ? (config('adminlte.layout_fixed_footer')['sm'] == true ? 'layout-sm-footer-fixed ' : 'layout-sm-footer-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_footer')['md']) ? (config('adminlte.layout_fixed_footer')['md'] == true ? 'layout-md-footer-fixed ' : 'layout-md-footer-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_footer')['lg']) ? (config('adminlte.layout_fixed_footer')['lg'] == true ? 'layout-lg-footer-fixed ' : 'layout-lg-footer-not-fixed ') : '') .
+            (isset(config('adminlte.layout_fixed_footer')['xl']) ? (config('adminlte.layout_fixed_footer')['xl'] == true ? 'layout-xl-footer-fixed ' : 'layout-xl-footer-not-fixed ') : '')
+        )
+        : ''
+    ) .
+    (config('adminlte.sidebar_collapse') ? 'sidebar-collapse' : '') .
+    config('adminlte.body_class')
+)
 
-@section('body_data', (config('adminlte.sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light' ? 'data-scrollbar-theme=' . config('adminlte.sidebar_scrollbar_theme')  : '') . ' ' . (config('adminlte.sidebar_scrollbar_auto_hide', 'l') != 'l' ? 'data-scrollbar-auto-hide=' . config('adminlte.sidebar_scrollbar_auto_hide')   : ''))
+@section('body_data',
+(config('adminlte.sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light' ? 'data-scrollbar-theme=' . config('adminlte.sidebar_scrollbar_theme')  : '') . ' ' . (config('adminlte.sidebar_scrollbar_auto_hide', 'l') != 'l' ? 'data-scrollbar-auto-hide=' . config('adminlte.sidebar_scrollbar_auto_hide')   : ''))
 
 @section('body')
     <div class="wrapper">
-        @if(config('adminlte.layout') == 'top-nav')
+        @if(config('adminlte.layout_topnav'))
         <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_color', 'navbar-white navbar-light')}}">
             <div class="{{config('adminlte.topnav_container', 'container')}}">
                 <nav class="navbar navbar-static-top">
                     <div class="navbar-header">
                         @if(config('adminlte.logo_img_xl'))
-                            <a href="/docs/3.0/index.html" class="brand-link logo-switch">
-                                <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
-                                <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
-                            </a>
+                        <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link logo-switch">
+                            <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
+                            <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
+                        </a>
                         @else
-                        <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
-                        <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand">
-                            {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                        <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link">
+                            <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
+                            <span class="brand-text font-weight-light">
+                                {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                            </span>
                         </a>
                         @endif
                     </div>
@@ -72,7 +97,7 @@
                             </form>
                         @endif
                     </li>
-                    @if(config('adminlte.right_sidebar') and (config('adminlte.layout') != 'top-nav'))
+                    @if(config('adminlte.right_sidebar') and !config('adminlte.layout_topnav'))
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-widget="control-sidebar" @if(!config('adminlte.right_sidebar_slide')) data-controlsidebar-slide="false" @endif @if(config('adminlte.right_sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light') data-scrollbar-theme="{{config('adminlte.right_sidebar_scrollbar_theme')}}" @endif @if(config('adminlte.right_sidebar_scrollbar_auto_hide', 'l') != 'l') data-scrollbar-auto-hide="{{config('adminlte.right_sidebar_scrollbar_auto_hide')}}" @endif>
                                 <i class="{{config('adminlte.right_sidebar_icon')}}"></i>
@@ -80,17 +105,26 @@
                         </li>
                     @endif
                 </ul>
-                @if(config('adminlte.layout') == 'top-nav')
+                @if(config('adminlte.layout_topnav'))
                 </nav>
                 @endif
             </nav>
         </header>
-        @if(config('adminlte.layout') != 'top-nav')
+        @if(!config('adminlte.layout_topnav'))
         <aside class="main-sidebar {{config('adminlte.sidebar_classes', 'sidebar-dark-primary elevation-4')}}">
-            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link {{config('adminlte.brand_classes', '')}}">
-                <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt=" {{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</span>
+            @if(config('adminlte.logo_img_xl'))
+            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link logo-switch">
+                <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
+                <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
             </a>
+            @else
+            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link">
+                <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">
+                    {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                </span>
+            </a>
+            @endif
             <div class="sidebar">
                 <nav class="mt-2">
                     <ul class="nav nav-pills nav-sidebar flex-column {{config('adminlte.sidebar_nav_classes', '')}}" data-widget="treeview" role="menu" @if(config('adminlte.sidebar_nav_animation_speed') != 300) data-animation-speed="{{config('adminlte.sidebar_nav_animation_speed')}}" @endif @if(!config('adminlte.sidebar_nav_accordion')) data-accordion="false" @endif>
@@ -102,7 +136,7 @@
         @endif
 
         <div class="content-wrapper">
-            @if(config('adminlte.layout') == 'top-nav')
+            @if(config('adminlte.layout_topnav'))
             <div class="container">
             @endif
 
@@ -113,7 +147,7 @@
             <div class="content">
                 @yield('content')
             </div>
-            @if(config('adminlte.layout') == 'top-nav')
+            @if(config('adminlte.layout_topnav'))
             </div>
             @endif
         </div>
