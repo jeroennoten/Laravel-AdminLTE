@@ -14,9 +14,7 @@ return [
     */
 
     'title' => 'AdminLTE 3',
-
     'title_prefix' => '',
-
     'title_postfix' => '',
 
     /*
@@ -63,9 +61,9 @@ return [
     | Layout
     |--------------------------------------------------------------------------
     |
-    | Choose a layout for your admin panel. The available layout options:
-    | null, 'boxed', 'fixed', 'top-nav'. null is the default, top-nav
-    | removes the sidebar and places your menu in the top navbar
+    | Here we change the layout, you can use a top navigation (navbar) only
+    | layout, a boxed layout with sidebar and you can enable fixed mode for
+    | sidebar, navbar and footer.
     |
     */
 
@@ -80,9 +78,11 @@ return [
     | Sidebar
     |--------------------------------------------------------------------------
     |
-    | Here we choose and option to be able to start with a collapsed side
-    | bar. To adjust your sidebar layout simply set this  either true
-    | this is compatible with layouts except top-nav layout option
+    | Here we can modify the sidebar, you can disable the collapsed mini sidebar,
+    | start with collapsed sidebar, enable sidebar auto collapse on specific screen
+    | size, enable sidebar collapse remember, change the scrollbar theme or
+    | auto hide option, disable sidebar navigation accordion and sidebar navigation
+    | menu item animation speed.
     |
     */
 
@@ -105,11 +105,10 @@ return [
     | Here we have the option to enable a right sidebar.
     | When active, you can use @section('right-sidebar')
     | The icon you configured will be displayed at the end of the top menu,
-    | and will show/hide de sidebar.
+    | and will show/hide the sidebar.
     | The slide option will slide the sidebar over the content, while false
     | will push the content, and have no animation.
     | You can also choose the sidebar theme (dark or light).
-    | The right Sidebar can only be used if layout is not top-nav.
     |
     */
 
@@ -135,7 +134,6 @@ return [
     'dashboard_url' => 'home',
 
     'logout_url' => 'logout',
-
     'logout_method' => null,
 
     'login_url' => 'login',
@@ -266,8 +264,9 @@ return [
     | DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box,
     | including the Javascript and CSS files from a CDN via script and link tag.
     | Plugin Name, active status and files array (even empty) are required.
-    | Files, when added, need to have type (js or css), asset (true or false) and location (string).
-    | When asset is set to true, the location will be output using asset() function.
+    | Files, when added, need to have type (js or css), asset (true or false) and
+    | location (string). When asset is set to true, the location will be output
+    | using asset() function.
     |
     */
 
