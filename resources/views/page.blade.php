@@ -7,7 +7,7 @@
     @yield('css')
 @stop
 
-@section('body_class',
+@section('classes_body',
     (config('adminlte.sidebar_mini', true) ? 'sidebar-mini ' : '') .
     (config('adminlte.layout_topnav') ? 'layout-top-nav ' : '') .
     (config('adminlte.layout_boxed') ? 'layout-boxed ' : '') .
@@ -32,7 +32,7 @@
         : ''
     ) .
     (config('adminlte.sidebar_collapse') ? 'sidebar-collapse' : '') .
-    config('adminlte.body_class')
+    config('adminlte.classes_body')
 )
 
 @section('body_data',
@@ -42,7 +42,7 @@
     <div class="wrapper">
         @if(config('adminlte.layout_topnav'))
         <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_color', 'navbar-white navbar-light')}}">
-            <div class="{{config('adminlte.topnav_container', 'container')}}">
+            <div class="{{config('adminlte.classes_topnav_container', 'container')}}">
                 <nav class="navbar navbar-static-top">
                     <div class="navbar-header">
                         @if(config('adminlte.logo_img_xl'))
@@ -67,7 +67,7 @@
                     </div>
                 </nav>
             @else
-            <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_classes', 'navbar-white navbar-light')}}">
+            <nav class="main-header navbar navbar-expand {{config('adminlte.classes_topnav', 'navbar-white navbar-light')}}">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" @if(config('adminlte.sidebar_collapse_remember')) data-enable-remember="true" @endif @if(!config('adminlte.sidebar_collapse_remember_no_transition')) data-no-transition-after-reload="false" @endif @if(config('adminlte.sidebar_collapse_screen_collapse_size', 768) != 768) data-screen-collapse-size="{{config('adminlte.sidebar_collapse_screen_collapse_size')}}" @endif @if(config('adminlte.sidebar_collapse_auto_size')) data-auto-collapse-size="{{config('adminlte.sidebar_collapse_auto_size')}}" @endif>
@@ -113,7 +113,7 @@
             </nav>
         </header>
         @if(!config('adminlte.layout_topnav'))
-        <aside class="main-sidebar {{config('adminlte.sidebar_classes', 'sidebar-dark-primary elevation-4')}}">
+        <aside class="main-sidebar {{config('adminlte.classes_sidebar', 'sidebar-dark-primary elevation-4')}}">
             @if(config('adminlte.logo_img_xl'))
             <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link logo-switch">
                 <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
@@ -129,7 +129,7 @@
             @endif
             <div class="sidebar">
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column {{config('adminlte.sidebar_nav_classes', '')}}" data-widget="treeview" role="menu" @if(config('adminlte.sidebar_nav_animation_speed') != 300) data-animation-speed="{{config('adminlte.sidebar_nav_animation_speed')}}" @endif @if(!config('adminlte.sidebar_nav_accordion')) data-accordion="false" @endif>
+                    <ul class="nav nav-pills nav-sidebar flex-column {{config('adminlte.classes_sidebar_nav', '')}}" data-widget="treeview" role="menu" @if(config('adminlte.sidebar_nav_animation_speed') != 300) data-animation-speed="{{config('adminlte.sidebar_nav_animation_speed')}}" @endif @if(!config('adminlte.sidebar_nav_accordion')) data-accordion="false" @endif>
                         @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
                     </ul>
                 </nav>

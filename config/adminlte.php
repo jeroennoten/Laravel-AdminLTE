@@ -51,12 +51,12 @@ return [
     |
     */
 
-    'body_class' => '',
-    'brand_classes' => '',
-    'sidebar_classes' => 'sidebar-dark-primary elevation-4',
-    'sidebar_nav_classes' => '',
-    'topnav_classes' => 'navbar-white navbar-light',
-    'topnav_container' => 'container',
+    'classes_body' => '',
+    'classes_brand' => '',
+    'classes_sidebar' => 'sidebar-dark-primary elevation-4',
+    'classes_sidebar_nav' => '',
+    'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav_container' => 'container',
 
     /*
     |--------------------------------------------------------------------------
