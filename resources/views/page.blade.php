@@ -6,7 +6,11 @@
 @stop
 
 @section('classes_body',
-    (config('adminlte.sidebar_mini', true) ? 'sidebar-mini ' : '') .
+    (config('adminlte.sidebar_mini', true) === true ?
+        'sidebar-mini ' :
+        (config('adminlte.sidebar_mini', true) == 'md' ?
+         'sidebar-mini sidebar-mini-md ' : '')
+    ) .
     (config('adminlte.layout_topnav') ? 'layout-top-nav ' : '') .
     (config('adminlte.layout_boxed') ? 'layout-boxed ' : '') .
     (!config('adminlte.layout_topnav') ?
@@ -30,6 +34,7 @@
         : ''
     ) .
     (config('adminlte.sidebar_collapse') ? 'sidebar-collapse' : '') .
+    (config('adminlte.right_sidebar') && config('adminlte.right_sidebar_push') ? 'control-sidebar-push' : '') .
     config('adminlte.classes_body')
 )
 
@@ -68,7 +73,7 @@
             <nav class="main-header navbar navbar-expand {{config('adminlte.classes_topnav', 'navbar-white navbar-light')}}">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" data-widget="pushmenu" href="#" @if(config('adminlte.sidebar_collapse_remember')) data-enable-remember="true" @endif @if(!config('adminlte.sidebar_collapse_remember_no_transition')) data-no-transition-after-reload="false" @endif @if(config('adminlte.sidebar_collapse_screen_collapse_size', 768) != 768) data-screen-collapse-size="{{config('adminlte.sidebar_collapse_screen_collapse_size')}}" @endif @if(config('adminlte.sidebar_collapse_auto_size')) data-auto-collapse-size="{{config('adminlte.sidebar_collapse_auto_size')}}" @endif>
+                        <a class="nav-link" data-widget="pushmenu" href="#" @if(config('adminlte.sidebar_collapse_remember')) data-enable-remember="true" @endif @if(!config('adminlte.sidebar_collapse_remember_no_transition')) data-no-transition-after-reload="false" @endif @if(config('adminlte.sidebar_collapse_auto_size')) data-auto-collapse-size="{{config('adminlte.sidebar_collapse_auto_size')}}" @endif>
                             <i class="fas fa-bars"></i>
                             <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
                         </a>

@@ -7,9 +7,10 @@ return [
     | Title
     |--------------------------------------------------------------------------
     |
-    | The default title of your admin panel, this goes into the title tag
-    | of your page. You can override it per page with the title section.
-    | You can optionally also specify a title prefix and/or postfix.
+    | Here you can change the default title of your admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#61-title
     |
     */
 
@@ -22,12 +23,10 @@ return [
     | Logo
     |--------------------------------------------------------------------------
     |
-    | This logo is displayed at the upper left corner of your admin panel.
-    | You can use basic HTML here if you want for a simple text logo with a
-    | small image logo (e.g. 50 x 50 pixels), or you  can use two images
-    | one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels).
-    | You can also change the sizes of the images and the alt text for both
-    | logos.
+    | Here you can change the logo of your admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#62-logo
     |
     */
 
@@ -40,12 +39,31 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Layout
+    |--------------------------------------------------------------------------
+    |
+    | Here we change the layout of your admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#63-layout
+    |
+    */
+
+    'layout_topnav' => null,
+    'layout_boxed' => null,
+    'layout_fixed_sidebar' => null,
+    'layout_fixed_navbar' => null,
+    'layout_fixed_footer' => null,
+
+    /*
+    |--------------------------------------------------------------------------
     | Extra Classes
     |--------------------------------------------------------------------------
     |
-    | Here you can change the look and behavior of the admin panel, you can add
-    | extra classes to body, brand, sidebar, sidebar navigation, top navigation
-    | and top navigation container.
+    | Here you can change the look and behavior of the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#64-classes
     |
     */
 
@@ -58,38 +76,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Layout
-    |--------------------------------------------------------------------------
-    |
-    | Here we change the layout, you can use a top navigation (navbar) only
-    | layout, a boxed layout with sidebar and you can enable fixed mode for
-    | sidebar, navbar and footer.
-    |
-    */
-
-    'layout_topnav' => null,
-    'layout_boxed' => null,
-    'layout_fixed_sidebar' => null,
-    'layout_fixed_navbar' => null,
-    'layout_fixed_footer' => null,
-
-    /*
-    |--------------------------------------------------------------------------
     | Sidebar
     |--------------------------------------------------------------------------
     |
-    | Here we can modify the sidebar, you can disable the collapsed mini sidebar,
-    | start with collapsed sidebar, enable sidebar auto collapse on specific screen
-    | size, enable sidebar collapse remember, change the scrollbar theme or
-    | auto hide option, disable sidebar navigation accordion and sidebar navigation
-    | menu item animation speed.
+    | Here we can modify the sidebar of the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#65-sidebar
     |
     */
 
     'sidebar_mini' => true,
     'sidebar_collapse' => false,
     'sidebar_collapse_auto_size' => false,
-    'sidebar_collapse_screen_collapse_size' => 768,
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
@@ -102,13 +101,10 @@ return [
     | Control Sidebar (Right Sidebar)
     |--------------------------------------------------------------------------
     |
-    | Here we have the option to enable a right sidebar.
-    | When active, you can use @section('right-sidebar')
-    | The icon you configured will be displayed at the end of the top menu,
-    | and will show/hide the sidebar.
-    | The slide option will slide the sidebar over the content, while false
-    | will push the content, and have no animation.
-    | You can also choose the sidebar theme (dark or light).
+    | Here we can modify the right sidebar aka control sidebar of the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#66-control-sidebar-right-sidebar
     |
     */
 
@@ -116,6 +112,7 @@ return [
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
     'right_sidebar_slide' => true,
+    'right_sidebar_push' => true,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -124,10 +121,10 @@ return [
     | URLs
     |--------------------------------------------------------------------------
     |
-    | Register here your dashboard, logout, login and register URLs. The
-    | logout URL automatically sends a POST request in Laravel 5.3 or higher.
-    | You can set the request to a GET or POST with logout_method.
-    | Set register_url to null if you don't want a register link.
+    | Here we can modify the url settings of the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#67-urls
     |
     */
 
@@ -145,10 +142,11 @@ return [
     | Menu Items
     |--------------------------------------------------------------------------
     |
-    | Specify your menu items to display in the left sidebar. Each menu item
-    | should have a text and a URL. You can also specify an icon from Font
-    | Awesome. A string instead of an array represents a header in sidebar
-    | layout. The 'can' is a filter on Laravel's built in Gate functionality.
+    | Here we can modify the sidebar/top navigation of the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#68-menu
+    |
     */
 
     'menu' => [
@@ -238,10 +236,10 @@ return [
     | Menu Filters
     |--------------------------------------------------------------------------
     |
-    | Choose what filters you want to include for rendering the menu.
-    | You can add your own filters to this array after you've created them.
-    | You can comment out the GateFilter if you don't want to use Laravel's
-    | built in Gate functionality
+    | Here we can modify the menu filters of the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#69-menu-filters
     |
     */
 
@@ -260,13 +258,10 @@ return [
     | Plugins Initialization
     |--------------------------------------------------------------------------
     |
-    | Configure which JavaScript plugins should be included. At this moment,
-    | DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box,
-    | including the Javascript and CSS files from a CDN via script and link tag.
-    | Plugin Name, active status and files array (even empty) are required.
-    | Files, when added, need to have type (js or css), asset (true or false) and
-    | location (string). When asset is set to true, the location will be output
-    | using asset() function.
+    | Here we can modify the plugins used inside the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#610-plugins
     |
     */
 
