@@ -592,7 +592,17 @@ Default menu filters:
 ### 6.10 Plugins
 Configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via script and link tag. Plugin Name, active status and files array (even empty) are required. Files, when added, need to have type (js or css), asset (true or false) and location (string). When asset is set to true, the location will be output using asset() function.
 
-By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and active, automatically injecting their CDN files. 
+By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and but not active.
+You can activate them with changing the config file to load it on every page or add a section in specific blade files, this will automatically injecting their CDN files. 
+
+Section example: `@section('plugins.Datatables', true)`
+
+You can use these plugins by default:
+- `Datatables`
+- `Select2`
+- `Chartjs`
+- `Sweetalert2`
+- `Pace`
 
 You can also add and configure new plugins, modifying the plugin variable using the example structure below:
 
