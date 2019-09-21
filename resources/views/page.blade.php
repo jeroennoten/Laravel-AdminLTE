@@ -78,11 +78,12 @@
                             <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
                         </a>
                     </li>
-
                     @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
+                    @yield('content_top_nav_left')
                 </ul>
             @endif
                 <ul class="navbar-nav ml-auto">
+                    @yield('content_top_nav_right')
                     <li class="nav-item">
                         @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
                             <a class="nav-link" href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
