@@ -33,8 +33,8 @@
         )
         : ''
     ) .
-    (config('adminlte.sidebar_collapse') ? 'sidebar-collapse' : '') .
-    (config('adminlte.right_sidebar') && config('adminlte.right_sidebar_push') ? 'control-sidebar-push' : '') .
+    (config('adminlte.sidebar_collapse') ? 'sidebar-collapse ' : '') .
+    (config('adminlte.right_sidebar') && config('adminlte.right_sidebar_push') ? 'control-sidebar-push ' : '') .
     config('adminlte.classes_body')
 )
 
