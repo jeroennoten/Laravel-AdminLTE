@@ -125,11 +125,11 @@ Note that in Laravel 5.2 or higher you can also use `@stack` directive for `css`
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
-## 5. The `make:adminlte` artisan command
+## 5. The `adminlte:install` artisan command
 
 > Note: only for Laravel 5.2 and higher
 
-This package ships with a `make:adminlte` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
+This package ships with a `adminlte:install` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
 
 ```
 php artisan make:adminlte
