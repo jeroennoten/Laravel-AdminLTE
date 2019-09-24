@@ -132,7 +132,7 @@ You now just return this view from your controller, as usual. Check out [AdminLT
 This package ships with a `adminlte:install` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
 
 ```
-php artisan make:adminlte
+php artisan adminlte:install
 ```
 
 This command should be used on fresh applications, just like the `make:auth` command
