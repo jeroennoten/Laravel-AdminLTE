@@ -13,18 +13,19 @@
         </div>
         <div class="card">
             <div class="card-body register-card-body">
-            <p class="login-box-msg">{{ trans('adminlte::adminlte.register_message') }}</p>
+            <p class="login-box-msg">{{ __('adminlte::adminlte.register_message') }}</p>
             <form action="{{ url(config('adminlte.register_url', 'register')) }}" method="post">
                 {{ csrf_field() }}
 
                 <div class="input-group mb-3">
                     <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" value="{{ old('name') }}"
-                           placeholder="{{ trans('adminlte::adminlte.full_name') }}">
+                           placeholder="{{ __('adminlte::adminlte.full_name') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-user"></span>
                         </div>
                     </div>
+
                     @if ($errors->has('name'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('name') }}</strong>
@@ -33,7 +34,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}"
-                           placeholder="{{ trans('adminlte::adminlte.email') }}">
+                           placeholder="{{ __('adminlte::adminlte.email') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-envelope"></span>
@@ -47,7 +48,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                           placeholder="{{ trans('adminlte::adminlte.password') }}">
+                           placeholder="{{ __('adminlte::adminlte.password') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -61,7 +62,7 @@
                 </div>
                 <div class="input-group mb-3">
                     <input type="password" name="password_confirmation" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
-                           placeholder="{{ trans('adminlte::adminlte.retype_password') }}">
+                           placeholder="{{ __('adminlte::adminlte.retype_password') }}">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -74,12 +75,12 @@
                     @endif
                 </div>
                 <button type="submit" class="btn btn-primary btn-block btn-flat">
-                    {{ trans('adminlte::adminlte.register') }}
+                    {{ __('adminlte::adminlte.register') }}
                 </button>
             </form>
             <p class="mt-2 mb-1">
                 <a href="{{ url(config('adminlte.login_url', 'login')) }}">
-                    {{ trans('adminlte::adminlte.i_already_have_a_membership') }}
+                    {{ __('adminlte::adminlte.i_already_have_a_membership') }}
                 </a>
             </p>
         </div>
