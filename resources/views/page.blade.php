@@ -75,7 +75,7 @@
                     <li class="nav-item">
                         <a class="nav-link" data-widget="pushmenu" href="#" @if(config('adminlte.sidebar_collapse_remember')) data-enable-remember="true" @endif @if(!config('adminlte.sidebar_collapse_remember_no_transition')) data-no-transition-after-reload="false" @endif @if(config('adminlte.sidebar_collapse_auto_size')) data-auto-collapse-size="{{config('adminlte.sidebar_collapse_auto_size')}}" @endif>
                             <i class="fas fa-bars"></i>
-                            <span class="sr-only">{{ trans('adminlte::adminlte.toggle_navigation') }}</span>
+                            <span class="sr-only">{{ __('adminlte::adminlte.toggle_navigation') }}</span>
                         </a>
                     </li>
                     @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
@@ -85,23 +85,17 @@
                 <ul class="navbar-nav ml-auto">
                     @yield('content_top_nav_right')
                     <li class="nav-item">
-                        @if(config('adminlte.logout_method') == 'GET' || !config('adminlte.logout_method') && version_compare(\Illuminate\Foundation\Application::VERSION, '5.3.0', '<'))
-                            <a class="nav-link" href="{{ url(config('adminlte.logout_url', 'auth/logout')) }}">
-                                <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
-                            </a>
-                        @else
-                            <a class="nav-link" href="#"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                            >
-                                <i class="fa fa-fw fa-power-off"></i> {{ trans('adminlte::adminlte.log_out') }}
-                            </a>
-                            <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
-                                @if(config('adminlte.logout_method'))
-                                    {{ method_field(config('adminlte.logout_method')) }}
-                                @endif
-                                {{ csrf_field() }}
-                            </form>
-                        @endif
+						<a class="nav-link" href="#"
+						   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+						>
+							<i class="fa fa-fw fa-power-off"></i> {{ __('adminlte::adminlte.log_out') }}
+						</a>
+						<form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
+							@if(config('adminlte.logout_method'))
+								{{ method_field(config('adminlte.logout_method')) }}
+							@endif
+							{{ csrf_field() }}
+						</form>
                     </li>
                     @if(config('adminlte.right_sidebar'))
                         <li class="nav-item">
