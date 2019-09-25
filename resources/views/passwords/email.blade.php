@@ -13,7 +13,7 @@
         </div>
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">{{ trans('adminlte::adminlte.password_reset_message') }}</p>
+                <p class="login-box-msg">{{ __('adminlte::adminlte.password_reset_message') }}</p>
                 @if (session('status'))
                     <div class="alert alert-success">
                         {{ session('status') }}
@@ -22,7 +22,7 @@
                 <form action="{{ url(config('adminlte.password_email_url', 'password/email')) }}" method="post">
                     {{ csrf_field() }}
                     <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ trans('adminlte::adminlte.email') }}">
+                        <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -35,7 +35,7 @@
                         @endif
                     </div>
                     <button type="submit" class="btn btn-primary btn-block btn-flat">
-                        {{ trans('adminlte::adminlte.send_password_reset_link') }}
+                        {{ __('adminlte::adminlte.send_password_reset_link') }}
                     </button>
                 </form>
             </div>
