@@ -6,7 +6,7 @@
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to quickly set up [AdminLTE](https://adminlte.io) with Laravel 5 and 6. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
+This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io) with Laravel 6. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
 1. [Requirements](#1-requirements)
 2. [Installation](#2-installation)
@@ -37,8 +37,8 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
 
 ## 1. Requirements
 
-- Laravel 5.5.x to 6.0.x
-- PHP >= 7.0
+- Laravel 6.0.x
+- PHP >= 7.2
 
 ## 2. Installation
 
@@ -48,19 +48,17 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
     composer require jeroennoten/laravel-adminlte
     ```
 
-2. Add the service provider to the `providers` in `config/app.php`:
-
-    > Laravel 5.5 uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider
-
-    ```php
-    JeroenNoten\LaravelAdminLte\ServiceProvider::class,
-    ```
-
-3. Publish the public assets:
+2. Install the package using the command (For fresh laravel installations):
 
     ```
-    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets
+    php artisan adminlte:install
     ```
+   
+> You can use --basic to avoid authentication scaffolding installation
+>
+> You can use --force to overwrite any file
+>
+> You can also use --interactive to be guided through the process and choose what you want to install
 
 ## 3. Updating
 
@@ -70,11 +68,28 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
     composer update jeroennoten/laravel-adminlte
     ```
 
-2. Then, publish the public assets with the `--force` flag to overwrite existing files
+2. Then, we need to update the assets
 
+    > If you using AdminLTE for Laravel 5.x and are upgrading Laravel 6 version, delete the folder adminlte inside your public/vendor folder.
+    
+    And then use this command to publish new assets
+    
     ```
-    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=assets --force
+    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=assets --force
     ```
+   
+3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too.
+
+    Option 1:
+    - Make a copy of the views you modified.
+    - Publish the views again, using
+        ```
+       php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
+        ```
+   - Redo the modifications you did.
+  
+   Option 2:
+   - Modify in the css, js and other assets location in the master and page views.
    
 ### 3.1 Breaking Changes
 
