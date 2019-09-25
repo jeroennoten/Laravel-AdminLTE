@@ -4,55 +4,72 @@
     @yield('css')
 @stop
 
-@section('body_class', 'register-page')
+@section('classes_body', 'register-page')
 
 @section('body')
     <div class="register-box">
         <div class="register-logo">
             <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
         </div>
-
-        <div class="register-box-body">
+        <div class="card">
+            <div class="card-body register-card-body">
             <p class="login-box-msg">{{ __('adminlte::adminlte.register_message') }}</p>
             <form action="{{ url(config('adminlte.register_url', 'register')) }}" method="post">
                 {{ csrf_field() }}
 
-                <div class="form-group has-feedback {{ $errors->has('name') ? 'has-error' : '' }}">
-                    <input type="text" name="name" class="form-control" value="{{ old('name') }}"
+                <div class="input-group mb-3">
+                    <input type="text" name="name" class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}" value="{{ old('name') }}"
                            placeholder="{{ __('adminlte::adminlte.full_name') }}">
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-user"></span>
+                        </div>
+                    </div>
+
                     @if ($errors->has('name'))
-                        <span class="help-block">
+                        <div class="invalid-feedback">
                             <strong>{{ $errors->first('name') }}</strong>
                         </span>
                     @endif
                 </div>
-                <div class="form-group has-feedback {{ $errors->has('email') ? 'has-error' : '' }}">
-                    <input type="email" name="email" class="form-control" value="{{ old('email') }}"
+                <div class="input-group mb-3">
+                    <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}"
                            placeholder="{{ __('adminlte::adminlte.email') }}">
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-envelope"></span>
+                        </div>
+                    </div>
                     @if ($errors->has('email'))
-                        <span class="help-block">
+                        <div class="invalid-feedback">
                             <strong>{{ $errors->first('email') }}</strong>
                         </span>
                     @endif
                 </div>
-                <div class="form-group has-feedback {{ $errors->has('password') ? 'has-error' : '' }}">
-                    <input type="password" name="password" class="form-control"
+                <div class="input-group mb-3">
+                    <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
                            placeholder="{{ __('adminlte::adminlte.password') }}">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
                     @if ($errors->has('password'))
-                        <span class="help-block">
+                        <div class="invalid-feedback">
                             <strong>{{ $errors->first('password') }}</strong>
                         </span>
                     @endif
                 </div>
-                <div class="form-group has-feedback {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
-                    <input type="password" name="password_confirmation" class="form-control"
+                <div class="input-group mb-3">
+                    <input type="password" name="password_confirmation" class="form-control {{ $errors->has('password_confirmation') ? 'is-invalid' : '' }}"
                            placeholder="{{ __('adminlte::adminlte.retype_password') }}">
-                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+                    <div class="input-group-append">
+                        <div class="input-group-text">
+                            <span class="fas fa-lock"></span>
+                        </div>
+                    </div>
                     @if ($errors->has('password_confirmation'))
-                        <span class="help-block">
+                        <div class="invalid-feedback">
                             <strong>{{ $errors->first('password_confirmation') }}</strong>
                         </span>
                     @endif
@@ -61,9 +78,8 @@
                     {{ __('adminlte::adminlte.register') }}
                 </button>
             </form>
-            <br>
-            <p>
-                <a href="{{ url(config('adminlte.login_url', 'login')) }}" class="text-center">
+            <p class="mt-2 mb-1">
+                <a href="{{ url(config('adminlte.login_url', 'login')) }}">
                     {{ __('adminlte::adminlte.i_already_have_a_membership') }}
                 </a>
             </p>
@@ -73,5 +89,7 @@
 @stop
 
 @section('adminlte_js')
+    <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+    @stack('js')
     @yield('js')
 @stop
