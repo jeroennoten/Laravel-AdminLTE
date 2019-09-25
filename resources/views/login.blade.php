@@ -1,7 +1,7 @@
 @extends('adminlte::master')
 
 @section('adminlte_css')
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
     @yield('css')
 @stop
 
@@ -14,11 +14,11 @@
         </div>
         <div class="card">
             <div class="card-body login-card-body">
-                <p class="login-box-msg">{{ trans('adminlte::adminlte.login_message') }}</p>
+                <p class="login-box-msg">{{ __('adminlte::adminlte.login_message') }}</p>
                 <form action="{{ url(config('adminlte.login_url', 'login')) }}" method="post">
                     {{ csrf_field() }}
                     <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ trans('adminlte::adminlte.email') }}">
+                        <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -31,7 +31,7 @@
                         @endif
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="{{ trans('adminlte::adminlte.password') }}">
+                        <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="{{ __('adminlte::adminlte.password') }}">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
@@ -47,25 +47,25 @@
                         <div class="col-8">
                             <div class="icheck-primary">
                                 <input type="checkbox" name="remember" id="remember">
-                                <label for="remember">{{ trans('adminlte::adminlte.remember_me') }}</label>
+                                <label for="remember">{{ __('adminlte::adminlte.remember_me') }}</label>
                             </div>
                         </div>
                         <div class="col-4">
                             <button type="submit" class="btn btn-primary btn-block btn-flat">
-                                {{ trans('adminlte::adminlte.sign_in') }}
+                                {{ __('adminlte::adminlte.sign_in') }}
                             </button>
                         </div>
                     </div>
                 </form>
                 <p class="mt-2 mb-1">
                     <a href="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}">
-                        {{ trans('adminlte::adminlte.i_forgot_my_password') }}
+                        {{ __('adminlte::adminlte.i_forgot_my_password') }}
                     </a>
                 </p>
                 @if (config('adminlte.register_url', 'register'))
                     <p class="mb-0">
                         <a href="{{ url(config('adminlte.register_url', 'register')) }}">
-                            {{ trans('adminlte::adminlte.register_a_new_membership') }}
+                            {{ __('adminlte::adminlte.register_a_new_membership') }}
                         </a>
                     </p>
                 @endif
