@@ -8,6 +8,9 @@
 
 This package provides an easy way to quickly set up [AdminLTE v2](https://adminlte.io) with Laravel 5. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
+If you use Laravel 6, the version 2.0 or the branch laravel6-adminlte2 is compatible with this Laravel version.
+If you use an older version of Laravel you can use an older version of the package.
+
 1. [Requirements](#1-requirements)
 2. [Installation](#2-installation)
 3. [Updating](#3-updating)
