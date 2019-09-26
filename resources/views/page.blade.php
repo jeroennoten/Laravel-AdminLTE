@@ -11,9 +11,9 @@
         (config('adminlte.sidebar_mini', true) == 'md' ?
          'sidebar-mini sidebar-mini-md ' : '')
     ) .
-    (config('adminlte.layout_topnav') ? 'layout-top-nav ' : '') .
+    (config('adminlte.layout_topnav') || View::getSection('layout_topnav') ? 'layout-top-nav ' : '') .
     (config('adminlte.layout_boxed') ? 'layout-boxed ' : '') .
-    (!config('adminlte.layout_topnav') ?
+    (!config('adminlte.layout_topnav') && !View::getSection('layout_topnav') ?
         (config('adminlte.layout_fixed_sidebar') ? 'layout-fixed ' : '') .
         (config('adminlte.layout_fixed_navbar') === true ?
             'layout-navbar-fixed ' :
@@ -43,7 +43,7 @@
 
 @section('body')
     <div class="wrapper">
-        @if(config('adminlte.layout_topnav'))
+        @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
         <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_color', 'navbar-white navbar-light')}}">
             <div class="{{config('adminlte.classes_topnav_container', 'container')}}">
                 <nav class="navbar navbar-static-top">
@@ -105,12 +105,12 @@
                         </li>
                     @endif
                 </ul>
-                @if(config('adminlte.layout_topnav'))
+                @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
                 </nav>
                 @endif
             </nav>
         </header>
-        @if(!config('adminlte.layout_topnav'))
+        @if(!config('adminlte.layout_topnav') && !View::getSection('layout_topnav'))
         <aside class="main-sidebar {{config('adminlte.classes_sidebar', 'sidebar-dark-primary elevation-4')}}">
             @if(config('adminlte.logo_img_xl'))
             <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link logo-switch">
@@ -136,7 +136,7 @@
         @endif
 
         <div class="content-wrapper">
-            @if(config('adminlte.layout_topnav'))
+            @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
             <div class="container">
             @endif
 
@@ -147,7 +147,7 @@
             <div class="content">
                 @yield('content')
             </div>
-            @if(config('adminlte.layout_topnav'))
+            @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
             </div>
             @endif
         </div>
