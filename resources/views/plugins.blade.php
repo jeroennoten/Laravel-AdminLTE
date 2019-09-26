@@ -1,5 +1,5 @@
 @foreach(config('adminlte.plugins') as $plugin)
-    @if($plugin['active'] || View::hasSection('plugins.' . $plugin['name']))
+    @if($plugin['active'] || View::getSection('plugins.' . $plugin['name']))
         @foreach($plugin['files'] as $file)
             @if($file['type'] == $type)
                 @if($type == 'css')

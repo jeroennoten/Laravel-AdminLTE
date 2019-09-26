@@ -19,16 +19,20 @@ class SubmenuFilter implements FilterInterface
         if (isset($item['submenu'])) {
             $item['submenu'] = $builder->transformItems($item['submenu']);
             $item['submenu_open'] = $this->activeChecker->isActive($item);
-            $item['submenu_classes'] = $this->makeSubmenuClasses();
+            $item['submenu_classes'] = $this->makeSubmenuClasses($item);
             $item['submenu_class'] = implode(' ', $item['submenu_classes']);
         }
 
         return $item;
     }
 
-    protected function makeSubmenuClasses()
+    protected function makeSubmenuClasses($item)
     {
         $classes = ['has-treeview'];
+
+        if ($item['submenu_open']) {
+            $classes[] = 'menu-open';
+        }
 
         return $classes;
     }

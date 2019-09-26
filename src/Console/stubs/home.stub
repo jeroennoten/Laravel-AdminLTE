@@ -7,7 +7,6 @@
 @stop
 
 @section('content')
-<<<<<<< HEAD:src/Console/stubs/make/views/home.stub
     <div class="row">
         <div class="col-12">
             <div class="card">
@@ -17,7 +16,4 @@
             </div>
         </div>
     </div>
-=======
-    <p>You are logged in!</p>
->>>>>>> laravel6-adminlte3:src/Console/stubs/home.stub
 @stop

@@ -17,8 +17,8 @@
             </form>
         </li>
     @else
-        <li class="nav-item">
-            <a class="nav-link {{ $item['class'] }} @if (isset($item['submenu'])){{ $item['submenu_class'] }}@endif" href="{{ $item['href'] }}"
+        <li class="nav-item @if (isset($item['submenu'])){{ $item['submenu_class'] }}@endif">
+            <a class="nav-link {{ $item['class'] }}" href="{{ $item['href'] }}"
                @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
             >
                 <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
