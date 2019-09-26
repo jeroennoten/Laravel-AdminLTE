@@ -302,7 +302,7 @@ class AdminLteInstallCommand extends Command
                 'package_path' => 'icheck-bootstrap',
                 'assets_path' => 'icheck-bootstrap',
                 'ignore_ending' => [
-                    '*.json', '*.md'
+                    '*.json', '*.md',
                 ],
             ],
             'inputmask' => [
