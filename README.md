@@ -191,7 +191,7 @@ If you don't want a registration form, set the `register_url` setting to `null` 
 First, publish the configuration file:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=config
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=config
 ```
 
 Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
@@ -666,7 +666,7 @@ Just specifiy the language in `config/app.php`.
 If you need to modify the texts or add other languages, you can publish the language files:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=translations
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=translations
 ```
 
 Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
@@ -725,7 +725,7 @@ To translate the menu headers, just use the `header` param. Example:
 If you need full control over the provided views, you can publish them:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=views
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
 ```
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.
