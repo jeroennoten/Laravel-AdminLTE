@@ -126,33 +126,33 @@ class AdminLteInstallCommand extends Command
             }
         }
 
-        $assetsPath = public_path() . '/vendor/';
+        $assetsPath = public_path().'/vendor/';
         $packagePath = base_path().'/vendor/almasaeed2010/adminlte/';
 
         // Copy AdminlTE dist
-        $this->directoryCopy($packagePath . 'dist/css/', $assetsPath . 'adminlte/dist/css', false);
-        $this->directoryCopy($packagePath . 'dist/js/', $assetsPath . 'adminlte/dist/js', false, ['demo.js']);
+        $this->directoryCopy($packagePath.'dist/css/', $assetsPath.'adminlte/dist/css', false);
+        $this->directoryCopy($packagePath.'dist/js/', $assetsPath.'adminlte/dist/js', false, ['demo.js']);
 
-        if (! is_dir($assetsPath . 'adminlte/dist/img/')) {
-            mkdir($assetsPath . 'adminlte/dist/img/');
+        if (! is_dir($assetsPath.'adminlte/dist/img/')) {
+            mkdir($assetsPath.'adminlte/dist/img/');
         }
 
-        copy($packagePath . 'dist/img/AdminLTELogo.png', $assetsPath . 'adminlte/dist/img/AdminLTELogo.png');
+        copy($packagePath.'dist/img/AdminLTELogo.png', $assetsPath.'adminlte/dist/img/AdminLTELogo.png');
 
         // Copy Font Awesome Free
-        $this->directoryCopy($packagePath . 'plugins/fontawesome-free', $assetsPath . 'fontawesome-free', true);
+        $this->directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', true);
 
         // Copy Bootstrap
-        $this->directoryCopy($packagePath . 'plugins/bootstrap', $assetsPath . 'bootstrap', true);
+        $this->directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', true);
 
         // Copy Popper
-        $this->directoryCopy($packagePath . 'plugins/popper', $assetsPath . 'popper', true);
+        $this->directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', true);
 
         // Copy jQuery
-        $this->directoryCopy($packagePath . 'plugins/jquery', $assetsPath . 'jquery', true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
+        $this->directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
 
         // Copy overlayScrollbars
-        $this->directoryCopy($packagePath . 'plugins/overlayScrollbars', $assetsPath . 'overlayScrollbars', true);
+        $this->directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', true);
 
         $this->comment('Basic Assets Installation complete.');
     }
@@ -276,7 +276,7 @@ class AdminLteInstallCommand extends Command
                 'package_path' => 'fullcalendar',
                 'assets_path' => 'fullcalendar',
                 'ignore_ending' => [
-                    '*.d.ts', '*.json', '*.md'
+                    '*.d.ts', '*.json', '*.md',
                 ],
             ],
             'fullcalendarPlugins' => [
@@ -294,7 +294,7 @@ class AdminLteInstallCommand extends Command
                     'fullcalendar-plugins/timegrid',
                 ],
                 'ignore_ending' => [
-                    '*.d.ts', '*.json', '*.md'
+                    '*.d.ts', '*.json', '*.md',
                 ],
             ],
             'icheckBootstrap' => [
@@ -315,7 +315,7 @@ class AdminLteInstallCommand extends Command
                 'package_path' => 'ion-rangeslider',
                 'assets_path' => 'ion-rangeslider',
                 'ignore_ending' => [
-                    '*.json', '*.md', '.editorconfig'
+                    '*.json', '*.md', '.editorconfig',
                 ],
             ],
             'jqueryKnob' => [
@@ -336,7 +336,7 @@ class AdminLteInstallCommand extends Command
                     'jquery-mousewheel',
                 ],
                 'ignore_ending' => [
-                    '*.json', '*.md', '.editorconfig'
+                    '*.json', '*.md', '.editorconfig',
                 ],
             ],
             'jqueryUi' => [
@@ -351,7 +351,7 @@ class AdminLteInstallCommand extends Command
                 ],
                 'recursive' => false,
                 'ignore_ending' => [
-                    '*.json', '*.md', '*.html', '.editorconfig'
+                    '*.json', '*.md', '*.html', '.editorconfig',
                 ],
             ],
             'jqvmap' => [
@@ -387,7 +387,7 @@ class AdminLteInstallCommand extends Command
                     'select2-bootstrap4-theme',
                 ],
                 'ignore_ending' => [
-                    '*.json', '*.md'
+                    '*.json', '*.md',
                 ],
             ],
             'sparklines' => [
@@ -425,7 +425,7 @@ class AdminLteInstallCommand extends Command
 
         foreach ($plugins as $plugin) {
             if ($this->option('interactive')) {
-                if (! $this->confirm('Install the ' . $plugin['name'] . ' assets?')) {
+                if (! $this->confirm('Install the '.$plugin['name'].' assets?')) {
                     continue;
                 }
             }
@@ -433,10 +433,10 @@ class AdminLteInstallCommand extends Command
             if (is_array($plugin['package_path'])) {
                 foreach ($plugin['package_path'] as $key => $pluginPackagePath) {
                     $pluginAssetsPath = $plugin['assets_path'][$key];
-                    $this->directoryCopy($packagePath . 'plugins/' . $pluginPackagePath, $assetsPath . $pluginAssetsPath, true);
+                    $this->directoryCopy($packagePath.'plugins/'.$pluginPackagePath, $assetsPath.$pluginAssetsPath, true);
                 }
             } else {
-                $this->directoryCopy($packagePath . 'plugins/' . $plugin['package_path'], $assetsPath . $plugin['assets_path'], ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
+                $this->directoryCopy($packagePath.'plugins/'.$plugin['package_path'], $assetsPath.$plugin['assets_path'], ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
             }
         }
 
