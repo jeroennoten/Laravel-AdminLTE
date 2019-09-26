@@ -123,8 +123,84 @@ class AdminLteInstallCommand extends Command
                 return;
             }
         }
-        $this->directoryCopy(__DIR__.'/../../resources/assets/', public_path(), true);
-        $this->comment('Assets Installation complete.');
+
+        $assetsPath = public_path() . '/vendor/';
+        $packagePath = base_path().'/vendor/almasaeed2010/adminlte/';
+
+        // Copy AdminlTE dist
+        $this->directoryCopy($packagePath . 'dist/css/', $assetsPath . 'adminlte/dist/css', false);
+        $this->directoryCopy($packagePath . 'dist/js/', $assetsPath . 'adminlte/dist/js', false, ['demo.js']);
+
+        // Copy Bootstrap
+        $this->directoryCopy($packagePath . 'plugins/bootstrap', $assetsPath . 'bootstrap', true);
+
+        // Copy jQuery
+        $this->directoryCopy($packagePath . 'plugins/jquery', $assetsPath . 'jquery', true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
+
+        // Copy overlayScrollbars
+        $this->directoryCopy($packagePath . 'plugins/overlayScrollbars', $assetsPath . 'overlayScrollbars', true);
+
+        $this->comment('Basic Assets Installation complete.');
+
+        $plugins = [
+            [
+                'name' => 'Bootstrap Colorpicker',
+                'package_path' => 'bootstrap-colorpicker',
+                'assets_path' => 'bootstrap-colorpicker',
+            ],
+            [
+                'name' => 'Bootstrap Slider',
+                'package_path' => 'bootstrap-slider',
+                'assets_path' => 'bootstrap-slider',
+            ],
+            [
+                'name' => 'Bootstrap4 Duallistbox',
+                'package_path' => 'bootstrap4-duallistbox',
+                'assets_path' => 'bootstrap4-duallistbox',
+            ],
+            [
+                'name' => 'Chart.js',
+                'package_path' => 'chart.js',
+                'assets_path' => 'chart.js',
+            ],
+            [
+                'name' => 'Datatables',
+                'package_path' => [
+                    'datatables',
+                    'datatables-bs4',
+                ],
+                'assets_path' => [
+                    'datatables/js',
+                    'datatables',
+                ],
+            ],
+            [
+                'name' => 'Datatables Plugins',
+                'package_path' => [
+                    'datatables-autofill',
+                ],
+                'assets_path' => [
+                    'datatables-plugins/autofill',
+                ],
+            ],
+        ];
+
+        foreach ($plugins as $plugin) {
+            if ($this->option('interactive')) {
+                if (! $this->confirm('Install the ' . $plugin['name'] . ' assets?')) {
+                    continue;
+                }
+            }
+
+            print_r($plugin['package_path']);
+
+            // $this->directoryCopy($packagePath . 'dist/css/', $assetsPath . 'adminlte/dist/css', false);
+            // $this->directoryCopy($packagePath . 'dist/js/', $assetsPath . 'adminlte/dist/js', false, ['demo.js']);
+        }
+
+
+
+        $this->comment('Plugin Assets Installation complete.');
     }
 
     /**
@@ -183,26 +259,30 @@ class AdminLteInstallCommand extends Command
      * @param $source_directory
      * @param $destination_directory
      */
-    protected function directoryCopy($source_directory, $destination_directory, $recursive)
+    protected function directoryCopy($source_directory, $destination_directory, $recursive = false, $ignore = [])
     {
         //Checks destination folder existance
         $this->ensureDirectoriesExist($destination_directory);
         //Open source directory
         $directory = opendir($source_directory);
+
         while (false !== ($file = readdir($directory))) {
             if (($file != '.') && ($file != '..')) {
                 if (is_dir($source_directory.'/'.$file) && $recursive) {
                     $this->directoryCopy($source_directory.'/'.$file, $destination_directory.'/'.$file, true);
-                } else {
-                    if (file_exists($destination_directory.'/'.$file) && ! $this->option('force')) {
-                        if (! $this->confirm("The [{$file}] file already exists. Do you want to replace it?")) {
-                            continue;
+                } elseif (! is_dir($source_directory.'/'.$file)) {
+                    if (! in_array($file, $ignore)) {
+                        if (file_exists($destination_directory.'/'.$file) && ! $this->option('force')) {
+                            if (! $this->confirm("The [{$file}] file already exists. Do you want to replace it?")) {
+                                continue;
+                            }
                         }
+                        copy($source_directory.'/'.$file, $destination_directory.'/'.$file);
                     }
-                    copy($source_directory.'/'.$file, $destination_directory.'/'.$file);
                 }
             }
         }
+
         closedir($directory);
     }
 }
