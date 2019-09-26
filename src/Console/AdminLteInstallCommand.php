@@ -168,6 +168,9 @@ class AdminLteInstallCommand extends Command
             }
         }
 
+        $assetsPath = public_path().'/vendor/';
+        $packagePath = base_path().'/vendor/almasaeed2010/adminlte/';
+
         $plugins = [
             'bootstrapColorpicker' => [
                 'name' => 'Bootstrap Colorpicker',
@@ -373,8 +376,8 @@ class AdminLteInstallCommand extends Command
             ],
             'paceProgress' => [
                 'name' => 'Pace Progress',
-                'package_path' => 'page-progress',
-                'assets_path' => 'page-progress',
+                'package_path' => 'pace-progress',
+                'assets_path' => 'pace-progress',
             ],
             'select2' => [
                 'name' => 'Select 2 with Bootstrap 4 Theme',
@@ -433,7 +436,7 @@ class AdminLteInstallCommand extends Command
             if (is_array($plugin['package_path'])) {
                 foreach ($plugin['package_path'] as $key => $pluginPackagePath) {
                     $pluginAssetsPath = $plugin['assets_path'][$key];
-                    $this->directoryCopy($packagePath.'plugins/'.$pluginPackagePath, $assetsPath.$pluginAssetsPath, true);
+                    $this->directoryCopy($packagePath.'plugins/'.$pluginPackagePath, $assetsPath.$pluginAssetsPath, ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
                 }
             } else {
                 $this->directoryCopy($packagePath.'plugins/'.$plugin['package_path'], $assetsPath.$plugin['assets_path'], ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
