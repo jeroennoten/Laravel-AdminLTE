@@ -30,6 +30,10 @@ This package provides an easy way to quickly set up [AdminLTE](https://adminlte.
 - Laravel 5.5.x to 6.0.x
 - PHP >= 7.0
 
+The version 2.0 is conpatible with Laravel 6.0.
+
+If you use an older version of Laravel you can use an older version of the package.
+
 ## 2. Installation
 
 1. Require the package using composer:
