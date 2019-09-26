@@ -125,7 +125,7 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'url' => 'about']);
 
-        $this->assertStringContainsString('active', $builder->menu[0]['classes']);
+        $this->assertContainsEquals('active', $builder->menu[0]['classes']);
     }
 
     public function testActiveRoute()
@@ -159,7 +159,7 @@ class BuilderTest extends TestCase
         $builder = $this->makeMenuBuilder();
 
         $builder->add(['text' => 'About', 'submenu' => []]);
-		
+
         $this->assertEquals('has-treeview', $builder->menu[0]['submenu_class']);
         $this->assertEquals('dropdown', $builder->menu[0]['top_nav_class']);
     }
