@@ -33,9 +33,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
 
         $this->loadTranslations();
 
-        $this->publishConfig();
-
-        $this->publishAssets();
+        $this->loadConfig();
 
         $this->registerCommands();
 
@@ -49,10 +47,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
         $viewsPath = $this->packagePath('resources/views');
 
         $this->loadViewsFrom($viewsPath, 'adminlte');
-
-        $this->publishes([
-            $viewsPath => base_path('resources/views/vendor/adminlte'),
-        ], 'views');
     }
 
     private function loadTranslations()
@@ -60,28 +54,13 @@ class AdminLteServiceProvider extends BaseServiceProvider
         $translationsPath = $this->packagePath('resources/lang');
 
         $this->loadTranslationsFrom($translationsPath, 'adminlte');
-
-        $this->publishes([
-            $translationsPath => base_path('resources/lang/vendor/adminlte'),
-        ], 'translations');
     }
 
-    private function publishConfig()
+    private function loadConfig()
     {
         $configPath = $this->packagePath('config/adminlte.php');
 
-        $this->publishes([
-            $configPath => config_path('adminlte.php'),
-        ], 'config');
-
         $this->mergeConfigFrom($configPath, 'adminlte');
-    }
-
-    private function publishAssets()
-    {
-        $this->publishes([
-            $this->packagePath('resources/assets') => public_path(),
-        ], 'assets');
     }
 
     private function packagePath($path)
