@@ -43,6 +43,7 @@
 
 @section('body')
     <div class="wrapper">
+        <header>
         @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
         <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_color', 'navbar-white navbar-light')}}">
             <div class="{{config('adminlte.classes_topnav_container', 'container')}}">
