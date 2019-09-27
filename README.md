@@ -530,7 +530,77 @@ php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServi
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.
 
-## 8. Issues, Questions and Pull Requests
+## 8. Using Laravel Mix
+
+If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
+
+```
+npm i @fortawesome/fontawesome-free
+npm i icheck-bootstrap
+npm i overlayscrollbars
+```
+
+Add the following to your `bootstrap.js` file after `window.$ = window.jQuery = require('jquery');`:
+
+```
+    require('overlayscrollbars');
+
+    require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
+ ```
+
+Replace your `app.scss` content by the following:
+
+```
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
+@import '~@fortawesome/fontawesome-free/css/all.css';
+
+// OverlayScrollbars
+@import '~overlayscrollbars/css/OverlayScrollbars.css';
+
+// iCheck
+@import '~icheck-bootstrap/icheck-bootstrap.css';
+
+// AdminLTE
+@import '../../vendor/almasaeed2010/adminlte/dist/css/adminlte.css';
+
+// Bootstrap
+// Already imported by AdminLTE
+//@import '~bootstrap/scss/bootstrap';
+```
+
+Publish the views
+
+```
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
+```
+
+Modify the `master.blade.php` as follows:
+
+```
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@yield('title_prefix', config('adminlte.title_prefix', ''))
+@yield('title', config('adminlte.title', 'AdminLTE 3'))
+@yield('title_postfix', config('adminlte.title_postfix', ''))</title>
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+</head>
+<body class="@yield('classes_body')" @yield('body_data')>
+
+@yield('body')
+
+<script src="{{ asset('js/app.js') }}"></script>
+
+</body>
+</html>
+
+```
+
+## 9. Issues, Questions and Pull Requests
 
 You can report issues and ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
 
