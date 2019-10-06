@@ -9,6 +9,9 @@ class AdminLteInstallCommand extends Command
     protected $signature = 'adminlte:install '.
         '{--basic : Only publishes the assets and a basic page example}'.
         '{--force : Overwrite existing views by default}'.
+        '{--type= : Installation type, Available type: none, enhanced & full.}'.
+        '{--only= : Install only specific part, Available parts: assets, config, translations, auth_views, basic_views & basic_routes. This option can not used with the with option.}'.
+        '{--with=* : Install basic assets with specific parts, Available parts: auth_views, basic_views & basic_routes}'.
         '{--interactive : The installation will guide you through the process}';
 
     protected $description = 'Install all the required files for AdminLTE and the authentication views and routes';
@@ -31,19 +34,73 @@ class AdminLteInstallCommand extends Command
      */
     public function handle()
     {
-        $this->exportAssets();
+        if ($this->option('only')) {
+            switch ($this->option('only')) {
+            case 'assets':
+                $this->exportAssets();
 
-        $this->exportPlugins();
+                break;
 
-        $this->exportBasicViews();
+            case 'config':
+                $this->exportConfig();
 
-        $this->exportAuthViews();
+                break;
 
-        $this->exportRoutes();
+            case 'translations':
+                $this->exportTranslations();
 
-        $this->exportConfig();
+                break;
 
-        $this->info(($this->option('basic') ? 'Basic' : 'Full').' AdminLTE Installation complete.');
+            case 'auth_views':
+                $this->exportAuthViews();
+
+                break;
+
+            case 'basic_views':
+                $this->exportBasicViews();
+
+                break;
+
+            case 'basic_routes':
+                $this->exportRoutes();
+
+                break;
+
+            default:
+                $this->error('Invalid option!');
+                break;
+            }
+
+            return;
+        }
+
+        if ($this->option('type') == 'basic' || $this->option('type') != 'none' || ! $this->option('type')) {
+            $this->exportAssets();
+            $this->exportConfig();
+            $this->exportTranslations();
+        }
+
+        if ($this->option('with')) {
+            if (in_array('auth_views', $this->option('with'))) {
+                $this->exportAuthViews();
+            }
+            if (in_array('basic_views', $this->option('with'))) {
+                $this->exportBasicViews();
+            }
+            if (in_array('basic_routes', $this->option('with'))) {
+                $this->exportRoutes();
+            }
+        } elseif ($this->option('type') != 'none') {
+            if ($this->option('type') == 'enhanced' || $this->option('type') == 'full') {
+                $this->exportAuthViews();
+            }
+            if ($this->option('type') == 'full') {
+                $this->exportBasicViews();
+                $this->exportRoutes();
+            }
+        }
+
+        $this->info('AdminLTE Installation complete.');
     }
 
     /**
@@ -102,7 +159,7 @@ class AdminLteInstallCommand extends Command
     {
         if (! $this->option('basic')) {
             if ($this->option('interactive')) {
-                if (! $this->confirm('Install AdminLTE authentication routes?')) {
+                if (! $this->confirm('Install AdminLTE basic routes?')) {
                     return;
                 }
             }
@@ -111,7 +168,27 @@ class AdminLteInstallCommand extends Command
                 file_get_contents(__DIR__.'/stubs/routes.stub'),
                 FILE_APPEND
             );
-            $this->comment('Authentication routes installed successfully.');
+            $this->comment('Basic routes installed successfully.');
+        }
+    }
+
+    /**
+     * Export the translation files.
+     *
+     * @return void
+     */
+    protected function exportTranslations()
+    {
+        if (! $this->option('basic')) {
+            if ($this->option('interactive')) {
+                if (! $this->confirm('Install AdminLTE authentication translations?')) {
+                    return;
+                }
+            }
+
+            $this->directoryCopy($this->packagePath('resources/lang'), base_path('resources/lang'), true);
+
+            $this->comment('Translation files installed successfully.');
         }
     }
 
@@ -158,295 +235,6 @@ class AdminLteInstallCommand extends Command
     }
 
     /**
-     * Copy all Plugin Assets to Public Directory.
-     */
-    protected function exportPlugins()
-    {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install the plugin package assets?')) {
-                return;
-            }
-        }
-
-        $assetsPath = public_path().'/vendor/';
-        $packagePath = base_path().'/vendor/almasaeed2010/adminlte/';
-
-        $plugins = [
-            'bootstrapColorpicker' => [
-                'name' => 'Bootstrap Colorpicker',
-                'package_path' => 'bootstrap-colorpicker',
-                'assets_path' => 'bootstrap-colorpicker',
-            ],
-            'bootstrapSlider' => [
-                'name' => 'Bootstrap Slider',
-                'package_path' => 'bootstrap-slider',
-                'assets_path' => 'bootstrap-slider',
-            ],
-            'bootstrap4Duallistbox' => [
-                'name' => 'Bootstrap4 Duallistbox',
-                'package_path' => 'bootstrap4-duallistbox',
-                'assets_path' => 'bootstrap4-duallistbox',
-            ],
-            'chartJs' => [
-                'name' => 'Chart.js',
-                'package_path' => 'chart.js',
-                'assets_path' => 'chart.js',
-            ],
-            'datatables' => [
-                'name' => 'Datatables',
-                'package_path' => [
-                    'datatables',
-                    'datatables-bs4',
-                ],
-                'assets_path' => [
-                    'datatables/js',
-                    'datatables',
-                ],
-            ],
-            'datatablesPlugins' => [
-                'name' => 'Datatables Plugins',
-                'package_path' => [
-                    'datatables-autofill',
-                    'datatables-buttons',
-                    'datatables-colreorder',
-                    'datatables-fixedcolumns',
-                    'datatables-fixedheader',
-                    'datatables-keytable',
-                    'datatables-responsive',
-                    'datatables-rowgroup',
-                    'datatables-rowreorder',
-                    'datatables-scroller',
-                    'datatables-select',
-                    'pdfmake',
-                    'jszip',
-                ],
-                'assets_path' => [
-                    'datatables-plugins/autofill',
-                    'datatables-plugins/buttons',
-                    'datatables-plugins/colreorder',
-                    'datatables-plugins/fixedcolumns',
-                    'datatables-plugins/fixedheader',
-                    'datatables-plugins/keytable',
-                    'datatables-plugins/responsive',
-                    'datatables-plugins/rowgroup',
-                    'datatables-plugins/rowreorder',
-                    'datatables-plugins/scroller',
-                    'datatables-plugins/select',
-                    'datatables-plugins/pdfmake',
-                    'datatables-plugins/jszip',
-                ],
-            ],
-            'daterangepicker' => [
-                'name' => 'DateRangePicker',
-                'package_path' => [
-                    'daterangepicker',
-                    'moment',
-                ],
-                'assets_path' => [
-                    'daterangepicker',
-                    'moment',
-                ],
-            ],
-            'ekkoLightbox' => [
-                'name' => 'Ekko Lightbox',
-                'package_path' => 'ekko-lightbox',
-                'assets_path' => 'ekko-lightbox',
-            ],
-            'fastclick' => [
-                'name' => 'Fastclick',
-                'package_path' => 'fastclick',
-                'assets_path' => 'fastclick',
-            ],
-            'filterizr' => [
-                'name' => 'Filterizr',
-                'package_path' => 'filterizr',
-                'assets_path' => 'filterizr',
-                'ignore_ending' => '*.d.ts',
-                'recursive' => false,
-            ],
-            'flagIconCss' => [
-                'name' => 'Flag Icon Css',
-                'package_path' => 'flag-icon-css',
-                'assets_path' => 'flag-icon-css',
-            ],
-            'flot' => [
-                'name' => 'Flot',
-                'package_path' => 'flot',
-                'assets_path' => 'flot',
-            ],
-            'fullcalendar' => [
-                'name' => 'Fullcalendar',
-                'package_path' => 'fullcalendar',
-                'assets_path' => 'fullcalendar',
-                'ignore_ending' => [
-                    '*.d.ts', '*.json', '*.md',
-                ],
-            ],
-            'fullcalendarPlugins' => [
-                'name' => 'Fullcalendar Plugins',
-                'package_path' => [
-                    'fullcalendar-bootstrap',
-                    'fullcalendar-daygrid',
-                    'fullcalendar-interaction',
-                    'fullcalendar-timegrid',
-                ],
-                'assets_path' => [
-                    'fullcalendar-plugins/bootstrap',
-                    'fullcalendar-plugins/daygrid',
-                    'fullcalendar-plugins/interaction',
-                    'fullcalendar-plugins/timegrid',
-                ],
-                'ignore_ending' => [
-                    '*.d.ts', '*.json', '*.md',
-                ],
-            ],
-            'icheckBootstrap' => [
-                'name' => 'iCheck Bootstrap',
-                'package_path' => 'icheck-bootstrap',
-                'assets_path' => 'icheck-bootstrap',
-                'ignore_ending' => [
-                    '*.json', '*.md',
-                ],
-            ],
-            'inputmask' => [
-                'name' => 'InputMask',
-                'package_path' => 'inputmask',
-                'assets_path' => 'inputmask',
-            ],
-            'ionRangslider' => [
-                'name' => 'ion RangeSlider',
-                'package_path' => 'ion-rangeslider',
-                'assets_path' => 'ion-rangeslider',
-                'ignore_ending' => [
-                    '*.json', '*.md', '.editorconfig',
-                ],
-            ],
-            'jqueryKnob' => [
-                'name' => 'jQuery Knob',
-                'package_path' => 'jquery-knob',
-                'assets_path' => 'jquery-knob',
-            ],
-            'jqueryMapael' => [
-                'name' => 'jQuery Mapael',
-                'package_path' => [
-                    'jquery-mapael',
-                    'raphael',
-                    'jquery-mousewheel',
-                ],
-                'assets_path' => [
-                    'jquery-mapael',
-                    'raphael',
-                    'jquery-mousewheel',
-                ],
-                'ignore_ending' => [
-                    '*.json', '*.md', '.editorconfig',
-                ],
-            ],
-            'jqueryUi' => [
-                'name' => 'jQuery UI',
-                'package_path' => [
-                    'jquery-ui',
-                    'jquery-ui/images',
-                ],
-                'assets_path' => [
-                    'jquery-ui',
-                    'jquery-ui/images',
-                ],
-                'recursive' => false,
-                'ignore_ending' => [
-                    '*.json', '*.md', '*.html', '.editorconfig',
-                ],
-            ],
-            'jqvmap' => [
-                'name' => 'jQVMap',
-                'package_path' => 'jqvmap',
-                'assets_path' => 'jqvmap',
-            ],
-            'jsgrid' => [
-                'name' => 'jsGrid',
-                'package_path' => [
-                    'jsgrid',
-                    'jsgrid/i18n',
-                ],
-                'assets_path' => [
-                    'jsgrid',
-                    'jsgrid/i18n',
-                ],
-                'recursive' => false,
-            ],
-            'paceProgress' => [
-                'name' => 'Pace Progress',
-                'package_path' => 'pace-progress',
-                'assets_path' => 'pace-progress',
-            ],
-            'select2' => [
-                'name' => 'Select 2 with Bootstrap 4 Theme',
-                'package_path' => [
-                    'select2',
-                    'select2-bootstrap4-theme',
-                ],
-                'assets_path' => [
-                    'select2',
-                    'select2-bootstrap4-theme',
-                ],
-                'ignore_ending' => [
-                    '*.json', '*.md',
-                ],
-            ],
-            'sparklines' => [
-                'name' => 'Sparklines',
-                'package_path' => 'sparklines',
-                'assets_path' => 'sparklines',
-            ],
-            'summernote' => [
-                'name' => 'Summernote',
-                'package_path' => 'summernote',
-                'assets_path' => 'summernote',
-            ],
-            'sweetalert2' => [
-                'name' => 'Sweetalert 2 with Bootstrap 4 Theme',
-                'package_path' => [
-                    'sweetalert2',
-                    'sweetalert2-theme-bootstrap-4',
-                ],
-                'assets_path' => [
-                    'sweetalert2',
-                    'sweetalert2-theme-bootstrap-4',
-                ],
-            ],
-            'tempusdominusBootstrap4' => [
-                'name' => 'Tempusdominus Bootstrap 4',
-                'package_path' => 'tempusdominus-bootstrap-4',
-                'assets_path' => 'tempusdominus-bootstrap-4',
-            ],
-            'toastr' => [
-                'name' => 'Toastr',
-                'package_path' => 'toastr',
-                'assets_path' => 'toastr',
-            ],
-        ];
-
-        foreach ($plugins as $plugin) {
-            if ($this->option('interactive')) {
-                if (! $this->confirm('Install the '.$plugin['name'].' assets?')) {
-                    continue;
-                }
-            }
-
-            if (is_array($plugin['package_path'])) {
-                foreach ($plugin['package_path'] as $key => $pluginPackagePath) {
-                    $pluginAssetsPath = $plugin['assets_path'][$key];
-                    $this->directoryCopy($packagePath.'plugins/'.$pluginPackagePath, $assetsPath.$pluginAssetsPath, ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
-                }
-            } else {
-                $this->directoryCopy($packagePath.'plugins/'.$plugin['package_path'], $assetsPath.$plugin['assets_path'], ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
-            }
-        }
-
-        $this->comment('Plugin Assets Installation complete.');
-    }
-
-    /**
      * Install the config file.
      */
     protected function exportConfig()
@@ -466,7 +254,15 @@ class AdminLteInstallCommand extends Command
             config_path('adminlte.php')
         );
 
-        $this->comment('Configuration Files Installation complete.');
+        $this->comment('Configuration Files installed successfully.');
+    }
+
+    /**
+     * Get Package Path
+     */
+    protected function packagePath($path)
+    {
+        return __DIR__."/../../$path";
     }
 
     /**
