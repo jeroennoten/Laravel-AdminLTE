@@ -76,7 +76,7 @@ This package provides an easy way to quickly set up [AdminLTE v3](https://adminl
     And then use this command to publish new assets
     
     ```
-    php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=assets --force
+    php artisan adminlte:update
     ```
    
 3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too.
@@ -90,17 +90,7 @@ This package provides an easy way to quickly set up [AdminLTE v3](https://adminl
    - Redo the modifications you did.
   
    Option 2:
-   - Modify in the css, js and other assets location in the master and page views.
-   
-### 3.1 Breaking Changes
-
-1. Version 1.25.1 to 1.26 and up:
-
-- Plugins configuration was modified, check the new usage here: [Plugins](#62-plugins)
-
-2. Version 1.26 to 1.2x and up:
-
-- iCheck plugin was replaced with [icheck-bootstrap](https://github.com/bantikyan/icheck-bootstrap). If you use the iCheck assets, make sure to check/modify the asset location.   
+   - Modify in the css, js and other assets location in the master and page views. 
 
 ## 4. Usage
 
@@ -139,31 +129,19 @@ All sections are in fact optional. Your blade template could look like the follo
 @stop
 ```
 
-Note that in Laravel 5.2 or higher you can also use `@stack` directive for `css` and `javascript`:
-
-```html
-{{-- resources/views/admin/dashboard.blade.php --}}
-
-@push('css')
-
-@push('js')
-```
-
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
-## 5. The `make:adminlte` artisan command
+## 5. Authentication views
 
 > Note: only for Laravel 5.2 and higher
 
-This package ships with a `make:adminlte` command that behaves exactly like `make:auth` (introduced in Laravel 5.2) but replaces the authentication views with AdminLTE style views.
+This package ships the following command to replaces the authentication views with AdminLTE style views.
 
 ```
-php artisan make:adminlte
+php artisan adminlte:install --only=auth_views
 ```
 
-This command should be used on fresh applications, just like the `make:auth` command
-
-### 5.1 Using the authentication views without the `make:adminlte` command
+### 5.1 Using the authentication views without the command
 
 If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
 
@@ -192,7 +170,7 @@ If you don't want a registration form, set the `register_url` setting to `null` 
 First, publish the configuration file:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=config
+php artisan adminlte:install --only=config
 ```
 
 Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
@@ -667,7 +645,7 @@ Just specifiy the language in `config/app.php`.
 If you need to modify the texts or add other languages, you can publish the language files:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=translations
+php artisan adminlte:install --only=translations
 ```
 
 Now, you can edit translations or add languages in `resources/lang/vendor/adminlte`.
@@ -726,7 +704,7 @@ To translate the menu headers, just use the `header` param. Example:
 If you need full control over the provided views, you can publish them:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
+php artisan adminlte:install --only=main_views
 ```
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.
