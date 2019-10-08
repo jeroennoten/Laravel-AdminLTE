@@ -51,6 +51,11 @@ class AdminLteInstallCommand extends Command
                 $this->exportTranslations();
 
                 break;
+					
+			case 'main_views':
+                $this->exportMainViews();
+
+                break;
 
             case 'auth_views':
                 $this->exportAuthViews();
@@ -63,7 +68,7 @@ class AdminLteInstallCommand extends Command
                 break;
 
             case 'basic_routes':
-                $this->exportRoutes();
+                $this->exportBasicRoutes();
 
                 break;
 
@@ -82,6 +87,9 @@ class AdminLteInstallCommand extends Command
         }
 
         if ($this->option('with')) {
+			if (in_array('main_views', $this->option('with'))) {
+                $this->exportMainViews();
+            }
             if (in_array('auth_views', $this->option('with'))) {
                 $this->exportAuthViews();
             }
@@ -89,7 +97,7 @@ class AdminLteInstallCommand extends Command
                 $this->exportBasicViews();
             }
             if (in_array('basic_routes', $this->option('with'))) {
-                $this->exportRoutes();
+                $this->exportBasicRoutes();
             }
         } elseif ($this->option('type') != 'none') {
             if ($this->option('type') == 'enhanced' || $this->option('type') == 'full') {
@@ -97,11 +105,31 @@ class AdminLteInstallCommand extends Command
             }
             if ($this->option('type') == 'full') {
                 $this->exportBasicViews();
-                $this->exportRoutes();
+                $this->exportBasicRoutes();
             }
         }
 
         $this->info('AdminLTE Installation complete.');
+    }
+
+    /**
+     * Export the main views.
+     *
+     * @return void
+     */
+    protected function exportMainViews()
+    {
+        if (! $this->option('basic')) {
+            if ($this->option('interactive')) {
+                if (! $this->confirm('Install AdminLTE main views?')) {
+                    return;
+                }
+            }
+
+            CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views'), true);
+
+            $this->comment('Main views installed successfully.');
+        }
     }
 
     /**
@@ -156,7 +184,7 @@ class AdminLteInstallCommand extends Command
      *
      * @return void
      */
-    protected function exportRoutes()
+    protected function exportBasicRoutes()
     {
         if (! $this->option('basic')) {
             if ($this->option('interactive')) {
