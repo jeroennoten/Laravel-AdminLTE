@@ -273,7 +273,6 @@ class AdminLtePluginCommand extends Command
 
     protected $package_path = 'vendor/almasaeed2010/adminlte/';
 
-
     /**
      * Execute the console command.
      *
@@ -312,7 +311,6 @@ class AdminLtePluginCommand extends Command
             } else {
                 $this->listPlugins();
             }
-
 
             break;
         }
@@ -442,7 +440,6 @@ class AdminLtePluginCommand extends Command
      */
     protected function removePlugins()
     {
-
         if (! $this->confirm('Do you really want to remove the plugin package assets?')) {
             return;
         }
