@@ -3,7 +3,6 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
 
 class AdminLteUpdateCommand extends Command
 {

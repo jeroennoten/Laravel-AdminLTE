@@ -382,10 +382,10 @@ class AdminLtePluginCommand extends Command
                 }
             }
         } else {
-            if (!file_exists($plugin_public_path . $plugin_assets_path)) {
+            if (! file_exists($plugin_public_path.$plugin_assets_path)) {
                 $plugin_exist = false;
             } else {
-                if (! $compare = $this->compareDirectories($plugin_base_path . $plugin_package_path, $plugin_public_path . $plugin_assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive)) {
+                if (! $compare = $this->compareDirectories($plugin_base_path.$plugin_package_path, $plugin_public_path.$plugin_assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive)) {
                     $plugin_missmatch = true;
                 }
             }
