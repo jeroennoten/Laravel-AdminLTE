@@ -8,6 +8,8 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\Container\Container;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
+use JeroenNoten\LaravelAdminLte\Console\AdminLtePluginCommand;
+use JeroenNoten\LaravelAdminLte\Console\AdminLteUpdateCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteInstallCommand;
 use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 
@@ -71,6 +73,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function registerCommands()
     {
         $this->commands(AdminLteInstallCommand::class);
+        $this->commands(AdminLteUpdateCommand::class);
+        $this->commands(AdminLtePluginCommand::class);
     }
 
     private function registerViewComposers(Factory $view)
