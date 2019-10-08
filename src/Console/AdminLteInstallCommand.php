@@ -51,8 +51,8 @@ class AdminLteInstallCommand extends Command
                 $this->exportTranslations();
 
                 break;
-					
-			case 'main_views':
+
+            case 'main_views':
                 $this->exportMainViews();
 
                 break;
@@ -87,7 +87,7 @@ class AdminLteInstallCommand extends Command
         }
 
         if ($this->option('with')) {
-			if (in_array('main_views', $this->option('with'))) {
+            if (in_array('main_views', $this->option('with'))) {
                 $this->exportMainViews();
             }
             if (in_array('auth_views', $this->option('with'))) {
