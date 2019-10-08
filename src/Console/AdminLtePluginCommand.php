@@ -283,8 +283,7 @@ class AdminLtePluginCommand extends Command
     {
         $operation = $this->arguments()['operation'];
 
-        if (!$operation)
-        {
+        if (! $operation) {
             $operation = 'list';
         }
 
@@ -320,7 +319,7 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * List Plugins
+     * List Plugins.
      *
      * @return void
      */
@@ -349,7 +348,7 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Check Plugin
+     * Check Plugin.
      *
      * @return void
      */
@@ -369,11 +368,11 @@ class AdminLtePluginCommand extends Command
 
         if (is_array($plugin_assets_path)) {
             foreach ($plugin_assets_path as $key => $assets_path) {
-                if (! file_exists($plugin_public_path . $assets_path)) {
+                if (! file_exists($plugin_public_path.$assets_path)) {
                     $plugin_exist = false;
                     $plugin_child_exist = false;
                 } else {
-                    $compare = $this->compareDirectories($plugin_base_path . $plugin_package_path[$key], $plugin_public_path . $assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive);
+                    $compare = $this->compareDirectories($plugin_base_path.$plugin_package_path[$key], $plugin_public_path.$assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive);
 
                     if (! $plugin_child_missmatch && $compare) {
                         $plugin_child_missmatch = false;
@@ -488,7 +487,7 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Compare Directories
+     * Compare Directories.
      *
      * @return void
      */
@@ -521,7 +520,7 @@ class AdminLtePluginCommand extends Command
                 }
             }
 
-            if ($file == '.' || $file == '..' || !  $checkup) {
+            if ($file == '.' || $file == '..' || ! $checkup) {
                 continue;
             }
 

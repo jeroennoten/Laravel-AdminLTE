@@ -259,7 +259,7 @@ class AdminLteInstallCommand extends Command
     }
 
     /**
-     * Get Package Path
+     * Get Package Path.
      */
     protected function packagePath($path)
     {

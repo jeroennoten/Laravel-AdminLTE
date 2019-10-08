@@ -19,7 +19,7 @@ class AdminLteUpdateCommand extends Command
     public function handle()
     {
         $this->call('adminlte:install', [
-            '--force' => true, '--only' => 'assets'
+            '--force' => true, '--only' => 'assets',
         ]);
     }
 }

@@ -2,7 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\Http\Helpers;
 
-class CommandHelper {
+class CommandHelper
+{
     /**
      * Check if the directories for the files exists.
      *
@@ -67,14 +68,15 @@ class CommandHelper {
     }
 
     /**
-     * Rescursive directory remove
+     * Rescursive directory remove.
      *
      * @param $directory
      * @return void
      */
-    public static function removeDirectory($directory) {
+    public static function removeDirectory($directory)
+    {
         if (file_exists($directory)) {
-            foreach (glob($directory . '/*') as $file) {
+            foreach (glob($directory.'/*') as $file) {
                 is_dir($file) ? self::removeDirectory($file) : unlink($file);
             }
             rmdir($directory);
