@@ -3,12 +3,13 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
+use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
 
 class AdminLtePluginCommand extends Command
 {
     protected $signature = 'adminlte:plugins '.
-        '{operation? : Operation command, Available commands; list, install, update, remove}'.
-        '{--plugin* : Plugin Key}'.
+        '{operation? : Operation command, Available commands; list, install, update & remove}'.
+        '{--plugin=* : Plugin Key}'.
         '{--interactive : The installation will guide you through the process}';
 
     protected $description = 'Manages additional plugin files for AdminLTE';
@@ -301,6 +302,7 @@ class AdminLtePluginCommand extends Command
             break;
 
         case 'remove':
+            $this->removePlugins();
             $this->info('AdminLTE Plugin Remove complete.');
 
             break;
@@ -423,10 +425,10 @@ class AdminLtePluginCommand extends Command
             if (is_array($plugin['package_path'])) {
                 foreach ($plugin['package_path'] as $key => $plugin_package_path) {
                     $plugin_assets_path = $plugin['assets_path'][$key];
-                    $this->directoryCopy(base_path($this->package_path).'plugins/'.$plugin_package_path, public_path($this->assets_path).$plugin_assets_path, $force, ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
+                    CommandHelper::directoryCopy(base_path($this->package_path).'plugins/'.$plugin_package_path, public_path($this->assets_path).$plugin_assets_path, $force, ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
                 }
             } else {
-                $this->directoryCopy(base_path($this->package_path).'plugins/'.$plugin['package_path'], public_path($this->assets_path).$plugin['assets_path'], $force, ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
+                CommandHelper::directoryCopy(base_path($this->package_path).'plugins/'.$plugin['package_path'], public_path($this->assets_path).$plugin['assets_path'], $force, ($plugin['recursive'] ?? true), ($plugin['ignore'] ?? []), ($plugin['ignore_ending'] ?? null));
             }
 
             $bar->advance();
@@ -434,6 +436,55 @@ class AdminLtePluginCommand extends Command
 
         $bar->finish();
         $this->line('');
+    }
+
+    /**
+     * Removes all Plugin Assets to Public Directory.
+     */
+    protected function removePlugins()
+    {
+
+        if (! $this->confirm('Do you really want to remove the plugin package assets?')) {
+            return;
+        }
+
+        if (! $plugins = $this->option('plugin')) {
+            $plugins = $this->plugins;
+        }
+
+        $plugin_keys = [];
+
+        foreach ($plugins as $plugin_key => $plugin) {
+            if (is_string($plugin)) {
+                $plugin_key = $plugin;
+            }
+
+            if (! isset($this->plugins[$plugin_key])) {
+                $this->error('Plugin Key not found: '.$plugin_key.'.');
+                continue;
+            }
+
+            $plugin_keys[] = $plugin_key;
+            $plugin = $this->plugins[$plugin_key];
+
+            if ($this->option('interactive')) {
+                if (! $this->confirm('Remove the '.$plugin['name'].' assets?')) {
+                    continue;
+                }
+            }
+            if (is_array($plugin['package_path'])) {
+                foreach ($plugin['package_path'] as $key => $plugin_package_path) {
+                    $plugin_assets_path = $plugin['assets_path'][$key];
+                    $plugin_path = public_path($this->assets_path).$plugin_assets_path;
+                    CommandHelper::removeDirectory($plugin_path);
+                }
+            } else {
+                $plugin_path = public_path($this->assets_path).$plugin['assets_path'];
+                CommandHelper::removeDirectory($plugin_path);
+            }
+        }
+
+        $this->info('Plugins removed: '.implode(', ', $plugin_keys).'.');
     }
 
     /**
@@ -500,68 +551,5 @@ class AdminLtePluginCommand extends Command
         }
 
         return $package_sha1 == $assets_sha1;
-    }
-
-    /**
-     * Check if the directories for the files exists.
-     *
-     * @param $directory
-     * @return void
-     */
-    protected function ensureDirectoriesExist($directory)
-    {
-        // CHECK if directory exists, if not create it
-        if (! is_dir($directory)) {
-            mkdir($directory, 0755, true);
-        }
-    }
-
-    /**
-     * Recursive function that copies an entire directory to a destination.
-     *
-     * @param $source_directory
-     * @param $destination_directory
-     */
-    protected function directoryCopy($source_directory, $destination_directory, $force = false, $recursive = false, $ignore = [], $ignore_ending = null)
-    {
-        //Checks destination folder existance
-        $this->ensureDirectoriesExist($destination_directory);
-        //Open source directory
-        $directory = opendir($source_directory);
-
-        while (false !== ($file = readdir($directory))) {
-            if (($file != '.') && ($file != '..')) {
-                if (is_dir($source_directory.'/'.$file) && $recursive) {
-                    $this->directoryCopy($source_directory.'/'.$file, $destination_directory.'/'.$file, $force, $recursive, $ignore, $ignore_ending);
-                } elseif (! is_dir($source_directory.'/'.$file)) {
-                    $checkup = true;
-
-                    if ($ignore_ending) {
-                        if (! is_array($ignore_ending)) {
-                            $ignore_ending = str_replace('*', '', $ignore_ending);
-
-                            $checkup = (substr($file, -strlen($ignore_ending)) !== $ignore_ending);
-                        } else {
-                            foreach ($ignore_ending as $key => $ignore_ending_sub) {
-                                if ($checkup) {
-                                    $ignore_ending_sub = str_replace('*', '', $ignore_ending_sub);
-
-                                    $checkup = (substr($file, -strlen($ignore_ending_sub)) !== $ignore_ending_sub);
-                                }
-                            }
-                        }
-                    }
-
-                    if ($checkup && (! in_array($file, $ignore))) {
-                        if (file_exists($destination_directory.'/'.$file) && ! $force) {
-                            continue;
-                        }
-                        copy($source_directory.'/'.$file, $destination_directory.'/'.$file);
-                    }
-                }
-            }
-        }
-
-        closedir($directory);
     }
 }

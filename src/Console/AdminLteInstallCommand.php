@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
+use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
 
 class AdminLteInstallCommand extends Command
 {
@@ -116,7 +117,7 @@ class AdminLteInstallCommand extends Command
                     return;
                 }
             }
-            $this->ensureDirectoriesExist($this->getViewPath('auth/passwords'));
+            CommandHelper::ensureDirectoriesExist($this->getViewPath('auth/passwords'));
             foreach ($this->authViews as $file => $content) {
                 file_put_contents($this->getViewPath($file), $content);
             }
@@ -186,7 +187,7 @@ class AdminLteInstallCommand extends Command
                 }
             }
 
-            $this->directoryCopy($this->packagePath('resources/lang'), base_path('resources/lang'), true);
+            CommandHelper::directoryCopy($this->packagePath('resources/lang'), base_path('resources/lang'), true);
 
             $this->comment('Translation files installed successfully.');
         }
@@ -207,8 +208,8 @@ class AdminLteInstallCommand extends Command
         $packagePath = base_path().'/vendor/almasaeed2010/adminlte/';
 
         // Copy AdminlTE dist
-        $this->directoryCopy($packagePath.'dist/css/', $assetsPath.'adminlte/dist/css', false);
-        $this->directoryCopy($packagePath.'dist/js/', $assetsPath.'adminlte/dist/js', false, ['demo.js']);
+        CommandHelper::directoryCopy($packagePath.'dist/css/', $assetsPath.'adminlte/dist/css', false);
+        CommandHelper::directoryCopy($packagePath.'dist/js/', $assetsPath.'adminlte/dist/js', false, ['demo.js']);
 
         if (! is_dir($assetsPath.'adminlte/dist/img/')) {
             mkdir($assetsPath.'adminlte/dist/img/');
@@ -217,19 +218,19 @@ class AdminLteInstallCommand extends Command
         copy($packagePath.'dist/img/AdminLTELogo.png', $assetsPath.'adminlte/dist/img/AdminLTELogo.png');
 
         // Copy Font Awesome Free
-        $this->directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', true);
 
         // Copy Bootstrap
-        $this->directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', true);
 
         // Copy Popper
-        $this->directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', true);
 
         // Copy jQuery
-        $this->directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
+        CommandHelper::directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
 
         // Copy overlayScrollbars
-        $this->directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', true);
 
         $this->comment('Basic Assets Installation complete.');
     }
@@ -266,20 +267,6 @@ class AdminLteInstallCommand extends Command
     }
 
     /**
-     * Check if the directories for the files exists.
-     *
-     * @param $directory
-     * @return void
-     */
-    protected function ensureDirectoriesExist($directory)
-    {
-        // CHECK if directory exists, if not create it
-        if (! is_dir($directory)) {
-            mkdir($directory, 0755, true);
-        }
-    }
-
-    /**
      * Get full view path relative to the application's configured view path.
      *
      * @param  string  $path
@@ -290,56 +277,5 @@ class AdminLteInstallCommand extends Command
         return implode(DIRECTORY_SEPARATOR, [
             config('view.paths')[0] ?? resource_path('views'), $path,
         ]);
-    }
-
-    /**
-     * Recursive function that copies an entire directory to a destination.
-     *
-     * @param $source_directory
-     * @param $destination_directory
-     */
-    protected function directoryCopy($source_directory, $destination_directory, $recursive = false, $ignore = [], $ignore_ending = null)
-    {
-        //Checks destination folder existance
-        $this->ensureDirectoriesExist($destination_directory);
-        //Open source directory
-        $directory = opendir($source_directory);
-
-        while (false !== ($file = readdir($directory))) {
-            if (($file != '.') && ($file != '..')) {
-                if (is_dir($source_directory.'/'.$file) && $recursive) {
-                    $this->directoryCopy($source_directory.'/'.$file, $destination_directory.'/'.$file, true);
-                } elseif (! is_dir($source_directory.'/'.$file)) {
-                    $checkup = true;
-
-                    if ($ignore_ending) {
-                        if (! is_array($ignore_ending)) {
-                            $ignore_ending = str_replace('*', '', $ignore_ending);
-
-                            $checkup = (substr($file, -strlen($ignore_ending)) !== $ignore_ending);
-                        } else {
-                            foreach ($ignore_ending as $key => $ignore_ending_sub) {
-                                if ($checkup) {
-                                    $ignore_ending_sub = str_replace('*', '', $ignore_ending_sub);
-
-                                    $checkup = (substr($file, -strlen($ignore_ending_sub)) !== $ignore_ending_sub);
-                                }
-                            }
-                        }
-                    }
-
-                    if ($checkup && (! in_array($file, $ignore))) {
-                        if (file_exists($destination_directory.'/'.$file) && ! $this->option('force')) {
-                            if (! $this->confirm("The [{$file}] file already exists. Do you want to replace it?")) {
-                                continue;
-                            }
-                        }
-                        copy($source_directory.'/'.$file, $destination_directory.'/'.$file);
-                    }
-                }
-            }
-        }
-
-        closedir($directory);
     }
 }
