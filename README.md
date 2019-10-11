@@ -12,8 +12,13 @@ This package provides an easy way to quickly set up [AdminLTE v3](https://adminl
 2. [Installation](#2-installation)
 3. [Updating](#3-updating)
 4. [Usage](#4-usage)
-5. [The `make:adminlte` artisan command](#5-the-makeadminlte-artisan-command)
-   1. [Using the authentication views without the `make:adminlte` command](#41-using-the-authentication-views-without-the-makeadminlte-command)
+5. [Artisan Console Commands](#5-artisan-console-commands)
+   1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
+      1. [Options](#511-options)
+   2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
+   3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
+   4. [Authentication views](#54-authentication-views)
+      1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
 6. [Configuration](#6-configuration)
    1. [Title](#61-title)
    2. [Logo](#62-logo)
@@ -131,7 +136,58 @@ All sections are in fact optional. Your blade template could look like the follo
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
-## 5. Authentication views
+## 5. Artisan Console Commands
+
+### 5.1 The `adminlte:install` Command
+
+You can install all required & additional resources with the `adminlte:install` command.
+
+Without any option it will install AdminLTE assets, config & translations.
+You can also install the Authentication Views with adding `--type=enhanced` or additional to the Authentication Views also the Basic Views & Routes with adding `--type=full` to the `adminlte:install` command.
+
+#### 5.1.1 Options
+
+ - `--force`: Overwrite existing views by default
+ - `--type=`: Installation type, Available type: none, basic, enhanced & full.
+ - `--only=`: Install only specific part, Available parts: assets, config, translations, auth_views, basic_views, basic_routes & main_views. This option can not used with the with option.
+ - `--with=*`: Install basic assets with specific parts, Available parts: auth_views, basic_views & basic_routes. Can be use multiple
+ - `--interactive` : The installation will guide you through the process
+
+
+### 5.2 The `adminlte:plugins` Command
+
+If you won't use cdn for the plugins, you can manage the optional plugins assets with the `adminlte:plugins` command.
+
+You can list all available plugins, install/update/remove all or specific plugins. Here are some examples for the command:
+
+Install all plugin assets
+- `artisan adminlte:plugins install`
+Install only Pace Progress & Select2 plugin assets
+- `artisan adminlte:plugins install --plugin=paceProgress --plugin=select2`
+
+Update all Plugin assets
+- `artisan adminlte:plugins update`
+Update only Pace Progress plugin assets
+- `artisan adminlte:plugins update`
+
+Remove all Plugin assets
+- `artisan adminlte:plugins remove`
+Remove only Select2 plugin assets
+- `artisan adminlte:plugins remove --plugin=select2`
+
+#### 5.2.1 Options
+
+ - `operation`: Operation command, Available commands; list (default), install, update & remove.
+ - `--plugin=`: Plugin Key. (Can used multiple times for the desired)
+ - `--interactive`: The installation will guide you through the process.
+
+
+### 5.3 The `adminlte:update` Command
+
+This command is only a shortcut for `adminlte:install --force --only=assets`.
+
+
+### 5.4 Authentication views
 
 > Note: only for Laravel 5.2 and higher
 
@@ -141,7 +197,7 @@ This package ships the following command to replaces the authentication views wi
 php artisan adminlte:install --only=auth_views
 ```
 
-### 5.1 Using the authentication views without the command
+### 5.4.1 Using the authentication views without the `adminlte:install` command
 
 If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
 

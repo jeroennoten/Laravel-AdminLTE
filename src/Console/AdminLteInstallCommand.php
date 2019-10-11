@@ -8,10 +8,9 @@ use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
 class AdminLteInstallCommand extends Command
 {
     protected $signature = 'adminlte:install '.
-        '{--basic : Only publishes the assets and a basic page example}'.
         '{--force : Overwrite existing views by default}'.
         '{--type= : Installation type, Available type: none, enhanced & full.}'.
-        '{--only= : Install only specific part, Available parts: assets, config, translations, auth_views, basic_views & basic_routes. This option can not used with the with option.}'.
+        '{--only= : Install only specific part, Available parts: assets, config, translations, auth_views, basic_views, basic_routes & main_views. This option can not used with the with option.}'.
         '{--with=* : Install basic assets with specific parts, Available parts: auth_views, basic_views & basic_routes}'.
         '{--interactive : The installation will guide you through the process}';
 
@@ -99,7 +98,8 @@ class AdminLteInstallCommand extends Command
             if (in_array('basic_routes', $this->option('with'))) {
                 $this->exportBasicRoutes();
             }
-        } elseif ($this->option('type') != 'none') {
+        }
+        if ($this->option('type') != 'none') {
             if ($this->option('type') == 'enhanced' || $this->option('type') == 'full') {
                 $this->exportAuthViews();
             }
@@ -119,17 +119,15 @@ class AdminLteInstallCommand extends Command
      */
     protected function exportMainViews()
     {
-        if (! $this->option('basic')) {
-            if ($this->option('interactive')) {
-                if (! $this->confirm('Install AdminLTE main views?')) {
-                    return;
-                }
+        if ($this->option('interactive')) {
+            if (! $this->confirm('Install AdminLTE main views?')) {
+                return;
             }
-
-            CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views'), true);
-
-            $this->comment('Main views installed successfully.');
         }
+
+        CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views'), $this->option('force'));
+
+        $this->comment('Main views installed successfully.');
     }
 
     /**
@@ -139,18 +137,16 @@ class AdminLteInstallCommand extends Command
      */
     protected function exportAuthViews()
     {
-        if (! $this->option('basic')) {
-            if ($this->option('interactive')) {
-                if (! $this->confirm('Install AdminLTE authentication views?')) {
-                    return;
-                }
+        if ($this->option('interactive')) {
+            if (! $this->confirm('Install AdminLTE authentication views?')) {
+                return;
             }
-            CommandHelper::ensureDirectoriesExist($this->getViewPath('auth/passwords'));
-            foreach ($this->authViews as $file => $content) {
-                file_put_contents($this->getViewPath($file), $content);
-            }
-            $this->comment('Authentication views installed successfully.');
         }
+        CommandHelper::ensureDirectoriesExist($this->getViewPath('auth/passwords'));
+        foreach ($this->authViews as $file => $content) {
+            file_put_contents($this->getViewPath($file), $content);
+        }
+        $this->comment('Authentication views installed successfully.');
     }
 
     /**
@@ -186,19 +182,17 @@ class AdminLteInstallCommand extends Command
      */
     protected function exportBasicRoutes()
     {
-        if (! $this->option('basic')) {
-            if ($this->option('interactive')) {
-                if (! $this->confirm('Install AdminLTE basic routes?')) {
-                    return;
-                }
+        if ($this->option('interactive')) {
+            if (! $this->confirm('Install AdminLTE basic routes?')) {
+                return;
             }
-            file_put_contents(
-                base_path('routes/web.php'),
-                file_get_contents(__DIR__.'/stubs/routes.stub'),
-                FILE_APPEND
-            );
-            $this->comment('Basic routes installed successfully.');
         }
+        file_put_contents(
+            base_path('routes/web.php'),
+            file_get_contents(__DIR__.'/stubs/routes.stub'),
+            FILE_APPEND
+        );
+        $this->comment('Basic routes installed successfully.');
     }
 
     /**
@@ -208,17 +202,15 @@ class AdminLteInstallCommand extends Command
      */
     protected function exportTranslations()
     {
-        if (! $this->option('basic')) {
-            if ($this->option('interactive')) {
-                if (! $this->confirm('Install AdminLTE authentication translations?')) {
-                    return;
-                }
+        if ($this->option('interactive')) {
+            if (! $this->confirm('Install AdminLTE authentication translations?')) {
+                return;
             }
-
-            CommandHelper::directoryCopy($this->packagePath('resources/lang'), base_path('resources/lang'), true);
-
-            $this->comment('Translation files installed successfully.');
         }
+
+        CommandHelper::directoryCopy($this->packagePath('resources/lang'), base_path('resources/lang'), $this->option('force'), true);
+
+        $this->comment('Translation files installed successfully.');
     }
 
     /**
@@ -236,8 +228,8 @@ class AdminLteInstallCommand extends Command
         $packagePath = base_path().'/vendor/almasaeed2010/adminlte/';
 
         // Copy AdminlTE dist
-        CommandHelper::directoryCopy($packagePath.'dist/css/', $assetsPath.'adminlte/dist/css', false);
-        CommandHelper::directoryCopy($packagePath.'dist/js/', $assetsPath.'adminlte/dist/js', false, ['demo.js']);
+        CommandHelper::directoryCopy($packagePath.'dist/css/', $assetsPath.'adminlte/dist/css', $this->option('force'));
+        CommandHelper::directoryCopy($packagePath.'dist/js/', $assetsPath.'adminlte/dist/js', $this->option('force'), ['demo.js']);
 
         if (! is_dir($assetsPath.'adminlte/dist/img/')) {
             mkdir($assetsPath.'adminlte/dist/img/');
@@ -246,19 +238,19 @@ class AdminLteInstallCommand extends Command
         copy($packagePath.'dist/img/AdminLTELogo.png', $assetsPath.'adminlte/dist/img/AdminLTELogo.png');
 
         // Copy Font Awesome Free
-        CommandHelper::directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', $this->option('force'));
 
         // Copy Bootstrap
-        CommandHelper::directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', $this->option('force'));
 
         // Copy Popper
-        CommandHelper::directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', $this->option('force'));
 
         // Copy jQuery
-        CommandHelper::directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
+        CommandHelper::directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', $this->option('force'), ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
 
         // Copy overlayScrollbars
-        CommandHelper::directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', true);
+        CommandHelper::directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', $this->option('force'));
 
         $this->comment('Basic Assets Installation complete.');
     }
