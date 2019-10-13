@@ -84,19 +84,21 @@
             @endif
                 <ul class="navbar-nav ml-auto">
                     @yield('content_top_nav_right')
-                    <li class="nav-item">
-						<a class="nav-link" href="#"
-						   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-						>
-							<i class="fa fa-fw fa-power-off"></i> {{ __('adminlte::adminlte.log_out') }}
-						</a>
-						<form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
-							@if(config('adminlte.logout_method'))
-								{{ method_field(config('adminlte.logout_method')) }}
-							@endif
-							{{ csrf_field() }}
-						</form>
-                    </li>
+                    @if(Auth::user())
+                        <li class="nav-item">
+    						<a class="nav-link" href="#"
+    						   onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
+    						>
+    							<i class="fa fa-fw fa-power-off"></i> {{ __('adminlte::adminlte.log_out') }}
+    						</a>
+    						<form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
+    							@if(config('adminlte.logout_method'))
+    								{{ method_field(config('adminlte.logout_method')) }}
+    							@endif
+    							{{ csrf_field() }}
+    						</form>
+                        </li>
+                    @endif
                     @if(config('adminlte.right_sidebar'))
                         <li class="nav-item">
                             <a class="nav-link" href="#" data-widget="control-sidebar" @if(!config('adminlte.right_sidebar_slide')) data-controlsidebar-slide="false" @endif @if(config('adminlte.right_sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light') data-scrollbar-theme="{{config('adminlte.right_sidebar_scrollbar_theme')}}" @endif @if(config('adminlte.right_sidebar_scrollbar_auto_hide', 'l') != 'l') data-scrollbar-auto-hide="{{config('adminlte.right_sidebar_scrollbar_auto_hide')}}" @endif>
