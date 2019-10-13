@@ -17,10 +17,11 @@ class AdminLteInstallCommand extends Command
     protected $description = 'Install all the required files for AdminLTE and the authentication views and routes';
 
     protected $authViews = [
-        'auth/login.blade.php'           => '@extends(\'adminlte::login\')',
-        'auth/register.blade.php'        => '@extends(\'adminlte::register\')',
-        'auth/passwords/email.blade.php' => '@extends(\'adminlte::passwords.email\')',
-        'auth/passwords/reset.blade.php' => '@extends(\'adminlte::passwords.reset\')',
+        'auth/login.blade.php'             => '@extends(\'adminlte::login\')',
+        'auth/register.blade.php'          => '@extends(\'adminlte::register\')',
+        'auth/passwords/confirm.blade.php' => '@extends(\'adminlte::passwords.confirm\')',
+        'auth/passwords/email.blade.php'   => '@extends(\'adminlte::passwords.email\')',
+        'auth/passwords/reset.blade.php'   => '@extends(\'adminlte::passwords.reset\')',
     ];
 
     protected $basicViews = [
