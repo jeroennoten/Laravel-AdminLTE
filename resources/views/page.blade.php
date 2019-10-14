@@ -46,29 +46,25 @@
         @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
         <nav class="main-header navbar navbar-expand {{config('adminlte.topnav_color', 'navbar-white navbar-light')}}">
             <div class="{{config('adminlte.classes_topnav_container', 'container')}}">
-                <nav class="navbar navbar-static-top">
-                    <div class="navbar-header">
-                        @if(config('adminlte.logo_img_xl'))
-                        <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link logo-switch">
-                            <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
-                            <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
-                        </a>
-                        @else
-                        <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link">
-                            <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
-                            <span class="brand-text font-weight-light">
-                                {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
-                            </span>
-                        </a>
-                        @endif
-                    </div>
+                @if(config('adminlte.logo_img_xl'))
+                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand logo-switch">
+                    <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
+                    <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
+                </a>
+                @else
+                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand">
+                    <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
+                    <span class="brand-text font-weight-light">
+                        {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                    </span>
+                </a>
+                @endif
 
-                    <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
-                        <ul class="nav navbar-nav">
-                            @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
-                        </ul>
-                    </div>
-                </nav>
+                <div class="collapse navbar-collapse pull-left" id="navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
+                    </ul>
+                </div>
             @else
             <nav class="main-header navbar navbar-expand {{config('adminlte.classes_topnav', 'navbar-white navbar-light')}}">
                 <ul class="navbar-nav">
