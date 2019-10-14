@@ -343,10 +343,13 @@ The following config options available:
     Extra classes for sidebar navigation.
 - __`classes_topnav`__
 
+    Extra classes for top navigation bar.
+- __`classes_topnav_nav`__
+
     Extra classes for top navigation.
 - __`classes_topnav_container`__
 
-    Extra classes for top navigation container.
+    Extra classes for top navigation bar container.
 
 
 ### 6.5 Sidebar
