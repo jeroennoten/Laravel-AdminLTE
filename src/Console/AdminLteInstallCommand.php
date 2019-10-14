@@ -199,6 +199,7 @@ class AdminLteInstallCommand extends Command
                 FILE_APPEND
             );
             $this->comment('Basic routes installed successfully.');
+
             return;
         }
         $this->comment('Basic routes already installed.');
