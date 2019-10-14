@@ -11,16 +11,17 @@ class AdminLteInstallCommand extends Command
         '{--force : Overwrite existing views by default}'.
         '{--type= : Installation type, Available type: none, enhanced & full.}'.
         '{--only= : Install only specific part, Available parts: assets, config, translations, auth_views, basic_views, basic_routes & main_views. This option can not used with the with option.}'.
-        '{--with=* : Install basic assets with specific parts, Available parts: auth_views, basic_views & basic_routes}'.
+        '{--with=* : Install basic assets with specific parts, Available parts: auth_views, basic_views, basic_routes & main_views}'.
         '{--interactive : The installation will guide you through the process}';
 
     protected $description = 'Install all the required files for AdminLTE and the authentication views and routes';
 
     protected $authViews = [
-        'auth/login.blade.php'           => '@extends(\'adminlte::login\')',
-        'auth/register.blade.php'        => '@extends(\'adminlte::register\')',
-        'auth/passwords/email.blade.php' => '@extends(\'adminlte::passwords.email\')',
-        'auth/passwords/reset.blade.php' => '@extends(\'adminlte::passwords.reset\')',
+        'auth/login.blade.php'             => '@extends(\'adminlte::login\')',
+        'auth/register.blade.php'          => '@extends(\'adminlte::register\')',
+        'auth/passwords/confirm.blade.php' => '@extends(\'adminlte::passwords.confirm\')',
+        'auth/passwords/email.blade.php'   => '@extends(\'adminlte::passwords.email\')',
+        'auth/passwords/reset.blade.php'   => '@extends(\'adminlte::passwords.reset\')',
     ];
 
     protected $basicViews = [
@@ -125,7 +126,7 @@ class AdminLteInstallCommand extends Command
             }
         }
 
-        CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views'), $this->option('force'));
+        CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views'), $this->option('force'), true);
 
         $this->comment('Main views installed successfully.');
     }
@@ -187,12 +188,21 @@ class AdminLteInstallCommand extends Command
                 return;
             }
         }
-        file_put_contents(
-            base_path('routes/web.php'),
-            file_get_contents(__DIR__.'/stubs/routes.stub'),
-            FILE_APPEND
-        );
-        $this->comment('Basic routes installed successfully.');
+
+        $file = file_get_contents(base_path('routes/web.php'));
+        $newRoutes = file_get_contents(__DIR__.'/stubs/routes.stub');
+
+        if (! strpos($file, $newRoutes)) {
+            file_put_contents(
+                base_path('routes/web.php'),
+                file_get_contents(__DIR__.'/stubs/routes.stub'),
+                FILE_APPEND
+            );
+            $this->comment('Basic routes installed successfully.');
+
+            return;
+        }
+        $this->comment('Basic routes already installed.');
     }
 
     /**
@@ -238,19 +248,19 @@ class AdminLteInstallCommand extends Command
         copy($packagePath.'dist/img/AdminLTELogo.png', $assetsPath.'adminlte/dist/img/AdminLTELogo.png');
 
         // Copy Font Awesome Free
-        CommandHelper::directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', $this->option('force'));
+        CommandHelper::directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', $this->option('force'), true);
 
         // Copy Bootstrap
-        CommandHelper::directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', $this->option('force'));
+        CommandHelper::directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', $this->option('force'), true);
 
         // Copy Popper
-        CommandHelper::directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', $this->option('force'));
+        CommandHelper::directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', $this->option('force'), true);
 
         // Copy jQuery
-        CommandHelper::directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', $this->option('force'), ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
+        CommandHelper::directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', $this->option('force'), true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
 
         // Copy overlayScrollbars
-        CommandHelper::directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', $this->option('force'));
+        CommandHelper::directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', $this->option('force'), true);
 
         $this->comment('Basic Assets Installation complete.');
     }

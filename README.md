@@ -27,19 +27,19 @@ This package provides an easy way to quickly set up [AdminLTE v3](https://adminl
    5. [Sidebar](#65-sidebar)
    6. [Control Sidebar (Right Sidebar)](#66-control-sidebar-right-sidebar)
    7. [URLs](#67-urls)
-   8. [Menu](#68-menu)
-      1. [Adding a Search Input](#681-adding-a–search-input)
-      2. [Custom Menu Filters](#682-custom-menu–filters)
-      3. [Menu configuration at runtime](#683-menu-configuration–at-runtime)
-      4. [Active menu items](#684-active-menu–items)
-    9. [Menu Filters](#69-menu-filters)
-   10. [Plugins](#610-plugins)
-      1. [Pace Plugin Configuration](#101-pace-plugin-configuration)
+   8. [Laravel Mix](#68-laravel-mix)
+   9. [Menu](#69-menu)
+      1. [Adding a Search Input](#691-adding-a–search-input)
+      2. [Custom Menu Filters](#692-custom-menu–filters)
+      3. [Menu configuration at runtime](#693-menu-configuration–at-runtime)
+      4. [Active menu items](#694-active-menu–items)
+   10. [Menu Filters](#610-menu-filters)
+   11. [Plugins](#611-plugins)
+      1. [Pace Plugin Configuration](#6111-pace-plugin-configuration)
 7. [Translations](#7-translations)
     1. [Menu Translations](#71-menu-translations)
 8. [Customize views](#8-customize-views)
-9. [Using Laravel Mix](#9-using-laravel-mix)
-10. [Issues, Questions and Pull Requests](#10-issues-questions-and-pull-requests)
+9. [Issues, Questions and Pull Requests](#9-issues-questions-and-pull-requests)
 
 ## 1. Requirements
 
@@ -343,10 +343,13 @@ The following config options available:
     Extra classes for sidebar navigation.
 - __`classes_topnav`__
 
+    Extra classes for top navigation bar.
+- __`classes_topnav_nav`__
+
     Extra classes for top navigation.
 - __`classes_topnav_container`__
 
-    Extra classes for top navigation container.
+    Extra classes for top navigation bar container.
 
 
 ### 6.5 Sidebar
@@ -430,7 +433,47 @@ Here we have the url settings to setup the correct login/register link. Register
     Changes the register link or if set `false` it will hide.
 
 
-### 6.8 Menu
+### 6.8 Laravel Mix
+If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
+
+```
+npm i @fortawesome/fontawesome-free
+npm i icheck-bootstrap
+npm i overlayscrollbars
+```
+
+Add the following to your `bootstrap.js` file after `window.$ = window.jQuery = require('jquery');`:
+
+```
+    require('overlayscrollbars');
+    require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
+ ```
+
+Replace your `app.scss` content by the following:
+
+```
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
+@import '~@fortawesome/fontawesome-free/css/all.css';
+// OverlayScrollbars
+@import '~overlayscrollbars/css/OverlayScrollbars.css';
+// iCheck
+@import '~icheck-bootstrap/icheck-bootstrap.css';
+// AdminLTE
+@import '../../vendor/almasaeed2010/adminlte/dist/css/adminlte.css';
+// Bootstrap
+// Already imported by AdminLTE
+//@import '~bootstrap/scss/bootstrap';
+```
+
+After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable load app.css & app.js .
+
+- __`enabled_laravel_mix`__
+
+    Enables Laravel Mix specific css/js load in master layout.
+    __Warning__ If you enable this option, the sections `adminlte_css` & `adminlte_js` will not rendered.
+
+### 6.9 Menu
 Specify your menu items to display in the left sidebar. Each menu item should have a text and a URL. You can also specify an icon from Font Awesome. A string instead of an array represents a header in sidebar layout. The 'can' is a filter on Laravel's built in Gate functionality.
 
 You can configure your menu as follows:
@@ -492,7 +535,7 @@ Use the `can` attribute if you want conditionally show the menu item. This integ
 ]
 ```
 
-#### 6.8.1 Adding a Search Input
+#### 6.9.1 Adding a Search Input
 
 It's possible to add a search input in your menu, using a menu item with the following configuration:
 
@@ -506,7 +549,7 @@ It's possible to add a search input in your menu, using a menu item with the fol
         ],
 ```
 
-#### 6.8.2 Custom Menu Filters
+#### 6.9.2 Custom Menu Filters
 
 If you need custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).
 
@@ -547,7 +590,7 @@ And then add to `config/adminlte.php`:
 ]
 ```
 
-#### 6.8.3 Menu configuration at runtime
+#### 6.9.3 Menu configuration at runtime
 
 It is also possible to configure the menu at runtime, e.g. in the boot of any service provider.
 Use this if your menu is not static, for example when it depends on your database or the locale.
@@ -600,7 +643,7 @@ A more practical example that actually uses translations and the database:
 
 This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
 
-#### 6.8.4 Active menu items
+#### 6.9.4 Active menu items
 
 By default, a menu item is considered active if any of the following holds:
 - The current path matches the `url` parameter
@@ -620,7 +663,7 @@ To utilize regex, simply prefix your pattern with `regex:` and it will get evalu
 ```
 
 
-### 6.9 Menu Filters
+### 6.10 Menu Filters
 Here we can set the filters you want to include for rendering the menu.
 You can add your own filters to this array after you've created them. You can comment out the GateFilter if you don't want to use Laravel's built in Gate functionality
 
@@ -639,7 +682,7 @@ Default menu filters:
 - `JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class`
 
 
-### 6.10 Plugins
+### 6.11 Plugins
 Configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via script and link tag. Plugin Name, active status and files array (even empty) are required. Files, when added, need to have type (js or css), asset (true or false) and location (string). When asset is set to true, the location will be output using asset() function.
 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and but not active.
@@ -682,7 +725,7 @@ Each plugin have a files array, with contain arrays with file type (`js` or `css
 
 If the asset value is `true`, the injection will use the asset() function.
 
-#### 6.10.1 Pace Plugin Configuration
+#### 6.11.1 Pace Plugin Configuration
 
 You can change the Pace plugin appearence, when using the CDN injection modifying the css file location.
 ```
@@ -765,62 +808,7 @@ php artisan adminlte:install --only=main_views
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.
 
-## 9. Using Laravel Mix
-
-If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
-
-```
-npm i @fortawesome/fontawesome-free
-npm i icheck-bootstrap
-npm i overlayscrollbars
-```
-
-Add the following to your `bootstrap.js` file after `window.$ = window.jQuery = require('jquery');`:
-
-```
-    require('overlayscrollbars');
-    require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
- ```
-
-Replace your `app.scss` content by the following:
-
-```
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
-@import '~@fortawesome/fontawesome-free/css/all.css';
-// OverlayScrollbars
-@import '~overlayscrollbars/css/OverlayScrollbars.css';
-// iCheck
-@import '~icheck-bootstrap/icheck-bootstrap.css';
-// AdminLTE
-@import '../../vendor/almasaeed2010/adminlte/dist/css/adminlte.css';
-// Bootstrap
-// Already imported by AdminLTE
-//@import '~bootstrap/scss/bootstrap';
-```
-
-Publish the views as explained in [Customize views](#8-customize-views). Modify the `master.blade.php` as follows:
-
-```
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('title_prefix', config('adminlte.title_prefix', ''))
-@yield('title', config('adminlte.title', 'AdminLTE 3'))
-@yield('title_postfix', config('adminlte.title_postfix', ''))</title>
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-</head>
-<body class="@yield('classes_body')" @yield('body_data')>
-@yield('body')
-<script src="{{ asset('js/app.js') }}"></script>
-</body>
-</html>
-```
-
-## 10. Issues, Questions and Pull Requests
+## 9. Issues, Questions and Pull Requests
 
 You can report issues and ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
 

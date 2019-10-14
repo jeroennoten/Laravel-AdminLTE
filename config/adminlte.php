@@ -72,6 +72,7 @@ return [
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'navbar-white navbar-light',
+    'classes_topnav_nav' => 'navbar-expand-md',
     'classes_topnav_container' => 'container',
 
     /*
@@ -138,13 +139,27 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Laravel Mix
+    |--------------------------------------------------------------------------
+    |
+    | Here we can enable the Laravel Mix option for the admin panel.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#68-laravel-mix
+    |
+    */
+
+    'enabled_laravel_mix' => false,
+
+    /*
+    |--------------------------------------------------------------------------
     | Menu Items
     |--------------------------------------------------------------------------
     |
     | Here we can modify the sidebar/top navigation of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#68-menu
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#69-menu
     |
     */
 
@@ -238,7 +253,7 @@ return [
     | Here we can modify the menu filters of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#69-menu-filters
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#610-menu-filters
     |
     */
 
@@ -260,7 +275,7 @@ return [
     | Here we can modify the plugins used inside the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#610-plugins
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#611-plugins
     |
     */
 
