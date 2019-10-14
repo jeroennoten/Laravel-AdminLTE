@@ -34,6 +34,6 @@ class LangFilter implements FilterInterface
             return $this->langGenerator->get('adminlte::menu.'.$item);
         }
 
-        return false;
+        return $item;
     }
 }
