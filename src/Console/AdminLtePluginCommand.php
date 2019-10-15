@@ -403,7 +403,11 @@ class AdminLtePluginCommand extends Command
      */
     protected function copyPlugins($force = null)
     {
-        $bar = $this->output->createProgressBar(count($this->plugins));
+        if (! $plugins = $this->option('plugin')) {
+            $plugins = $this->plugins;
+        }
+
+        $bar = $this->output->createProgressBar(count($plugins));
 
         $bar->start();
 
@@ -413,7 +417,19 @@ class AdminLtePluginCommand extends Command
             }
         }
 
-        foreach ($this->plugins as $plugin) {
+        foreach ($plugins as $plugin_key => $plugin) {
+            if (is_string($plugin)) {
+                $plugin_key = $plugin;
+            }
+
+            if (! isset($this->plugins[$plugin_key])) {
+                $this->error('Plugin Key not found: '.$plugin_key.'.');
+                continue;
+            }
+
+            $plugin_keys[] = $plugin_key;
+            $plugin = $this->plugins[$plugin_key];
+
             if ($this->option('interactive')) {
                 if (! $this->confirm('Install the '.$plugin['name'].' assets?')) {
                     continue;
