@@ -142,11 +142,15 @@
             @endif
 
             <div class="content-header">
-                @yield('content_header')
+                <div class="{{config('adminlte.classes_content_header', 'container-fluid')}}">
+                    @yield('content_header')
+                </div>
             </div>
 
             <div class="content">
-                @yield('content')
+                <div class="{{config('adminlte.classes_content', 'container-fluid')}}">
+                    @yield('content')
+                </div>
             </div>
             @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
             </div>
