@@ -370,7 +370,7 @@ class AdminLtePluginCommand extends Command
                     $plugin_exist = false;
                     $plugin_child_exist = false;
                 } else {
-                    $compare = $this->compareDirectories($plugin_base_path.$plugin_package_path[$key], $plugin_public_path.$assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive);
+                    $compare = CommandHelper::compareDirectories($plugin_base_path.$plugin_package_path[$key], $plugin_public_path.$assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive);
 
                     if (! $plugin_child_missmatch && $compare) {
                         $plugin_child_missmatch = false;
@@ -383,7 +383,7 @@ class AdminLtePluginCommand extends Command
             if (! file_exists($plugin_public_path.$plugin_assets_path)) {
                 $plugin_exist = false;
             } else {
-                if (! $compare = $this->compareDirectories($plugin_base_path.$plugin_package_path, $plugin_public_path.$plugin_assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive)) {
+                if (! $compare = CommandHelper::compareDirectories($plugin_base_path.$plugin_package_path, $plugin_public_path.$plugin_assets_path, '', $plugin_ignore, $plugin_ignore_ending, $plugin_recursive)) {
                     $plugin_missmatch = true;
                 }
             }
@@ -497,71 +497,5 @@ class AdminLtePluginCommand extends Command
         }
 
         $this->info('Plugins removed: '.implode(', ', $plugin_keys).'.');
-    }
-
-    /**
-     * Compare Directories.
-     *
-     * @return void
-     */
-    protected function compareDirectories($package_path, $assets_path, $sub_folder = '', $ignore = [], $ignore_ending = [], $recursive = true, $internal = null)
-    {
-        $return = [];
-        $package_sha1 = '';
-        $assets_sha1 = '';
-
-        $handle = opendir($package_path);
-
-        while ($file = readdir($handle)) {
-            $checkup = true;
-
-            if (in_array($file, $ignore)) {
-                $checkup = false;
-            } elseif ($ignore_ending) {
-                if (! is_array($ignore_ending)) {
-                    $ignore_ending = str_replace('*', '', $ignore_ending);
-
-                    $checkup = (substr($file, -strlen($ignore_ending)) !== $ignore_ending);
-                } else {
-                    foreach ($ignore_ending as $key => $ignore_ending_sub) {
-                        if ($checkup) {
-                            $ignore_ending_sub = str_replace('*', '', $ignore_ending_sub);
-
-                            $checkup = (substr($file, -strlen($ignore_ending_sub)) !== $ignore_ending_sub);
-                        }
-                    }
-                }
-            }
-
-            if ($file == '.' || $file == '..' || ! $checkup) {
-                continue;
-            }
-
-            $sourcepath = $package_path.$sub_folder.DIRECTORY_SEPARATOR.$file;
-            $destpath = $assets_path.DIRECTORY_SEPARATOR.$file;
-
-            if (is_file($sourcepath)) {
-                $package_sha1 .= sha1_file($sourcepath);
-
-                if (is_file($destpath) && file_exists($destpath)) {
-                    $assets_sha1 .= sha1_file($destpath);
-                }
-            } elseif ($recursive) {
-                $return = $this->compareDirectories($sourcepath, $destpath, '', $ignore, $ignore_ending, true, true);
-                $package_sha1 .= $return['package_sha1'];
-                $assets_sha1 .= $return['assets_sha1'];
-            }
-        }
-
-        closedir($handle);
-
-        if ($internal) {
-            return [
-                'package_sha1' => $package_sha1,
-                'assets_sha1' => $assets_sha1,
-            ];
-        }
-
-        return $package_sha1 == $assets_sha1;
     }
 }
