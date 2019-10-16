@@ -68,6 +68,69 @@ class CommandHelper
     }
 
     /**
+     * Compare Directories.
+     *
+     * @return void
+     */
+    public static function compareDirectories($package_path, $assets_path, $sub_folder = '', $ignore = [], $ignore_ending = [], $recursive = false, $internal = null)
+    {
+        $return = [];
+        $package_sha1 = '';
+        $assets_sha1 = '';
+
+        $handle = opendir($package_path);
+
+        while ($file = readdir($handle)) {
+            $checkup = true;
+
+            if (in_array($file, $ignore)) {
+                $checkup = false;
+            } elseif ($ignore_ending) {
+                if (! is_array($ignore_ending)) {
+                    $ignore_ending = str_replace('*', '', $ignore_ending);
+
+                    $checkup = (substr($file, -strlen($ignore_ending)) !== $ignore_ending);
+                } else {
+                    foreach ($ignore_ending as $key => $ignore_ending_sub) {
+                        if ($checkup) {
+                            $ignore_ending_sub = str_replace('*', '', $ignore_ending_sub);
+
+                            $checkup = (substr($file, -strlen($ignore_ending_sub)) !== $ignore_ending_sub);
+                        }
+                    }
+                }
+            }
+
+            if ($file == '.' || $file == '..' || ! $checkup) {
+                continue;
+            }
+            $sourcepath = $package_path.$sub_folder.DIRECTORY_SEPARATOR.$file;
+            $destpath = $assets_path.DIRECTORY_SEPARATOR.$file;
+            if (is_file($sourcepath)) {
+                $package_sha1 .= sha1_file($sourcepath);
+                if (file_exists($destpath) && is_file($destpath)) {
+                    $assets_sha1 .= sha1_file($destpath);
+                }
+            } elseif ($recursive) {
+                $return = self::compareDirectories($sourcepath, $destpath, '', $ignore, $ignore_ending, $recursive, true);
+                $package_sha1 .= $return['package_sha1'];
+                $assets_sha1 .= $return['assets_sha1'];
+            }
+        }
+
+        closedir($handle);
+
+        if ($internal) {
+            return [
+                'package_sha1' => $package_sha1,
+                'assets_sha1' => $assets_sha1,
+            ];
+        }
+
+        return $package_sha1 == $assets_sha1 ? true : ($assets_sha1 == '' ? null : false);
+    }
+
+    /**
      * Rescursive directory remove.
      *
      * @param $directory
@@ -76,7 +139,7 @@ class CommandHelper
     public static function removeDirectory($directory)
     {
         if (file_exists($directory)) {
-            foreach (glob($directory.'/*') as $file) {
+            foreach (glob($directory.'/{,.}*[!.]', GLOB_MARK | GLOB_BRACE) as $file) {
                 is_dir($file) ? self::removeDirectory($file) : unlink($file);
             }
             rmdir($directory);

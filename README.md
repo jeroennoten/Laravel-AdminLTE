@@ -335,6 +335,15 @@ The following config options available:
 - __`classes_brand`__
 
     Extra classes for brand.
+- __`classes_brand_text`__
+
+    Extra classes for brand text.
+- __`classes_content_header`__
+
+    Extra classes for content header container.
+- __`classes_content`__
+
+    Extra classes for content container.
 - __`classes_sidebar`__
 
     Extra classes for sidebar.

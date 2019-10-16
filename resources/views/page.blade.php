@@ -52,9 +52,9 @@
                         <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
                     </a>
                 @else
-                    <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand">
+                    <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand {{ config('adminlte.classes_brand') }}">
                         <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
-                        <span class="brand-text font-weight-light">
+                        <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
                             {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                         </span>
                     </a>
@@ -119,9 +119,9 @@
                     <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
                 </a>
             @else
-                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link">
+                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link {{ config('adminlte.classes_brand') }}">
                     <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
-                    <span class="brand-text font-weight-light">
+                    <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
                         {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
                     </span>
                 </a>
@@ -142,11 +142,15 @@
             @endif
 
             <div class="content-header">
-                @yield('content_header')
+                <div class="{{config('adminlte.classes_content_header', 'container-fluid')}}">
+                    @yield('content_header')
+                </div>
             </div>
 
             <div class="content">
-                @yield('content')
+                <div class="{{config('adminlte.classes_content', 'container-fluid')}}">
+                    @yield('content')
+                </div>
             </div>
             @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
             </div>

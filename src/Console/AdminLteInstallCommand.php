@@ -28,6 +28,62 @@ class AdminLteInstallCommand extends Command
         'home.stub' => 'home.blade.php',
     ];
 
+    protected $package_path = __DIR__.'/../../';
+
+    protected $assets_path = 'vendor/';
+
+    protected $assets_package_path = 'vendor/almasaeed2010/adminlte/';
+
+    protected $assets = [
+        'adminlte' => [
+            'name' => 'AdminLTE v3',
+            'package_path' => [
+                'dist/css/',
+                'dist/js/',
+            ],
+            'assets_path' => [
+                'adminlte/dist/css',
+                'adminlte/dist/js',
+            ],
+            'images_path' => 'adminlte/dist/img/',
+            'images' => [
+                'dist/img/AdminLTELogo.png' => 'AdminLTELogo.png',
+            ],
+            'recursive' => false,
+            'ignore' => [
+                'demo.js',
+            ],
+        ],
+        'fontawesomeFree' => [
+            'name' => 'FontAwesome 5 Free',
+            'package_path' => 'plugins/fontawesome-free',
+            'assets_path' => 'fontawesome-free',
+        ],
+        'bootstrap' => [
+            'name' => 'Bootstrap 4 (js files only)',
+            'package_path' => 'plugins/bootstrap',
+            'assets_path' => 'bootstrap',
+        ],
+        'popper' => [
+            'name' => 'Popper.js (Bootstrap 4 requirement)',
+            'package_path' => 'plugins/popper',
+            'assets_path' => 'popper',
+        ],
+        'jquery' => [
+            'name' => 'jQuery (Bootstrap 4 requirement)',
+            'package_path' => 'plugins/jquery',
+            'assets_path' => 'jquery',
+            'ignore' => [
+                'core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map',
+            ],
+        ],
+        'overlayScrollbars' => [
+            'name' => 'Overlay Scrollbars',
+            'package_path' => 'plugins/overlayScrollbars',
+            'assets_path' => 'overlayScrollbars',
+        ],
+    ];
+
     /**
      * Execute the console command.
      *
@@ -234,33 +290,9 @@ class AdminLteInstallCommand extends Command
             }
         }
 
-        $assetsPath = public_path().'/vendor/';
-        $packagePath = base_path().'/vendor/almasaeed2010/adminlte/';
-
-        // Copy AdminlTE dist
-        CommandHelper::directoryCopy($packagePath.'dist/css/', $assetsPath.'adminlte/dist/css', $this->option('force'));
-        CommandHelper::directoryCopy($packagePath.'dist/js/', $assetsPath.'adminlte/dist/js', $this->option('force'), ['demo.js']);
-
-        if (! is_dir($assetsPath.'adminlte/dist/img/')) {
-            mkdir($assetsPath.'adminlte/dist/img/');
+        foreach ($this->assets as $asset_key => $asset) {
+            $this->copyAssets($asset_key, $this->option('force'));
         }
-
-        copy($packagePath.'dist/img/AdminLTELogo.png', $assetsPath.'adminlte/dist/img/AdminLTELogo.png');
-
-        // Copy Font Awesome Free
-        CommandHelper::directoryCopy($packagePath.'plugins/fontawesome-free', $assetsPath.'fontawesome-free', $this->option('force'), true);
-
-        // Copy Bootstrap
-        CommandHelper::directoryCopy($packagePath.'plugins/bootstrap', $assetsPath.'bootstrap', $this->option('force'), true);
-
-        // Copy Popper
-        CommandHelper::directoryCopy($packagePath.'plugins/popper', $assetsPath.'popper', $this->option('force'), true);
-
-        // Copy jQuery
-        CommandHelper::directoryCopy($packagePath.'plugins/jquery', $assetsPath.'jquery', $this->option('force'), true, ['core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map']);
-
-        // Copy overlayScrollbars
-        CommandHelper::directoryCopy($packagePath.'plugins/overlayScrollbars', $assetsPath.'overlayScrollbars', $this->option('force'), true);
 
         $this->comment('Basic Assets Installation complete.');
     }
@@ -281,7 +313,7 @@ class AdminLteInstallCommand extends Command
             }
         }
         copy(
-            __DIR__.'/../../config/adminlte.php',
+            $this->packagePath('config/adminlte.php'),
             config_path('adminlte.php')
         );
 
@@ -293,7 +325,7 @@ class AdminLteInstallCommand extends Command
      */
     protected function packagePath($path)
     {
-        return __DIR__."/../../$path";
+        return $this->package_path.$path;
     }
 
     /**
@@ -302,10 +334,55 @@ class AdminLteInstallCommand extends Command
      * @param  string  $path
      * @return string
      */
-    protected function getViewPath($path)
+    public function getViewPath($path)
     {
         return implode(DIRECTORY_SEPARATOR, [
             config('view.paths')[0] ?? resource_path('views'), $path,
         ]);
+    }
+
+    /**
+     * Copy Assets Data.
+     *
+     * @param  string  $asset_name
+     * @param  bool $force
+     * @return void
+     */
+    protected function copyAssets($asset_name, $force = false)
+    {
+        if (! isset($this->assets[$asset_name])) {
+            return;
+        }
+
+        $asset = $this->assets[$asset_name];
+
+        if (is_array($asset['package_path'])) {
+            foreach ($asset['package_path'] as $key => $asset_package_path) {
+                $asset_assets_path = $asset['assets_path'][$key];
+                CommandHelper::directoryCopy(base_path($this->assets_package_path).$asset_package_path, public_path($this->assets_path).$asset_assets_path, $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
+            }
+        } else {
+            CommandHelper::directoryCopy(base_path($this->assets_package_path).$asset['package_path'], public_path($this->assets_path).$asset['assets_path'], $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
+        }
+
+        if (isset($asset['images_path']) && isset($asset['images'])) {
+            CommandHelper::ensureDirectoriesExist(public_path($this->assets_path).$asset['images_path']);
+            foreach ($asset['images'] as $image_package_path => $image_assets_path) {
+                if (file_exists(public_path($this->assets_path).$asset['images_path'].$image_assets_path) && ! $force) {
+                    continue;
+                }
+                copy(base_path($this->assets_package_path).$image_package_path, public_path($this->assets_path).$asset['images_path'].$image_assets_path);
+            }
+        }
+    }
+
+    /**
+     * Get Protected.
+     *
+     * @return array
+     */
+    public function getProtected($var)
+    {
+        return $this->{$var};
     }
 }
