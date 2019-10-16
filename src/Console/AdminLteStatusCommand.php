@@ -4,11 +4,10 @@ namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
-use JeroenNoten\LaravelAdminLte\Console\AdminLteInstallCommand;
 
 class AdminLteStatusCommand extends Command
 {
-    protected $signature = 'adminlte:status' .
+    protected $signature = 'adminlte:status'.
         '{--include-images : Includes AdminLTE asset images to the checkup}'.
         '{--include-plugins : Includes AdminLTE plugin assets to the checkup}';
 
@@ -69,7 +68,7 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Resolve Compare
+     * Resolve Compare.
      *
      * @param  $compare
      * @return string
@@ -105,7 +104,7 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Compare Folder
+     * Compare Folder.
      *
      * @param  $source_path
      * @param  $destination_path
@@ -116,7 +115,7 @@ class AdminLteStatusCommand extends Command
      * @param  $ignore_ending
      * @param  $images
      * @param  $images_path
-     * @return integer
+     * @return int
      */
     public function compareFolder($source_path, $destination_path, $source_base_path = null, $destination_base_path = null, $recursive = true, $ignore = [], $ignore_ending = [], $images = null, $images_path = null, $ignore_base_folder = null)
     {
@@ -193,11 +192,11 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Compare File
+     * Compare File.
      *
      * @param  $source_file
      * @param  $destination_file
-     * @return integer
+     * @return int
      */
     public function compareFile($source_file, $destination_file)
     {
@@ -213,7 +212,7 @@ class AdminLteStatusCommand extends Command
             }
         }
 
-        if ($file_exist  && (! $file_missmatch)) {
+        if ($file_exist && (! $file_missmatch)) {
             return 1;
         } elseif ($file_exist && $file_missmatch) {
             return 2;
@@ -223,9 +222,9 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Compare Auth Views
+     * Compare Auth Views.
      *
-     * @return integer
+     * @return int
      */
     public function compareAuthViews()
     {
@@ -238,7 +237,7 @@ class AdminLteStatusCommand extends Command
         foreach ($auth_views as $file_name => $file_content) {
             $file = $install_command->getViewPath($file_name);
             $dest_file_content = file_get_contents($file);
-            if (strpos($dest_file_content, $file_content) !== FALSE) {
+            if (strpos($dest_file_content, $file_content) !== false) {
                 $view_found++;
             }
         }

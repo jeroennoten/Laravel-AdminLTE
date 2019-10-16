@@ -139,7 +139,7 @@ class CommandHelper
     public static function removeDirectory($directory)
     {
         if (file_exists($directory)) {
-            foreach (glob($directory.'/{,.}*[!.]', GLOB_MARK|GLOB_BRACE) as $file) {
+            foreach (glob($directory.'/{,.}*[!.]', GLOB_MARK | GLOB_BRACE) as $file) {
                 is_dir($file) ? self::removeDirectory($file) : unlink($file);
             }
             rmdir($directory);

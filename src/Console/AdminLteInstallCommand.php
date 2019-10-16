@@ -47,7 +47,7 @@ class AdminLteInstallCommand extends Command
             ],
             'images_path' => 'adminlte/dist/img/',
             'images' => [
-                'dist/img/AdminLTELogo.png' => 'AdminLTELogo.png'
+                'dist/img/AdminLTELogo.png' => 'AdminLTELogo.png',
             ],
             'recursive' => false,
             'ignore' => [
@@ -342,10 +342,10 @@ class AdminLteInstallCommand extends Command
     }
 
     /**
-     * Copy Assets Data
+     * Copy Assets Data.
      *
      * @param  string  $asset_name
-     * @param  boolean $force
+     * @param  bool $force
      * @return void
      */
     protected function copyAssets($asset_name, $force = false)
@@ -377,7 +377,7 @@ class AdminLteInstallCommand extends Command
     }
 
     /**
-     * Get Protected
+     * Get Protected.
      *
      * @return array
      */
