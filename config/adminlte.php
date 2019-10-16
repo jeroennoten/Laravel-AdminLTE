@@ -69,6 +69,7 @@ return [
 
     'classes_body' => '',
     'classes_brand' => '',
+    'classes_brand_text' => '',
     'classes_content_header' => 'container-fluid',
     'classes_content' => 'container-fluid',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
