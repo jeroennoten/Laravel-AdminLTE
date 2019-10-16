@@ -52,7 +52,7 @@
                         <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
                     </a>
                 @else
-                    <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand">
+                    <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand {{ config('adminlte.classes_brand') }}">
                         <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
                         <span class="brand-text font-weight-light">
                             {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
@@ -119,7 +119,7 @@
                     <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
                 </a>
             @else
-                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link">
+                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link {{ config('adminlte.classes_brand') }}">
                     <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light">
                         {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
