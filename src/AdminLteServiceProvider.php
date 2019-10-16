@@ -11,6 +11,7 @@ use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Console\AdminLtePluginCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteUpdateCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteInstallCommand;
+use JeroenNoten\LaravelAdminLte\Console\AdminLteStatusCommand;
 use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 
 class AdminLteServiceProvider extends BaseServiceProvider
@@ -73,6 +74,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function registerCommands()
     {
         $this->commands(AdminLteInstallCommand::class);
+        $this->commands(AdminLteStatusCommand::class);
         $this->commands(AdminLteUpdateCommand::class);
         $this->commands(AdminLtePluginCommand::class);
     }
