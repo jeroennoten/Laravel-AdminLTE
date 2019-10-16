@@ -72,7 +72,7 @@ class CommandHelper
      *
      * @return void
      */
-    public static function compareDirectories($package_path, $assets_path, $sub_folder = '', $ignore = [], $ignore_ending = [], $recursive = true, $internal = null)
+    public static function compareDirectories($package_path, $assets_path, $sub_folder = '', $ignore = [], $ignore_ending = [], $recursive = false, $internal = null)
     {
         $return = [];
         $package_sha1 = '';
@@ -104,18 +104,15 @@ class CommandHelper
             if ($file == '.' || $file == '..' || ! $checkup) {
                 continue;
             }
-
             $sourcepath = $package_path.$sub_folder.DIRECTORY_SEPARATOR.$file;
             $destpath = $assets_path.DIRECTORY_SEPARATOR.$file;
-
             if (is_file($sourcepath)) {
                 $package_sha1 .= sha1_file($sourcepath);
-
-                if (is_file($destpath) && file_exists($destpath)) {
+                if (file_exists($destpath) && is_file($destpath)) {
                     $assets_sha1 .= sha1_file($destpath);
                 }
             } elseif ($recursive) {
-                $return = self::compareDirectories($sourcepath, $destpath, '', $ignore, $ignore_ending, true, true);
+                $return = self::compareDirectories($sourcepath, $destpath, '', $ignore, $ignore_ending, $recursive, true);
                 $package_sha1 .= $return['package_sha1'];
                 $assets_sha1 .= $return['assets_sha1'];
             }
@@ -130,9 +127,8 @@ class CommandHelper
             ];
         }
 
-        return $package_sha1 == $assets_sha1;
+        return $package_sha1 == $assets_sha1 ? true : ($assets_sha1 == '' ? null : false);
     }
-
 
     /**
      * Rescursive directory remove.

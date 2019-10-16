@@ -27,24 +27,38 @@ class AdminLteStatusCommand extends Command
     public function handle()
     {
         $headers = ['Group', 'Assets Name', 'Status', 'Required'];
-        $step_count = 0;
+        $step_count = 5;
         $table_content = [];
         $install_command = new AdminLteInstallCommand();
 
         $assets = $install_command->getProtected('assets');
-        $step_count += count($assets);
-        $step_count += 1;
+        $package_path = $install_command->getProtected('package_path');
 
         $this->line('Checking Installation ...');
-        $bar = $this->output->createProgressBar(count($assets));
+        $bar = $this->output->createProgressBar($step_count);
         $bar->start();
 
+        // Checking Assets
         foreach ($assets as $asset_key => $asset) {
-            $table_content[] = ['assets', $asset['name'], $this->checkAsset($asset_key, $this->option('include-images')), 'true'];
-            $bar->advance();
+            $table_content[] = ['assets', $asset['name'], $this->resolveCompare($this->checkAsset($asset_key, $this->option('include-images'))), 'true'];
         }
+        $bar->advance();
 
+        // Checking Config
+        $table_content[] = ['config', 'Default Config', $this->resolveCompare($this->compareFile($package_path.'config/adminlte.php', base_path('config/adminlte.php'))), 'true'];
+        $bar->advance();
 
+        // Checking Translations
+        $table_content[] = ['translations', 'Default Translations', $this->resolveCompare($this->compareFolder('resources/lang', 'resources/lang', $package_path, base_path(), true, ['menu.php'])), 'true'];
+        $bar->advance();
+
+        // Checking Main Views
+        $table_content[] = ['auth_views', 'Auth Views', $this->resolveCompare($this->compareAuthViews()), 'false'];
+        $bar->advance();
+
+        // Checking Main Views
+        $table_content[] = ['main_views', 'Main Views', $this->resolveCompare($this->compareFolder('resources/views', 'resources/views', $package_path, base_path(), true)), 'false'];
+        $bar->advance();
 
         $bar->finish();
 
@@ -55,111 +69,186 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
+     * Resolve Compare
+     *
+     * @param  $compare
+     * @return string
+     */
+    protected function resolveCompare($compare)
+    {
+        if ($compare === 1) {
+            return 'Installed';
+        } elseif ($compare === 2) {
+            return 'Update Available / Modified';
+        } elseif ($compare === 0) {
+            return 'Not Installed';
+        }
+    }
+
+    /**
      * Check Plugin.
      *
-     * @return void
+     * @param  $asset_key
+     * @param  $include_images
+     * @return string
      */
     protected function checkAsset($asset_key, $include_images)
     {
         $install_command = new AdminLteInstallCommand();
         $asset = $install_command->getProtected('assets')[$asset_key];
         $assets_path = $install_command->getProtected('assets_path');
-        $package_path = $install_command->getProtected('package_path');
+        $package_path = $install_command->getProtected('assets_package_path');
 
-        $asset_exist = true;
-        $asset_missmatch = false;
-        $asset_child_exist = true;
-        $asset_child_missmatch = false;
-        $asset_public_path = public_path($assets_path);
-        $asset_base_path = base_path($package_path);
-        $asset_package_path = $asset['package_path'];
-        $asset_assets_path = $asset['assets_path'];
-        $asset_ignore = $asset['ignore'] ?? [];
-        $asset_ignore_ending = $asset['ignore_ending'] ?? [];
-        $asset_recursive = $asset['recursive'] ?? true;
+        $compare = $this->compareFolder($asset['package_path'], $asset['assets_path'], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['ignore_ending'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
 
-        if (is_array($asset_assets_path)) {
-            foreach ($asset_assets_path as $key => $assets_path) {
-                if (! file_exists($asset_public_path.$assets_path)) {
-                    $asset_exist = false;
-                    $asset_child_exist = false;
+        return $compare;
+    }
+
+    /**
+     * Compare Folder
+     *
+     * @param  $source_path
+     * @param  $destination_path
+     * @param  $source_base_path
+     * @param  $destination_base_path
+     * @param  $recursive
+     * @param  $ignore
+     * @param  $ignore_ending
+     * @param  $images
+     * @param  $images_path
+     * @return integer
+     */
+    public function compareFolder($source_path, $destination_path, $source_base_path = null, $destination_base_path = null, $recursive = true, $ignore = [], $ignore_ending = [], $images = null, $images_path = null, $ignore_base_folder = null)
+    {
+        $dest_exist = true;
+        $dest_missing = false;
+        $dest_missmatch = false;
+        $dest_child_exist = true;
+        $dest_child_missmatch = false;
+
+        if (! $source_base_path) {
+            $source_base_path = base_path();
+        }
+        if (substr($source_base_path, -1) !== '/') {
+            $source_base_path .= '/';
+        }
+
+        if (! $destination_base_path) {
+            $destination_base_path = public_path();
+        }
+        if (substr($destination_base_path, -1) !== '/') {
+            $destination_base_path .= '/';
+        }
+
+        if (is_array($source_path)) {
+            foreach ($source_path as $key => $destination_child_path) {
+                if (! file_exists($destination_base_path.$destination_child_path)) {
+                    $dest_exist = false;
+                    $dest_child_exist = false;
                 } else {
-                    $compare = CommandHelper::compareDirectories($asset_base_path.$asset_package_path[$key], $asset_public_path.$assets_path, '', $asset_ignore, $asset_ignore_ending, $asset_recursive);
+                    $compare = CommandHelper::compareDirectories($source_base_path.$source_path[$key], $destination_base_path.$destination_child_path, '', $ignore, $ignore_ending, $recursive);
 
-                    if (! $asset_child_missmatch && $compare) {
-                        $asset_child_missmatch = false;
+                    if (! $dest_child_missmatch && $compare) {
+                        $dest_child_missmatch = false;
                     } else {
-                        $asset_child_missmatch = true;
+                        $dest_child_missmatch = true;
                     }
                 }
             }
         } else {
-            if (! file_exists($asset_public_path.$asset_assets_path)) {
-                $asset_exist = false;
+            if (! file_exists($destination_base_path.$destination_path)) {
+                $dest_exist = false;
             } else {
-                if (! $compare = CommandHelper::compareDirectories($asset_base_path.$asset_package_path, $asset_public_path.$asset_assets_path, '', $asset_ignore, $asset_ignore_ending, $asset_recursive)) {
-                    $asset_missmatch = true;
+                $compare = CommandHelper::compareDirectories($source_base_path.$source_path, $destination_base_path.$destination_path, '', $ignore, $ignore_ending, $recursive, null, true);
+                if ($compare === false) {
+                    $dest_missmatch = true;
+                } elseif ($compare === null) {
+                    $dest_missing = true;
                 }
             }
         }
 
-        if ($include_images && isset($asset['images_path']) && isset($asset['images'])) {
-            $asset_images_path = $asset['images_path'];
+        if ($images_path && $images) {
+            $asset_images_path = $images_path;
 
-            foreach ($asset['images'] as $image_package_path => $image_asset_path) {
-                if (! file_exists($asset_public_path.$asset_images_path.$image_asset_path)) {
-                    $asset_child_exist = false;
-                } else {
-                    $compare = sha1_file($asset_base_path.$image_package_path) === sha1_file($asset_public_path.$asset_images_path.$image_asset_path);
-                    if (! $asset_child_missmatch && $compare) {
-                        $asset_child_missmatch = false;
-                    } else {
-                        $asset_child_missmatch = true;
-                    }
+            foreach ($images as $image_destination_path => $image_asset_path) {
+                $compareFile = $this->compareFile($source_base_path.$image_destination_path, $destination_base_path.$images_path.$image_asset_path);
+                if ($compareFile === 0) {
+                    $dest_child_exist = false;
+                } elseif ($compareFile == 1) {
+                    $dest_child_missmatch = false;
+                } elseif ($compareFile == 2) {
+                    $dest_child_missmatch = true;
                 }
             }
         }
 
-        if ($asset_exist && $asset_child_exist && (! $asset_missmatch && ! $asset_child_missmatch)) {
-            return 'Installed';
-        } elseif ($asset_exist && (($asset_missmatch || $asset_child_missmatch) || ! $asset_child_exist)) {
-            return 'Update Available';
-        } elseif (! $asset_exist) {
-            return 'Not Installed';
+        if ($dest_exist && $dest_child_exist && ! $ignore_base_folder && (! $dest_missmatch && ! $dest_child_missmatch) && ! $dest_missing) {
+            return 1;
+        } elseif ($dest_exist && (($dest_missmatch || $dest_child_missmatch) || ! $dest_child_exist)) {
+            return 2;
+        } elseif (! $dest_exist || $dest_missing) {
+            return 0;
         }
     }
 
-    public function checkStep($step) {
-
-    }
-
-    public function checkFile($source_file, $destination_file)
+    /**
+     * Compare File
+     *
+     * @param  $source_file
+     * @param  $destination_file
+     * @return integer
+     */
+    public function compareFile($source_file, $destination_file)
     {
         $file_exist = true;
         $file_missmatch = false;
-        $file_public_path = public_path($assets_path);
-        $file_base_path = base_path($package_path);
-        $file_package_path = $asset['package_path'];
-        $file_assets_path = $asset['assets_path'];
-        $file_ignore = $asset['ignore'] ?? [];
-        $file_ignore_ending = $asset['ignore_ending'] ?? [];
-        $file_recursive = $asset['recursive'] ?? true;
 
-        if (! file_exists($file_public_path.$file_assets_path)) {
+        if (! file_exists($destination_file)) {
             $file_exist = false;
         } else {
-            $compare = sha1_file($asset_base_path.$image_package_path) === sha1_file($asset_public_path.$asset_images_path.$image_asset_path);
+            $compare = sha1_file($source_file) === sha1_file($destination_file);
             if (! $compare) {
                 $file_missmatch = true;
             }
         }
 
         if ($file_exist  && (! $file_missmatch)) {
-            return 'Installed';
+            return 1;
         } elseif ($file_exist && $file_missmatch) {
-            return 'Update Available';
+            return 2;
         } elseif (! $file_exist) {
-            return 'Not Installed';
+            return 0;
+        }
+    }
+
+    /**
+     * Compare Auth Views
+     *
+     * @return integer
+     */
+    public function compareAuthViews()
+    {
+        $install_command = new AdminLteInstallCommand();
+        $auth_views = $install_command->getProtected('authViews');
+        $view_exists = true;
+        $view_found = 0;
+        $view_excepted = count($auth_views);
+
+        foreach ($auth_views as $file_name => $file_content) {
+            $file = $install_command->getViewPath($file_name);
+            $dest_file_content = file_get_contents($file);
+            if (strpos($dest_file_content, $file_content) !== FALSE) {
+                $view_found++;
+            }
+        }
+
+        if ($view_found === 0) {
+            return 0;
+        } elseif ($view_found === $view_excepted) {
+            return 1;
+        } elseif ($view_found !== $view_excepted) {
+            return 2;
         }
     }
 }

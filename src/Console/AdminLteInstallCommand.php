@@ -28,9 +28,11 @@ class AdminLteInstallCommand extends Command
         'home.stub' => 'home.blade.php',
     ];
 
+    protected $package_path = __DIR__.'/../../';
+
     protected $assets_path = 'vendor/';
 
-    protected $package_path = 'vendor/almasaeed2010/adminlte/';
+    protected $assets_package_path = 'vendor/almasaeed2010/adminlte/';
 
     protected $assets = [
         'adminlte' => [
@@ -311,7 +313,7 @@ class AdminLteInstallCommand extends Command
             }
         }
         copy(
-            __DIR__.'/../../config/adminlte.php',
+            $this->packagePath('config/adminlte.php'),
             config_path('adminlte.php')
         );
 
@@ -323,7 +325,7 @@ class AdminLteInstallCommand extends Command
      */
     protected function packagePath($path)
     {
-        return __DIR__."/../../$path";
+        return $this->package_path.$path;
     }
 
     /**
@@ -332,7 +334,7 @@ class AdminLteInstallCommand extends Command
      * @param  string  $path
      * @return string
      */
-    protected function getViewPath($path)
+    public function getViewPath($path)
     {
         return implode(DIRECTORY_SEPARATOR, [
             config('view.paths')[0] ?? resource_path('views'), $path,
@@ -357,10 +359,10 @@ class AdminLteInstallCommand extends Command
         if (is_array($asset['package_path'])) {
             foreach ($asset['package_path'] as $key => $asset_package_path) {
                 $asset_assets_path = $asset['assets_path'][$key];
-                CommandHelper::directoryCopy(base_path($this->package_path).$asset_package_path, public_path($this->assets_path).$asset_assets_path, $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
+                CommandHelper::directoryCopy(base_path($this->assets_package_path).$asset_package_path, public_path($this->assets_path).$asset_assets_path, $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
             }
         } else {
-            CommandHelper::directoryCopy(base_path($this->package_path).$asset['package_path'], public_path($this->assets_path).$asset['assets_path'], $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
+            CommandHelper::directoryCopy(base_path($this->assets_package_path).$asset['package_path'], public_path($this->assets_path).$asset['assets_path'], $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
         }
 
         if (isset($asset['images_path']) && isset($asset['images'])) {
@@ -369,7 +371,7 @@ class AdminLteInstallCommand extends Command
                 if (file_exists(public_path($this->assets_path).$asset['images_path'].$image_assets_path) && ! $force) {
                     continue;
                 }
-                copy(base_path($this->package_path).$image_package_path, public_path($this->assets_path).$asset['images_path'].$image_assets_path);
+                copy(base_path($this->assets_package_path).$image_package_path, public_path($this->assets_path).$asset['images_path'].$image_assets_path);
             }
         }
     }
