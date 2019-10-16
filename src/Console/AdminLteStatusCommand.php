@@ -8,8 +8,7 @@ use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
 class AdminLteStatusCommand extends Command
 {
     protected $signature = 'adminlte:status'.
-        '{--include-images : Includes AdminLTE asset images to the checkup}'.
-        '{--include-plugins : Includes AdminLTE plugin assets to the checkup}';
+        '{--include-images : Includes AdminLTE asset images to the checkup}';
 
     protected $description = 'Checks the install status for AdminLTE assets, routes & views.';
 
