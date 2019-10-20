@@ -525,7 +525,7 @@ To translate the menu headers, just use the `header` param. Example:
 If you need full control over the provided views, you can publish them:
 
 ```
-php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
+php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\ServiceProvider" --tag=views
 ```
 
 Now, you can edit the views in `resources/views/vendor/adminlte`.
