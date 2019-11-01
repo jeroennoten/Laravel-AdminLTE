@@ -47,7 +47,13 @@ class AdminLteServiceProvider extends BaseServiceProvider
 
     private function loadViews()
     {
-        $viewsPath = $this->packagePath('resources/views');
+        $resourceViewsPath = $this->packagePath('resources/views');
+
+        if (file_exists($resourceViewsPath)) {
+            $viewsPath = $resourceViewsPath;
+        } else {
+            $viewsPath = $this->packagePath('resources/views');
+        }
 
         $this->loadViewsFrom($viewsPath, 'adminlte');
     }
