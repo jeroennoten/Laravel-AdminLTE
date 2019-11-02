@@ -55,7 +55,7 @@ class AdminLteStatusCommand extends Command
         $bar->advance();
 
         // Checking Main Views
-        $table_content[] = ['main_views', 'Main Views', $this->resolveCompare($this->compareFolder('resources/views', 'resources/views', $package_path, base_path(), true)), 'false'];
+        $table_content[] = ['main_views', 'Main Views', $this->resolveCompare($this->compareFolder('resources/views', 'resources/views/vendor/adminlte/', $package_path, base_path(), true)), 'false'];
         $bar->advance();
 
         $bar->finish();

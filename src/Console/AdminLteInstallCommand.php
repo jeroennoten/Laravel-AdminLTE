@@ -182,7 +182,7 @@ class AdminLteInstallCommand extends Command
             }
         }
 
-        CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views'), $this->option('force'), true);
+        CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views/vendor/adminlte'), $this->option('force'), true);
 
         $this->comment('Main views installed successfully.');
     }
