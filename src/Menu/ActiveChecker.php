@@ -2,9 +2,9 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Routing\UrlGenerator;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ActiveChecker
 {
