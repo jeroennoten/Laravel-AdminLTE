@@ -1,10 +1,10 @@
 @if (!isset($item['topnav']) || (isset($item['topnav']) && !$item['topnav']))
     @if (is_string($item))
-        <li class="nav-header">{{ $item }}</li>
+        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">{{ $item }}</li>
     @elseif (isset($item['header']))
-        <li class="nav-header">{{ $item['header'] }}</li>
+        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">{{ $item['header'] }}</li>
     @elseif (isset($item['search']) && $item['search'])
-        <li>
+        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif>
             <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="form-inline">
               <div class="input-group">
                 <input class="form-control form-control-sidebar" type="search" name="{{ $item['input_name'] }}" placeholder="{{ $item['text'] }}" aria-label="{{ $item['aria-label'] ?? $item['text'] }}">
@@ -17,7 +17,7 @@
             </form>
         </li>
     @else
-        <li class="nav-item @if (isset($item['submenu'])){{ $item['submenu_class'] }}@endif">
+        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item @if (isset($item['submenu'])){{ $item['submenu_class'] }}@endif">
             <a class="nav-link {{ $item['class'] }}" href="{{ $item['href'] }}"
                @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
             >

@@ -1,5 +1,5 @@
 @if (is_array($item))
-    <li class="@if (isset($item['submenu']))dropdown-submenu @endif">
+    <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="@if (isset($item['submenu']))dropdown-submenu @endif">
         <a class="dropdown-item @if (isset($item['submenu']))dropdown-toggle @endif" href="{{ $item['href'] }}"
            @if (isset($item['submenu'])) data-toggle="dropdown" @endif
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif

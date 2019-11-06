@@ -11,7 +11,7 @@
         </div>
       </form>
   @elseif (is_array($item))
-      <li class="nav-item {{ $item['top_nav_class'] }}">
+      <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item {{ $item['top_nav_class'] }}">
           <a class="nav-link @if (isset($item['submenu']))dropdown-item dropdown-toggle @endif" href="{{ $item['href'] }}"
              @if (isset($item['submenu'])) data-toggle="dropdown" @endif
              @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
