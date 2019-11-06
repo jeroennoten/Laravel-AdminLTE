@@ -424,6 +424,9 @@ The following config options available:
 
 ### 6.7 URLs
 Here we have the url settings to setup the correct login/register link. Register here your dashboard, logout, login and register URLs.
+- __`use_route_url`__
+
+    Whether to use `route()` instead of `url()`.
 - __`dashboard_url`__
 
     Changes the dashboard/logo URL.
@@ -440,6 +443,12 @@ Here we have the url settings to setup the correct login/register link. Register
 - __`register_url`__
     
     Changes the register link or if set `false` it will hide.
+ - __`password_reset_url`__
+
+    Changes the password reset url.
+ - __`password_email_url`__
+
+    Changes the password email url.
 
 
 ### 6.8 Laravel Mix

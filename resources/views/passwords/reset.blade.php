@@ -6,15 +6,26 @@
 
 @section('classes_body', 'login-page')
 
+@php( $password_reset_url = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset') )
+@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+
+@if (config('adminlte.use_route_url', false))
+    @php( $password_reset_url = $password_reset_url ?? route($password_reset_url) )
+    @php( $dashboard_url = $dashboard_url ?? route($dashboard_url) )
+@else
+    @php( $password_reset_url = $password_reset_url ?? url($password_reset_url) )
+    @php( $dashboard_url = $dashboard_url ?? url($dashboard_url) )
+@endif
+
 @section('body')
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
+            <a href="{{ $dashboard_url }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
                 <p class="login-box-msg">{{ trans('adminlte::adminlte.password_reset_message') }}</p>
-                <form action="{{ url(config('adminlte.password_reset_url', 'password/reset')) }}" method="post">
+                <form action="{{ $password_reset_url }}" method="post">
                     {{ csrf_field() }}
                     <input type="hidden" name="token" value="{{ $token }}">
                     <div class="input-group mb-3">

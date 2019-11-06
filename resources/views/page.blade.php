@@ -41,18 +41,29 @@
 @section('body_data',
 (config('adminlte.sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light' ? 'data-scrollbar-theme=' . config('adminlte.sidebar_scrollbar_theme')  : '') . ' ' . (config('adminlte.sidebar_scrollbar_auto_hide', 'l') != 'l' ? 'data-scrollbar-auto-hide=' . config('adminlte.sidebar_scrollbar_auto_hide')   : ''))
 
+@php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
+@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+
+@if (config('adminlte.use_route_url', false))
+    @php( $logout_url = $logout_url ?? route($logout_url) )
+    @php( $dashboard_url = $dashboard_url ?? route($dashboard_url) )
+@else
+    @php( $logout_url = $logout_url ?? url($logout_url) )
+    @php( $dashboard_url = $dashboard_url ?? url($dashboard_url) )
+@endif
+
 @section('body')
     <div class="wrapper">
         @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
         <nav class="main-header navbar {{config('adminlte.classes_topnav_nav', 'navbar-expand-md')}} {{config('adminlte.topnav_color', 'navbar-white navbar-light')}}">
             <div class="{{config('adminlte.classes_topnav_container', 'container')}}">
                 @if(config('adminlte.logo_img_xl'))
-                    <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand logo-switch">
+                    <a href="{{ $dashboard_url }}" class="navbar-brand logo-switch">
                         <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
                         <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
                     </a>
                 @else
-                    <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="navbar-brand {{ config('adminlte.classes_brand') }}">
+                    <a href="{{ $dashboard_url }}" class="navbar-brand {{ config('adminlte.classes_brand') }}">
                         <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
                         <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
                             {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
@@ -91,7 +102,7 @@
                             >
                                 <i class="fa fa-fw fa-power-off"></i> {{ __('adminlte::adminlte.log_out') }}
                             </a>
-                            <form id="logout-form" action="{{ url(config('adminlte.logout_url', 'auth/logout')) }}" method="POST" style="display: none;">
+                            <form id="logout-form" action="{{ $logout_url }}" method="POST" style="display: none;">
                                 @if(config('adminlte.logout_method'))
                                     {{ method_field(config('adminlte.logout_method')) }}
                                 @endif
@@ -114,12 +125,12 @@
         @if(!config('adminlte.layout_topnav') && !View::getSection('layout_topnav'))
         <aside class="main-sidebar {{config('adminlte.classes_sidebar', 'sidebar-dark-primary elevation-4')}}">
             @if(config('adminlte.logo_img_xl'))
-                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link logo-switch">
+                <a href="{{ $dashboard_url }}" class="brand-link logo-switch">
                     <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_class', 'brand-image-xl')}} logo-xs">
                     <img src="{{ asset(config('adminlte.logo_img_xl')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="{{config('adminlte.logo_img_xl_class', 'brand-image-xs')}} logo-xl">
                 </a>
             @else
-                <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}" class="brand-link {{ config('adminlte.classes_brand') }}">
+                <a href="{{ $dashboard_url }}" class="brand-link {{ config('adminlte.classes_brand') }}">
                     <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}" alt="{{config('adminlte.logo_img_alt', 'AdminLTE')}}" class="brand-image img-circle elevation-3" style="opacity: .8">
                     <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
                         {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
