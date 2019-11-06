@@ -6,10 +6,21 @@
 
 @section('classes_body', 'login-page')
 
+@php( $password_email_url = View::getSection('password_email_url') ?? config('adminlte.password_email_url', 'password/email') )
+@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+
+@if (config('adminlte.use_route_url', false))
+    @php( $password_email_url = $password_email_url ?? route($password_email_url) )
+    @php( $dashboard_url = $dashboard_url ?? route($dashboard_url) )
+@else
+    @php( $password_email_url = $password_email_url ?? url($password_email_url) )
+    @php( $dashboard_url = $dashboard_url ?? url($dashboard_url) )
+@endif
+
 @section('body')
     <div class="login-box">
         <div class="login-logo">
-            <a href="{{ url(config('adminlte.dashboard_url', 'home')) }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
+            <a href="{{ $dashboard_url }}">{!! config('adminlte.logo', '<b>Admin</b>LTE') !!}</a>
         </div>
         <div class="card">
             <div class="card-body login-card-body">
@@ -19,7 +30,7 @@
                         {{ session('status') }}
                     </div>
                 @endif
-                <form action="{{ url(config('adminlte.password_email_url', 'password/email')) }}" method="post">
+                <form action="{{ $password_email_url }}" method="post">
                     {{ csrf_field() }}
                     <div class="input-group mb-3">
                         <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
