@@ -1,1 +1,0 @@
-@extends('adminlte::passwords.reset')

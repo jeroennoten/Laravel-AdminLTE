@@ -17,10 +17,21 @@ class LangFilter implements FilterInterface
     public function transform($item, Builder $builder)
     {
         if (isset($item['header'])) {
-            $item['header'] = ($this->langGenerator->has('adminlte::menu.'.$item['header'])) ? $this->langGenerator->trans('adminlte::menu.'.$item['header']) : $item['header'];
+            $item['header'] = $this->getTranslation($item['header']) ?? $item['header'];
         }
         if (isset($item['text'])) {
-            $item['text'] = ($this->langGenerator->has('adminlte::menu.'.$item['text'])) ? $this->langGenerator->trans('adminlte::menu.'.$item['text']) : $item['text'];
+            $item['text'] = $this->getTranslation($item['text']) ?? $item['text'];
+        }
+
+        return $item;
+    }
+
+    protected function getTranslation($item)
+    {
+        if ($this->langGenerator->has('menu.'.$item)) {
+            return $this->langGenerator->get('menu.'.$item);
+        } elseif ($this->langGenerator->has('adminlte::menu.'.$item)) {
+            return $this->langGenerator->get('adminlte::menu.'.$item);
         }
 
         return $item;

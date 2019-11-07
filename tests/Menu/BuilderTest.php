@@ -125,7 +125,7 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'url' => 'about']);
 
-        $this->assertContains('active', $builder->menu[0]['classes']);
+        $this->assertContainsEquals('active', $builder->menu[0]['classes']);
     }
 
     public function testActiveRoute()
@@ -135,7 +135,7 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'route' => 'pages.about']);
 
-        $this->assertContains('active', $builder->menu[0]['classes']);
+        $this->assertContainsEquals('active', $builder->menu[0]['classes']);
     }
 
     public function testSubmenuActiveWithHash()
@@ -160,8 +160,8 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'submenu' => []]);
 
-        $this->assertContains('treeview', $builder->menu[0]['classes']);
-        $this->assertContains('dropdown', $builder->menu[0]['top_nav_classes']);
+        $this->assertEquals('has-treeview', $builder->menu[0]['submenu_class']);
+        $this->assertEquals('dropdown', $builder->menu[0]['top_nav_class']);
     }
 
     public function testTreeviewMenuSubmenuClasses()
@@ -170,8 +170,8 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'About', 'submenu' => []]);
 
-        $this->assertContains(
-            'treeview-menu',
+        $this->assertContainsEquals(
+            'has-treeview',
             $builder->menu[0]['submenu_classes']
         );
     }
@@ -183,7 +183,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'About', 'submenu' => []]);
 
         $this->assertEquals(
-            'treeview-menu',
+            'has-treeview',
             $builder->menu[0]['submenu_class']
         );
     }

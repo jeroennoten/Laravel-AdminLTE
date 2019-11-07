@@ -22,15 +22,16 @@
   "extra": {
       "laravel": {
           "providers": [
-              "JeroenNoten\\LaravelAdminLte\\ServiceProvider"
+              "JeroenNoten\\LaravelAdminLte\\AdminLteServiceProvider"
           ]
       }
   },
   "require": {
-    "laravel/framework": "~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-    "php": ">=7.0.0"
+    "laravel/framework": "^6.0",
+    "php": ">=7.2.0",
+    "almasaeed2010/adminlte": "^3.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6"
+    "phpunit/phpunit": "^8.3"
   }
 }

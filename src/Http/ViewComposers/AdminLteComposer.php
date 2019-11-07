@@ -12,9 +12,8 @@ class AdminLteComposer
      */
     private $adminlte;
 
-    public function __construct(
-        AdminLte $adminlte
-    ) {
+    public function __construct(AdminLte $adminlte)
+    {
         $this->adminlte = $adminlte;
     }
 
