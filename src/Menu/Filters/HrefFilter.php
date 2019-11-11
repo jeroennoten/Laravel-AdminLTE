@@ -36,6 +36,10 @@ class HrefFilter implements FilterInterface
         }
 
         if (isset($item['route'])) {
+            if (is_array($item['route'])) {
+                return $this->urlGenerator->route($item['route'][0], $item['route'][1]);
+            }
+
             return $this->urlGenerator->route($item['route']);
         }
 
