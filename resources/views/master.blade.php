@@ -13,6 +13,8 @@
 
     @include('adminlte::plugins', ['type' => 'css'])
 
+    @yield('adminlte_css_pre')
+
     <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
 
     @yield('adminlte_css')

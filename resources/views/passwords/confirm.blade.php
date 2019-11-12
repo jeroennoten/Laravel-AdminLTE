@@ -10,11 +10,11 @@
 @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
 
 @if (config('adminlte.use_route_url', false))
-    @php( $password_reset_url = $password_reset_url ?? route($password_reset_url) )
-    @php( $dashboard_url = $dashboard_url ?? route($dashboard_url) )
+    @php( $password_reset_url = $password_reset_url ? route($password_reset_url) : '' )
+    @php( $dashboard_url = $dashboard_url ? route($dashboard_url) : '' )
 @else
-    @php( $password_reset_url = $register_url ?? url($password_reset_url) )
-    @php( $dashboard_url = $register_url ?? url($dashboard_url) )
+    @php( $password_reset_url = $register_url ? url($password_reset_url) : '' )
+    @php( $dashboard_url = $register_url ? url($dashboard_url) : '' )
 @endif
 
 @section('body')
