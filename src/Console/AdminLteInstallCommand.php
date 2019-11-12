@@ -19,6 +19,7 @@ class AdminLteInstallCommand extends Command
     protected $authViews = [
         'auth/login.blade.php'             => '@extends(\'adminlte::login\')',
         'auth/register.blade.php'          => '@extends(\'adminlte::register\')',
+        'auth/verify.blade.php'            => '@extends(\'adminlte::verify\')',
         'auth/passwords/confirm.blade.php' => '@extends(\'adminlte::passwords.confirm\')',
         'auth/passwords/email.blade.php'   => '@extends(\'adminlte::passwords.email\')',
         'auth/passwords/reset.blade.php'   => '@extends(\'adminlte::passwords.reset\')',
