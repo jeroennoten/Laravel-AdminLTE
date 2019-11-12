@@ -1,7 +1,11 @@
 @extends('adminlte::master')
 
-@section('adminlte_css')
+@section('adminlte_css_pre')
     <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
+@stop
+
+@section('adminlte_css')
+    @stack('css')
     @yield('css')
 @stop
 

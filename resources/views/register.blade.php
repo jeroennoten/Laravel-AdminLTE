@@ -1,6 +1,7 @@
 @extends('adminlte::master')
 
 @section('adminlte_css')
+    @stack('css')
     @yield('css')
 @stop
 
