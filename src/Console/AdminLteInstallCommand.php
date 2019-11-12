@@ -274,7 +274,7 @@ class AdminLteInstallCommand extends Command
             }
         }
 
-        CommandHelper::directoryCopy($this->packagePath('resources/lang'), base_path('resources/lang'), $this->option('force'), true);
+        CommandHelper::directoryCopy($this->packagePath('resources/lang'), base_path('resources/lang/vendor/adminlte'), $this->option('force'), true);
 
         $this->comment('Translation files installed successfully.');
     }
