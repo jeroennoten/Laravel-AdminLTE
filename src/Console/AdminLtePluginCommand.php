@@ -25,10 +25,20 @@ class AdminLtePluginCommand extends Command
             'package_path' => 'bootstrap-slider',
             'assets_path' => 'bootstrap-slider',
         ],
+        'bootstrapSwitch' => [
+            'name' => 'Bootstrap Switch',
+            'package_path' => 'bootstrap-switch',
+            'assets_path' => 'bootstrap-switch',
+        ],
         'bootstrap4Duallistbox' => [
             'name' => 'Bootstrap4 Duallistbox',
             'package_path' => 'bootstrap4-duallistbox',
             'assets_path' => 'bootstrap4-duallistbox',
+        ],
+        'bsCustomFileInput' => [
+            'name' => 'bs-custom-file-input',
+            'package_path' => 'bs-custom-file-input',
+            'assets_path' => 'bs-custom-file-input',
         ],
         'chartJs' => [
             'name' => 'Chart.js',
@@ -199,6 +209,11 @@ class AdminLtePluginCommand extends Command
             'ignore_ending' => [
                 '*.json', '*.md', '*.html', '.editorconfig',
             ],
+        ],
+        'jqueryValidation' => [
+            'name' => 'jQuery Validation',
+            'package_path' => 'jquery-validation',
+            'assets_path' => 'jquery-validation',
         ],
         'jqvmap' => [
             'name' => 'jQVMap',

@@ -29,8 +29,7 @@
                     {{ csrf_field() }}
                     <input type="hidden" name="token" value="{{ $token }}">
                     <div class="input-group mb-3">
-                        <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}"
-                               placeholder="{{ trans('adminlte::adminlte.email') }}">
+                        <input type="email" name="email" class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}" value="{{ old('email') }}" placeholder="{{ trans('adminlte::adminlte.email') }}" autofocus>
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-envelope"></span>
@@ -43,8 +42,7 @@
                         @endif
                     </div>
                     <div class="input-group mb-3">
-                        <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}"
-                               placeholder="{{ trans('adminlte::adminlte.password') }}">
+                        <input type="password" name="password" class="form-control {{ $errors->has('password') ? 'is-invalid' : '' }}" placeholder="{{ trans('adminlte::adminlte.password') }}">
                         <div class="input-group-append">
                             <div class="input-group-text">
                                 <span class="fas fa-lock"></span>
