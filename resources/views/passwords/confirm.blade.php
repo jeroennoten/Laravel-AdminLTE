@@ -29,7 +29,7 @@
             <form method="POST" action="{{ route('password.confirm') }}" class="lockscreen-credentials ml-0">
                 @csrf
                 <div class="input-group">
-                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('adminlte::adminlte.password') }}">
+                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password" placeholder="{{ __('adminlte::adminlte.password') }}" autofocus>
 
                     <div class="input-group-append">
                         <button type="submit" class="btn"><i class="fas fa-arrow-right text-muted"></i></button>
