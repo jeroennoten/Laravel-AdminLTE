@@ -44,7 +44,7 @@
                     @if ($errors->has('name'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('name') }}</strong>
-                        </span>
+                        </div>
                     @endif
                 </div>
                 <div class="input-group mb-3">
@@ -58,7 +58,7 @@
                     @if ($errors->has('email'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('email') }}</strong>
-                        </span>
+                        </div>
                     @endif
                 </div>
                 <div class="input-group mb-3">
@@ -72,7 +72,7 @@
                     @if ($errors->has('password'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('password') }}</strong>
-                        </span>
+                        </div>
                     @endif
                 </div>
                 <div class="input-group mb-3">
@@ -86,7 +86,7 @@
                     @if ($errors->has('password_confirmation'))
                         <div class="invalid-feedback">
                             <strong>{{ $errors->first('password_confirmation') }}</strong>
-                        </span>
+                        </div>
                     @endif
                 </div>
                 <button type="submit" class="btn btn-primary btn-block btn-flat">
