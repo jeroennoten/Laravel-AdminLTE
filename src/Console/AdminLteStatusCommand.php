@@ -96,8 +96,24 @@ class AdminLteStatusCommand extends Command
         $asset = $install_command->getProtected('assets')[$asset_key];
         $assets_path = $install_command->getProtected('assets_path');
         $package_path = $install_command->getProtected('assets_package_path');
+        $compare = $compare_multiple = null;
 
-        $compare = $this->compareFolder($asset['package_path'], $asset['assets_path'], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['ignore_ending'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
+        if (is_array($asset['package_path'])) {
+            foreach ($asset['package_path'] as $key => $value) {
+                $compare_multiple += $this->compareFolder($asset['package_path'][$key], $asset['assets_path'][$key], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['ignore_ending'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
+            }
+
+            $compare_multiple /= count($asset['package_path']);
+            if ($compare_multiple == 1) {
+                $compare = 1;
+            } elseif ($compare_multiple >= 1) {
+                $compare = 2;
+            } elseif ($compare_multiple <= 1) {
+                $compare = 0;
+            }
+        } else {
+            $compare = $this->compareFolder($asset['package_path'], $asset['assets_path'], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['ignore_ending'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
+        }
 
         return $compare;
     }
