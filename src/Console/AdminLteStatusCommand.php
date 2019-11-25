@@ -97,7 +97,7 @@ class AdminLteStatusCommand extends Command
         $assets_path = $install_command->getProtected('assets_path');
         $package_path = $install_command->getProtected('assets_package_path');
         $compare = $compare_multiple = null;
-        
+
         if (is_array($asset['package_path'])) {
             foreach ($asset['package_path'] as $key => $value) {
                 $compare_multiple += $this->compareFolder($asset['package_path'][$key], $asset['assets_path'][$key], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['ignore_ending'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
