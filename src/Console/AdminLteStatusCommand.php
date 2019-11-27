@@ -251,9 +251,11 @@ class AdminLteStatusCommand extends Command
 
         foreach ($auth_views as $file_name => $file_content) {
             $file = $install_command->getViewPath($file_name);
-            $dest_file_content = file_get_contents($file);
-            if (strpos($dest_file_content, $file_content) !== false) {
-                $view_found++;
+            if (file_exists($file)) {
+                $dest_file_content = file_get_contents($file);
+                if (strpos($dest_file_content, $file_content) !== false) {
+                    $view_found++;
+                }
             }
         }
 
