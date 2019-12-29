@@ -13,7 +13,7 @@ return [
     'level_two'                     => 'Seviye 2',
     'level_three'                   => 'Seviye 3',
     'labels'                        => 'ETİKETLER',
-    'Important'                     => 'Önemli',
-    'Warning'                       => 'Uyarı',
-    'Information'                   => 'Bilgi',
+    'important'                     => 'Önemli',
+    'warning'                       => 'Uyarı',
+    'information'                   => 'Bilgi',
 ];

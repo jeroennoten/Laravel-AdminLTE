@@ -19,4 +19,9 @@ return [
     'password_reset_message'      => 'Parola Sıfırlama',
     'reset_password'              => 'Parola Sıfırlama',
     'send_password_reset_link'    => 'Parola Sıfırlama Linki Gönder',
+    'verify_message'              => 'Hesabınızın doğrulanmaya ihtiyacı var',
+    'verify_email_sent'           => 'Hesap doğrulama linki E-posta adresinize gönderildi.',
+    'verify_check_your_email'     => 'İşlemlere devam etmeden önce doğrulama linki için e-posta adresinizi kontrol edin.',
+    'verify_if_not_recieved'      => 'Eğer doğrulama e-postası adresinize ulaşmadıysa',
+    'verify_request_another'      => 'buraya tıklayarak yeni bir doğrulama linki talep edebilirsiniz',
 ];

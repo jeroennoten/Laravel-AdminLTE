@@ -763,8 +763,8 @@ Theme values: barber-shop, big-counter, bounce, center-atom, center-circle, cent
 
 ## 7. Translations
 
-At the moment, English, German, French, Dutch, Portuguese and Spanish translations are available out of the box.
-Just specifiy the language in `config/app.php`.
+At the moment, English, German, French, Dutch, Portuguese, Spanish and Turkish translations are available out of the box.
+Just specify the language in `config/app.php`.
 If you need to modify the texts or add other languages, you can publish the language files:
 
 ```
