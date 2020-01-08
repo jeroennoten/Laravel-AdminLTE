@@ -27,21 +27,22 @@ This version supports Laravel 6 and included AdminLTE v2
       1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
 6. [Configuration](#6-configuration)
    1. [Title](#61-title)
-   2. [Logo](#62-logo)
-   3. [Layout](#63-layout)
-   4. [Classes](#64-classes)
-   5. [Sidebar](#65-sidebar)
-   6. [Control Sidebar (Right Sidebar)](#66-control-sidebar-right-sidebar)
-   7. [URLs](#67-urls)
-   8. [Laravel Mix](#68-laravel-mix)
-   9. [Menu](#69-menu)
-      1. [Adding a Search Input](#691-adding-a–search-input)
-      2. [Custom Menu Filters](#692-custom-menu–filters)
-      3. [Menu configuration at runtime](#693-menu-configuration–at-runtime)
-      4. [Active menu items](#694-active-menu–items)
-   10. [Menu Filters](#610-menu-filters)
-   11. [Plugins](#611-plugins)
-      1. [Pace Plugin Configuration](#6111-pace-plugin-configuration)
+   2. [Favicon](#62-favicon)
+   3. [Logo](#63-logo)
+   4. [Layout](#64-layout)
+   5. [Classes](#65-classes)
+   6. [Sidebar](#66-sidebar)
+   7. [Control Sidebar (Right Sidebar)](#67-control-sidebar-right-sidebar)
+   8. [URLs](#68-urls)
+   9. [Laravel Mix](#69-laravel-mix)
+   10. [Menu](#610-menu)
+      1. [Adding a Search Input](#6101-adding-a–search-input)
+      2. [Custom Menu Filters](#6102-custom-menu–filters)
+      3. [Menu configuration at runtime](#6103-menu-configuration–at-runtime)
+      4. [Active menu items](#6104-active-menu–items)
+   11. [Menu Filters](#611-menu-filters)
+   12. [Plugins](#612-plugins)
+      1. [Pace Plugin Configuration](#6121-pace-plugin-configuration)
 7. [Translations](#7-translations)
     1. [Menu Translations](#71-menu-translations)
 8. [Customize views](#8-customize-views)
@@ -252,8 +253,38 @@ The following config options available:
 
     Title postfix
 
+### 6.2 Favicon
+Favicons could be used easily. There are two different ways to do this.
+Please add all favicons in the dir public/favicons/.
+    
+- __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
-### 6.2 Logo
+    If set to `true`, the file `public/favicons/favicon.ico` is used.
+
+- __`['use_ico_only' => false, 'use_full_favicon' => true]`__
+
+If `'use_full_favicon' => true` more favicon files in `public/favicons/` will be used. The activated code is:
+```
+    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicons/apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicons/apple-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('favicons/apple-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('favicons/apple-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('favicons/apple-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('favicons/apple-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('favicons/apple-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('favicons/apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicons/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicons/favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('favicons/android-icon-192x192.png') }}">
+    <link rel="manifest" href="{{ asset('favicons/manifest.json') }}">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="{{ asset('favicons/ms-icon-144x144.png') }}">
+```
+
+### 6.3 Logo
 The logo is displayed at the upper left corner of your admin panel. You can use basic HTML here if you want for a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alt text for both logos.
 
 - __`logo`__
@@ -277,10 +308,9 @@ The logo is displayed at the upper left corner of your admin panel. You can use 
     Extra classes for small logo image.
 - __`logo_img_alt`__
 
-    Logo image alt text.
+    Logo image alt text.    
 
-
-### 6.3 Layout
+### 6.4 Layout
 It's possible change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar and you can enable fixed mode for sidebar, navbar and footer.
 
 The following config options available:
@@ -331,7 +361,7 @@ __Examples__
     Fixed from mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for small tablet and desktop (>= 768px & <= 1199.99px)
 
 
-### 6.4 Classes
+### 6.5 Classes
 You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
 
 The following config options available:
@@ -367,7 +397,7 @@ The following config options available:
     Extra classes for top navigation bar container.
 
 
-### 6.5 Sidebar
+### 6.6 Sidebar
 You can modify the sidebar, you can disable the collapsed mini sidebar, start with collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and sidebar navigation menu item animation speed.
 
 The following config options available:
@@ -400,7 +430,7 @@ The following config options available:
     Changes the sidebar navigation slide animation speed.
 
 
-### 6.6 Control Sidebar (Right Sidebar)
+### 6.7 Control Sidebar (Right Sidebar)
 Here you have the option to enable a right sidebar. When active, you can use @section('right-sidebar') The icon you configured will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while false will push the content, and have no animation. You can also choose the sidebar theme (dark or light).
 
 The following config options available:
@@ -428,7 +458,7 @@ The following config options available:
     Changes sidebar scrollbar auto hide trigger.
 
 
-### 6.7 URLs
+### 6.8 URLs
 Here we have the url settings to setup the correct login/register link. Register here your dashboard, logout, login and register URLs.
 - __`use_route_url`__
 
@@ -457,7 +487,7 @@ Here we have the url settings to setup the correct login/register link. Register
     Changes the password email url.
 
 
-### 6.8 Laravel Mix
+### 6.9 Laravel Mix
 If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
 
 ```
@@ -497,7 +527,7 @@ After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true
     Enables Laravel Mix specific css/js load in master layout.
     __Warning__ If you enable this option, the sections `adminlte_css` & `adminlte_js` will not rendered.
 
-### 6.9 Menu
+### 6.10 Menu
 Specify your menu items to display in the left sidebar. Each menu item should have a text and a URL. You can also specify an icon from Font Awesome. A string instead of an array represents a header in sidebar layout. The 'can' is a filter on Laravel's built in Gate functionality.
 
 You can configure your menu as follows:
@@ -559,7 +589,7 @@ Use the `can` attribute if you want conditionally show the menu item. This integ
 ]
 ```
 
-#### 6.9.1 Adding a Search Input
+#### 6.10.1 Adding a Search Input
 
 It's possible to add a search input in your menu, using a menu item with the following configuration:
 
@@ -573,7 +603,7 @@ It's possible to add a search input in your menu, using a menu item with the fol
         ],
 ```
 
-#### 6.9.2 Custom Menu Filters
+#### 6.10.2 Custom Menu Filters
 
 If you need custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).
 
@@ -614,7 +644,7 @@ And then add to `config/adminlte.php`:
 ]
 ```
 
-#### 6.9.3 Menu configuration at runtime
+#### 6.10.3 Menu configuration at runtime
 
 It is also possible to configure the menu at runtime, e.g. in the boot of any service provider.
 Use this if your menu is not static, for example when it depends on your database or the locale.
@@ -667,7 +697,7 @@ A more practical example that actually uses translations and the database:
 
 This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
 
-#### 6.9.4 Active menu items
+#### 6.10.4 Active menu items
 
 By default, a menu item is considered active if any of the following holds:
 - The current path matches the `url` parameter
@@ -687,7 +717,7 @@ To utilize regex, simply prefix your pattern with `regex:` and it will get evalu
 ```
 
 
-### 6.10 Menu Filters
+### 6.11 Menu Filters
 Here we can set the filters you want to include for rendering the menu.
 You can add your own filters to this array after you've created them. You can comment out the GateFilter if you don't want to use Laravel's built in Gate functionality
 
@@ -706,7 +736,7 @@ Default menu filters:
 - `JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class`
 
 
-### 6.11 Plugins
+### 6.12 Plugins
 Configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via script and link tag. Plugin Name, active status and files array (even empty) are required. Files, when added, need to have type (js or css), asset (true or false) and location (string). When asset is set to true, the location will be output using asset() function.
 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and but not active.
@@ -749,7 +779,7 @@ Each plugin have a files array, with contain arrays with file type (`js` or `css
 
 If the asset value is `true`, the injection will use the asset() function.
 
-#### 6.11.1 Pace Plugin Configuration
+#### 6.12.1 Pace Plugin Configuration
 
 You can change the Pace plugin appearence, when using the CDN injection modifying the css file location.
 ```
