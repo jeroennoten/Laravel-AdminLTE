@@ -28,20 +28,20 @@ This version supports Laravel 6 and included AdminLTE v2
 6. [Configuration](#6-configuration)
    1. [Title](#61-title)
    2. [Favicon](#62-favicon)
-   2. [Logo](#63-logo)
-   3. [Layout](#64-layout)
-   4. [Classes](#65-classes)
-   5. [Sidebar](#66-sidebar)
-   6. [Control Sidebar (Right Sidebar)](#67-control-sidebar-right-sidebar)
-   7. [URLs](#68-urls)
-   8. [Laravel Mix](#69-laravel-mix)
-   9. [Menu](#610-menu)
+   3. [Logo](#63-logo)
+   4. [Layout](#64-layout)
+   5. [Classes](#65-classes)
+   6. [Sidebar](#66-sidebar)
+   7. [Control Sidebar (Right Sidebar)](#67-control-sidebar-right-sidebar)
+   8. [URLs](#68-urls)
+   9. [Laravel Mix](#69-laravel-mix)
+   10. [Menu](#610-menu)
       1. [Adding a Search Input](#6101-adding-a–search-input)
       2. [Custom Menu Filters](#6102-custom-menu–filters)
       3. [Menu configuration at runtime](#6103-menu-configuration–at-runtime)
       4. [Active menu items](#6104-active-menu–items)
-   10. [Menu Filters](#611-menu-filters)
-   11. [Plugins](#612-plugins)
+   11. [Menu Filters](#611-menu-filters)
+   12. [Plugins](#612-plugins)
       1. [Pace Plugin Configuration](#6121-pace-plugin-configuration)
 7. [Translations](#7-translations)
     1. [Menu Translations](#71-menu-translations)
@@ -255,29 +255,30 @@ The following config options available:
 
 ### 6.2 Favicon
 Favicons could be used easily. There are two different ways to do this.
+Please add all favicons in the dir public/favicons/.
     
 - __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
-    If set to `true`, the file `public/favicon.ico` is used.
+    If set to `true`, the file `public/favicon/favicon.ico` is used.
 
 - __`['use_ico_only' => false, 'use_full_favicon' => true]`__
 
 If `'use_full_favicon' => true` more favicon files in `public/favicon/` will be used. The activated code is:
 ```
-    <link rel="shortcut icon" href="/favicon/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="57x57" href="/favicon/apple-icon-57x57.png">
-    <link rel="apple-touch-icon" sizes="60x60" href="/favicon/apple-icon-60x60.png">
-    <link rel="apple-touch-icon" sizes="72x72" href="/favicon/apple-icon-72x72.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/favicon/apple-icon-76x76.png">
-    <link rel="apple-touch-icon" sizes="114x114" href="/favicon/apple-icon-114x114.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/favicon/apple-icon-120x120.png">
-    <link rel="apple-touch-icon" sizes="144x144" href="/favicon/apple-icon-144x144.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/favicon/apple-icon-152x152.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-icon-180x180.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
-    <link rel="icon" type="image/png" sizes="192x192"  href="/favicon/android-icon-192x192.png">
+    <link rel="shortcut icon" href="{{ asset('favicon/favicon.ico') }}" />
+    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicon/apple-icon-57x57.png') }}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicon/apple-icon-60x60.png') }}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('favicon/apple-icon-72x72.png') }}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('favicon/apple-icon-76x76.png') }}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('favicon/apple-icon-114x114.png') }}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('favicon/apple-icon-120x120.png') }}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('favicon/apple-icon-144x144.png') }}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('favicon/apple-icon-152x152.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicon/apple-icon-180x180.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicon/favicon-96x96.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('favicon/android-icon-192x192.png') }}">
     <link rel="manifest" href="/favicon/manifest.json">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="/favicon/ms-icon-144x144.png">
