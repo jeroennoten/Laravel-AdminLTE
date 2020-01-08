@@ -23,6 +23,8 @@
     @else
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @endif
+	
+	@yield('meta_tags')
 </head>
 <body class="@yield('classes_body')" @yield('body_data')>
 
