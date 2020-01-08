@@ -23,6 +23,8 @@
     @else
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @endif
+	
+    @yield('meta_tags')
 
     @if(config('adminlte.use_ico_only'))
         <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
