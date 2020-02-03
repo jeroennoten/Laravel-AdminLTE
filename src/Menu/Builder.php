@@ -2,6 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu;
 
+use Illuminate\Support\Arr;
+
 class Builder
 {
     public $menu = [];
@@ -25,9 +27,111 @@ class Builder
         }
     }
 
+    public function addAfter($itemKey, ...$newItems)
+    {
+        $this->addItem($itemKey, 'after', ...$newItems);
+    }
+
+    public function addBefore($itemKey, ...$newItems)
+    {
+        $this->addItem($itemKey, 'before', ...$newItems);
+    }
+
+    public function remove($itemKey)
+    {
+        $completeArrayPath = '';
+        $itemPath = $this->findItem($itemKey, $this->menu);
+        if (is_array($itemPath)) {
+            foreach ($itemPath as $key => $value) {
+                if ($completeArrayPath === '') {
+                    $completeArrayPath .= "$value";
+                } else {
+                    $completeArrayPath .= ".submenu.$value";
+                }
+            }
+            $itemPath = $completeArrayPath;
+        }
+        Arr::forget($this->menu, $itemPath);
+    }
+
+    public function itemKeyExists($itemKey)
+    {
+        if ($this->findItem($itemKey, $this->menu)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function transformItems($items)
     {
         return array_filter(array_map([$this, 'applyFilters'], $items));
+    }
+
+    protected function addItem($itemKey, $direction, ...$newItems)
+    {
+        $items = $this->transformItems($newItems);
+
+        $position = $this->findItem($itemKey, $this->menu);
+        if ($position !== null) {
+            if (!is_array($position)) {
+                array_splice($this->menu, $position+($direction == 'after' ? 1 : 0), 0, $items);
+            } else {
+                $completeArrayPath = $lastKey = '';
+                foreach ($position as $key => $value) {
+                    if ($completeArrayPath === '') {
+                        $completeArrayPath .= "$value";
+                    } else {
+                        $completeArrayPath .= ".submenu.$value";
+                        $lastKey = $value;
+                    }
+                }
+
+                $arrayPath = substr($completeArrayPath, 0, -(strlen(".$lastKey")));
+                $menuItems = Arr::get($this->menu, $arrayPath);
+                array_splice($menuItems, $lastKey+($direction == 'after' ? 1 : 0), 0, $items);
+                Arr::set($this->menu, $arrayPath, $menuItems);
+            }
+        }
+    }
+
+    protected function findItem($itemKey, $items, $childPositionOld = null) {
+        if (is_array($childPositionOld)) {
+            $childPositions = $childPositionOld;
+        } else {
+            $childPositions = [];
+            if ($childPositionOld) {
+                $childPositions[] = $childPositionOld;
+            }
+        }
+        foreach ($items as $key => $item) {
+            if (isset($item['key']) && $item['key'] == $itemKey) {
+                if ($childPositionOld) {
+                    $childPositions[] = $key;
+
+                    return $childPositions;
+                }
+
+                return $key;
+            }
+        }
+        foreach ($items as $key => $item) {
+            if (isset($item['submenu'])) {
+                if ($childPositionOld) {
+                    $childPositions[] = $key;
+                    $childPosition = $this->findItem($itemKey, $item['submenu'], $childPositions);
+                    $childPositions[] = $childPosition;
+
+                    if (is_array($childPosition)) {
+                        $childPositions = $childPosition;
+                    }
+
+                    return $childPositions;
+                }
+
+                return $this->findItem($itemKey, $item['submenu'], $key);
+            }
+        }
     }
 
     protected function applyFilters($item)
@@ -38,10 +142,6 @@ class Builder
 
         foreach ($this->filters as $filter) {
             $item = $filter->transform($item, $this);
-        }
-
-        if (isset($item['header'])) {
-            $item = $item['header'];
         }
 
         return $item;
