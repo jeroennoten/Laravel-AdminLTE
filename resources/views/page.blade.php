@@ -42,13 +42,16 @@
 (config('adminlte.sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light' ? 'data-scrollbar-theme=' . config('adminlte.sidebar_scrollbar_theme')  : '') . ' ' . (config('adminlte.sidebar_scrollbar_auto_hide', 'l') != 'l' ? 'data-scrollbar-auto-hide=' . config('adminlte.sidebar_scrollbar_auto_hide')   : ''))
 
 @php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
+@php( $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', 'logout') )
 @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
 
 @if (config('adminlte.use_route_url', false))
     @php( $logout_url = $logout_url ? route($logout_url) : '' )
+    @php( $profile_url = $profile_url ? route($profile_url) : '' )
     @php( $dashboard_url = $dashboard_url ? route($dashboard_url) : '' )
 @else
     @php( $logout_url = $logout_url ? url($logout_url) : '' )
+    @php( $profile_url = $profile_url ? url($profile_url) : '' )
     @php( $dashboard_url = $dashboard_url ? url($dashboard_url) : '' )
 @endif
 
@@ -77,7 +80,7 @@
 
                 <div class="collapse navbar-collapse order-3" id="navbarCollapse">
                     <ul class="nav navbar-nav">
-                        @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
+                        @each('adminlte::partials.menu-item-top-nav-left', $adminlte->menu(), 'item')
                     </ul>
                 </div>
             @else
@@ -89,17 +92,50 @@
                             <span class="sr-only">{{ __('adminlte::adminlte.toggle_navigation') }}</span>
                         </a>
                     </li>
-                    @each('adminlte::partials.menu-item-top-nav', $adminlte->menu(), 'item')
+                    @each('adminlte::partials.menu-item-top-nav-left', $adminlte->menu(), 'item')
                     @yield('content_top_nav_left')
                 </ul>
             @endif
                 <ul class="navbar-nav ml-auto @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))order-1 order-md-3 navbar-no-expand @endif">
                     @yield('content_top_nav_right')
+                    @each('adminlte::partials.menu-item-top-nav-right', $adminlte->menu(), 'item')
                     @if(Auth::user())
+                        @if(config('adminlte.usermenu_enabled'))
+                        <li class="nav-item dropdown user-menu">
+                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                @if(config('adminlte.usermenu_image'))
+                                <img src="config('adminlte.usermenu_image')" class="user-image img-circle elevation-2" alt="{{ Auth::user()->name }}">
+                                @endif
+                                <span @if(config('adminlte.usermenu_image'))class="d-none d-md-inline"@endif>{{ Auth::user()->name }}</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                @yield('usermenu_header')
+                                @each('adminlte::partials.menu-item-top-nav-user', $adminlte->menu(), 'item')
+                                @hasSection('usermenu_body')
+                                <li class="user-body border-bottom-0">
+                                    @yield('usermenu_body')
+                                </li>
+                                @endif
+                                <li class="user-footer">
+                                    @if($profile_url)
+                                    <a href="{{ $profile_url }}" class="btn btn-default btn-flat">Profile</a>
+                                    @endif
+
+                                    <a class="btn btn-default btn-flat float-right @if(!$profile_url)btn-block @endif" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        <i class="fa fa-fw fa-power-off"></i> {{ __('adminlte::adminlte.log_out') }}
+                                    </a>
+                                    <form id="logout-form" action="{{ $logout_url }}" method="POST" style="display: none;">
+                                        @if(config('adminlte.logout_method'))
+                                            {{ method_field(config('adminlte.logout_method')) }}
+                                        @endif
+                                        {{ csrf_field() }}
+                                    </form>
+                                </li>
+                            </ul>
+                        </li>
+                        @else
                         <li class="nav-item">
-                            <a class="nav-link" href="#"
-                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
-                            >
+                            <a class="nav-link" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                 <i class="fa fa-fw fa-power-off"></i> {{ __('adminlte::adminlte.log_out') }}
                             </a>
                             <form id="logout-form" action="{{ $logout_url }}" method="POST" style="display: none;">
@@ -109,6 +145,7 @@
                                 {{ csrf_field() }}
                             </form>
                         </li>
+                        @endif
                     @endif
                     @if(config('adminlte.right_sidebar'))
                         <li class="nav-item">
