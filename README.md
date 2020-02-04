@@ -588,6 +588,8 @@ Just specify the name of the icon and it will appear in front of your menu item.
 It's also possible to add menu items to the top navigation while sidebar is enabled, you just need to set the `topnav` attribute to `true` (you can also set `topnav_right` for the right side of the topnav or `topnav_user` to place it in the user menu above the user-body). 
 This will ignored if the top navigation layout is enabled, all menu items will appear in top navigation.
 
+To get a dynamic item placing you can add the `key` attribute, with this you can add a unique identifier to a add before or after it new items.
+
 Use the `can` attribute if you want conditionally show the menu item. This integrates with Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` attribute:
 
 ```php
