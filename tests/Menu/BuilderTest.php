@@ -271,7 +271,7 @@ class BuilderTest extends TestCase
         );
 
         $this->assertCount(1, $builder->menu);
-        $this->assertContains(['HEADER'], $builder->menu[0]);
+        $this->assertContains('HEADER', $builder->menu[0]['header']);
     }
 
     public function testLangTranslate()
@@ -284,7 +284,7 @@ class BuilderTest extends TestCase
         $builder->add(['header' => 'TEST']);
         $this->assertCount(5, $builder->menu);
         $this->assertEquals('MAIN NAVIGATION', $builder->menu[0]['header']);
-        $this->assertEquals('Profile', $builder->menu[2]);
+        $this->assertEquals('Profile', $builder->menu[2]['header']);
         $this->assertEquals('Profile', $builder->menu[1]['text']);
         $this->assertEquals('Blog', $builder->menu[3]['text']);
         $this->assertEquals('TEST', $builder->menu[4]['header']);
@@ -297,7 +297,7 @@ class BuilderTest extends TestCase
         $builder->add(['header' => 'TEST']);
         $this->assertCount(5, $builder->menu);
         $this->assertEquals('HAUPTMENÜ', $builder->menu[0]['header']);
-        $this->assertEquals('Profil', $builder->menu[2]);
+        $this->assertEquals('Profil', $builder->menu[2]['header']);
         $this->assertEquals('Profil', $builder->menu[1]['text']);
         $this->assertEquals('Blog', $builder->menu[3]['text']);
         $this->assertEquals('TEST', $builder->menu[4]['header']);
