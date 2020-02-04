@@ -37,6 +37,11 @@ class Builder
         $this->addItem($itemKey, 'before', ...$newItems);
     }
 
+    public function addIn($itemKey, ...$newItems)
+    {
+        $this->addItem($itemKey, 'in', ...$newItems);
+    }
+
     public function remove($itemKey)
     {
         $completeArrayPath = '';
@@ -71,25 +76,43 @@ class Builder
     protected function addItem($itemKey, $direction, ...$newItems)
     {
         $items = $this->transformItems($newItems);
-
         $position = $this->findItem($itemKey, $this->menu);
+
         if ($position !== null) {
-            if (! is_array($position)) {
+            $completeArrayPath = $lastKey = '';
+
+            if (is_array($position)) {
+                $completeArrayPath = implode('.submenu.', $position);
+                $lastKey = end($position);
+            } else {
+                $completeArrayPath = $lastKey = $position;
+            }
+
+            if ($direction == 'in' || ! is_array($position)) {
+                $arrayPath = $completeArrayPath;
+            } else if (is_array($position)) {
+                $arrayPath = substr($completeArrayPath, 0, -(strlen(".$lastKey")));
+            }
+
+            if ($position == $lastKey && $direction != 'in') {
                 array_splice($this->menu, $position + ($direction == 'after' ? 1 : 0), 0, $items);
             } else {
-                $completeArrayPath = $lastKey = '';
-                foreach ($position as $key => $value) {
-                    if ($completeArrayPath === '') {
-                        $completeArrayPath .= "$value";
+                $menuItems = Arr::get($this->menu, $arrayPath);
+
+                if ($direction == 'in') {
+                    if (! isset($menuItems['submenu'])) {
+                        $menuItems['submenu'] = [];
+                        $menuItems = $this->transformItems([$menuItems]);
+                        $menuItems = $menuItems[0];
+                        $menuItems['submenu'] = [];
+                        $menuItems['submenu'] = array_merge($menuItems['submenu'], $items);
                     } else {
-                        $completeArrayPath .= ".submenu.$value";
-                        $lastKey = $value;
+                        $menuItems['submenu'] = array_merge($menuItems['submenu'], $items);
                     }
+                } else {
+                    array_splice($menuItems, $lastKey + ($direction == 'after' ? 1 : 0), 0, $items);
                 }
 
-                $arrayPath = substr($completeArrayPath, 0, -(strlen(".$lastKey")));
-                $menuItems = Arr::get($this->menu, $arrayPath);
-                array_splice($menuItems, $lastKey + ($direction == 'after' ? 1 : 0), 0, $items);
                 Arr::set($this->menu, $arrayPath, $menuItems);
             }
         }
@@ -115,9 +138,7 @@ class Builder
 
                 return $key;
             }
-        }
-        foreach ($items as $key => $item) {
-            if (isset($item['submenu'])) {
+            else if (isset($item['submenu'])) {
                 if ($childPositionOld) {
                     $childPositions[] = $key;
                     $childPosition = $this->findItem($itemKey, $item['submenu'], $childPositions);
@@ -128,9 +149,19 @@ class Builder
                     }
 
                     return $childPositions;
-                }
+                } else {
+                    $newKey = $this->findItem($itemKey, $item['submenu']);
 
-                return $this->findItem($itemKey, $item['submenu'], $key);
+                    $childPositions[] = $key;
+                    if (! is_array($newKey)) {
+                        $childPositions[] = $newKey;
+                    } else {
+                        $childPositions = array_merge($childPositions, $newKey);
+                    }
+
+                    return $childPositions;
+
+                }
             }
         }
     }
