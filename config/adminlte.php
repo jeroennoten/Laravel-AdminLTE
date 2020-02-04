@@ -52,7 +52,7 @@ return [
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'AdminLTE',
 
-        /*
+    /*
         |--------------------------------------------------------------------------
         | User Menu
         |--------------------------------------------------------------------------
@@ -64,8 +64,8 @@ return [
         |
         */
 
-        'usermenu_enabled' => true,
-        'usermenu_image' => false,
+    'usermenu_enabled' => true,
+    'usermenu_image' => false,
 
     /*
     |--------------------------------------------------------------------------

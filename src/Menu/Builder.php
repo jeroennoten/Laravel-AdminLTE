@@ -74,8 +74,8 @@ class Builder
 
         $position = $this->findItem($itemKey, $this->menu);
         if ($position !== null) {
-            if (!is_array($position)) {
-                array_splice($this->menu, $position+($direction == 'after' ? 1 : 0), 0, $items);
+            if (! is_array($position)) {
+                array_splice($this->menu, $position + ($direction == 'after' ? 1 : 0), 0, $items);
             } else {
                 $completeArrayPath = $lastKey = '';
                 foreach ($position as $key => $value) {
@@ -89,13 +89,14 @@ class Builder
 
                 $arrayPath = substr($completeArrayPath, 0, -(strlen(".$lastKey")));
                 $menuItems = Arr::get($this->menu, $arrayPath);
-                array_splice($menuItems, $lastKey+($direction == 'after' ? 1 : 0), 0, $items);
+                array_splice($menuItems, $lastKey + ($direction == 'after' ? 1 : 0), 0, $items);
                 Arr::set($this->menu, $arrayPath, $menuItems);
             }
         }
     }
 
-    protected function findItem($itemKey, $items, $childPositionOld = null) {
+    protected function findItem($itemKey, $items, $childPositionOld = null)
+    {
         if (is_array($childPositionOld)) {
             $childPositions = $childPositionOld;
         } else {
