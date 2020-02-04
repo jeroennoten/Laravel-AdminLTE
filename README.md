@@ -612,7 +612,7 @@ It's possible to add a search input in your menu, using a menu item with the fol
 ```php
         [
             'search' => true,
-            'href' => 'test',  //form action
+            'url' => 'test',  //form action
             'method' => 'POST', //form method
             'input_name' => 'menu-search-input', //input name
             'text' => 'Search', //input placeholder
