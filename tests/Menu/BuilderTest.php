@@ -271,7 +271,7 @@ class BuilderTest extends TestCase
         );
 
         $this->assertCount(1, $builder->menu);
-        $this->assertEquals('HEADER', $builder->menu[0]);
+        $this->assertContains(['HEADER'], $builder->menu[0]);
     }
 
     public function testLangTranslate()
@@ -283,11 +283,11 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'blog', 'url' => '/blog']);
         $builder->add(['header' => 'TEST']);
         $this->assertCount(5, $builder->menu);
-        $this->assertEquals('MAIN NAVIGATION', $builder->menu[0]);
+        $this->assertEquals('MAIN NAVIGATION', $builder->menu[0]['header']);
         $this->assertEquals('Profile', $builder->menu[2]);
         $this->assertEquals('Profile', $builder->menu[1]['text']);
         $this->assertEquals('Blog', $builder->menu[3]['text']);
-        $this->assertEquals('TEST', $builder->menu[4]);
+        $this->assertEquals('TEST', $builder->menu[4]['header']);
 
         $builder = $this->makeMenuBuilder('http://example.com', null, 'de');
         $builder->add(['header' => 'main_navigation']);
@@ -296,10 +296,10 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'blog', 'url' => '/blog']);
         $builder->add(['header' => 'TEST']);
         $this->assertCount(5, $builder->menu);
-        $this->assertEquals('HAUPTMENÜ', $builder->menu[0]);
+        $this->assertEquals('HAUPTMENÜ', $builder->menu[0]['header']);
         $this->assertEquals('Profil', $builder->menu[2]);
         $this->assertEquals('Profil', $builder->menu[1]['text']);
         $this->assertEquals('Blog', $builder->menu[3]['text']);
-        $this->assertEquals('TEST', $builder->menu[4]);
+        $this->assertEquals('TEST', $builder->menu[4]['header']);
     }
 }
