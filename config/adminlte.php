@@ -53,19 +53,22 @@ return [
     'logo_img_alt' => 'AdminLTE',
 
     /*
-        |--------------------------------------------------------------------------
-        | User Menu
-        |--------------------------------------------------------------------------
-        |
-        | Here you can activate and change the user menu.
-        |
-        | For more detailed instructions you can look here:
-        | https://github.com/jeroennoten/Laravel-AdminLTE/#64-user-menu
-        |
-        */
+    |--------------------------------------------------------------------------
+    | User Menu
+    |--------------------------------------------------------------------------
+    |
+    | Here you can activate and change the user menu.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#64-user-menu
+    |
+    */
 
     'usermenu_enabled' => true,
+    'usermenu_header' => false,
+    'usermenu_header_class' => 'bg-primary',
     'usermenu_image' => false,
+    'usermenu_desc' => false,
 
     /*
     |--------------------------------------------------------------------------

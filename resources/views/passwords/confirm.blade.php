@@ -28,7 +28,7 @@
         <div class="lockscreen-item">
             @if(config('adminlte.usermenu_image'))
             <div class="lockscreen-image">
-                <img src="config('adminlte.usermenu_image')" alt="{{ Auth::user()->name }}">
+                <img src="{{ Auth::user()->adminlte_image() }}" alt="{{ Auth::user()->name }}">
             </div>
             @endif
 

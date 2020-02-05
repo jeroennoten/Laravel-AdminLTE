@@ -104,15 +104,29 @@
                         <li class="nav-item dropdown user-menu">
                             <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
                                 @if(config('adminlte.usermenu_image'))
-                                <img src="config('adminlte.usermenu_image')" class="user-image img-circle elevation-2" alt="{{ Auth::user()->name }}">
+                                <img src="{{ Auth::user()->adminlte_image() }}" class="user-image img-circle elevation-2" alt="{{ Auth::user()->name }}">
                                 @endif
                                 <span @if(config('adminlte.usermenu_image'))class="d-none d-md-inline"@endif>{{ Auth::user()->name }}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                @if(!View::hasSection('usermenu_header') && config('adminlte.usermenu_header'))
+                                <li class="user-header {{ config('adminlte.usermenu_header_class', 'bg-primary') }} @if(!config('adminlte.usermenu_image'))h-auto @endif">
+                                    @if(config('adminlte.usermenu_image'))
+                                    <img src="{{ Auth::user()->adminlte_image() }}" class="img-circle elevation-2" alt="{{ Auth::user()->name }}">
+                                    @endif
+                                    <p class="@if(!config('adminlte.usermenu_image'))mt-0 @endif">
+                                        {{ Auth::user()->name }}
+                                        @if(config('adminlte.usermenu_desc'))
+                                        <small>{{ Auth::user()->adminlte_desc() }}</small>
+                                        @endif
+                                    </p>
+                                </li>
+                                @else
                                 @yield('usermenu_header')
+                                @endif
                                 @each('adminlte::partials.menu-item-top-nav-user', $adminlte->menu(), 'item')
                                 @hasSection('usermenu_body')
-                                <li class="user-body border-bottom-0">
+                                <li class="user-body">
                                     @yield('usermenu_body')
                                 </li>
                                 @endif
