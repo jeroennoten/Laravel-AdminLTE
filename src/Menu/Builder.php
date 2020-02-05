@@ -159,7 +159,6 @@ class Builder
                     }
 
                     return $childPositions;
-
                 }
             }
         }
