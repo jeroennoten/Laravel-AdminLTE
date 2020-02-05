@@ -90,7 +90,7 @@ class Builder
 
             if ($direction == 'in' || ! is_array($position)) {
                 $arrayPath = $completeArrayPath;
-            } else if (is_array($position)) {
+            } elseif (is_array($position)) {
                 $arrayPath = substr($completeArrayPath, 0, -(strlen(".$lastKey")));
             }
 
@@ -137,8 +137,7 @@ class Builder
                 }
 
                 return $key;
-            }
-            else if (isset($item['submenu'])) {
+            } elseif (isset($item['submenu'])) {
                 if ($childPositionOld) {
                     $childPositions[] = $key;
                     $childPosition = $this->findItem($itemKey, $item['submenu'], $childPositions);
