@@ -105,10 +105,9 @@ class Builder
                         $menuItems = $this->transformItems([$menuItems]);
                         $menuItems = $menuItems[0];
                         $menuItems['submenu'] = [];
-                        $menuItems['submenu'] = array_merge($menuItems['submenu'], $items);
-                    } else {
-                        $menuItems['submenu'] = array_merge($menuItems['submenu'], $items);
                     }
+
+                    $menuItems['submenu'] = array_merge($menuItems['submenu'], $items);
                 } else {
                     array_splice($menuItems, $lastKey + ($direction == 'after' ? 1 : 0), 0, $items);
                 }
