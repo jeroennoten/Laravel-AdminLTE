@@ -43,7 +43,7 @@ This version supports Laravel 6 and included AdminLTE v2
       4. [Active menu items](#6114-active-menu–items)
    12. [Menu Filters](#612-menu-filters)
    13. [Plugins](#613-plugins)
-      1. [Pace Plugin Configuration](#6121-pace-plugin-configuration)
+      1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
 7. [Translations](#7-translations)
     1. [Menu Translations](#71-menu-translations)
 8. [Customize views](#8-customize-views)
