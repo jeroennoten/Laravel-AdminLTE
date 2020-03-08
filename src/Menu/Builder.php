@@ -18,9 +18,9 @@ class Builder
         $this->filters = $filters;
     }
 
-    public function add()
+    public function add(...$newItems)
     {
-        $items = $this->transformItems(func_get_args());
+        $items = $this->transformItems($newItems);
 
         foreach ($items as $item) {
             array_push($this->menu, $item);
