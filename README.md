@@ -317,11 +317,49 @@ The user is displayed at the upper right corner of your admin panel.
 - __`usermenu_enabled`__
 
     Whether to enable the user menu instead of the default logout button.
+
+- __`usermenu_header`__
+
+    Whether to enable the header inside the user menu.
+
+- __`usermenu_header_class`__
+
+    Extra classes for header inside the user menu.
+
+- __`usermenu_header_class`__
+
+    Extra classes for header inside the user menu.
+
 - __`usermenu_image`__
 
-    Small logo image, beside text logo.
+    Whether to enable the user image for the usermenu & lockscreen.
 
-    _Recommend size: 50x50px_
+    _**Note:**_ You need for this a extra function named `adminlte_image()` inside the `App/User`.
+    _Recommend size: 160x160px_
+
+- __`usermenu_desc`__
+
+    Whether to enable the user description for the usermenu.
+    _**Note:**_ You need for this a extra function named `adminlte_desc()` inside the `App/User`.
+
+#### 6.4.1 User Image & Description Example Code
+Example code for the `App/User` with custom image & description functions.
+```php
+    class User extends Authenticatable
+    {
+        …
+
+        public static function adminlte_image()
+        {
+            return 'https://picsum.photos/300/300';
+        }
+
+        public static function adminlte_desc()
+        {
+            return 'That\'s a nice guy';
+        }
+    }
+```
 
 ### 6.5 Layout
 It's possible change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar and you can enable fixed mode for sidebar, navbar and footer.
@@ -664,10 +702,38 @@ And then add to `config/adminlte.php`:
 
 #### 6.11.3 Menu configuration at runtime
 
-It is also possible to configure the menu at runtime, e.g. in the boot of any service provider.
+It is also possible to configure the menu at runtime, e.g. in the boot of any service provider or from an controller.
+You can add simple new menu items at end of the menu, before or after an specific menu item and also in an menu item as submenu item. 
 Use this if your menu is not static, for example when it depends on your database or the locale.
 It is also possible to combine both approaches. The menus will simply be concatenated and the order of service providers
 determines the order in the menu.
+
+Avialable Menu Builder methods:
+
+- __`add(...$newItems)`__
+
+    Adds one or multiple menu items to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`addAfter($itemKey, ...$newItems)`__
+
+    Adds one or multiple menu items after an specific menu item to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`addBefore($itemKey, ...$newItems)`__
+
+    Adds one or multiple menu items before an specific menu item to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`addIn($itemKey, ...$newItems)`__
+
+    Adds one or multiple menu items in an specific menu item as sub menu item to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`remove($itemKey)`__
+
+    Removes one specific menu item.
+
+- __`itemKeyExists($itemKey)`__
+
+    Checks if a specific menu item exists, searched by the `key`-attribute.
+
 
 To configure the menu at runtime, register a handler or callback for the `MenuBuilding` event, for example in the `boot()` method of a service provider:
 
@@ -714,6 +780,44 @@ A more practical example that actually uses translations and the database:
 ```
 
 This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
+
+Simple AddAfter, AddBefore & AddIn example:
+
+For this example we need add the `key`-attribute to the pages menu item.
+```php
+[
+    'key'         => 'pages',
+    'text'        => 'pages',
+    'url'         => 'admin/pages',
+    'icon'        => 'far fa-fw fa-file',
+    'label'       => 4,
+    'label_color' => 'success',
+],
+```
+Now we add the new menu items.
+1. __Account Settings__ after __Pages__
+2. __Notifications__ inside __Account Settings__
+3. __Profile__ before __Notifications__
+
+With this simple script:
+```php
+$events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+    $event->menu->addAfter('pages', [
+        'key' => 'account_settings',
+        'text' => 'Account Settings',
+    ]);
+    $event->menu->addIn('account_settings', [
+        'key' => 'account_settings_notifications',
+        'text' => 'Notifications',
+        'url' => 'account/edit/notifications',
+    ]);
+    $event->menu->addBefore('account_settings_notifications', [
+        'key' => 'account_settings_profile',
+        'text' => 'Profile',
+        'url' => 'account/edit/profile',
+    ]);
+});
+```
 
 #### 6.11.4 Active menu items
 
