@@ -93,16 +93,16 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text' => 'Home', 
-                'url' => '/', 
+                'text' => 'Home',
+                'url' => '/',
                 'key' => 'home',
                 'submenu' => [
                     [
                         'text' => 'Test',
                         'url' => '/test',
                         'key' => 'test',
-                    ]
-                ]
+                    ],
+                ],
             ]
         );
         $builder->addAfter('test', ['text' => 'Profile', 'url' => '/profile']);
@@ -126,16 +126,16 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text' => 'Home', 
-                'url' => '/', 
+                'text' => 'Home',
+                'url' => '/',
                 'key' => 'home',
                 'submenu' => [
                     [
                         'text' => 'Test',
                         'url' => '/test',
                         'key' => 'test',
-                    ]
-                ]
+                    ],
+                ],
             ]
         );
         $builder->addBefore('test', ['text' => 'Profile', 'url' => '/profile']);
@@ -256,11 +256,11 @@ class BuilderTest extends TestCase
         $builder = $this->makeMenuBuilder();
 
         $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-                ['text' => 'About', 'url' => '/about', 'key' => 'about'],
-                ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
-            ]
+            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+        ],
         ]);
-        
+
         $builder->remove('about');
 
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
@@ -272,54 +272,57 @@ class BuilderTest extends TestCase
         $builder = $this->makeMenuBuilder();
 
         $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-                ['text' => 'About', 'url' => '/about', 'key' => 'about'],
-                ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
-                ['text' => 'Demos', 'url' => '/demos', 'key' => 'demos'],
-            ]
+            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+            ['text' => 'Demos', 'url' => '/demos', 'key' => 'demos'],
+        ],
         ]);
-        
+
         $builder->remove('about');
         $builder->remove('demos');
 
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
     }
-    
-    public function testItemKeyExists() {
+
+    public function testItemKeyExists()
+    {
         $builder = $this->makeMenuBuilder();
 
         $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
 
         $this->assertTrue($builder->itemKeyExists('home'));
-    } 
-    
-    public function testItemSubKeyExists() {
+    }
+
+    public function testItemSubKeyExists()
+    {
         $builder = $this->makeMenuBuilder();
 
         $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-                ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+        ],
+        ]);
+
+        $this->assertTrue($builder->itemKeyExists('about'));
+        $this->assertFalse($builder->itemKeyExists('demos'));
+    }
+
+    public function testItemSubSubKeyExists()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
+            ['text' => 'About', 'url' => '/about', 'key' => 'about', 'submenu' => [
                 ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
-            ]
+            ],
+            ],
+        ],
         ]);
 
         $this->assertTrue($builder->itemKeyExists('about'));
         $this->assertFalse($builder->itemKeyExists('demos'));
-    } 
-    
-    public function testItemSubSubKeyExists() {
-        $builder = $this->makeMenuBuilder();
-
-        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-                ['text' => 'About', 'url' => '/about', 'key' => 'about', 'submenu' => [
-                        ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
-                    ]
-                ],
-            ]
-        ]);
-
-        $this->assertTrue($builder->itemKeyExists('about'));
-        $this->assertFalse($builder->itemKeyExists('demos'));
-    } 
+    }
 
     public function testHrefWillBeAdded()
     {

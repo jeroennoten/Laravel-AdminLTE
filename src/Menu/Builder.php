@@ -58,21 +58,21 @@ class Builder
             $previousArrayPath = preg_replace('/.[^.]*$/', '', $itemPath);
         }
         Arr::forget($this->menu, $itemPath);
-        
+
         $this->menu = array_values($this->menu);
-        
+
         if ($previousArrayPath !== '') {
             $oldArray = Arr::get($this->menu, $previousArrayPath);
             $oldArray = array_values($oldArray);
             Arr::set($this->menu, $previousArrayPath, $oldArray);
         }
-    }   
+    }
 
     public function itemKeyExists($itemKey)
     {
         $position = $this->findItem($itemKey, $this->menu);
 
-        if ((!is_array($position) && $position !== null) || (is_array($position) && end($position) !== null)) {
+        if ((! is_array($position) && $position !== null) || (is_array($position) && end($position) !== null)) {
             return true;
         }
 
