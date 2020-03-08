@@ -44,7 +44,7 @@ class Builder
 
     public function remove($itemKey)
     {
-        $completeArrayPath = '';
+        $completeArrayPath = $previousArrayPath = '';
         $itemPath = $this->findItem($itemKey, $this->menu);
         if (is_array($itemPath)) {
             foreach ($itemPath as $key => $value) {
@@ -55,13 +55,24 @@ class Builder
                 }
             }
             $itemPath = $completeArrayPath;
+            $previousArrayPath = preg_replace('/.[^.]*$/', '', $itemPath);
         }
         Arr::forget($this->menu, $itemPath);
-    }
+        
+        $this->menu = array_values($this->menu);
+        
+        if ($previousArrayPath !== '') {
+            $oldArray = Arr::get($this->menu, $previousArrayPath);
+            $oldArray = array_values($oldArray);
+            Arr::set($this->menu, $previousArrayPath, $oldArray);
+        }
+    }   
 
     public function itemKeyExists($itemKey)
     {
-        if ($this->findItem($itemKey, $this->menu)) {
+        $position = $this->findItem($itemKey, $this->menu);
+
+        if ((!is_array($position) && $position !== null) || (is_array($position) && end($position) !== null)) {
             return true;
         }
 
@@ -119,46 +130,21 @@ class Builder
 
     protected function findItem($itemKey, $items, $childPositionOld = null)
     {
-        if (is_array($childPositionOld)) {
-            $childPositions = $childPositionOld;
-        } else {
-            $childPositions = [];
-            if ($childPositionOld) {
-                $childPositions[] = $childPositionOld;
-            }
-        }
+        $childPositions = [];
         foreach ($items as $key => $item) {
             if (isset($item['key']) && $item['key'] == $itemKey) {
-                if ($childPositionOld) {
-                    $childPositions[] = $key;
-
-                    return $childPositions;
-                }
-
                 return $key;
             } elseif (isset($item['submenu'])) {
-                if ($childPositionOld) {
-                    $childPositions[] = $key;
-                    $childPosition = $this->findItem($itemKey, $item['submenu'], $childPositions);
-                    $childPositions[] = $childPosition;
+                $newKey = $this->findItem($itemKey, $item['submenu']);
 
-                    if (is_array($childPosition)) {
-                        $childPositions = $childPosition;
-                    }
-
-                    return $childPositions;
+                $childPositions[] = $key;
+                if (! is_array($newKey)) {
+                    $childPositions[] = $newKey;
                 } else {
-                    $newKey = $this->findItem($itemKey, $item['submenu']);
-
-                    $childPositions[] = $key;
-                    if (! is_array($newKey)) {
-                        $childPositions[] = $newKey;
-                    } else {
-                        $childPositions = array_merge($childPositions, $newKey);
-                    }
-
-                    return $childPositions;
+                    $childPositions = array_merge($childPositions, $newKey);
                 }
+
+                return $childPositions;
             }
         }
     }
