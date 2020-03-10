@@ -1,4 +1,4 @@
-@if (!isset($item['topnav']) || (isset($item['topnav']) && !$item['topnav']))
+@if ((!isset($item['topnav']) || (isset($item['topnav']) && !$item['topnav'])) && (!isset($item['topnav_right']) || (isset($item['topnav_right']) && !$item['topnav_right'])) && (!isset($item['topnav_user']) || (isset($item['topnav_user']) && !$item['topnav_user'])))
     @if (is_string($item))
         <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">{{ $item }}</li>
     @elseif (isset($item['header']))

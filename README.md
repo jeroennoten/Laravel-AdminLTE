@@ -29,20 +29,21 @@ This version supports Laravel 6 and included AdminLTE v2
    1. [Title](#61-title)
    2. [Favicon](#62-favicon)
    3. [Logo](#63-logo)
-   4. [Layout](#64-layout)
-   5. [Classes](#65-classes)
-   6. [Sidebar](#66-sidebar)
-   7. [Control Sidebar (Right Sidebar)](#67-control-sidebar-right-sidebar)
-   8. [URLs](#68-urls)
-   9. [Laravel Mix](#69-laravel-mix)
-   10. [Menu](#610-menu)
-      1. [Adding a Search Input](#6101-adding-a-search-input)
-      2. [Custom Menu Filters](#6102-custom-menu-filters)
-      3. [Menu configuration at runtime](#6103-menu-configuration-at-runtime)
-      4. [Active menu items](#6104-active-menu-items)
-   11. [Menu Filters](#611-menu-filters)
-   12. [Plugins](#612-plugins)
-      1. [Pace Plugin Configuration](#6121-pace-plugin-configuration)
+   4. [User menu](#64-user-menu)
+   5. [Layout](#65-layout)
+   6. [Classes](#66-classes)
+   7. [Sidebar](#67-sidebar)
+   8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
+   9. [URLs](#69-urls)
+   10. [Laravel Mix](#610-laravel-mix)
+   11. [Menu](#611-menu)
+      1. [Adding a Search Input](#6111-adding-a–search-input)
+      2. [Custom Menu Filters](#6112-custom-menu–filters)
+      3. [Menu configuration at runtime](#6113-menu-configuration–at-runtime)
+      4. [Active menu items](#6114-active-menu–items)
+   12. [Menu Filters](#612-menu-filters)
+   13. [Plugins](#613-plugins)
+      1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
 7. [Translations](#7-translations)
     1. [Menu Translations](#71-menu-translations)
 8. [Customize views](#8-customize-views)
@@ -61,7 +62,13 @@ This version supports Laravel 6 and included AdminLTE v2
     composer require jeroennoten/laravel-adminlte
     ```
 
-2. Install the package using the command (For fresh laravel installations):
+2. (Laravel 7+ only) Require the laravel/ui package using composer:
+
+    ```
+    composer require laravel/ui
+    ```
+    
+3. Install the package using the command (For fresh laravel installations):
 
     ```
     php artisan adminlte:install
@@ -310,7 +317,57 @@ The logo is displayed at the upper left corner of your admin panel. You can use 
 
     Logo image alt text.    
 
-### 6.4 Layout
+### 6.4 User Menu
+The user is displayed at the upper right corner of your admin panel. 
+
+- __`usermenu_enabled`__
+
+    Whether to enable the user menu instead of the default logout button.
+
+- __`usermenu_header`__
+
+    Whether to enable the header inside the user menu.
+
+- __`usermenu_header_class`__
+
+    Extra classes for header inside the user menu.
+
+- __`usermenu_header_class`__
+
+    Extra classes for header inside the user menu.
+
+- __`usermenu_image`__
+
+    Whether to enable the user image for the usermenu & lockscreen.
+
+    _**Note:**_ You need for this a extra function named `adminlte_image()` inside the `App/User`.
+    _Recommend size: 160x160px_
+
+- __`usermenu_desc`__
+
+    Whether to enable the user description for the usermenu.
+    _**Note:**_ You need for this a extra function named `adminlte_desc()` inside the `App/User`.
+
+#### 6.4.1 User Image & Description Example Code
+Example code for the `App/User` with custom image & description functions.
+```php
+    class User extends Authenticatable
+    {
+        …
+
+        public static function adminlte_image()
+        {
+            return 'https://picsum.photos/300/300';
+        }
+
+        public static function adminlte_desc()
+        {
+            return 'That\'s a nice guy';
+        }
+    }
+```
+
+### 6.5 Layout
 It's possible change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar and you can enable fixed mode for sidebar, navbar and footer.
 
 The following config options available:
@@ -361,7 +418,7 @@ __Examples__
     Fixed from mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for small tablet and desktop (>= 768px & <= 1199.99px)
 
 
-### 6.5 Classes
+### 6.6 Classes
 You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
 
 The following config options available:
@@ -397,7 +454,7 @@ The following config options available:
     Extra classes for top navigation bar container.
 
 
-### 6.6 Sidebar
+### 6.7 Sidebar
 You can modify the sidebar, you can disable the collapsed mini sidebar, start with collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and sidebar navigation menu item animation speed.
 
 The following config options available:
@@ -430,7 +487,7 @@ The following config options available:
     Changes the sidebar navigation slide animation speed.
 
 
-### 6.7 Control Sidebar (Right Sidebar)
+### 6.8 Control Sidebar (Right Sidebar)
 Here you have the option to enable a right sidebar. When active, you can use @section('right-sidebar') The icon you configured will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while false will push the content, and have no animation. You can also choose the sidebar theme (dark or light).
 
 The following config options available:
@@ -458,7 +515,7 @@ The following config options available:
     Changes sidebar scrollbar auto hide trigger.
 
 
-### 6.8 URLs
+### 6.9 URLs
 Here we have the url settings to setup the correct login/register link. Register here your dashboard, logout, login and register URLs.
 - __`use_route_url`__
 
@@ -485,9 +542,12 @@ Here we have the url settings to setup the correct login/register link. Register
  - __`password_email_url`__
 
     Changes the password email url.
+ - __`profile_url`__
+
+    Changes the user profile url and displays a button in the user menu.
 
 
-### 6.9 Laravel Mix
+### 6.10 Laravel Mix
 If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
 
 ```
@@ -527,7 +587,7 @@ After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true
     Enables Laravel Mix specific css/js load in master layout.
     __Warning__ If you enable this option, the sections `adminlte_css` & `adminlte_js` will not rendered.
 
-### 6.10 Menu
+### 6.11 Menu
 Specify your menu items to display in the left sidebar. Each menu item should have a text and a URL. You can also specify an icon from Font Awesome. A string instead of an array represents a header in sidebar layout. The 'can' is a filter on Laravel's built in Gate functionality.
 
 You can configure your menu as follows:
@@ -569,8 +629,10 @@ The `icon` attribute is optional, you get an [open circle](https://fontawesome.c
 The available icons that you can use are those from [Font Awesome](https://fontawesome.io/icons/).
 Just specify the name of the icon and it will appear in front of your menu item.
 
-It's also possible to add menu items to the top navigation while sidebar is enabled, you just need to set the `topnav` attribute to `true`. 
+It's also possible to add menu items to the top navigation while sidebar is enabled, you just need to set the `topnav` attribute to `true` (you can also set `topnav_right` for the right side of the topnav or `topnav_user` to place it in the user menu above the user-body). 
 This will ignored if the top navigation layout is enabled, all menu items will appear in top navigation.
+
+To get a dynamic item placing you can add the `key` attribute, with this you can add a unique identifier to a add before or after it new items.
 
 Use the `can` attribute if you want conditionally show the menu item. This integrates with Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` attribute:
 
@@ -589,21 +651,21 @@ Use the `can` attribute if you want conditionally show the menu item. This integ
 ]
 ```
 
-#### 6.10.1 Adding a Search Input
+#### 6.11.1 Adding a Search Input
 
 It's possible to add a search input in your menu, using a menu item with the following configuration:
 
 ```php
         [
             'search' => true,
-            'href' => 'test',  //form action
+            'url' => 'test',  //form action
             'method' => 'POST', //form method
             'input_name' => 'menu-search-input', //input name
             'text' => 'Search', //input placeholder
         ],
 ```
 
-#### 6.10.2 Custom Menu Filters
+#### 6.11.2 Custom Menu Filters
 
 If you need custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).
 
@@ -644,12 +706,40 @@ And then add to `config/adminlte.php`:
 ]
 ```
 
-#### 6.10.3 Menu configuration at runtime
+#### 6.11.3 Menu configuration at runtime
 
-It is also possible to configure the menu at runtime, e.g. in the boot of any service provider.
+It is also possible to configure the menu at runtime, e.g. in the boot of any service provider or from an controller.
+You can add simple new menu items at end of the menu, before or after an specific menu item and also in an menu item as submenu item. 
 Use this if your menu is not static, for example when it depends on your database or the locale.
 It is also possible to combine both approaches. The menus will simply be concatenated and the order of service providers
 determines the order in the menu.
+
+Avialable Menu Builder methods:
+
+- __`add(...$newItems)`__
+
+    Adds one or multiple menu items to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`addAfter($itemKey, ...$newItems)`__
+
+    Adds one or multiple menu items after an specific menu item to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`addBefore($itemKey, ...$newItems)`__
+
+    Adds one or multiple menu items before an specific menu item to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`addIn($itemKey, ...$newItems)`__
+
+    Adds one or multiple menu items in an specific menu item as sub menu item to the sidebar menu or topnav menus (right, left or usermenu). 
+
+- __`remove($itemKey)`__
+
+    Removes one specific menu item.
+
+- __`itemKeyExists($itemKey)`__
+
+    Checks if a specific menu item exists, searched by the `key`-attribute.
+
 
 To configure the menu at runtime, register a handler or callback for the `MenuBuilding` event, for example in the `boot()` method of a service provider:
 
@@ -697,7 +787,45 @@ A more practical example that actually uses translations and the database:
 
 This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
 
-#### 6.10.4 Active menu items
+Simple AddAfter, AddBefore & AddIn example:
+
+For this example we need add the `key`-attribute to the pages menu item.
+```php
+[
+    'key'         => 'pages',
+    'text'        => 'pages',
+    'url'         => 'admin/pages',
+    'icon'        => 'far fa-fw fa-file',
+    'label'       => 4,
+    'label_color' => 'success',
+],
+```
+Now we add the new menu items.
+1. __Account Settings__ after __Pages__
+2. __Notifications__ inside __Account Settings__
+3. __Profile__ before __Notifications__
+
+With this simple script:
+```php
+$events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+    $event->menu->addAfter('pages', [
+        'key' => 'account_settings',
+        'text' => 'Account Settings',
+    ]);
+    $event->menu->addIn('account_settings', [
+        'key' => 'account_settings_notifications',
+        'text' => 'Notifications',
+        'url' => 'account/edit/notifications',
+    ]);
+    $event->menu->addBefore('account_settings_notifications', [
+        'key' => 'account_settings_profile',
+        'text' => 'Profile',
+        'url' => 'account/edit/profile',
+    ]);
+});
+```
+
+#### 6.11.4 Active menu items
 
 By default, a menu item is considered active if any of the following holds:
 - The current path matches the `url` parameter
@@ -717,7 +845,7 @@ To utilize regex, simply prefix your pattern with `regex:` and it will get evalu
 ```
 
 
-### 6.11 Menu Filters
+### 6.12 Menu Filters
 Here we can set the filters you want to include for rendering the menu.
 You can add your own filters to this array after you've created them. You can comment out the GateFilter if you don't want to use Laravel's built in Gate functionality
 
@@ -736,7 +864,7 @@ Default menu filters:
 - `JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class`
 
 
-### 6.12 Plugins
+### 6.13 Plugins
 Configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via script and link tag. Plugin Name, active status and files array (even empty) are required. Files, when added, need to have type (js or css), asset (true or false) and location (string). When asset is set to true, the location will be output using asset() function.
 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported and but not active.
@@ -779,7 +907,7 @@ Each plugin have a files array, with contain arrays with file type (`js` or `css
 
 If the asset value is `true`, the injection will use the asset() function.
 
-#### 6.12.1 Pace Plugin Configuration
+#### 6.13.1 Pace Plugin Configuration
 
 You can change the Pace plugin appearence, when using the CDN injection modifying the css file location.
 ```

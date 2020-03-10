@@ -42,6 +42,288 @@ class BuilderTest extends TestCase
         $this->assertEquals('/about', $builder->menu[1]['url']);
     }
 
+    public function testAddAfterOneItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->addAfter('home', ['text' => 'Profile', 'url' => '/profile']);
+        $this->assertEquals('Profile', $builder->menu[1]['text']);
+        $this->assertEquals('/profile', $builder->menu[1]['url']);
+    }
+
+    public function testAddAfterMultipleItems()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->addAfter('home', ['text' => 'About', 'url' => '/about']);
+        $builder->addAfter('home', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('Profile', $builder->menu[1]['text']);
+        $this->assertEquals('/profile', $builder->menu[1]['url']);
+        $this->assertEquals('About', $builder->menu[2]['text']);
+        $this->assertEquals('/about', $builder->menu[2]['url']);
+    }
+
+    public function testAddAfterMultipleItemsAtOnce()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+
+        $builder->addAfter('home',
+            ['text' => 'Profile', 'url' => '/profile'],
+            ['text' => 'About', 'url' => '/about']
+        );
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('Profile', $builder->menu[1]['text']);
+        $this->assertEquals('/profile', $builder->menu[1]['url']);
+        $this->assertEquals('About', $builder->menu[2]['text']);
+        $this->assertEquals('/about', $builder->menu[2]['url']);
+    }
+
+    public function testAddAfterOneSubItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(
+            [
+                'text' => 'Home',
+                'url' => '/',
+                'key' => 'home',
+                'submenu' => [
+                    [
+                        'text' => 'Test',
+                        'url' => '/test',
+                        'key' => 'test',
+                    ],
+                ],
+            ]
+        );
+        $builder->addAfter('test', ['text' => 'Profile', 'url' => '/profile']);
+        $this->assertEquals('Profile', $builder->menu[0]['submenu'][1]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['submenu'][1]['url']);
+    }
+
+    public function testAddBeforeOneItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Profile', 'url' => '/profile', 'key' => 'profile']);
+        $builder->addBefore('profile', ['text' => 'Home', 'url' => '/']);
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+    }
+
+    public function testAddBeforeOneSubItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(
+            [
+                'text' => 'Home',
+                'url' => '/',
+                'key' => 'home',
+                'submenu' => [
+                    [
+                        'text' => 'Test',
+                        'url' => '/test',
+                        'key' => 'test',
+                    ],
+                ],
+            ]
+        );
+        $builder->addBefore('test', ['text' => 'Profile', 'url' => '/profile']);
+        $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
+    }
+
+    public function testAddBeforeMultipleItems()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Profile', 'url' => '/profile', 'key' => 'profile']);
+        $builder->addBefore('profile', ['text' => 'Home', 'url' => '/']);
+        $builder->addBefore('profile', ['text' => 'About', 'url' => '/about']);
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('About', $builder->menu[1]['text']);
+        $this->assertEquals('/about', $builder->menu[1]['url']);
+        $this->assertEquals('Profile', $builder->menu[2]['text']);
+        $this->assertEquals('/profile', $builder->menu[2]['url']);
+    }
+
+    public function testAddBeforeMultipleItemsAtOnce()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Profile', 'url' => '/profile', 'key' => 'profile']);
+
+        $builder->addBefore('profile',
+            ['text' => 'Home', 'url' => '/'],
+            ['text' => 'About', 'url' => '/about']
+        );
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('About', $builder->menu[1]['text']);
+        $this->assertEquals('/about', $builder->menu[1]['url']);
+        $this->assertEquals('Profile', $builder->menu[2]['text']);
+        $this->assertEquals('/profile', $builder->menu[2]['url']);
+    }
+
+    public function testAddInOneItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->addIn('home', ['text' => 'Profile', 'url' => '/profile']);
+        $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
+    }
+
+    public function testAddInMultipleItems()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->addIn('home', ['text' => 'Profile', 'url' => '/profile']);
+        $builder->addIn('home', ['text' => 'About', 'url' => '/about']);
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
+        $this->assertEquals('About', $builder->menu[0]['submenu'][1]['text']);
+        $this->assertEquals('/about', $builder->menu[0]['submenu'][1]['url']);
+    }
+
+    public function testAddInMultipleItemsAtOnce()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+
+        $builder->addIn('home',
+            ['text' => 'Profile', 'url' => '/profile'],
+            ['text' => 'About', 'url' => '/about']
+        );
+
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+        $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
+        $this->assertEquals('About', $builder->menu[0]['submenu'][1]['text']);
+        $this->assertEquals('/about', $builder->menu[0]['submenu'][1]['url']);
+    }
+
+    public function testRemoveOneItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->add(['text' => 'Profile', 'url' => '/profile', 'key' => 'profile']);
+
+        $builder->remove('home');
+
+        $this->assertEquals('Profile', $builder->menu[0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['url']);
+    }
+
+    public function testRemoveMultipleItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->add(['text' => 'About', 'url' => '/about', 'key' => 'about']);
+        $builder->add(['text' => 'Profile', 'url' => '/profile', 'key' => 'profile']);
+
+        $builder->remove('home');
+        $builder->remove('about');
+
+        $this->assertEquals('Profile', $builder->menu[0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['url']);
+    }
+
+    public function testRemoveOneSubItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
+            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+        ],
+        ]);
+
+        $builder->remove('about');
+
+        $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
+    }
+
+    public function testRemoveMultipleSubItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
+            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+            ['text' => 'Demos', 'url' => '/demos', 'key' => 'demos'],
+        ],
+        ]);
+
+        $builder->remove('about');
+        $builder->remove('demos');
+
+        $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
+        $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
+    }
+
+    public function testItemKeyExists()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+
+        $this->assertTrue($builder->itemKeyExists('home'));
+    }
+
+    public function testItemSubKeyExists()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
+            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+        ],
+        ]);
+
+        $this->assertTrue($builder->itemKeyExists('about'));
+        $this->assertFalse($builder->itemKeyExists('demos'));
+    }
+
+    public function testItemSubSubKeyExists()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
+            ['text' => 'About', 'url' => '/about', 'key' => 'about', 'submenu' => [
+                ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+            ],
+            ],
+        ],
+        ]);
+
+        $this->assertTrue($builder->itemKeyExists('about'));
+        $this->assertFalse($builder->itemKeyExists('demos'));
+    }
+
     public function testHrefWillBeAdded()
     {
         $builder = $this->makeMenuBuilder();
@@ -271,7 +553,7 @@ class BuilderTest extends TestCase
         );
 
         $this->assertCount(1, $builder->menu);
-        $this->assertEquals('HEADER', $builder->menu[0]);
+        $this->assertContains('HEADER', $builder->menu[0]['header']);
     }
 
     public function testLangTranslate()
@@ -283,11 +565,11 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'blog', 'url' => '/blog']);
         $builder->add(['header' => 'TEST']);
         $this->assertCount(5, $builder->menu);
-        $this->assertEquals('MAIN NAVIGATION', $builder->menu[0]);
-        $this->assertEquals('Profile', $builder->menu[2]);
+        $this->assertEquals('MAIN NAVIGATION', $builder->menu[0]['header']);
+        $this->assertEquals('Profile', $builder->menu[2]['header']);
         $this->assertEquals('Profile', $builder->menu[1]['text']);
         $this->assertEquals('Blog', $builder->menu[3]['text']);
-        $this->assertEquals('TEST', $builder->menu[4]);
+        $this->assertEquals('TEST', $builder->menu[4]['header']);
 
         $builder = $this->makeMenuBuilder('http://example.com', null, 'de');
         $builder->add(['header' => 'main_navigation']);
@@ -296,10 +578,10 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'blog', 'url' => '/blog']);
         $builder->add(['header' => 'TEST']);
         $this->assertCount(5, $builder->menu);
-        $this->assertEquals('HAUPTMENÜ', $builder->menu[0]);
-        $this->assertEquals('Profil', $builder->menu[2]);
+        $this->assertEquals('HAUPTMENÜ', $builder->menu[0]['header']);
+        $this->assertEquals('Profil', $builder->menu[2]['header']);
         $this->assertEquals('Profil', $builder->menu[1]['text']);
         $this->assertEquals('Blog', $builder->menu[3]['text']);
-        $this->assertEquals('TEST', $builder->menu[4]);
+        $this->assertEquals('TEST', $builder->menu[4]['header']);
     }
 }
