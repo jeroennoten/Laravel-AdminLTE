@@ -62,7 +62,13 @@ This version supports Laravel 6 and included AdminLTE v2
     composer require jeroennoten/laravel-adminlte
     ```
 
-2. Install the package using the command (For fresh laravel installations):
+2. (Laravel 7+ only) Require the laravel/ui package using composer:
+
+    ```
+    composer require laravel/ui
+    ```
+    
+3. Install the package using the command (For fresh laravel installations):
 
     ```
     php artisan adminlte:install
