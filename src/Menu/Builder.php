@@ -126,6 +126,8 @@ class Builder
                 Arr::set($this->menu, $arrayPath, $menuItems);
             }
         }
+
+        $this->menu[$position] = $this->applyFilters($this->menu[$position]);
     }
 
     protected function findItem($itemKey, $items, $childPositionOld = null)
