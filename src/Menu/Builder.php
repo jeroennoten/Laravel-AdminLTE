@@ -123,7 +123,7 @@ class Builder
                     array_splice($menuItems, $lastKey + ($direction == 'after' ? 1 : 0), 0, $items);
                 }
 
-                Arr::set($this->menu, $arrayPath, $menuItems);
+                Arr::set($this->menu, $arrayPath, $this->applyFilters($menuItems));
             }
         }
     }
