@@ -176,16 +176,19 @@ You can list all available plugins, install/update/remove all or specific plugin
 
 Install all plugin assets
 - `artisan adminlte:plugins install`
+
 Install only Pace Progress & Select2 plugin assets
 - `artisan adminlte:plugins install --plugin=paceProgress --plugin=select2`
 
 Update all Plugin assets
 - `artisan adminlte:plugins update`
+
 Update only Pace Progress plugin assets
 - `artisan adminlte:plugins update`
 
 Remove all Plugin assets
 - `artisan adminlte:plugins remove`
+
 Remove only Select2 plugin assets
 - `artisan adminlte:plugins remove --plugin=select2`
 
