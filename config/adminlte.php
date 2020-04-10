@@ -47,10 +47,28 @@ return [
 
     'logo' => '<b>Admin</b>LTE',
     'logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'logo_img_class' => 'brand-image-xl',
+    'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
     'logo_img_alt' => 'AdminLTE',
+
+    /*
+    |--------------------------------------------------------------------------
+    | User Menu
+    |--------------------------------------------------------------------------
+    |
+    | Here you can activate and change the user menu.
+    |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#64-user-menu
+    |
+    */
+
+    'usermenu_enabled' => true,
+    'usermenu_header' => false,
+    'usermenu_header_class' => 'bg-primary',
+    'usermenu_image' => false,
+    'usermenu_desc' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -60,7 +78,7 @@ return [
     | Here we change the layout of your admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#64-layout
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#65-layout
     |
     */
 
@@ -78,7 +96,7 @@ return [
     | Here you can change the look and behavior of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#65-classes
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#66-classes
     |
     */
 
@@ -101,7 +119,7 @@ return [
     | Here we can modify the sidebar of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#66-sidebar
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#67-sidebar
     |
     */
 
@@ -123,7 +141,7 @@ return [
     | Here we can modify the right sidebar aka control sidebar of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#67-control-sidebar-right-sidebar
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#68-control-sidebar-right-sidebar
     |
     */
 
@@ -143,7 +161,7 @@ return [
     | Here we can modify the url settings of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#68-urls
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#69-urls
     |
     */
 
@@ -161,6 +179,8 @@ return [
 
     'password_email_url' => 'password/email',
 
+    'profile_url' => false,
+
     /*
     |--------------------------------------------------------------------------
     | Laravel Mix
@@ -169,7 +189,7 @@ return [
     | Here we can enable the Laravel Mix option for the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#69-laravel-mix
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#610-laravel-mix
     |
     */
 
@@ -183,7 +203,7 @@ return [
     | Here we can modify the sidebar/top navigation of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#610-menu
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#611-menu
     |
     */
 
@@ -277,7 +297,7 @@ return [
     | Here we can modify the menu filters of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#611-menu-filters
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#612-menu-filters
     |
     */
 
@@ -299,7 +319,7 @@ return [
     | Here we can modify the plugins used inside the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#611-plugins
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#613-plugins
     |
     */
 
