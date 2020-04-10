@@ -66,6 +66,7 @@ This version supports Laravel 6 and included AdminLTE v2
 
     ```
     composer require laravel/ui
+    php artisan ui:controllers
     ```
     
 3. Install the package using the command (For fresh laravel installations):
