@@ -181,6 +181,8 @@ return [
 
     'profile_url' => false,
 
+    'enable_forgot_password' => true,
+
     /*
     |--------------------------------------------------------------------------
     | Laravel Mix

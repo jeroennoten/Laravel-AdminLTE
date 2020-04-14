@@ -15,6 +15,7 @@
 @php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
 @php( $password_reset_url = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset') )
 @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+@php( $enable_forgot_password = config('adminlte.enable_forgot_password', true))
 
 @if (config('adminlte.use_route_url', false))
     @php( $login_url = $login_url ? route($login_url) : '' )
@@ -78,11 +79,15 @@
                         </div>
                     </div>
                 </form>
+
+                @if($enable_forgot_password)
                 <p class="mt-2 mb-1">
                     <a href="{{ $password_reset_url }}">
                         {{ __('adminlte::adminlte.i_forgot_my_password') }}
                     </a>
                 </p>
+                @endif
+
                 @if ($register_url)
                     <p class="mb-0">
                         <a href="{{ $register_url }}">
