@@ -1,3 +1,135 @@
+{{-- ====================================================================== --}}
+{{-- PHP utility methods used on this blade template                        --}}
+{{-- ====================================================================== --}}
+
+@php
+
+/*
+ * Gets the body classes related to the configured layout options.
+ */
+function getBodyClasses()
+{
+    $body_classes = '';
+    $screen_sizes = ['xs', 'sm', 'md', 'lg', 'xl'];
+
+    // Add classes related to the "sidebar_mini" configuration.
+
+    if (config('adminlte.sidebar_mini', true) === true)
+        $body_classes .= 'sidebar-mini ';
+    elseif ($sidebar_mini_cfg == 'md')
+        $body_classes .= 'sidebar-mini sidebar-mini-md ';
+
+    // Add classes related to the "layout_topnav" configuration.
+
+    if (config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
+        $body_classes .= 'layout-top-nav ';
+
+    // Add classes related to the "layout_boxed" configuration.
+
+    if (config('adminlte.layout_boxed'))
+        $body_classes .= 'layout-boxed ';
+
+    // Add classes related to the "sidebar_collapse" configuration.
+
+    if (config('adminlte.sidebar_collapse') || View::getSection('sidebar_collapse'))
+        $body_classes .= 'sidebar-collapse ';
+
+    // Add classes related to the "right_sidebar" configuration.
+
+    if (config('adminlte.right_sidebar') && config('adminlte.right_sidebar_push'))
+        $body_classes .= 'control-sidebar-push ';
+
+    // Add classes related to the fixed layout configuration, these are not
+    // compatible with "layout_topnav".
+
+    if (!config('adminlte.layout_topnav') && !View::getSection('layout_topnav'))
+    {
+        // Check for fixed sidebar configuration.
+
+        if (config('adminlte.layout_fixed_sidebar'))
+            $body_classes .= 'layout-fixed ';
+
+        // Check for fixed navbar configuration.
+
+        $fixed_navbar_cfg = config('adminlte.layout_fixed_navbar');
+
+        if ($fixed_navbar_cfg === true)
+        {
+            $body_classes .= 'layout-navbar-fixed ';
+        }
+        elseif (is_array($fixed_navbar_cfg))
+        {
+            foreach ($fixed_navbar_cfg as $size => $enabled)
+            {
+                if (in_array($size, $screen_sizes))
+                {
+                    $size = $size == 'xs' ? '' : '-' . $size;
+                    $body_classes .= $enabled == true ?
+                        'layout' . $size . '-navbar-fixed ' :
+                        'layout' . $size . '-navbar-not-fixed ';
+                }
+            }
+        }
+
+        // Check for fixed footer configuration.
+
+        $fixed_footer_cfg = config('adminlte.layout_fixed_footer');
+
+        if ($fixed_footer_cfg === true)
+        {
+            $body_classes .= 'layout-footer-fixed ';
+        }
+        elseif (is_array($fixed_footer_cfg))
+        {
+            foreach ($fixed_footer_cfg as $size => $enabled)
+            {
+                if (in_array($size, $screen_sizes))
+                {
+                    $size = $size == 'xs' ? '' : '-' . $size;
+                    $body_classes .= $enabled == true ?
+                        'layout' . $size . '-footer-fixed ' :
+                        'layout' . $size . '-footer-not-fixed ';
+                }
+            }
+        }
+    }
+
+    // Add classes related to the "classes_body" configuration and return the
+    // set of configured classes for the body tag.
+
+    return trim($body_classes . config('adminlte.classes_body', ''));
+}
+
+/*
+ * Gets the body data related to the configured layout options.
+ */
+function getBodyData()
+{
+    $body_data = '';
+
+    // Add data related to the "sidebar_scrollbar_theme" configuration.
+
+    $sb_theme_cfg = config('adminlte.sidebar_scrollbar_theme', 'os-theme-light');
+
+    if ($sb_theme_cfg != 'os-theme-light')
+        $body_data .= 'data-scrollbar-theme=' . $sb_theme_cfg;
+
+    // Add data related to the "sidebar_scrollbar_auto_hide" configuration.
+
+    $sb_auto_hide = config('adminlte.sidebar_scrollbar_auto_hide', 'l');
+
+    if ($sb_auto_hide != 'l')
+        $body_data .= 'data-scrollbar-auto-hide=' . $sb_auto_hide;
+
+    return trim($body_data);
+}
+
+@endphp
+
+{{-- ====================================================================== --}}
+{{-- The blade template                                                     --}}
+{{-- ====================================================================== --}}
+
 @extends('adminlte::master')
 
 @section('adminlte_css')
@@ -5,41 +137,9 @@
     @yield('css')
 @stop
 
-@section('classes_body',
-    (config('adminlte.sidebar_mini', true) === true ?
-        'sidebar-mini ' :
-        (config('adminlte.sidebar_mini', true) == 'md' ?
-         'sidebar-mini sidebar-mini-md ' : '')
-    ) .
-    (config('adminlte.layout_topnav') || View::getSection('layout_topnav') ? 'layout-top-nav ' : '') .
-    (config('adminlte.layout_boxed') ? 'layout-boxed ' : '') .
-    (!config('adminlte.layout_topnav') && !View::getSection('layout_topnav') ?
-        (config('adminlte.layout_fixed_sidebar') ? 'layout-fixed ' : '') .
-        (config('adminlte.layout_fixed_navbar') === true ?
-            'layout-navbar-fixed ' :
-            (isset(config('adminlte.layout_fixed_navbar')['xs']) ? (config('adminlte.layout_fixed_navbar')['xs'] == true ? 'layout-navbar-fixed ' : 'layout-navbar-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_navbar')['sm']) ? (config('adminlte.layout_fixed_navbar')['sm'] == true ? 'layout-sm-navbar-fixed ' : 'layout-sm-navbar-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_navbar')['md']) ? (config('adminlte.layout_fixed_navbar')['md'] == true ? 'layout-md-navbar-fixed ' : 'layout-md-navbar-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_navbar')['lg']) ? (config('adminlte.layout_fixed_navbar')['lg'] == true ? 'layout-lg-navbar-fixed ' : 'layout-lg-navbar-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_navbar')['xl']) ? (config('adminlte.layout_fixed_navbar')['xl'] == true ? 'layout-xl-navbar-fixed ' : 'layout-xl-navbar-not-fixed ') : '')
-        ) .
-        (config('adminlte.layout_fixed_footer') === true ?
-            'layout-footer-fixed ' :
-            (isset(config('adminlte.layout_fixed_footer')['xs']) ? (config('adminlte.layout_fixed_footer')['xs'] == true ? 'layout-footer-fixed ' : 'layout-footer-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_footer')['sm']) ? (config('adminlte.layout_fixed_footer')['sm'] == true ? 'layout-sm-footer-fixed ' : 'layout-sm-footer-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_footer')['md']) ? (config('adminlte.layout_fixed_footer')['md'] == true ? 'layout-md-footer-fixed ' : 'layout-md-footer-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_footer')['lg']) ? (config('adminlte.layout_fixed_footer')['lg'] == true ? 'layout-lg-footer-fixed ' : 'layout-lg-footer-not-fixed ') : '') .
-            (isset(config('adminlte.layout_fixed_footer')['xl']) ? (config('adminlte.layout_fixed_footer')['xl'] == true ? 'layout-xl-footer-fixed ' : 'layout-xl-footer-not-fixed ') : '')
-        )
-        : ''
-    ) .
-    (config('adminlte.sidebar_collapse') || View::getSection('sidebar_collapse') ? 'sidebar-collapse ' : '') .
-    (config('adminlte.right_sidebar') && config('adminlte.right_sidebar_push') ? 'control-sidebar-push ' : '') .
-    config('adminlte.classes_body')
-)
+@section('classes_body', getBodyClasses())
 
-@section('body_data',
-(config('adminlte.sidebar_scrollbar_theme', 'os-theme-light') != 'os-theme-light' ? 'data-scrollbar-theme=' . config('adminlte.sidebar_scrollbar_theme')  : '') . ' ' . (config('adminlte.sidebar_scrollbar_auto_hide', 'l') != 'l' ? 'data-scrollbar-auto-hide=' . config('adminlte.sidebar_scrollbar_auto_hide')   : ''))
+@section('body_data', getBodyData())
 
 @php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
 @php( $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', 'logout') )
