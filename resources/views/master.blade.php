@@ -24,7 +24,7 @@
     @else
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
     @endif
-	
+	@yield('load_css')
     @yield('meta_tags')
 
     @if(config('adminlte.use_ico_only'))
@@ -64,6 +64,6 @@
 @else
 <script src="{{ mix('js/app.js') }}"></script>
 @endif
-
+@yield('load_js')
 </body>
 </html>
