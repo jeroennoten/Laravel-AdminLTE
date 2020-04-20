@@ -22,6 +22,9 @@ class LangFilter implements FilterInterface
         if (isset($item['text'])) {
             $item['text'] = $this->getTranslation($item['text']) ?? $item['text'];
         }
+        if (isset($item['label'])) {
+            $item['label'] = $this->getTranslation($item['label']) ?? $item['label'];
+        }
 
         return $item;
     }
