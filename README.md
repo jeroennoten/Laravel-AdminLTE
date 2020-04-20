@@ -542,7 +542,7 @@ Here we have the url settings to setup the correct login/register link. Register
     Changes the register link or if set `false` it will hide.
  - __`password_reset_url`__
 
-    Changes the password reset url.
+    Changes the password reset url or if set `false` it will hide.
  - __`password_email_url`__
 
     Changes the password email url.
