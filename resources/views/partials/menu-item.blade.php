@@ -1,8 +1,8 @@
 @if ((!isset($item['topnav']) || (isset($item['topnav']) && !$item['topnav'])) && (!isset($item['topnav_right']) || (isset($item['topnav_right']) && !$item['topnav_right'])) && (!isset($item['topnav_user']) || (isset($item['topnav_user']) && !$item['topnav_user'])))
     @if (is_string($item))
-        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">{{ __($item) }}</li>
+        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">{{ $item }}</li>
     @elseif (isset($item['header']))
-        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">{{ __($item['header']) }}</li>
+        <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">{{ $item['header'] }}</li>
     @elseif (isset($item['search']) && $item['search'])
         <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif>
             <form action="{{ $item['href'] }}" method="{{ $item['method'] }}" class="form-inline">
@@ -23,13 +23,13 @@
             >
                 <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
                 <p>
-                    {{ __($item['text']) }}
+                    {{ $item['text'] }}
 
                     @if (isset($item['submenu']))
                         <i class="fas fa-angle-left right"></i>
                     @endif
                     @if (isset($item['label']))
-                        <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} right">{{ __($item['label']) }}</span>
+                        <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} right">{{ $item['label'] }}</span>
                     @endif
                 </p>
             </a>
