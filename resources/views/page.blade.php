@@ -16,7 +16,7 @@ function getBodyClasses()
 
     if (config('adminlte.sidebar_mini', true) === true)
         $body_classes .= 'sidebar-mini ';
-    elseif ($sidebar_mini_cfg == 'md')
+    elseif (config('adminlte.sidebar_mini', true) == 'md')
         $body_classes .= 'sidebar-mini sidebar-mini-md ';
 
     // Add classes related to the "layout_topnav" configuration.
