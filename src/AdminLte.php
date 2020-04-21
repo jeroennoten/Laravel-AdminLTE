@@ -117,7 +117,7 @@ class AdminLte
                 }
             }
         }
-        
+
         $body_classes[] = config('adminlte.classes_body', '');
 
         // Add classes related to the "classes_body" configuration and return the
