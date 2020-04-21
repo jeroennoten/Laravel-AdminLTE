@@ -35,7 +35,7 @@ class AdminLte
 
         return $this->menu;
     }
-    
+
     public function getBodyClasses()
     {
         $body_classes = [];
@@ -76,7 +76,7 @@ class AdminLte
         // Add classes related to the fixed layout configuration, these are not
         // compatible with "layout_topnav".
 
-        if (!config('adminlte.layout_topnav') && !View::getSection('layout_topnav')) {
+        if (! config('adminlte.layout_topnav') && ! View::getSection('layout_topnav')) {
             // Check for fixed sidebar configuration.
 
             if (config('adminlte.layout_fixed_sidebar')) {
@@ -92,10 +92,10 @@ class AdminLte
             } elseif (is_array($fixed_navbar_cfg)) {
                 foreach ($fixed_navbar_cfg as $size => $enabled) {
                     if (in_array($size, $screen_sizes)) {
-                        $size = $size == 'xs' ? '' : '-' . $size;
+                        $size = $size == 'xs' ? '' : '-'.$size;
                         $body_classes[] = $enabled == true ?
-                            'layout' . $size . '-navbar-fixed' :
-                            'layout' . $size . '-navbar-not-fixed';
+                            'layout'.$size.'-navbar-fixed' :
+                            'layout'.$size.'-navbar-not-fixed';
                     }
                 }
             }
@@ -109,10 +109,10 @@ class AdminLte
             } elseif (is_array($fixed_footer_cfg)) {
                 foreach ($fixed_footer_cfg as $size => $enabled) {
                     if (in_array($size, $screen_sizes)) {
-                        $size = $size == 'xs' ? '' : '-' . $size;
+                        $size = $size == 'xs' ? '' : '-'.$size;
                         $body_classes[] = $enabled == true ?
-                            'layout' . $size . '-footer-fixed' :
-                            'layout' . $size . '-footer-not-fixed';
+                            'layout'.$size.'-footer-fixed' :
+                            'layout'.$size.'-footer-not-fixed';
                     }
                 }
             }
@@ -125,7 +125,7 @@ class AdminLte
 
         return trim(implode(' ', $body_classes));
     }
-    
+
     public function getBodyData()
     {
         $body_data = '';
@@ -135,7 +135,7 @@ class AdminLte
         $sb_theme_cfg = config('adminlte.sidebar_scrollbar_theme', 'os-theme-light');
 
         if ($sb_theme_cfg != 'os-theme-light') {
-            $body_data .= 'data-scrollbar-theme=' . $sb_theme_cfg;
+            $body_data .= 'data-scrollbar-theme='.$sb_theme_cfg;
         }
 
         // Add data related to the "sidebar_scrollbar_auto_hide" configuration.
@@ -143,7 +143,7 @@ class AdminLte
         $sb_auto_hide = config('adminlte.sidebar_scrollbar_auto_hide', 'l');
 
         if ($sb_auto_hide != 'l') {
-            $body_data .= 'data-scrollbar-auto-hide=' . $sb_auto_hide;
+            $body_data .= 'data-scrollbar-auto-hide='.$sb_auto_hide;
         }
 
         return trim($body_data);
