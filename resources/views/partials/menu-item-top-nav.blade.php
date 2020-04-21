@@ -9,7 +9,7 @@
       </div>
     </div>
   </form>
-@elseif (is_array($item))
+@elseif (is_array($item) && !isset($item['header']))
   <li @if (isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item {{ $item['top_nav_class'] }}">
       <a class="nav-link @if (isset($item['submenu']))dropdown-item dropdown-toggle @endif" href="{{ $item['href'] }}"
          @if (isset($item['submenu'])) data-toggle="dropdown" @endif
