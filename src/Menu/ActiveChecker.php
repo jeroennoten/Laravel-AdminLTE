@@ -20,21 +20,21 @@ class ActiveChecker
 
     public function isActive($item)
     {
-        if (isset($item['submenu'])) {
-            return $this->containsActive($item['submenu']);
+        if (isset($item['submenu']) && $this->containsActive($item['submenu'])) {
+            return true;
         }
 
-        if (isset($item['active'])) {
-            return $this->isExplicitActive($item['active']);
+        if (isset($item['active']) && $this->isExplicitActive($item['active'])) {
+            return true;
         }
 
-        if (isset($item['href'])) {
-            return $this->checkPattern($item['href']);
+        if (isset($item['href']) && $this->checkPattern($item['href'])) {
+            return true;
         }
 
         // Support URL for backwards compatibility
-        if (isset($item['url'])) {
-            return $this->checkPattern($item['url']);
+        if (isset($item['url']) && $this->checkPattern($item['url'])) {
+            return true;
         }
 
         return false;
