@@ -28,12 +28,12 @@ class ActiveChecker
             return true;
         }
 
-        if (isset($item['href']) && $this->isExplicitActive($item['active'])) {
+        if (isset($item['href']) && $this->checkPattern($item['href'])) {
             return true;
         }
 
         // Support URL for backwards compatibility
-        if (isset($item['url']) && $this->isExplicitActive($item['active'])) {
+        if (isset($item['url']) && $this->checkPattern($item['url'])) {
             return true;
         }
 
