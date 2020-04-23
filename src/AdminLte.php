@@ -4,6 +4,7 @@ namespace JeroenNoten\LaravelAdminLte;
 
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
+use Illuminate\Support\Facades\View;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
@@ -128,14 +129,14 @@ class AdminLte
 
     public function getBodyData()
     {
-        $body_data = '';
+        $body_data = [];
 
         // Add data related to the "sidebar_scrollbar_theme" configuration.
 
         $sb_theme_cfg = config('adminlte.sidebar_scrollbar_theme', 'os-theme-light');
 
         if ($sb_theme_cfg != 'os-theme-light') {
-            $body_data .= 'data-scrollbar-theme='.$sb_theme_cfg;
+            $body_data[] = 'data-scrollbar-theme='.$sb_theme_cfg;
         }
 
         // Add data related to the "sidebar_scrollbar_auto_hide" configuration.
@@ -143,10 +144,10 @@ class AdminLte
         $sb_auto_hide = config('adminlte.sidebar_scrollbar_auto_hide', 'l');
 
         if ($sb_auto_hide != 'l') {
-            $body_data .= 'data-scrollbar-auto-hide='.$sb_auto_hide;
+            $body_data[] = 'data-scrollbar-auto-hide='.$sb_auto_hide;
         }
 
-        return trim($body_data);
+        return trim(implode(' ', $body_data));
     }
 
     protected function buildMenu()
