@@ -522,6 +522,47 @@ class BuilderTest extends TestCase
         $this->assertCount(1, $builder->menu);
         $this->assertEquals('About', $builder->menu[0]['text']);
     }
+    
+    public function testMultipleCan()
+    {
+        $gate = $this->makeGate();
+        $gate->define(
+            'show-users',
+            function () {
+                return true;
+            }
+        );
+        $gate->define(
+            'edit-user',
+            function () {
+                return false;
+            }
+        );
+        $gate->define(
+            'show-settings',
+            function () {
+                return false;
+            }
+        );
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            [
+                'text' => 'Users',
+                'url'  => 'users',
+                'can'  => ['show-users', 'edit-user'],
+            ],
+            [
+                'text' => 'Settings',
+                'url'  => 'settings',
+                'can'  => ['show-settings'],
+            ]
+        );
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertEquals('Users', $builder->menu[0]['text']);
+    }
 
     public function testCanHeaders()
     {
