@@ -32,14 +32,14 @@ class GateFilter implements FilterInterface
         if (isset($item['model'])) {
             return $this->gate->allows($item['can'], $item['model']);
         }
-        
+
         if (is_array($item['can'])) {
             foreach ($item['can'] as $can) {
                 if ($this->gate->allows($can)) {
                     return true;
                 }
             }
-            
+
             return false;
         }
 
