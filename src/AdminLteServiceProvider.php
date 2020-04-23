@@ -27,7 +27,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
         });
     }
 
-    public function boot(Factory $view,Dispatcher $events, Repository $config) 
+    public function boot(Factory $view, Dispatcher $events, Repository $config) 
     {
         $this->loadViews();
 
