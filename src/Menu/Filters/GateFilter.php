@@ -29,20 +29,22 @@ class GateFilter implements FilterInterface
             return true;
         }
 
+        $args = [];
+
         if (isset($item['model'])) {
-            return $this->gate->allows($item['can'], $item['model']);
+            $args = $item['model'];
         }
 
-        if (is_array($item['can'])) {
-            foreach ($item['can'] as $can) {
-                if ($this->gate->allows($can)) {
-                    return true;
-                }
+        if (! is_array($item['can'])) {
+            return $this->gate->allows($item['can'], $args);
+        }
+
+        foreach ($item['can'] as $can) {
+            if ($this->gate->allows($can, $args)) {
+                return true;
             }
-
-            return false;
         }
 
-        return $this->gate->allows($item['can']);
+        return false;
     }
 }
