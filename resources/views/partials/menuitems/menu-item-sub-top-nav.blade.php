@@ -13,7 +13,7 @@
         </a>
         @if (isset($item['submenu']))
             <ul class="dropdown-menu border-0 shadow">
-                @each('adminlte::partials.menu-item-sub-top-nav', $item['submenu'], 'item')
+                @each('adminlte::partials.menuitems.menu-item-sub-top-nav', $item['submenu'], 'item')
             </ul>
         @endif
     </li>

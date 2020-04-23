@@ -18,7 +18,7 @@
                 @if(!config('adminlte.sidebar_nav_accordion'))
                     data-accordion="false"
                 @endif>
-                @each('adminlte::partials.menu-item', $adminlte->menu(), 'item')
+                @each('adminlte::partials.menuitems.menu-item', $adminlte->menu(), 'item')
             </ul>
         </nav>
     </div>

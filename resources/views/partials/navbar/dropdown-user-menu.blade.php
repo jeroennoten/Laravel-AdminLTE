@@ -35,7 +35,7 @@
             @yield('usermenu_header')
         @endif
 
-        @each('adminlte::partials.menu-item-top-nav-user', $adminlte->menu(), 'item')
+        @each('adminlte::partials.menuitems.menu-item-top-nav-user', $adminlte->menu(), 'item')
 
         {{-- User menu body --}}
         @hasSection('usermenu_body')

@@ -21,14 +21,14 @@
         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
             {{-- Navbar left links --}}
             <ul class="nav navbar-nav">
-                @each('adminlte::partials.menu-item-top-nav-left', $adminlte->menu(), 'item')
+                @each('adminlte::partials.menuitems.menu-item-top-nav-left', $adminlte->menu(), 'item')
             </ul>
         </div>
 
         {{-- Navbar right links --}}
         <ul class="navbar-nav ml-auto order-1 order-md-3 navbar-no-expand">
             @yield('content_top_nav_right')
-            @each('adminlte::partials.menu-item-top-nav-right', $adminlte->menu(), 'item')
+            @each('adminlte::partials.menuitems.menu-item-top-nav-right', $adminlte->menu(), 'item')
 
             {{-- User menu link --}}
             @if(Auth::user())
