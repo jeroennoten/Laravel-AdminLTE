@@ -522,7 +522,7 @@ class BuilderTest extends TestCase
         $this->assertCount(1, $builder->menu);
         $this->assertEquals('About', $builder->menu[0]['text']);
     }
-    
+
     public function testMultipleCan()
     {
         $gate = $this->makeGate();
