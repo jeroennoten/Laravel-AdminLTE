@@ -575,7 +575,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'profile', 'url' => '/profile', 'label' => 'labels']);
         $builder->add(['text' => 'blog', 'url' => '/blog']);
         $builder->add(['header' => 'TEST']);
-        $this->assertCount(5, $builder->menu);
+        $this->assertCount(4, $builder->menu);
         $this->assertEquals('Profil', $builder->menu[0]['header']);
         $this->assertEquals('Profil', $builder->menu[1]['text']);
         $this->assertEquals('Beschriftungen', $builder->menu[1]['label']);
