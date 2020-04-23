@@ -132,7 +132,7 @@
                                 @endif
                                 <li class="user-footer">
                                     @if($profile_url)
-                                    <a href="{{ $profile_url }}" class="btn btn-default btn-flat">Profile</a>
+                                    <a href="{{ $profile_url }}" class="btn btn-default btn-flat">{{ __('adminlte::menu.profile') }}</a>
                                     @endif
 
                                     <a class="btn btn-default btn-flat float-right @if(!$profile_url)btn-block @endif" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
