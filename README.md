@@ -25,6 +25,7 @@ This version supports Laravel 6 and included AdminLTE v2
    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
    4. [Authentication views](#54-authentication-views)
       1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
+   5. [Themes](#55-themes)
 6. [Configuration](#6-configuration)
    1. [Title](#61-title)
    2. [Favicon](#62-favicon)
@@ -238,6 +239,15 @@ If you want to use the included authentication related views manually, you can c
 
 By default, the login form contains a link to the registration form.
 If you don't want a registration form, set the `register_url` setting to `null` and the link will not be displayed.
+
+### 5.5 Themes
+To enable themes from [Bootswatch](https://bootswatch.com) first, export the theme assets.
+```bash
+php artisan vendor:publish --tag=adminlte-themes
+
+```
+Then you can set theme from your config file.
+
 
 ## 6. Configuration
 
