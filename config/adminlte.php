@@ -323,7 +323,7 @@ return [
 
     'theme' => [
         'active' => false,
-        'name' => env('ADMINLTE_THEME_NAME','minty'),
+        'name' => env('ADMINLTE_THEME_NAME', 'minty'),
     ],
 
     'themes' => [
