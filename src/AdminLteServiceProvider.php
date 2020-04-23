@@ -27,11 +27,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
         });
     }
 
-    public function boot(
-        Factory $view,
-        Dispatcher $events,
-        Repository $config
-    ) {
+    public function boot(Factory $view,Dispatcher $events,Repository $config) 
+    {
         $this->loadViews();
 
         $this->loadTranslations();
@@ -43,6 +40,10 @@ class AdminLteServiceProvider extends BaseServiceProvider
         $this->registerViewComposers($view);
 
         static::registerMenu($events, $config);
+
+        $this->publishes([
+            __DIR__.'/../assets/themes' => public_path('vendor/adminlte-themes'),
+        ], 'adminlte-themes');
     }
 
     private function loadViews()

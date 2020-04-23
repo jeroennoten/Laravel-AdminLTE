@@ -313,6 +313,28 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Bootswatch Theme
+    |--------------------------------------------------------------------------
+    |
+    | Here you can use Bootswatch themes to your ADMINLTE to make it more cool
+    | https://bootswatch.com
+    |
+    */
+
+    'theme' => [
+        'active' => false,
+        'name' => env('ADMINLTE_THEME_NAME','minty'),
+    ],
+
+    'themes' => [
+        'minty' => 'minty.min.css',
+        'cosmo' => 'cosmo.min.css',
+        'darkly' => 'darkly.min.css',
+        'litera' => 'litera.min.css',
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Plugins Initialization
     |--------------------------------------------------------------------------
     |

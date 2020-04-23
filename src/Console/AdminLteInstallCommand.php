@@ -296,6 +296,8 @@ class AdminLteInstallCommand extends Command
         }
 
         $this->comment('Basic Assets Installation complete.');
+
+        
     }
 
     /**
