@@ -638,7 +638,7 @@ This will ignored if the top navigation layout is enabled, all menu items will a
 
 To get a dynamic item placing you can add the `key` attribute, with this you can add a unique identifier to a add before or after it new items.
 
-Use the `can` attribute if you want conditionally show the menu item. This integrates with Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` attribute:
+Use the `can` attribute if you want conditionally show the menu item. This integrates with Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` attribute. You can add more `can` entries as array, see the second example:
 
 ```php
 [
@@ -650,7 +650,7 @@ Use the `can` attribute if you want conditionally show the menu item. This integ
     [
         'text' => 'Add new post',
         'url' => 'admin/blog/new',
-        'can' => 'add-blog-post'
+        'can' => ['add-blog-post', 'other-right']
     ],
 ]
 ```
