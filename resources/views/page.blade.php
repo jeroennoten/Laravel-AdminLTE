@@ -1,5 +1,11 @@
 @extends('adminlte::master')
 
+@if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
+    @php( $def_container_class = 'container' )
+@else
+    @php( $def_container_class = 'container-fluid' )
+@endif
+
 @section('adminlte_css')
     @stack('css')
     @yield('css')
@@ -26,27 +32,21 @@
 
         {{-- Content Wrapper --}}
         <div class="content-wrapper">
-            @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
-                <div class="container">
-            @endif
 
             {{-- Content Header --}}
-            <div class="content-header">
-                <div class="{{config('adminlte.classes_content_header', 'container-fluid')}}">
+            <div class="content-header {{ config('adminlte.classes_content_header', '') }}">
+                <div class="{{ $def_container_class }}">
                     @yield('content_header')
                 </div>
             </div>
 
             {{-- Main Content --}}
-            <div class="content">
-                <div class="{{config('adminlte.classes_content', 'container-fluid')}}">
+            <div class="content {{ config('adminlte.classes_content', '') }}">
+                <div class="{{ $def_container_class }}">
                     @yield('content')
                 </div>
             </div>
 
-            @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
-                </div>
-            @endif
         </div>
 
         {{-- Footer --}}
