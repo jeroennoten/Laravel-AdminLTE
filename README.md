@@ -12,7 +12,7 @@ If you want use the older versions, please use the following versions:
 - Version 1.x or branch laravel5-adminlte2:
 This version supports Laravel 5 and included AdminLTE v2
 - Version 2.x or branch laravel6-adminlte2:
-This version supports Laravel 6 and included AdminLTE v2
+This version supports Laravel 6 and higher and included AdminLTE v2
 
 1. [Requirements](#1-requirements)
 2. [Installation](#2-installation)
@@ -51,7 +51,7 @@ This version supports Laravel 6 and included AdminLTE v2
 
 ## 1. Requirements
 
-- Laravel 6.x
+- Laravel >= 6.x
 - PHP >= 7.2
 
 ## 2. Installation
@@ -105,7 +105,7 @@ This version supports Laravel 6 and included AdminLTE v2
     - Make a copy of the views you modified.
     - Publish the views again, using
         ```
-       php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
+       php artisan adminlte:install --only=main_views
         ```
    - Redo the modifications you did.
   
@@ -236,8 +236,8 @@ If you want to use the included authentication related views manually, you can c
 @extends('adminlte::passwords.reset')
 ```
 
-By default, the login form contains a link to the registration form.
-If you don't want a registration form, set the `register_url` setting to `null` and the link will not be displayed.
+By default, the login form contains a link to the registration and password reset form.
+If you don't want a registration or password reset form, set the `register_url` respectively `password_reset_url` setting to `null` and the link will not be displayed.
 
 ## 6. Configuration
 
@@ -359,12 +359,12 @@ Example code for the `App/User` with custom image & description functions.
     {
         …
 
-        public static function adminlte_image()
+        public function adminlte_image()
         {
             return 'https://picsum.photos/300/300';
         }
 
-        public static function adminlte_desc()
+        public function adminlte_desc()
         {
             return 'That\'s a nice guy';
         }
