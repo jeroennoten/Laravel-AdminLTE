@@ -12,7 +12,7 @@ If you want use the older versions, please use the following versions:
 - Version 1.x or branch laravel5-adminlte2:
 This version supports Laravel 5 and included AdminLTE v2
 - Version 2.x or branch laravel6-adminlte2:
-This version supports Laravel 6 and included AdminLTE v2
+This version supports Laravel 6 and higher and included AdminLTE v2
 
 1. [Requirements](#1-requirements)
 2. [Installation](#2-installation)
@@ -51,7 +51,7 @@ This version supports Laravel 6 and included AdminLTE v2
 
 ## 1. Requirements
 
-- Laravel 6.x
+- Laravel >= 6.x
 - PHP >= 7.2
 
 ## 2. Installation
