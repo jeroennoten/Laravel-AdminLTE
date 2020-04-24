@@ -99,15 +99,15 @@ This version supports Laravel 6 and included AdminLTE v2
     php artisan adminlte:update
     ```
    
-3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too.
+3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your changes.
 
     Option 1:
-    - Make a copy of the views you modified.
+    - Make a copy (or backup) of the views you have modified.
     - Publish the views again, using
         ```
        php artisan vendor:publish --provider="JeroenNoten\LaravelAdminLte\AdminLteServiceProvider" --tag=views
         ```
-   - Redo the modifications you did.
+    - Compare and redo the modifications you previously did to those views.
   
    Option 2:
    - Modify in the css, js and other assets location in the master and page views. 
