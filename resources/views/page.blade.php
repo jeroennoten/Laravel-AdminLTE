@@ -9,20 +9,6 @@
 
 @section('body_data', $adminlte->getBodyData())
 
-@php( $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout') )
-@php( $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', 'logout') )
-@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
-
-@if (config('adminlte.use_route_url', false))
-    @php( $logout_url = $logout_url ? route($logout_url) : '' )
-    @php( $profile_url = $profile_url ? route($profile_url) : '' )
-    @php( $dashboard_url = $dashboard_url ? route($dashboard_url) : '' )
-@else
-    @php( $logout_url = $logout_url ? url($logout_url) : '' )
-    @php( $profile_url = $profile_url ? url($profile_url) : '' )
-    @php( $dashboard_url = $dashboard_url ? url($dashboard_url) : '' )
-@endif
-
 @section('body')
     <div class="wrapper">
 
