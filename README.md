@@ -431,31 +431,31 @@ The following config options available:
     Extra classes for body.
 - __`classes_brand`__
 
-    Extra classes for brand. Classes will be added to element _a.navbar-brand_ is `layout_topnav` is used, otherwise they will be added to element _a.brand-link_.
+    Extra classes for brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
 - __`classes_brand_text`__
 
-    Extra classes for brand text. Classes will be added to element _span.brand-text_.
+    Extra classes for brand text. Classes will be added to element `span.brand-text`.
 - __`classes_content_header`__
 
-    Extra classes for content header container. Classes will be added to element _div.content-header_.
+    Extra classes for content header container. Classes will be added to element `div.content-header`.
 - __`classes_content`__
 
-    Extra classes for content container. Classes will be added to element _div.content_.
+    Extra classes for content container. Classes will be added to element `div.content`.
 - __`classes_sidebar`__
 
-    Extra classes for sidebar. Classes will be added to element _aside.main-sidebar_.
+    Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
 - __`classes_sidebar_nav`__
 
-    Extra classes for sidebar navigation. Classes will be added to element _ul.nav.nav-pills.nav-sidebar_.
+    Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`.
 - __`classes_topnav`__
 
-    Extra classes for top navigation bar. Classes will be added to element _nav.main-header.navbar_.
+    Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
 - __`classes_topnav_nav`__
 
-    Extra classes for top navigation. Classes will be added to element _nav.main-header.navbar_.
+    Extra classes for top navigation. Classes will be added to element `nav.main-header.navbar`.
 - __`classes_topnav_container`__
 
-    Extra classes for top navigation bar container. Classes will be added to the _div_ wrapper inside element _nav.main-header.navbar_.
+    Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
 
 
 ### 6.7 Sidebar
