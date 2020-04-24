@@ -431,31 +431,31 @@ The following config options available:
     Extra classes for body.
 - __`classes_brand`__
 
-    Extra classes for brand.
+    Extra classes for brand. Classes will be added to element _a.navbar-brand_ is `layout_topnav` is used, otherwise they will be added to element _a.brand-link_.
 - __`classes_brand_text`__
 
-    Extra classes for brand text.
+    Extra classes for brand text. Classes will be added to element _span.brand-text_.
 - __`classes_content_header`__
 
-    Extra classes for content header container.
+    Extra classes for content header container. Classes will be added to element _div.content-header_.
 - __`classes_content`__
 
-    Extra classes for content container.
+    Extra classes for content container. Classes will be added to element _div.content_.
 - __`classes_sidebar`__
 
-    Extra classes for sidebar.
+    Extra classes for sidebar. Classes will be added to element _aside.main-sidebar_.
 - __`classes_sidebar_nav`__
 
-    Extra classes for sidebar navigation.
+    Extra classes for sidebar navigation. Classes will be added to element _ul.nav.nav-pills.nav-sidebar_.
 - __`classes_topnav`__
 
-    Extra classes for top navigation bar.
+    Extra classes for top navigation bar. Classes will be added to element _nav.main-header.navbar_.
 - __`classes_topnav_nav`__
 
-    Extra classes for top navigation.
+    Extra classes for top navigation. Classes will be added to element _nav.main-header.navbar_.
 - __`classes_topnav_container`__
 
-    Extra classes for top navigation bar container.
+    Extra classes for top navigation bar container. Classes will be added to the _div_ wrapper inside element _nav.main-header.navbar_.
 
 
 ### 6.7 Sidebar
