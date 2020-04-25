@@ -285,7 +285,7 @@ return [
         ],
         [
             'text'       => 'information',
-            'icon_color' => 'aqua',
+            'icon_color' => 'cyan',
         ],
     ],
 
