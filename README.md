@@ -437,10 +437,10 @@ The following config options available:
     Extra classes for brand text. Classes will be added to element `span.brand-text`.
 - __`classes_content_header`__
 
-    Extra classes for content header container. Classes will be added to element `div.content-header`.
+    Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
 - __`classes_content`__
 
-    Extra classes for content container. Classes will be added to element `div.content`.
+    Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
 - __`classes_sidebar`__
 
     Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.

@@ -34,15 +34,15 @@
         <div class="content-wrapper">
 
             {{-- Content Header --}}
-            <div class="content-header {{ config('adminlte.classes_content_header', '') }}">
-                <div class="{{ $def_container_class }}">
+            <div class="content-header">
+                <div class="{{ config('adminlte.classes_content_header') ?: $def_container_class }}">
                     @yield('content_header')
                 </div>
             </div>
 
             {{-- Main Content --}}
-            <div class="content {{ config('adminlte.classes_content', '') }}">
-                <div class="{{ $def_container_class }}">
+            <div class="content">
+                <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
                     @yield('content')
                 </div>
             </div>
