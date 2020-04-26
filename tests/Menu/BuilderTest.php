@@ -523,6 +523,47 @@ class BuilderTest extends TestCase
         $this->assertEquals('About', $builder->menu[0]['text']);
     }
 
+    public function testMultipleCan()
+    {
+        $gate = $this->makeGate();
+        $gate->define(
+            'show-users',
+            function () {
+                return true;
+            }
+        );
+        $gate->define(
+            'edit-user',
+            function () {
+                return false;
+            }
+        );
+        $gate->define(
+            'show-settings',
+            function () {
+                return false;
+            }
+        );
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            [
+                'text' => 'Users',
+                'url'  => 'users',
+                'can'  => ['show-users', 'edit-user'],
+            ],
+            [
+                'text' => 'Settings',
+                'url'  => 'settings',
+                'can'  => ['show-settings'],
+            ]
+        );
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertEquals('Users', $builder->menu[0]['text']);
+    }
+
     public function testCanHeaders()
     {
         $gate = $this->makeGate();
@@ -563,7 +604,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'profile', 'url' => '/profile', 'label' => 'labels']);
         $builder->add(['text' => 'blog', 'url' => '/blog']);
         $builder->add(['header' => 'TEST']);
-        $this->assertCount(5, $builder->menu);
+        $this->assertCount(4, $builder->menu);
         $this->assertEquals('Profile', $builder->menu[0]['header']);
         $this->assertEquals('Profile', $builder->menu[1]['text']);
         $this->assertEquals('LABELS', $builder->menu[1]['label']);
@@ -575,7 +616,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'profile', 'url' => '/profile', 'label' => 'labels']);
         $builder->add(['text' => 'blog', 'url' => '/blog']);
         $builder->add(['header' => 'TEST']);
-        $this->assertCount(5, $builder->menu);
+        $this->assertCount(4, $builder->menu);
         $this->assertEquals('Profil', $builder->menu[0]['header']);
         $this->assertEquals('Profil', $builder->menu[1]['text']);
         $this->assertEquals('Beschriftungen', $builder->menu[1]['label']);
