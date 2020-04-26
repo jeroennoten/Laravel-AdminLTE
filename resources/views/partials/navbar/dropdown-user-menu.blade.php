@@ -46,6 +46,7 @@
             @yield('usermenu_header')
         @endif
 
+        {{-- Configured user menu links --}}
         @each('adminlte::partials.menuitems.menu-item-top-nav-user', $adminlte->menu(), 'item')
 
         {{-- User menu body --}}

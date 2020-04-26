@@ -21,13 +21,20 @@
         <div class="collapse navbar-collapse order-3" id="navbarCollapse">
             {{-- Navbar left links --}}
             <ul class="nav navbar-nav">
+                {{-- Configured left links --}}
                 @each('adminlte::partials.menuitems.menu-item-top-nav-left', $adminlte->menu(), 'item')
+
+                {{-- Custom left links --}}
+                @yield('content_top_nav_left')
             </ul>
         </div>
 
         {{-- Navbar right links --}}
         <ul class="navbar-nav ml-auto order-1 order-md-3 navbar-no-expand">
+            {{-- Custom right links --}}
             @yield('content_top_nav_right')
+
+            {{-- Configured right links --}}
             @each('adminlte::partials.menuitems.menu-item-top-nav-right', $adminlte->menu(), 'item')
 
             {{-- User menu link --}}

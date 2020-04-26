@@ -7,16 +7,22 @@
         {{-- Left sidebar toggler link --}}
         @include('adminlte::partials.navbar.left-sidebar-link')
 
+        {{-- Configured left links --}}
         @each('adminlte::partials.menuitems.menu-item-top-nav-left', $adminlte->menu(), 'item')
+
+        {{-- Custom left links --}}
         @yield('content_top_nav_left')
     </ul>
 
     {{-- Navbar right links --}}
     <ul class="navbar-nav ml-auto">
+        {{-- Custom right links --}}
         @yield('content_top_nav_right')
+
+        {{-- Configured right links --}}
         @each('adminlte::partials.menuitems.menu-item-top-nav-right', $adminlte->menu(), 'item')
 
-        {{-- User menu links --}}
+        {{-- User menu link --}}
         @if(Auth::user())
             @if(config('adminlte.usermenu_enabled'))
                 @include('adminlte::partials.navbar.dropdown-user-menu')

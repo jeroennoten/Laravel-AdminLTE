@@ -18,6 +18,7 @@
                 @if(!config('adminlte.sidebar_nav_accordion'))
                     data-accordion="false"
                 @endif>
+                {{-- Configured sidebar links --}}
                 @each('adminlte::partials.menuitems.menu-item', $adminlte->menu(), 'item')
             </ul>
         </nav>
