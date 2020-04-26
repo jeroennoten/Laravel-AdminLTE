@@ -42,9 +42,9 @@ class ActiveChecker
 
     protected function checkPattern($pattern)
     {
-        $fullUrlPattern = $this->url->to($pattern);
+        $urlPattern = $this->url->to($pattern);
 
-        $fullUrl = $this->request->fullUrl();
+        $url = $this->request->url();
 
         if (mb_substr($pattern, 0, 6) === 'regex:') {
             $regex = mb_substr($pattern, 6);
@@ -56,7 +56,7 @@ class ActiveChecker
             return false;
         }
 
-        return Str::is($fullUrlPattern, $fullUrl);
+        return Str::is($urlPattern, $url);
     }
 
     protected function containsActive($items)
