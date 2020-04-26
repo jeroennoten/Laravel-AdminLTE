@@ -99,15 +99,15 @@ This version supports Laravel 6 and higher and included AdminLTE v2
     php artisan adminlte:update
     ```
    
-3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too.
+3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your changes.
 
     Option 1:
-    - Make a copy of the views you modified.
+    - Make a copy (or backup) of the views you have modified.
     - Publish the views again, using
         ```
        php artisan adminlte:install --only=main_views
         ```
-   - Redo the modifications you did.
+    - Compare and redo the modifications you previously did to those views.
   
    Option 2:
    - Modify in the css, js and other assets location in the master and page views. 
@@ -431,31 +431,31 @@ The following config options available:
     Extra classes for body.
 - __`classes_brand`__
 
-    Extra classes for brand.
+    Extra classes for brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
 - __`classes_brand_text`__
 
-    Extra classes for brand text.
+    Extra classes for brand text. Classes will be added to element `span.brand-text`.
 - __`classes_content_header`__
 
-    Extra classes for content header container.
+    Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
 - __`classes_content`__
 
-    Extra classes for content container.
+    Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
 - __`classes_sidebar`__
 
-    Extra classes for sidebar.
+    Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
 - __`classes_sidebar_nav`__
 
-    Extra classes for sidebar navigation.
+    Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`.
 - __`classes_topnav`__
 
-    Extra classes for top navigation bar.
+    Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
 - __`classes_topnav_nav`__
 
-    Extra classes for top navigation.
+    Extra classes for top navigation. Classes will be added to element `nav.main-header.navbar`.
 - __`classes_topnav_container`__
 
-    Extra classes for top navigation bar container.
+    Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
 
 
 ### 6.7 Sidebar
