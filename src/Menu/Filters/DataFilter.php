@@ -8,7 +8,7 @@ class DataFilter implements FilterInterface
 {
     public function transform($item, Builder $builder)
     {
-        if (isset($item['data'])) {
+        if (isset($item['data']) && is_array($item['data'])) {
             $item['data-compiled'] = $this->compileData($item['data']);
         }
 
