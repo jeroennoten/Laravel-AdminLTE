@@ -638,6 +638,29 @@ This will ignored if the top navigation layout is enabled, all menu items will a
 
 To get a dynamic item placing you can add the `key` attribute, with this you can add a unique identifier to a add before or after it new items.
 
+To add data-attributes to your menu link your can simply add a associative array called `data`. Here a simple example:
+
+```php
+[
+    [
+        'header' => 'BLOG',
+        'url' => 'admin/blog',
+        'data' => [
+            'test' => 'content',
+        ],
+    ],
+    [
+        'text' => 'Add new post',
+        'url' => 'admin/blog/new',
+        'data' => [
+            'test-one' => 'content-one',
+            'test-two' => 'content-two',
+        ],
+    ],
+]
+```
+
+
 Use the `can` attribute if you want conditionally show the menu item. This integrates with Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` attribute. You can add more `can` entries as array, see the second example:
 
 ```php
