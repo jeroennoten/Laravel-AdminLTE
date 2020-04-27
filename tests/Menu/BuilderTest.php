@@ -623,7 +623,7 @@ class BuilderTest extends TestCase
         $this->assertEquals('Blog', $builder->menu[2]['text']);
         $this->assertEquals('TEST', $builder->menu[3]['header']);
     }
-    
+
     public function testDataAttributes()
     {
         $builder = $this->makeMenuBuilder();
