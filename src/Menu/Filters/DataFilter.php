@@ -19,7 +19,7 @@ class DataFilter implements FilterInterface
     {
         $compiled = '';
 
-        foreach($dataArray as $key => $value) {
+        foreach ($dataArray as $key => $value) {
             $compiled .= 'data-'.$key.'="'.$value.'" ';
         }
 
