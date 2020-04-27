@@ -15,7 +15,7 @@ class DataFilter implements FilterInterface
         return $item;
     }
 
-    protected function compileData($dataArray, $topNav = false)
+    protected function compileData($dataArray)
     {
         $compiled = [];
 
