@@ -594,7 +594,7 @@ class BuilderTest extends TestCase
         );
 
         $this->assertCount(1, $builder->menu);
-        $this->assertContains('HEADER', $builder->menu[0]['header']);
+        $this->assertStringContainsString('HEADER', $builder->menu[0]['header']);
     }
 
     public function testLangTranslate()
