@@ -623,4 +623,19 @@ class BuilderTest extends TestCase
         $this->assertEquals('Blog', $builder->menu[2]['text']);
         $this->assertEquals('TEST', $builder->menu[3]['header']);
     }
+
+    public function testDataAttributes()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'About', 'data' => [
+            'test-one' => 'content-one',
+            'test-two' => 'content-two',
+        ]]);
+
+        $this->assertEquals(
+            'data-test-one="content-one" data-test-two="content-two"',
+            $builder->menu[0]['data-compiled']
+        );
+    }
 }

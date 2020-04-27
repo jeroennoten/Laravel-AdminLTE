@@ -3,6 +3,7 @@
         <a class="dropdown-item @if (isset($item['submenu']))dropdown-toggle @endif" href="{{ $item['href'] }}"
            @if (isset($item['submenu'])) data-toggle="dropdown" @endif
            @if (isset($item['target'])) target="{{ $item['target'] }}" @endif
+           {!! $item['data-compiled'] ?? '' !!}
         >
             <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{ isset($item['icon_color']) ? 'text-' . $item['icon_color'] : '' }}"></i>
             {{ $item['text'] }}
