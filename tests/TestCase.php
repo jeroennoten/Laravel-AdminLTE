@@ -12,6 +12,7 @@ use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
@@ -32,6 +33,7 @@ class TestCase extends BaseTestCase
             new ActiveFilter($this->makeActiveChecker($uri)),
             new SubmenuFilter($this->makeActiveChecker($uri)),
             new ClassesFilter(),
+            new DataFilter(),
             new GateFilter($gate ?: $this->makeGate()),
             new LangFilter($this->makeTranslator($locale)),
         ]);

@@ -17,12 +17,12 @@ class DataFilter implements FilterInterface
 
     protected function compileData($dataArray, $topNav = false)
     {
-        $compiled = '';
+        $compiled = [];
 
         foreach ($dataArray as $key => $value) {
-            $compiled .= 'data-'.$key.'="'.$value.'" ';
+            $compiled[] = 'data-'.$key.'="'.$value.'"';
         }
 
-        return $compiled;
+        return implode(' ', $compiled);
     }
 }
