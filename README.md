@@ -447,10 +447,10 @@ The following config options available:
 - __`classes_sidebar_nav`__
 
     Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes you can use here:
-    - __`.nav-child-indent`__ to indent child items
-    - __`.nav-compact`__ to get a compact nav style
-    - __`.nav-flat`__ to get a flat nav style
-    - __`.nav-legacy`__ to get a legacy v2 nav style
+    - __`nav-child-indent`__ to indent child items
+    - __`nav-compact`__ to get a compact nav style
+    - __`nav-flat`__ to get a flat nav style
+    - __`nav-legacy`__ to get a legacy v2 nav style
 - __`classes_topnav`__
 
     Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
