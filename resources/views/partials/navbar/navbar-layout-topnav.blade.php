@@ -40,15 +40,15 @@
             {{-- User menu link --}}
             @if(Auth::user())
                 @if(config('adminlte.usermenu_enabled'))
-                    @include('adminlte::partials.navbar.dropdown-user-menu')
+                    @include('adminlte::partials.navbar.menu-item-dropdown-user-menu')
                 @else
-                    @include('adminlte::partials.navbar.logout-link')
+                    @include('adminlte::partials.navbar.menu-item-logout-link')
                 @endif
             @endif
 
             {{-- Right sidebar toggler link --}}
             @if(config('adminlte.right_sidebar'))
-                @include('adminlte::partials.navbar.right-sidebar-link')
+                @include('adminlte::partials.navbar.menu-item-right-sidebar-toggler')
             @endif
         </ul>
 
