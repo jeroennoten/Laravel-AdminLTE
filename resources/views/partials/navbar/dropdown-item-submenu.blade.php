@@ -1,7 +1,6 @@
-<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="dropdown-submenu">
+<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="dropdown-submenu dropdown-hover">
 
     {{-- Menu toggler --}}
-    {{-- TODO: Review classes --}}
     <a class="dropdown-item dropdown-toggle" href="" data-toggle="dropdown"
        {!! $item['data-compiled'] ?? '' !!}>
 
@@ -25,7 +24,6 @@
     </a>
 
     {{-- Menu items --}}
-    {{-- TODO: Review classes --}}
     <ul class="dropdown-menu border-0 shadow">
         @each('adminlte::partials.navbar.dropdown-item', $item['submenu'], 'item')
     </ul>
