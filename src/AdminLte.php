@@ -38,17 +38,13 @@ class AdminLte
 
         if ($filterOpt == "sidebar") {
             return array_filter($this->menu, [$this, 'sidebarFilter']);
-        }
-        elseif ($filterOpt == "navbar-left") {
+        } elseif ($filterOpt == "navbar-left") {
             return array_filter($this->menu, [$this, 'navbarLeftFilter']);
-        }
-        elseif ($filterOpt == "navbar-right") {
+        } elseif ($filterOpt == "navbar-right") {
             return array_filter($this->menu, [$this, 'navbarRightFilter']);
-        }
-        elseif ($filterOpt == "navbar-user") {
+        } elseif ($filterOpt == "navbar-user") {
             return array_filter($this->menu, [$this, 'navbarUserMenuFilter']);
-        }
-        else {
+        } else {
             return $this->menu;
         }
     }
