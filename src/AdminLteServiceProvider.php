@@ -47,6 +47,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
 
     private function loadViews()
     {
+        $viewsPathUser = resource_path('views/vendor/jeroennoten/laravel-adminlte');
+        $this->loadViewsFrom($viewsPathUser, 'adminlte');
         $viewsPath = $this->packagePath('resources/views');
         $this->loadViewsFrom($viewsPath, 'adminlte');
     }
