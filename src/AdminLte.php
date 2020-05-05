@@ -28,13 +28,25 @@ class AdminLte
         $this->container = $container;
     }
 
-    public function menu()
+    public function menu($filterOpt = null)
     {
         if (! $this->menu) {
             $this->menu = $this->buildMenu();
         }
 
-        return $this->menu;
+        // Check for filter option.
+
+        if ($filterOpt == 'sidebar') {
+            return array_filter($this->menu, [$this, 'sidebarFilter']);
+        } elseif ($filterOpt == 'navbar-left') {
+            return array_filter($this->menu, [$this, 'navbarLeftFilter']);
+        } elseif ($filterOpt == 'navbar-right') {
+            return array_filter($this->menu, [$this, 'navbarRightFilter']);
+        } elseif ($filterOpt == 'navbar-user') {
+            return array_filter($this->menu, [$this, 'navbarUserMenuFilter']);
+        } else {
+            return $this->menu;
+        }
     }
 
     /**
@@ -176,5 +188,69 @@ class AdminLte
     protected function buildFilters()
     {
         return array_map([$this->container, 'make'], $this->filters);
+    }
+
+    /**
+     * Filter method for sidebar menu items.
+     */
+    private function sidebarFilter($item)
+    {
+        if (isset($item['topnav']) && $item['topnav']) {
+            return false;
+        }
+
+        if (isset($item['topnav_right']) && $item['topnav_right']) {
+            return false;
+        }
+
+        if (isset($item['topnav_user']) && $item['topnav_user']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Filter method for navbar top left menu items.
+     */
+    private function navbarLeftFilter($item)
+    {
+        if (isset($item['topnav_right']) && $item['topnav_right']) {
+            return false;
+        }
+
+        if (isset($item['topnav_user']) && $item['topnav_user']) {
+            return false;
+        }
+
+        if (config('adminlte.layout_topnav') || (isset($item['topnav']) && $item['topnav'])) {
+            return is_array($item) && ! isset($item['header']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Filter method for navbar top right menu items.
+     */
+    private function navbarRightFilter($item)
+    {
+        if (isset($item['topnav_right']) && $item['topnav_right']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Filter method for navbar dropdown user menu items.
+     */
+    private function navbarUserMenuFilter($item)
+    {
+        if (isset($item['topnav_user']) && $item['topnav_user']) {
+            return true;
+        }
+
+        return false;
     }
 }
