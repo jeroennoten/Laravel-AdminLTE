@@ -387,11 +387,11 @@ The following config options are available:
 
 - __`layout_fixed_sidebar`__
 
-    Enables/Disables the fixed sidebar mmode. Can't be used with `layout_topnav`. 
+    Enables/Disables the fixed sidebar mode. Can't be used with `layout_topnav`. 
 
 - __`layout_fixed_navbar`__
 
-    Enables/Disables the fixed navbar mode (top navigation), here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
+    Enables/Disables the fixed navbar (top navigation) mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
 
 - __`layout_fixed_footer`__
 
