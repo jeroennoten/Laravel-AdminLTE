@@ -376,7 +376,7 @@ It's possible to change the layout, you can use a top navigation (navbar) only l
 
 > **NOTE:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
 
-The following config options available:
+The following config options are available:
 - __`layout_topnav`__
 
     Enables/Disables the top navigation only layout, to remove the sidebar and have your links at the top navbar. Can't be used with `layout_boxed`.
@@ -387,15 +387,15 @@ The following config options available:
 
 - __`layout_fixed_sidebar`__
 
-    Enables/Disables fixed sidebar. Can't be used with `layout_topnav`. 
+    Enables/Disables the fixed sidebar mmode. Can't be used with `layout_topnav`. 
 
 - __`layout_fixed_navbar`__
 
-    Enables/Disables fixed navbar (top navigation), here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
+    Enables/Disables the fixed navbar mode (top navigation), here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
 
 - __`layout_fixed_footer`__
 
-    Enables/Disables fixed footer, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
+    Enables/Disables the fixed footer mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
 
 
 __Responsive Usage for `layout_fixed_navbar` & `layout_fixed_footer`__
