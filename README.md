@@ -372,35 +372,37 @@ Example code for the `App/User` with custom image & description functions.
 ```
 
 ### 6.5 Layout
-It's possible change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar and you can enable fixed mode for sidebar, navbar and footer.
+It's possible to change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar, and also you can enable fixed mode for the sidebar, the navbar or the footer.
 
-The following config options available:
+> **NOTE:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
+
+The following config options are available:
 - __`layout_topnav`__
 
-    Enables/Disables top navigation only layout.
+    Enables/Disables the top navigation only layout, to remove the sidebar and have your links at the top navbar. Can't be used with `layout_boxed`.
 
 - __`layout_boxed`__
 
-    Enables/Disables Enables/Disables boxed layout, can't used with `layout_topnav`.
+    Enables/Disables the boxed layout. Can't be used with `layout_topnav`.
 
 - __`layout_fixed_sidebar`__
 
-    Enables/Disables fixed sidebar, can't used with `layout_topnav`. 
+    Enables/Disables the fixed sidebar mode. Can't be used with `layout_topnav`. 
 
 - __`layout_fixed_navbar`__
 
-    Enables/Disables fixed navbar (top navigation), here you can set `true` or pass an array for responsive usage.
+    Enables/Disables the fixed navbar (top navigation) mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
 
 - __`layout_fixed_footer`__
 
-    Enables/Disables fixed footer, here you can set `true` or pass an array for responsive usage.
+    Enables/Disables the fixed footer mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
 
 
 __Responsive Usage for `layout_fixed_navbar` & `layout_fixed_footer`__
 
 With responsive you can disable or enable the fixed navbar/footer for specific viewport sizes.
 
-The array the following keys available, you can set them to `true` or `false`:
+An array with the following keys is available, you can set them to `true` or `false`:
 - `xs` from 0px to 575.99px
 - `sm` from 576px to 767.99px
 - `md` from 768px to 991.99px
