@@ -37,6 +37,9 @@ class AdminLte
         return $this->menu;
     }
 
+    /**
+     * Gets the body classes, in relation to the config options.
+     */
     public function getBodyClasses()
     {
         $body_classes = [];
@@ -58,7 +61,7 @@ class AdminLte
 
         // Add classes related to the "layout_boxed" configuration.
 
-        if (config('adminlte.layout_boxed')) {
+        if (config('adminlte.layout_boxed') || View::getSection('layout_boxed')) {
             $body_classes[] = 'layout-boxed';
         }
 
@@ -74,15 +77,22 @@ class AdminLte
             $body_classes[] = 'control-sidebar-push';
         }
 
-        // Add classes related to the fixed layout configuration, these are not
-        // compatible with "layout_topnav".
+        // Add classes related to fixed sidebar, these are not compatible with
+        // "layout_topnav".
 
         if (! config('adminlte.layout_topnav') && ! View::getSection('layout_topnav')) {
+
             // Check for fixed sidebar configuration.
 
             if (config('adminlte.layout_fixed_sidebar')) {
                 $body_classes[] = 'layout-fixed';
             }
+        }
+
+        // Add classes related to fixed footer and navbar, these are not
+        // compatible with "layout_boxed".
+
+        if (! config('adminlte.layout_boxed') && ! View::getSection('layout_boxed')) {
 
             // Check for fixed navbar configuration.
 
@@ -119,14 +129,18 @@ class AdminLte
             }
         }
 
+        // Add custom classes, related to the "classes_body" configuration.
+
         $body_classes[] = config('adminlte.classes_body', '');
 
-        // Add classes related to the "classes_body" configuration and return the
-        // set of configured classes for the body tag.
+        // Return the set of configured classes for the body tag.
 
         return trim(implode(' ', $body_classes));
     }
 
+    /**
+     * Gets the body data attributes, in relation to the config options.
+     */
     public function getBodyData()
     {
         $body_data = [];
