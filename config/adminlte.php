@@ -96,7 +96,7 @@ return [
     | Here you can change the look and behavior of the authentication views.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#66-classes
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#661-authentication-views-classes
     |
     */
 
@@ -115,7 +115,7 @@ return [
     | Here you can change the look and behavior of the admin panel.
     |
     | For more detailed instructions you can look here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/#66-classes
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#662-admin-panel-classes
     |
     */
 
