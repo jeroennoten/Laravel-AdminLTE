@@ -32,6 +32,8 @@ This version supports Laravel 6 and higher and included AdminLTE v2
    4. [User menu](#64-user-menu)
    5. [Layout](#65-layout)
    6. [Classes](#66-classes)
+      1. [Authentication Views Classes](#661-authentication-views-classes)
+      2. [Admin Panel Classes](#662-admin-panel-classes)
    7. [Sidebar](#67-sidebar)
    8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
    9. [URLs](#69-urls)
@@ -425,43 +427,103 @@ __Examples__
 
 
 ### 6.6 Classes
-You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
 
-The following config options available:
-- __`classes_body`__
+#### 6.6.1 Authentication Views Classes
+  You can change the look and behavior of the authentication views (login, register, email verification, etc).
 
-    Extra classes for body.
-- __`classes_brand`__
+  The following config options available:
+  - __`classes_auth_card`__
 
-    Extra classes for brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
-- __`classes_brand_text`__
+      Extra classes for the card box. Classes will be added to element `div.card`.
+  - __`classes_auth_header`__
 
-    Extra classes for brand text. Classes will be added to element `span.brand-text`.
-- __`classes_content_header`__
+      Extra classes for the card box header. Classes will be added to element `div.card-header`.
+  - __`classes_auth_body`__
 
-    Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
-- __`classes_content`__
+      Extra classes for the card box body. Classes will be added to element `div.card-body`.
+  - __`classes_auth_footer`__
 
-    Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
-- __`classes_sidebar`__
+      Extra classes for the card box footer. Classes will be added to element `div.card-footer`.
+  - __`classes_auth_icon`__
 
-    Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
-- __`classes_sidebar_nav`__
+      Extra classes for the input icons (font awesome icons related to input fields).
+  - __`classes_auth_btn`__
 
-    Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes that you can use here:
-    - __`nav-child-indent`__ to indent child items.
-    - __`nav-compact`__ to get a compact nav style.
-    - __`nav-flat`__ to get a flat nav style.
-    - __`nav-legacy`__ to get a legacy v2 nav style.
-- __`classes_topnav`__
+      Extra classes for the submit buttons.
 
-    Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
-- __`classes_topnav_nav`__
+  The set of current default values is the next one:
 
-    Extra classes for top navigation. Classes will be added to element `nav.main-header.navbar`.
-- __`classes_topnav_container`__
+  ```php
+  'classes_auth_card' => 'card-outline card-primary',
+  'classes_auth_header' => '',
+  'classes_auth_body' => '',
+  'classes_auth_footer' => '',
+  'classes_auth_icon' => '',
+  'classes_auth_btn' => 'btn-flat btn-primary',
+  ```
 
-    Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
+  However, you can customize the options as you want to get some themes:
+
+  __Dark Theme__
+
+  ```php
+  'classes_auth_card' => 'bg-gradient-dark',
+  'classes_auth_header' => '',
+  'classes_auth_body' => 'bg-gradient-dark',
+  'classes_auth_footer' => 'text-center',
+  'classes_auth_icon' => 'text-light',
+  'classes_auth_btn' => 'btn-flat btn-light',
+  ```
+
+  __Lightblue Theme__
+  
+  ```php
+  'classes_auth_card' => '',
+  'classes_auth_header' => 'bg-gradient-info',
+  'classes_auth_body' => '',
+  'classes_auth_footer' => 'text-center',
+  'classes_auth_icon' => 'fa-lg text-info',
+  'classes_auth_btn' => 'btn-flat btn-primary',
+  ```
+
+#### 6.6.2 Admin Panel Classes
+  You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
+
+  The following config options available:
+  - __`classes_body`__
+
+      Extra classes for body.
+  - __`classes_brand`__
+
+      Extra classes for brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
+  - __`classes_brand_text`__
+
+      Extra classes for brand text. Classes will be added to element `span.brand-text`.
+  - __`classes_content_header`__
+
+      Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+  - __`classes_content`__
+
+      Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+  - __`classes_sidebar`__
+
+      Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
+  - __`classes_sidebar_nav`__
+
+      Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes that you can use here:
+      - __`nav-child-indent`__ to indent child items.
+      - __`nav-compact`__ to get a compact nav style.
+      - __`nav-flat`__ to get a flat nav style.
+      - __`nav-legacy`__ to get a legacy v2 nav style.
+  - __`classes_topnav`__
+
+      Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
+  - __`classes_topnav_nav`__
+
+      Extra classes for top navigation. Classes will be added to element `nav.main-header.navbar`.
+  - __`classes_topnav_container`__
+
+      Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
 
 
 ### 6.7 Sidebar
