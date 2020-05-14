@@ -1,4 +1,4 @@
-@extends('adminlte::auth-page', ['auth_type' => 'login'])
+@extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
 
 @php( $password_email_url = View::getSection('password_email_url') ?? config('adminlte.password_email_url', 'password/email') )
 

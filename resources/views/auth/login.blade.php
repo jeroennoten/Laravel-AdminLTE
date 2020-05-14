@@ -1,4 +1,4 @@
-@extends('adminlte::auth-page', ['auth_type' => 'login'])
+@extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
 
 @section('adminlte_css_pre')
     <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">

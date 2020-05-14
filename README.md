@@ -222,20 +222,28 @@ php artisan adminlte:install --only=auth_views
 If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
 
 - `resources/views/auth/login.blade.php`:
-```
-@extends('adminlte::login')
+```blade
+@extends('adminlte::auth.login')
 ```
 - `resources/views/auth/register.blade.php`
+```blade
+@extends('adminlte::auth.register')
 ```
-@extends('adminlte::register')
+- `resources/views/auth/verify.blade.php`
+```blade
+@extends('adminlte::auth.verify')
+```
+- `resources/views/auth/passwords/confirm.blade.php`
+```blade
+@extends('adminlte::auth.passwords.confirm')
 ```
 - `resources/views/auth/passwords/email.blade.php`
-```
-@extends('adminlte::passwords.email')
+```blade
+@extends('adminlte::auth.passwords.email')
 ```
 - `resources/views/auth/passwords/reset.blade.php`
-```
-@extends('adminlte::passwords.reset')
+```blade
+@extends('adminlte::auth.passwords.reset')
 ```
 
 By default, the login form contains a link to the registration and password reset form.
