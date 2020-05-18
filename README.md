@@ -665,7 +665,6 @@ After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true
 - __`enabled_laravel_mix`__
 
     Enables Laravel Mix specific css/js load in master layout.
-    __Warning__ If you enable this option, the sections `adminlte_css` & `adminlte_js` will not rendered.
 
 ### 6.11 Menu
 Specify your menu items to display in the left sidebar. Each menu item should have a text and a URL. You can also specify an icon from Font Awesome. A string instead of an array represents a header in sidebar layout. The 'can' is a filter on Laravel's built in Gate functionality.
