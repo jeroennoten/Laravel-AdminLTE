@@ -510,6 +510,9 @@ __Examples__
   - __`classes_content_header`__
 
       Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+  - __`classes_content_wrapper`__
+
+      Classes for content wrapper container. Classes will be added to the container of element `div.content-wrapper`. 
   - __`classes_content`__
 
       Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
