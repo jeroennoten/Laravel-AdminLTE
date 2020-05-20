@@ -24,4 +24,6 @@ return [
     'verify_check_your_email'     => 'İşlemlere devam etmeden önce doğrulama linki için e-posta adresinizi kontrol edin.',
     'verify_if_not_recieved'      => 'Eğer doğrulama e-postası adresinize ulaşmadıysa',
     'verify_request_another'      => 'buraya tıklayarak yeni bir doğrulama linki talep edebilirsiniz',
+    'confirm_password_message'    => 'Devam etmek için lütfen parolanızı doğrulayın.',
+
 ];
