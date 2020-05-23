@@ -663,11 +663,21 @@ Replace your `app.scss` content by the following:
 //@import '~bootstrap/scss/bootstrap';
 ```
 
-After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable load app.css & app.js .
+After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable load `app.css` & `app.js` files.
 
 - __`enabled_laravel_mix`__
 
-    Enables Laravel Mix specific css/js load in master layout.
+    Enables Laravel Mix specific `css/js` load in master layout.
+
+Also, you can change the paths used to lookup for the compiled `JS` and `CSS` files using the next configuration options.
+
+- __`laravel_mix_css_path`__
+
+    Path (including file name) to the compiled `CSS` file. This path should be relative to the public folder. Default value is `css/app.css`
+
+- __`laravel_mix_js_path`__
+
+    Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
 
 ### 6.11 Menu
 Specify your menu items to display in the left sidebar. Each menu item should have a text and a URL. You can also specify an icon from Font Awesome. A string instead of an array represents a header in sidebar layout. The 'can' is a filter on Laravel's built in Gate functionality.

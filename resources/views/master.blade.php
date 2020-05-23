@@ -33,7 +33,7 @@
         <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.min.css') }}">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
     @else
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
 
     {{-- Custom Stylesheets (post AdminLTE) --}}
@@ -78,7 +78,7 @@
         {{-- Configured Scripts --}}
         @include('adminlte::plugins', ['type' => 'js'])
     @else
-        <script src="{{ mix('js/app.js') }}"></script>
+        <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif
 
     {{-- Custom Scripts --}}
