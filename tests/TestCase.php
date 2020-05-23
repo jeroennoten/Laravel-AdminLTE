@@ -17,7 +17,7 @@ use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
-use PHPUnit\Framework\TestCase as BaseTestCase;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class TestCase extends BaseTestCase
