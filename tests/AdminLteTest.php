@@ -140,7 +140,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.sidebar_scrollbar_theme' => 'os-theme-light',
-            'adminlte.sidebar_scrollbar_auto_hide' => 'l'
+            'adminlte.sidebar_scrollbar_auto_hide' => 'l',
         ]);
 
         $data = $this->makeAdminLte()->getBodyData();
@@ -150,7 +150,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.sidebar_scrollbar_theme' => 'os-theme-dark',
-            'adminlte.sidebar_scrollbar_auto_hide' => 'l'
+            'adminlte.sidebar_scrollbar_auto_hide' => 'l',
         ]);
 
         $data = $this->makeAdminLte()->getBodyData();
@@ -160,7 +160,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.sidebar_scrollbar_theme' => 'os-theme-light',
-            'adminlte.sidebar_scrollbar_auto_hide' => 'm'
+            'adminlte.sidebar_scrollbar_auto_hide' => 'm',
         ]);
 
         $data = $this->makeAdminLte()->getBodyData();
@@ -170,7 +170,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.sidebar_scrollbar_theme' => 'os-theme-dark',
-            'adminlte.sidebar_scrollbar_auto_hide' => 's'
+            'adminlte.sidebar_scrollbar_auto_hide' => 's',
         ]);
 
         $data = $this->makeAdminLte()->getBodyData();
@@ -267,7 +267,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.right_sidebar' => true,
-            'adminlte.right_sidebar_push' => true
+            'adminlte.right_sidebar_push' => true,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -277,7 +277,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.right_sidebar' => false,
-            'adminlte.right_sidebar_push' => true
+            'adminlte.right_sidebar_push' => true,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -293,7 +293,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_sidebar' => true,
-            'adminlte.layout_topnav' => true
+            'adminlte.layout_topnav' => true,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -303,7 +303,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_sidebar' => true,
-            'adminlte.layout_topnav' => null
+            'adminlte.layout_topnav' => null,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -319,7 +319,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_navbar' => true,
-            'adminlte.layout_boxed' => true
+            'adminlte.layout_boxed' => true,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -329,7 +329,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_navbar' => true,
-            'adminlte.layout_boxed' => null
+            'adminlte.layout_boxed' => null,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -340,7 +340,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_navbar' => ['xs' => true, 'lg' => false],
-            'adminlte.layout_boxed' => null
+            'adminlte.layout_boxed' => null,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -357,7 +357,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_footer' => true,
-            'adminlte.layout_boxed' => true
+            'adminlte.layout_boxed' => true,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -367,7 +367,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_footer' => true,
-            'adminlte.layout_boxed' => null
+            'adminlte.layout_boxed' => null,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
@@ -378,7 +378,7 @@ class AdminLteTest extends TestCase
 
         config([
             'adminlte.layout_fixed_footer' => ['md' => true, 'lg' => false],
-            'adminlte.layout_boxed' => null
+            'adminlte.layout_boxed' => null,
         ]);
 
         $data = $this->makeAdminLte()->getBodyClasses();
