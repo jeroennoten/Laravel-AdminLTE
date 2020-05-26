@@ -6,7 +6,7 @@
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io) with Laravel 6. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
+This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io) with Laravel 6 or higher. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
 If you want use the older versions, please use the following versions:
 - Version 1.x or branch laravel5-adminlte2:
@@ -32,6 +32,8 @@ This version supports Laravel 6 and higher and included AdminLTE v2
    4. [User menu](#64-user-menu)
    5. [Layout](#65-layout)
    6. [Classes](#66-classes)
+      1. [Authentication Views Classes](#661-authentication-views-classes)
+      2. [Admin Panel Classes](#662-admin-panel-classes)
    7. [Sidebar](#67-sidebar)
    8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
    9. [URLs](#69-urls)
@@ -220,20 +222,28 @@ php artisan adminlte:install --only=auth_views
 If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
 
 - `resources/views/auth/login.blade.php`:
-```
-@extends('adminlte::login')
+```blade
+@extends('adminlte::auth.login')
 ```
 - `resources/views/auth/register.blade.php`
+```blade
+@extends('adminlte::auth.register')
 ```
-@extends('adminlte::register')
+- `resources/views/auth/verify.blade.php`
+```blade
+@extends('adminlte::auth.verify')
+```
+- `resources/views/auth/passwords/confirm.blade.php`
+```blade
+@extends('adminlte::auth.passwords.confirm')
 ```
 - `resources/views/auth/passwords/email.blade.php`
-```
-@extends('adminlte::passwords.email')
+```blade
+@extends('adminlte::auth.passwords.email')
 ```
 - `resources/views/auth/passwords/reset.blade.php`
-```
-@extends('adminlte::passwords.reset')
+```blade
+@extends('adminlte::auth.passwords.reset')
 ```
 
 By default, the login form contains a link to the registration and password reset form.
@@ -382,35 +392,37 @@ Example code for the `App/User` with custom image & description functions.
 ```
 
 ### 6.5 Layout
-It's possible change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar and you can enable fixed mode for sidebar, navbar and footer.
+It's possible to change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar, and also you can enable fixed mode for the sidebar, the navbar or the footer.
 
-The following config options available:
+> **NOTE:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
+
+The following config options are available:
 - __`layout_topnav`__
 
-    Enables/Disables top navigation only layout.
+    Enables/Disables the top navigation only layout, to remove the sidebar and have your links at the top navbar. Can't be used with `layout_boxed`.
 
 - __`layout_boxed`__
 
-    Enables/Disables Enables/Disables boxed layout, can't used with `layout_topnav`.
+    Enables/Disables the boxed layout. Can't be used with `layout_topnav`.
 
 - __`layout_fixed_sidebar`__
 
-    Enables/Disables fixed sidebar, can't used with `layout_topnav`. 
+    Enables/Disables the fixed sidebar mode. Can't be used with `layout_topnav`. 
 
 - __`layout_fixed_navbar`__
 
-    Enables/Disables fixed navbar (top navigation), here you can set `true` or pass an array for responsive usage.
+    Enables/Disables the fixed navbar (top navigation) mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
 
 - __`layout_fixed_footer`__
 
-    Enables/Disables fixed footer, here you can set `true` or pass an array for responsive usage.
+    Enables/Disables the fixed footer mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
 
 
 __Responsive Usage for `layout_fixed_navbar` & `layout_fixed_footer`__
 
 With responsive you can disable or enable the fixed navbar/footer for specific viewport sizes.
 
-The array the following keys available, you can set them to `true` or `false`:
+An array with the following keys is available, you can set them to `true` or `false`:
 - `xs` from 0px to 575.99px
 - `sm` from 576px to 767.99px
 - `md` from 768px to 991.99px
@@ -433,39 +445,106 @@ __Examples__
 
 
 ### 6.6 Classes
-You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
 
-The following config options available:
-- __`classes_body`__
+#### 6.6.1 Authentication Views Classes
+  You can change the look and behavior of the authentication views (login, register, email verification, etc).
 
-    Extra classes for body.
-- __`classes_brand`__
+  The following config options available:
+  - __`classes_auth_card`__
 
-    Extra classes for brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
-- __`classes_brand_text`__
+      Extra classes for the card box. Classes will be added to element `div.card`.
+  - __`classes_auth_header`__
 
-    Extra classes for brand text. Classes will be added to element `span.brand-text`.
-- __`classes_content_header`__
+      Extra classes for the card box header. Classes will be added to element `div.card-header`.
+  - __`classes_auth_body`__
 
-    Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
-- __`classes_content`__
+      Extra classes for the card box body. Classes will be added to element `div.card-body`.
+  - __`classes_auth_footer`__
 
-    Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
-- __`classes_sidebar`__
+      Extra classes for the card box footer. Classes will be added to element `div.card-footer`.
+  - __`classes_auth_icon`__
 
-    Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
-- __`classes_sidebar_nav`__
+      Extra classes for the input icons (font awesome icons related to input fields).
+  - __`classes_auth_btn`__
 
-    Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`.
-- __`classes_topnav`__
+      Extra classes for the submit buttons.
 
-    Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
-- __`classes_topnav_nav`__
+  The set of current default values is the next one:
 
-    Extra classes for top navigation. Classes will be added to element `nav.main-header.navbar`.
-- __`classes_topnav_container`__
+  ```php
+  'classes_auth_card' => 'card-outline card-primary',
+  'classes_auth_header' => '',
+  'classes_auth_body' => '',
+  'classes_auth_footer' => '',
+  'classes_auth_icon' => '',
+  'classes_auth_btn' => 'btn-flat btn-primary',
+  ```
 
-    Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
+  However, you can customize the options as you want to get some themes:
+
+  __Dark Theme__
+
+  ```php
+  'classes_auth_card' => 'bg-gradient-dark',
+  'classes_auth_header' => '',
+  'classes_auth_body' => 'bg-gradient-dark',
+  'classes_auth_footer' => 'text-center',
+  'classes_auth_icon' => 'text-light',
+  'classes_auth_btn' => 'btn-flat btn-light',
+  ```
+
+  __Lightblue Theme__
+  
+  ```php
+  'classes_auth_card' => '',
+  'classes_auth_header' => 'bg-gradient-info',
+  'classes_auth_body' => '',
+  'classes_auth_footer' => 'text-center',
+  'classes_auth_icon' => 'fa-lg text-info',
+  'classes_auth_btn' => 'btn-flat btn-primary',
+  ```
+
+#### 6.6.2 Admin Panel Classes
+  You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
+
+  The following config options available:
+  - __`classes_body`__
+
+      Extra classes for body.
+  - __`classes_brand`__
+
+      Extra classes for brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
+  - __`classes_brand_text`__
+
+      Extra classes for brand text. Classes will be added to element `span.brand-text`.
+  - __`classes_content_header`__
+
+      Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+  - __`classes_content_wrapper`__
+
+      Classes for content wrapper container. Classes will be added to the container of element `div.content-wrapper`. 
+  - __`classes_content`__
+
+      Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+  - __`classes_sidebar`__
+
+      Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
+  - __`classes_sidebar_nav`__
+
+      Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes that you can use here:
+      - __`nav-child-indent`__ to indent child items.
+      - __`nav-compact`__ to get a compact nav style.
+      - __`nav-flat`__ to get a flat nav style.
+      - __`nav-legacy`__ to get a legacy v2 nav style.
+  - __`classes_topnav`__
+
+      Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
+  - __`classes_topnav_nav`__
+
+      Extra classes for top navigation. Classes will be added to element `nav.main-header.navbar`.
+  - __`classes_topnav_container`__
+
+      Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
 
 
 ### 6.7 Sidebar
@@ -594,12 +673,21 @@ Replace your `app.scss` content by the following:
 //@import '~bootstrap/scss/bootstrap';
 ```
 
-After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable load app.css & app.js .
+After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable load `app.css` & `app.js` files.
 
 - __`enabled_laravel_mix`__
 
-    Enables Laravel Mix specific css/js load in master layout.
-    __Warning__ If you enable this option, the sections `adminlte_css` & `adminlte_js` will not rendered.
+    Enables Laravel Mix specific `css/js` load in master layout.
+
+Also, you can change the paths used to lookup for the compiled `JS` and `CSS` files using the next configuration options.
+
+- __`laravel_mix_css_path`__
+
+    Path (including file name) to the compiled `CSS` file. This path should be relative to the public folder. Default value is `css/app.css`
+
+- __`laravel_mix_js_path`__
+
+    Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
 
 ### 6.11 Menu
 Specify your menu items to display in the left sidebar. Each menu item should have a text and a URL. You can also specify an icon from Font Awesome. A string instead of an array represents a header in sidebar layout. The 'can' is a filter on Laravel's built in Gate functionality.

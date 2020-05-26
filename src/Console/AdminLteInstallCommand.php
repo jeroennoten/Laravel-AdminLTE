@@ -17,12 +17,12 @@ class AdminLteInstallCommand extends Command
     protected $description = 'Install all the required files for AdminLTE and the authentication views and routes';
 
     protected $authViews = [
-        'auth/login.blade.php'             => '@extends(\'adminlte::login\')',
-        'auth/register.blade.php'          => '@extends(\'adminlte::register\')',
-        'auth/verify.blade.php'            => '@extends(\'adminlte::verify\')',
-        'auth/passwords/confirm.blade.php' => '@extends(\'adminlte::passwords.confirm\')',
-        'auth/passwords/email.blade.php'   => '@extends(\'adminlte::passwords.email\')',
-        'auth/passwords/reset.blade.php'   => '@extends(\'adminlte::passwords.reset\')',
+        'auth/login.blade.php'             => '@extends(\'adminlte::auth.login\')',
+        'auth/register.blade.php'          => '@extends(\'adminlte::auth.register\')',
+        'auth/verify.blade.php'            => '@extends(\'adminlte::auth.verify\')',
+        'auth/passwords/confirm.blade.php' => '@extends(\'adminlte::auth.passwords.confirm\')',
+        'auth/passwords/email.blade.php'   => '@extends(\'adminlte::auth.passwords.email\')',
+        'auth/passwords/reset.blade.php'   => '@extends(\'adminlte::auth.passwords.reset\')',
     ];
 
     protected $basicViews = [
@@ -164,6 +164,7 @@ class AdminLteInstallCommand extends Command
             if ($this->option('type') == 'full') {
                 $this->exportBasicViews();
                 $this->exportBasicRoutes();
+                $this->exportMainViews();
             }
         }
 

@@ -28,15 +28,30 @@ class AdminLte
         $this->container = $container;
     }
 
-    public function menu()
+    public function menu($filterOpt = null)
     {
         if (! $this->menu) {
             $this->menu = $this->buildMenu();
         }
 
-        return $this->menu;
+        // Check for filter option.
+
+        if ($filterOpt == 'sidebar') {
+            return array_filter($this->menu, [$this, 'sidebarFilter']);
+        } elseif ($filterOpt == 'navbar-left') {
+            return array_filter($this->menu, [$this, 'navbarLeftFilter']);
+        } elseif ($filterOpt == 'navbar-right') {
+            return array_filter($this->menu, [$this, 'navbarRightFilter']);
+        } elseif ($filterOpt == 'navbar-user') {
+            return array_filter($this->menu, [$this, 'navbarUserMenuFilter']);
+        } else {
+            return $this->menu;
+        }
     }
 
+    /**
+     * Gets the body classes, in relation to the config options.
+     */
     public function getBodyClasses()
     {
         $body_classes = [];
@@ -58,7 +73,7 @@ class AdminLte
 
         // Add classes related to the "layout_boxed" configuration.
 
-        if (config('adminlte.layout_boxed')) {
+        if (config('adminlte.layout_boxed') || View::getSection('layout_boxed')) {
             $body_classes[] = 'layout-boxed';
         }
 
@@ -74,15 +89,22 @@ class AdminLte
             $body_classes[] = 'control-sidebar-push';
         }
 
-        // Add classes related to the fixed layout configuration, these are not
-        // compatible with "layout_topnav".
+        // Add classes related to fixed sidebar, these are not compatible with
+        // "layout_topnav".
 
         if (! config('adminlte.layout_topnav') && ! View::getSection('layout_topnav')) {
+
             // Check for fixed sidebar configuration.
 
             if (config('adminlte.layout_fixed_sidebar')) {
                 $body_classes[] = 'layout-fixed';
             }
+        }
+
+        // Add classes related to fixed footer and navbar, these are not
+        // compatible with "layout_boxed".
+
+        if (! config('adminlte.layout_boxed') && ! View::getSection('layout_boxed')) {
 
             // Check for fixed navbar configuration.
 
@@ -119,14 +141,18 @@ class AdminLte
             }
         }
 
+        // Add custom classes, related to the "classes_body" configuration.
+
         $body_classes[] = config('adminlte.classes_body', '');
 
-        // Add classes related to the "classes_body" configuration and return the
-        // set of configured classes for the body tag.
+        // Return the set of configured classes for the body tag.
 
         return trim(implode(' ', $body_classes));
     }
 
+    /**
+     * Gets the body data attributes, in relation to the config options.
+     */
     public function getBodyData()
     {
         $body_data = [];
@@ -162,5 +188,69 @@ class AdminLte
     protected function buildFilters()
     {
         return array_map([$this->container, 'make'], $this->filters);
+    }
+
+    /**
+     * Filter method for sidebar menu items.
+     */
+    private function sidebarFilter($item)
+    {
+        if (isset($item['topnav']) && $item['topnav']) {
+            return false;
+        }
+
+        if (isset($item['topnav_right']) && $item['topnav_right']) {
+            return false;
+        }
+
+        if (isset($item['topnav_user']) && $item['topnav_user']) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Filter method for navbar top left menu items.
+     */
+    private function navbarLeftFilter($item)
+    {
+        if (isset($item['topnav_right']) && $item['topnav_right']) {
+            return false;
+        }
+
+        if (isset($item['topnav_user']) && $item['topnav_user']) {
+            return false;
+        }
+
+        if (config('adminlte.layout_topnav') || (isset($item['topnav']) && $item['topnav'])) {
+            return is_array($item) && ! isset($item['header']);
+        }
+
+        return false;
+    }
+
+    /**
+     * Filter method for navbar top right menu items.
+     */
+    private function navbarRightFilter($item)
+    {
+        if (isset($item['topnav_right']) && $item['topnav_right']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Filter method for navbar dropdown user menu items.
+     */
+    private function navbarUserMenuFilter($item)
+    {
+        if (isset($item['topnav_user']) && $item['topnav_user']) {
+            return true;
+        }
+
+        return false;
     }
 }

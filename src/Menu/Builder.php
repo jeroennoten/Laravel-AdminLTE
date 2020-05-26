@@ -137,6 +137,10 @@ class Builder
             } elseif (isset($item['submenu'])) {
                 $newKey = $this->findItem($itemKey, $item['submenu']);
 
+                if ($newKey === null) {
+                    continue;
+                }
+
                 $childPositions[] = $key;
                 if (! is_array($newKey)) {
                     $childPositions[] = $newKey;
