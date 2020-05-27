@@ -361,6 +361,11 @@ The user is displayed at the upper right corner of your admin panel.
 
     Whether to enable the user description for the usermenu.
     _**Note:**_ You need for this a extra function named `adminlte_desc()` inside the `App/User`.
+    
+- __`usermenu_profile_url`__
+
+    Whether to enable the user profile url can be set dynamically for the user instead of the config key `profile_url`.
+    _**Note:**_ You need for this a extra function named `adminlte_profile_url()` inside the `App/User`. The return value should be a string, not a route or url.
 
 #### 6.4.1 User Image & Description Example Code
 Example code for the `App/User` with custom image & description functions.
@@ -377,6 +382,11 @@ Example code for the `App/User` with custom image & description functions.
         public function adminlte_desc()
         {
             return 'That\'s a nice guy';
+        }
+        
+        public function adminlte_profile_url()
+        {
+            return 'profile/username';
         }
     }
 ```
