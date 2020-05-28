@@ -7,6 +7,7 @@ use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Support\Facades\View;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 
 class AdminLte
 {
@@ -18,6 +19,18 @@ class AdminLte
 
     protected $container;
 
+    /**
+     * Map between a valid menu filter token and his respective filter method.
+     *
+     * @var array
+     */
+    protected $menuFilterMap = [
+        'sidebar'      => 'sidebarFilter',
+        'navbar-left'  => 'navbarLeftFilter',
+        'navbar-right' => 'navbarRightFilter',
+        'navbar-user'  => 'navbarUserMenuFilter',
+    ];
+
     public function __construct(
         array $filters,
         Dispatcher $events,
@@ -28,25 +41,24 @@ class AdminLte
         $this->container = $container;
     }
 
-    public function menu($filterOpt = null)
+    public function menu($filterToken = null)
     {
         if (! $this->menu) {
             $this->menu = $this->buildMenu();
         }
 
-        // Check for filter option.
+        // Check for filter token.
 
-        if ($filterOpt == 'sidebar') {
-            return array_filter($this->menu, [$this, 'sidebarFilter']);
-        } elseif ($filterOpt == 'navbar-left') {
-            return array_filter($this->menu, [$this, 'navbarLeftFilter']);
-        } elseif ($filterOpt == 'navbar-right') {
-            return array_filter($this->menu, [$this, 'navbarRightFilter']);
-        } elseif ($filterOpt == 'navbar-user') {
-            return array_filter($this->menu, [$this, 'navbarUserMenuFilter']);
-        } else {
-            return $this->menu;
+        if (isset($this->menuFilterMap[$filterToken])) {
+            return array_filter(
+                $this->menu,
+                [$this, $this->menuFilterMap[$filterToken]]
+            );
         }
+
+        // No filter token provided, return the complete menu.
+
+        return $this->menu;
     }
 
     /**
@@ -195,19 +207,7 @@ class AdminLte
      */
     private function sidebarFilter($item)
     {
-        if (isset($item['topnav']) && $item['topnav']) {
-            return false;
-        }
-
-        if (isset($item['topnav_right']) && $item['topnav_right']) {
-            return false;
-        }
-
-        if (isset($item['topnav_user']) && $item['topnav_user']) {
-            return false;
-        }
-
-        return true;
+        return MenuItemHelper::isSidebarItem($item);
     }
 
     /**
@@ -215,19 +215,11 @@ class AdminLte
      */
     private function navbarLeftFilter($item)
     {
-        if (isset($item['topnav_right']) && $item['topnav_right']) {
-            return false;
+        if (config('adminlte.layout_topnav') && MenuItemHelper::isSidebarItem($item)) {
+            return MenuItemHelper::isValidNavbarItem($item);
         }
 
-        if (isset($item['topnav_user']) && $item['topnav_user']) {
-            return false;
-        }
-
-        if (config('adminlte.layout_topnav') || (isset($item['topnav']) && $item['topnav'])) {
-            return is_array($item) && ! isset($item['header']);
-        }
-
-        return false;
+        return MenuItemHelper::isNavbarLeftItem($item);
     }
 
     /**
@@ -235,11 +227,7 @@ class AdminLte
      */
     private function navbarRightFilter($item)
     {
-        if (isset($item['topnav_right']) && $item['topnav_right']) {
-            return true;
-        }
-
-        return false;
+        return MenuItemHelper::isNavbarRightItem($item);
     }
 
     /**
@@ -247,10 +235,6 @@ class AdminLte
      */
     private function navbarUserMenuFilter($item)
     {
-        if (isset($item['topnav_user']) && $item['topnav_user']) {
-            return true;
-        }
-
-        return false;
+        return MenuItemHelper::isNavbarUserItem($item);
     }
 }
