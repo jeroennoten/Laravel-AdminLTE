@@ -8,7 +8,7 @@ class MenuItemHelper
      * Check if a menu item is a header.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isHeader($item)
     {
@@ -19,7 +19,7 @@ class MenuItemHelper
      * Check if a menu item is a link.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isLink($item)
     {
@@ -31,7 +31,7 @@ class MenuItemHelper
      * Check if a menu item is a search bar.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isSearchBar($item)
     {
@@ -44,7 +44,7 @@ class MenuItemHelper
      * Check if a menu item is a submenu.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isSubmenu($item)
     {
@@ -57,7 +57,7 @@ class MenuItemHelper
      * Check if a menu item is valid for the navbar.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isValidNavbarItem($item)
     {
@@ -68,7 +68,7 @@ class MenuItemHelper
      * Check if a menu item is valid for the sidebar.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isValidSidebarItem($item)
     {
@@ -82,7 +82,7 @@ class MenuItemHelper
      * Check if a menu item belongs to the left section of the navbar.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isNavbarLeftItem($item)
     {
@@ -95,7 +95,7 @@ class MenuItemHelper
      * Check if a menu item belongs to the right section of the navbar.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isNavbarRightItem($item)
     {
@@ -108,7 +108,7 @@ class MenuItemHelper
      * Check if a menu item belongs to the user menu section of the navbar.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isNavbarUserItem($item)
     {
@@ -121,7 +121,7 @@ class MenuItemHelper
      * Check if a menu item belongs to the sidebar.
      *
      * @param mixed $item
-     * @return boolean
+     * @return bool
      */
     public static function isSidebarItem($item)
     {

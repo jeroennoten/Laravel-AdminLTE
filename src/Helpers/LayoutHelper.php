@@ -16,7 +16,7 @@ class LayoutHelper
     /**
      * Check if layout topnav is enabled.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isLayoutTopnavEnabled()
     {
@@ -26,7 +26,7 @@ class LayoutHelper
     /**
      * Check if layout boxed is enabled.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isLayoutBoxedEnabled()
     {
