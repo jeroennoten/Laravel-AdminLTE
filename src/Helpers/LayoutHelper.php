@@ -197,7 +197,7 @@ class LayoutHelper
     {
         $classes = [];
         $cfg = config('adminlte.classes_body', '');
-        
+
         if (is_string($cfg) && $cfg) {
             $classes[] = $cfg;
         }

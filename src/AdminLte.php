@@ -5,8 +5,8 @@ namespace JeroenNoten\LaravelAdminLte;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
-use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class AdminLte
@@ -24,12 +24,7 @@ class AdminLte
      *
      * @var array
      */
-    protected $menuFilterMap = [
-        'sidebar'      => 'sidebarFilter',
-        'navbar-left'  => 'navbarLeftFilter',
-        'navbar-right' => 'navbarRightFilter',
-        'navbar-user'  => 'navbarUserMenuFilter',
-    ];
+    protected $menuFilterMap;
 
     public function __construct(
         array $filters,
@@ -39,6 +34,15 @@ class AdminLte
         $this->filters = $filters;
         $this->events = $events;
         $this->container = $container;
+
+        // Fill the map of filters methods.
+
+        $this->menuFilterMap = [
+            'sidebar'      => [$this, 'sidebarFilter'],
+            'navbar-left'  => [$this, 'navbarLeftFilter'],
+            'navbar-right' => [$this, 'navbarRightFilter'],
+            'navbar-user'  => [$this, 'navbarUserMenuFilter'],
+        ];
     }
 
     public function menu($filterToken = null)
@@ -52,7 +56,7 @@ class AdminLte
         if (isset($this->menuFilterMap[$filterToken])) {
             return array_filter(
                 $this->menu,
-                [$this, $this->menuFilterMap[$filterToken]]
+                $this->menuFilterMap[$filterToken]
             );
         }
 

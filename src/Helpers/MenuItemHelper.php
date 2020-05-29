@@ -23,7 +23,8 @@ class MenuItemHelper
      */
     public static function isLink($item)
     {
-        return isset($item['text']) && (isset($item['url']) || isset($item['route']));
+        return isset($item['text']) &&
+               (isset($item['url']) || isset($item['route']));
     }
 
     /**
@@ -34,7 +35,9 @@ class MenuItemHelper
      */
     public static function isSearchBar($item)
     {
-        return isset($item['text']) && isset($item['search']) && $item['search'];
+        return isset($item['text']) &&
+               isset($item['search']) &&
+               $item['search'];
     }
 
     /**
@@ -45,7 +48,9 @@ class MenuItemHelper
      */
     public static function isSubmenu($item)
     {
-        return isset($item['text']) && isset($item['submenu']);
+        return isset($item['text']) &&
+               isset($item['submenu']) &&
+               is_array($item['submenu']);
     }
 
     /**
@@ -56,13 +61,7 @@ class MenuItemHelper
      */
     public static function isValidNavbarItem($item)
     {
-        if (self::isHeader($item)) {
-            return false;
-        }
-
-        return self::isLink($item) ||
-               self::isSearchBar($item) ||
-               self::isSubmenu($item);
+        return self::isValidSidebarItem($item) && ! self::isHeader($item);
     }
 
     /**
@@ -74,9 +73,9 @@ class MenuItemHelper
     public static function isValidSidebarItem($item)
     {
         return self::isHeader($item) ||
-               self::isLink($item) ||
                self::isSearchBar($item) ||
-               self::isSubmenu($item);
+               self::isSubmenu($item) ||
+               self::isLink($item);
     }
 
     /**
@@ -87,11 +86,9 @@ class MenuItemHelper
      */
     public static function isNavbarLeftItem($item)
     {
-        if (! self::isValidNavbarItem($item)) {
-            return false;
-        }
-
-        return isset($item['topnav']) && $item['topnav'];
+        return self::isValidNavbarItem($item) &&
+               isset($item['topnav']) &&
+               $item['topnav'];
     }
 
     /**
@@ -102,11 +99,9 @@ class MenuItemHelper
      */
     public static function isNavbarRightItem($item)
     {
-        if (! self::isValidNavbarItem($item)) {
-            return false;
-        }
-
-        return isset($item['topnav_right']) && $item['topnav_right'];
+        return self::isValidNavbarItem($item) &&
+               isset($item['topnav_right']) &&
+               $item['topnav_right'];
     }
 
     /**
@@ -117,11 +112,9 @@ class MenuItemHelper
      */
     public static function isNavbarUserItem($item)
     {
-        if (! self::isValidNavbarItem($item)) {
-            return false;
-        }
-
-        return isset($item['topnav_user']) && $item['topnav_user'];
+        return self::isValidNavbarItem($item) &&
+               isset($item['topnav_user']) &&
+               $item['topnav_user'];
     }
 
     /**
@@ -132,11 +125,8 @@ class MenuItemHelper
      */
     public static function isSidebarItem($item)
     {
-        if (! self::isValidSidebarItem($item)) {
-            return false;
-        }
-
-        return ! self::isNavbarLeftItem($item) &&
+        return self::isValidSidebarItem($item) &&
+               ! self::isNavbarLeftItem($item) &&
                ! self::isNavbarRightItem($item) &&
                ! self::isNavbarUserItem($item);
     }
