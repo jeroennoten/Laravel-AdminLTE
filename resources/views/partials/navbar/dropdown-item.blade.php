@@ -1,9 +1,11 @@
-@if (isset($item['submenu']))
+@inject('menuItemHelper', \JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper)
+
+@if ($menuItemHelper->isSubmenu($item))
 
     {{-- Dropdown submenu --}}
     @include('adminlte::partials.navbar.dropdown-item-submenu')
 
-@elseif (is_array($item))
+@elseif ($menuItemHelper->isLink($item))
 
     {{-- Dropdown link --}}
     @include('adminlte::partials.navbar.dropdown-item-link')

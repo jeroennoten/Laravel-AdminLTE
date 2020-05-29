@@ -36,7 +36,7 @@ class LayoutHelper
     /**
      * Make and return the set of classes related to the body tag.
      *
-     * @return array
+     * @return string
      */
     public static function makeBodyClasses()
     {
@@ -47,13 +47,13 @@ class LayoutHelper
         $classes = array_merge($classes, self::makeRightSidebarClasses());
         $classes = array_merge($classes, self::makeCustomBodyClasses());
 
-        return $classes;
+        return trim(implode(' ', $classes));
     }
 
     /**
      * Make and return the set of data attributes related to the body tag.
      *
-     * @return array
+     * @return string
      */
     public static function makeBodyData()
     {
@@ -75,7 +75,7 @@ class LayoutHelper
             $data[] = 'data-scrollbar-auto-hide='.$sb_auto_hide;
         }
 
-        return $data;
+        return trim(implode(' ', $data));
     }
 
     /**

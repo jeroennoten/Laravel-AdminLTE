@@ -1,26 +1,23 @@
-@if (is_string($item))
+@inject('menuItemHelper', \JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper)
 
-    {{-- Single header --}}
-    <li class="nav-header">{{ $item }}</li>
+@if ($menuItemHelper->isHeader($item))
 
-@elseif (isset($item['header']))
-
-    {{-- Advanced header --}}
+    {{-- Header --}}
     <li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">
-        {{ $item['header'] }}
+        {{ is_string($item) ? $item : $item['header'] }}
     </li>
 
-@elseif (isset($item['search']) && $item['search'])
+@elseif ($menuItemHelper->isSearchBar($item))
 
     {{-- Search form --}}
     @include('adminlte::partials.sidebar.menu-item-search-form')
 
-@elseif (isset($item['submenu']))
+@elseif ($menuItemHelper->isSubmenu($item))
 
     {{-- Treeview menu --}}
     @include('adminlte::partials.sidebar.menu-item-treeview-menu')
 
-@else
+@elseif ($menuItemHelper->isLink($item))
 
     {{-- Link --}}
     @include('adminlte::partials.sidebar.menu-item-link')

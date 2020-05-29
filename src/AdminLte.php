@@ -5,7 +5,6 @@ namespace JeroenNoten\LaravelAdminLte;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
-use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
@@ -63,22 +62,6 @@ class AdminLte
         // No filter token provided, return the complete menu.
 
         return $this->menu;
-    }
-
-    /**
-     * Gets the body classes, in relation to the config options.
-     */
-    public function getBodyClasses()
-    {
-        return trim(implode(' ', LayoutHelper::makeBodyClasses()));
-    }
-
-    /**
-     * Gets the body data attributes, in relation to the config options.
-     */
-    public function getBodyData()
-    {
-        return trim(implode(' ', LayoutHelper::makeBodyData()));
     }
 
     protected function buildMenu()
