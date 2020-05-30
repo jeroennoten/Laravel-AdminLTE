@@ -4,7 +4,7 @@ use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 
 class LayoutHelperTest extends TestCase
 {
-    public function testGetBodyData()
+    public function testMakeBodyData()
     {
         // Test without config.
 
@@ -53,13 +53,16 @@ class LayoutHelperTest extends TestCase
         $this->assertStringContainsString('data-scrollbar-auto-hide=s', $data);
     }
 
-    public function testGetBodyClasses()
+    public function testMakeBodyClassesWithouConfig()
     {
         // Test without config.
 
         $data = LayoutHelper::makeBodyClasses();
         $this->assertEquals('sidebar-mini', $data);
+    }
 
+    public function testMakeBodyClassesWithSidebarMiniConfig()
+    {
         // Test config 'sidebar_mini' => false.
 
         config(['adminlte.sidebar_mini' => false]);
@@ -77,43 +80,10 @@ class LayoutHelperTest extends TestCase
         config(['adminlte.sidebar_mini' => 'md']);
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini sidebar-mini-md', $data);
+    }
 
-        // Test config 'layout_topnav' => null.
-
-        config(['adminlte.layout_topnav' => null]);
-        $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringNotContainsString('layout-top-nav', $data);
-
-        // Test config 'layout_topnav' => false.
-
-        config(['adminlte.layout_topnav' => false]);
-        $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringNotContainsString('layout-top-nav', $data);
-
-        // Test config 'layout_topnav' => true.
-
-        config(['adminlte.layout_topnav' => true]);
-        $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringContainsString('layout-top-nav', $data);
-
-        // Test config 'layout_boxed' => null.
-
-        config(['adminlte.layout_boxed' => null]);
-        $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringNotContainsString('layout-boxed', $data);
-
-        // Test config 'layout_boxed' => false.
-
-        config(['adminlte.layout_boxed' => false]);
-        $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringNotContainsString('layout-boxed', $data);
-
-        // Test config 'layout_boxed' => true.
-
-        config(['adminlte.layout_boxed' => true]);
-        $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringContainsString('layout-boxed', $data);
-
+    public function testMakeBodyClassesWithSidebarCollapseConfig()
+    {
         // Test config 'sidebar_collapse' => null.
 
         config(['adminlte.sidebar_collapse' => null]);
@@ -131,7 +101,52 @@ class LayoutHelperTest extends TestCase
         config(['adminlte.sidebar_collapse' => true]);
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-collapse', $data);
+    }
 
+    public function testMakeBodyClassesWithLayoutTopnavConfig()
+    {
+        // Test config 'layout_topnav' => null.
+
+        config(['adminlte.layout_topnav' => null]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringNotContainsString('layout-top-nav', $data);
+
+        // Test config 'layout_topnav' => false.
+
+        config(['adminlte.layout_topnav' => false]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringNotContainsString('layout-top-nav', $data);
+
+        // Test config 'layout_topnav' => true.
+
+        config(['adminlte.layout_topnav' => true]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('layout-top-nav', $data);
+    }
+
+    public function testMakeBodyClassesWithLayoutBoxedConfig()
+    {
+        // Test config 'layout_boxed' => null.
+
+        config(['adminlte.layout_boxed' => null]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringNotContainsString('layout-boxed', $data);
+
+        // Test config 'layout_boxed' => false.
+
+        config(['adminlte.layout_boxed' => false]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringNotContainsString('layout-boxed', $data);
+
+        // Test config 'layout_boxed' => true.
+
+        config(['adminlte.layout_boxed' => true]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('layout-boxed', $data);
+    }
+
+    public function testMakeBodyClassesWithRightSidebarConfig()
+    {
         // Test config 'right_sidebar_push' => false.
 
         config(['adminlte.right_sidebar_push' => false]);
@@ -157,7 +172,10 @@ class LayoutHelperTest extends TestCase
 
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringNotContainsString('control-sidebar-push', $data);
+    }
 
+    public function testMakeBodyClassesWithLayoutFixedSidebarConfig()
+    {
         // Test config 'layout_fixed_sidebar' => null.
 
         config(['adminlte.layout_fixed_sidebar' => null]);
@@ -183,7 +201,10 @@ class LayoutHelperTest extends TestCase
 
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('layout-fixed', $data);
+    }
 
+    public function testMakeBodyClassesWithLayoutFixedNavbarConfig()
+    {
         // Test config 'layout_fixed_navbar' => null.
 
         config(['adminlte.layout_fixed_navbar' => null]);
@@ -222,6 +243,21 @@ class LayoutHelperTest extends TestCase
         $this->assertStringContainsString('layout-navbar-fixed', $data);
         $this->assertStringContainsString('layout-lg-navbar-not-fixed', $data);
 
+        // Test config 'layout_fixed_navbar' => ['xs' => true, 'foo' => true],
+        // 'layout_boxed' => null.
+
+        config([
+            'adminlte.layout_fixed_navbar' => ['xs' => true, 'foo' => true],
+            'adminlte.layout_boxed' => null,
+        ]);
+
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('layout-navbar-fixed', $data);
+        $this->assertStringNotContainsString('layout-foo-navbar-fixed', $data);
+    }
+
+    public function testMakeBodyClassesWithLayoutFixedFooterConfig()
+    {
         // Test config 'layout_fixed_footer' => null.
 
         config(['adminlte.layout_fixed_footer' => null]);
@@ -260,10 +296,32 @@ class LayoutHelperTest extends TestCase
         $this->assertStringContainsString('layout-md-footer-fixed', $data);
         $this->assertStringContainsString('layout-lg-footer-not-fixed', $data);
 
+        // Test config 'layout_fixed_footer' => ['md' => true, 'foo' => false],
+        // 'layout_boxed' => null.
+
+        config([
+            'adminlte.layout_fixed_footer' => ['md' => true, 'foo' => false],
+            'adminlte.layout_boxed' => null,
+        ]);
+
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('layout-md-footer-fixed', $data);
+        $this->assertStringNotContainsString('layout-foo-footer-not-fixed', $data);
+    }
+
+    public function testMakeBodyClassesWithClassesBodyConfig()
+    {
         // Test config 'classes_body' => custom-body-class.
 
         config(['adminlte.classes_body' => 'custom-body-class']);
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('custom-body-class', $data);
+
+        // Test config 'classes_body' => 'custom-body-class-1 custom-body-class-2'.
+
+        config(['adminlte.classes_body' => 'custom-body-class-1 custom-body-class-2']);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('custom-body-class-1', $data);
+        $this->assertStringContainsString('custom-body-class-2', $data);
     }
 }

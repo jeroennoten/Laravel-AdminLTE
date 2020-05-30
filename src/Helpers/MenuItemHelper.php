@@ -54,18 +54,7 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is valid for the navbar.
-     *
-     * @param mixed $item
-     * @return bool
-     */
-    public static function isValidNavbarItem($item)
-    {
-        return self::isValidSidebarItem($item) && ! self::isHeader($item);
-    }
-
-    /**
-     * Check if a menu item is valid for the sidebar.
+     * Check if a menu item is valid for the sidebar section.
      *
      * @param mixed $item
      * @return bool
@@ -76,6 +65,17 @@ class MenuItemHelper
                self::isSearchBar($item) ||
                self::isSubmenu($item) ||
                self::isLink($item);
+    }
+
+    /**
+     * Check if a menu item is valid for the navbar section.
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isValidNavbarItem($item)
+    {
+        return self::isValidSidebarItem($item) && ! self::isHeader($item);
     }
 
     /**

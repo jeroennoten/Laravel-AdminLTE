@@ -120,7 +120,7 @@ class LayoutHelper
     /**
      * Make the set of classes related to a fixed responsive configuration.
      *
-     * @param string $section
+     * @param string $section (navbar or footer)
      * @return array
      */
     private static function makeFixedResponsiveClasses($section)
@@ -129,15 +129,22 @@ class LayoutHelper
         $cfg = config('adminlte.layout_fixed_'.$section);
 
         if ($cfg === true) {
-            $classes[] = 'layout-'.$section.'-fixed';
-        } elseif (is_array($cfg)) {
-            foreach ($cfg as $size => $enabled) {
-                if (in_array($size, self::$screenSizes)) {
-                    $size = $size == 'xs' ? '' : '-'.$size;
-                    $classes[] = $enabled == true ?
-                        'layout'.$size.'-'.$section.'-fixed' :
-                        'layout'.$size.'-'.$section.'-not-fixed';
-                }
+            $cfg = ['xs' => true];
+        }
+
+        // At this point the config should be an array.
+
+        if (! is_array($cfg)) {
+            return $classes;
+        }
+
+        // Make the set of responsive classes in relation to the config.
+
+        foreach ($cfg as $size => $enabled) {
+            if (in_array($size, self::$screenSizes)) {
+                $size = ($size === 'xs') ? $section : "{$size}-{$section}";
+                $fixed = $enabled ? 'fixed' : 'not-fixed';
+                $classes[] = "layout-{$size}-{$fixed}";
             }
         }
 
