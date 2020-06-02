@@ -5,6 +5,7 @@ namespace JeroenNoten\LaravelAdminLte;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
@@ -91,7 +92,7 @@ class AdminLte
      */
     private function navbarLeftFilter($item)
     {
-        if (config('adminlte.layout_topnav') && MenuItemHelper::isSidebarItem($item)) {
+        if (LayoutHelper::isLayoutTopnavEnabled() && MenuItemHelper::isSidebarItem($item)) {
             return MenuItemHelper::isValidNavbarItem($item);
         }
 
