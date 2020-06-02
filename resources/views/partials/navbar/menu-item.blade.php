@@ -1,14 +1,16 @@
-@if (isset($item['search']) && $item['search'])
+@inject('menuItemHelper', \JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper)
+
+@if ($menuItemHelper->isSearchBar($item))
 
     {{-- Search form --}}
     @include('adminlte::partials.navbar.menu-item-search-form')
 
-@elseif (isset($item['submenu']))
+@elseif ($menuItemHelper->isSubmenu($item))
 
     {{-- Dropdown menu --}}
     @include('adminlte::partials.navbar.menu-item-dropdown-menu')
 
-@else
+@elseif ($menuItemHelper->isLink($item))
 
     {{-- Link --}}
     @include('adminlte::partials.navbar.menu-item-link')

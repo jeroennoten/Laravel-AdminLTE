@@ -1,3 +1,5 @@
+@inject('layoutHelper', \JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper)
+
 @php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
 
 @if (config('adminlte.use_route_url', false))
@@ -7,7 +9,7 @@
 @endif
 
 <a href="{{ $dashboard_url }}"
-    @if(config('adminlte.layout_topnav') || View::getSection('layout_topnav'))
+    @if($layoutHelper->isLayoutTopnavEnabled())
         class="navbar-brand logo-switch"
     @else
         class="brand-link logo-switch"
