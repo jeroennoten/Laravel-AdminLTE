@@ -62,28 +62,26 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 
 1. Require the package using composer:
 
-    ```
-    composer require jeroennoten/laravel-adminlte
-    ```
+```sh
+composer require jeroennoten/laravel-adminlte
+```
 
 2. (Laravel 7+ only) Require the laravel/ui package using composer:
 
-    ```
-    composer require laravel/ui
-    php artisan ui:controllers
-    ```
-    
+```sh
+composer require laravel/ui
+php artisan ui:controllers
+```
+
 3. Install the package using the command (For fresh laravel installations):
 
-    ```
-    php artisan adminlte:install
-    ```
-   
-> You can use --basic to avoid authentication scaffolding installation
->
-> You can use --force to overwrite any file
->
-> You can also use --interactive to be guided through the process and choose what you want to install
+```sh
+php artisan adminlte:install
+```
+
+> You can use **--basic** to avoid authentication scaffolding installation
+> You can use **--force** to overwrite any file
+> You can also use **--interactive** to be guided through the process and choose what you want to install
 
 ## 3. Updating
 
