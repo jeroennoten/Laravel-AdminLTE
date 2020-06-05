@@ -14,38 +14,40 @@ This version supports Laravel 5 and included AdminLTE v2
 - Version 2.x or branch laravel6-adminlte2:
 This version supports Laravel 6 and higher and included AdminLTE v2
 
+## Table of Contents
+
 1. [Requirements](#1-requirements)
 2. [Installation](#2-installation)
 3. [Updating](#3-updating)
 4. [Usage](#4-usage)
 5. [Artisan Console Commands](#5-artisan-console-commands)
-   1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
-      1. [Options](#511-options)
-   2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
-   3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
-   4. [Authentication views](#54-authentication-views)
-      1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
+    1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
+        1. [Options](#511-options)
+    2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
+    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
+    4. [Authentication views](#54-authentication-views)
+        1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
 6. [Configuration](#6-configuration)
-   1. [Title](#61-title)
-   2. [Favicon](#62-favicon)
-   3. [Logo](#63-logo)
-   4. [User menu](#64-user-menu)
-   5. [Layout](#65-layout)
-   6. [Classes](#66-classes)
-      1. [Authentication Views Classes](#661-authentication-views-classes)
-      2. [Admin Panel Classes](#662-admin-panel-classes)
-   7. [Sidebar](#67-sidebar)
-   8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
-   9. [URLs](#69-urls)
-   10. [Laravel Mix](#610-laravel-mix)
-   11. [Menu](#611-menu)
-      1. [Adding a Search Input](#6111-adding-a–search-input)
-      2. [Custom Menu Filters](#6112-custom-menu–filters)
-      3. [Menu configuration at runtime](#6113-menu-configuration–at-runtime)
-      4. [Active menu items](#6114-active-menu–items)
-   12. [Menu Filters](#612-menu-filters)
-   13. [Plugins](#613-plugins)
-      1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
+    1. [Title](#61-title)
+    2. [Favicon](#62-favicon)
+    3. [Logo](#63-logo)
+    4. [User menu](#64-user-menu)
+    5. [Layout](#65-layout)
+    6. [Classes](#66-classes)
+        1. [Authentication Views Classes](#661-authentication-views-classes)
+        2. [Admin Panel Classes](#662-admin-panel-classes)
+    7. [Sidebar](#67-sidebar)
+    8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
+    9. [URLs](#69-urls)
+    10. [Laravel Mix](#610-laravel-mix)
+    11. [Menu](#611-menu)
+        1. [Adding a Search Input](#6111-adding-a-search-input)
+        2. [Custom Menu Filters](#6112-custom-menu-filters)
+        3. [Menu configuration at runtime](#6113-menu-configuration-at-runtime)
+        4. [Active menu items](#6114-active-menu-items)
+    12. [Menu Filters](#612-menu-filters)
+    13. [Plugins](#613-plugins)
+        1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
 7. [Translations](#7-translations)
     1. [Menu Translations](#71-menu-translations)
 8. [Customize views](#8-customize-views)
@@ -652,9 +654,9 @@ npm i overlayscrollbars
 Add the following to your `bootstrap.js` file after `window.$ = window.jQuery = require('jquery');`:
 
 ```
-    require('overlayscrollbars');
-    require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
- ```
+require('overlayscrollbars');
+require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
+```
 
 Replace your `app.scss` content by the following:
 
@@ -781,13 +783,13 @@ Use the `can` attribute if you want conditionally show the menu item. This integ
 It's possible to add a search input in your menu, using a menu item with the following configuration:
 
 ```php
-        [
-            'search' => true,
-            'url' => 'test',  //form action
-            'method' => 'POST', //form method
-            'input_name' => 'menu-search-input', //input name
-            'text' => 'Search', //input placeholder
-        ],
+[
+    'search' => true,
+    'url' => 'test',  //form action
+    'method' => 'POST', //form method
+    'input_name' => 'menu-search-input', //input name
+    'text' => 'Search', //input placeholder
+],
 ```
 
 #### 6.11.2 Custom Menu Filters
@@ -893,21 +895,21 @@ The configuration options are the same as in the static configuration files.
 A more practical example that actually uses translations and the database:
 
 ```php
-    public function boot(Dispatcher $events)
-    {
-        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add(trans('menu.pages'));
+public function boot(Dispatcher $events)
+{
+    $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+        $event->menu->add(trans('menu.pages'));
 
-            $items = Page::all()->map(function (Page $page) {
-                return [
-                    'text' => $page['title'],
-                    'url' => route('admin.pages.edit', $page)
-                ];
-            });
-
-            $event->menu->add(...$items);
+        $items = Page::all()->map(function (Page $page) {
+            return [
+                'text' => $page['title'],
+                'url' => route('admin.pages.edit', $page)
+            ];
         });
-    }
+
+        $event->menu->add(...$items);
+    });
+}
 ```
 
 This event-based approach is used to make sure that your code that builds the menu runs only when the admin panel is actually displayed and not on every request.
