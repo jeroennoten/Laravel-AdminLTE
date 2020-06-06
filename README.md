@@ -265,87 +265,68 @@ If you don't want a registration or password reset form, set the `register_url` 
 
 ## 6. Configuration
 
-First, publish the configuration file:
+First, publish the configuration file (if you don't see the `adminlte.php` file inside the `config` folder):
 
-```
+```sh
 php artisan adminlte:install --only=config
 ```
 
-Now, edit `config/adminlte.php` to configure the title, skin, menu, URLs etc. All configuration options are explained in the comments. However, I want to shed some light on the `menu` configuration.
+Now, edit `config/adminlte.php` to configure the title, layout, menu, URLs etc. All configuration options are explained in the comments. However, we going to give a fast review here.
 
 ### 6.1 Title
-The default title of your admin panel, this goes into the title tag of your page. You can override it per page with the title section.
-You can optionally also specify a title prefix and/or postfix.
 
-The following config options available:
-- __`title`__
+The default title of your admin panel, this goes into the title tag of your page. You can override it per page with the title section. You can optionally also specify a title prefix and/or postfix.
 
-    Default title
-- __`title_prefix`__
+The following config options are available:
 
-    Title prefix   
-- __`title_postfix`__
-
-    Title postfix
+- __`title`__: Default title.
+- __`title_prefix`__: The title prefix.
+- __`title_postfix`__: The title postfix.
 
 ### 6.2 Favicon
-Favicons could be used easily. There are two different ways to do this.
-Please add all favicons in the dir public/favicons/.
-    
+
+Favicons could be used easily. There are two different ways to do this. Please add all favicons in the dir public/favicons/.
+
 - __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
-    If set to `true`, the file `public/favicons/favicon.ico` is used.
+  Whit this configuration the file `public/favicons/favicon.ico` is used.
 
 - __`['use_ico_only' => false, 'use_full_favicon' => true]`__
 
-If `'use_full_favicon' => true` more favicon files in `public/favicons/` will be used. The activated code is:
-```
-    <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}" />
-    <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicons/apple-icon-57x57.png') }}">
-    <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicons/apple-icon-60x60.png') }}">
-    <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('favicons/apple-icon-72x72.png') }}">
-    <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('favicons/apple-icon-76x76.png') }}">
-    <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('favicons/apple-icon-114x114.png') }}">
-    <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('favicons/apple-icon-120x120.png') }}">
-    <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('favicons/apple-icon-144x144.png') }}">
-    <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('favicons/apple-icon-152x152.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-icon-180x180.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicons/favicon-16x16.png') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicons/favicon-96x96.png') }}">
-    <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('favicons/android-icon-192x192.png') }}">
-    <link rel="manifest" href="{{ asset('favicons/manifest.json') }}">
-    <meta name="msapplication-TileColor" content="#ffffff">
-    <meta name="msapplication-TileImage" content="{{ asset('favicons/ms-icon-144x144.png') }}">
-```
+  Whit this configuration more favicon files in `public/favicons/` folder will be used. The activated code is:
+  ```blade
+  <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
+  <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicons/apple-icon-57x57.png') }}">
+  <link rel="apple-touch-icon" sizes="60x60" href="{{ asset('favicons/apple-icon-60x60.png') }}">
+  <link rel="apple-touch-icon" sizes="72x72" href="{{ asset('favicons/apple-icon-72x72.png') }}">
+  <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('favicons/apple-icon-76x76.png') }}">
+  <link rel="apple-touch-icon" sizes="114x114" href="{{ asset('favicons/apple-icon-114x114.png') }}">
+  <link rel="apple-touch-icon" sizes="120x120" href="{{ asset('favicons/apple-icon-120x120.png') }}">
+  <link rel="apple-touch-icon" sizes="144x144" href="{{ asset('favicons/apple-icon-144x144.png') }}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{{ asset('favicons/apple-icon-152x152.png') }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('favicons/apple-icon-180x180.png') }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicons/favicon-16x16.png') }}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png') }}">
+  <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicons/favicon-96x96.png') }}">
+  <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('favicons/android-icon-192x192.png') }}">
+  <link rel="manifest" href="{{ asset('favicons/manifest.json') }}">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="msapplication-TileImage" content="{{ asset('favicons/ms-icon-144x144.png') }}">
+  ```
 
 ### 6.3 Logo
-The logo is displayed at the upper left corner of your admin panel. You can use basic HTML here if you want for a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alt text for both logos.
 
-- __`logo`__
+The logo is displayed at the upper left corner of your admin panel. You can use basic HTML here if you want a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images: one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alt text for both logos.
 
-    Text logo content, can be HTML.
-- __`logo_img`__
-
-    Small logo image, beside text logo.
-
-    _Recommend size: 50x50px_
-- __`logo_img_class`__
-
-    Extra classes for small logo image.
-- __`logo_img_xl`__
-
-    Large logo image, if you set a img url it will replace the text logo & small logo with one big logo and on collapsed sidebar it displays the small logo.
-
-    _Recommend size: 210x33px_
-- __`logo_img_xl_class`__
-
-    Extra classes for small logo image.
-- __`logo_img_alt`__
-
-    Logo image alt text.    
+- __`logo`__: Text logo content, can be HTML.
+- __`logo_img`__: Path to the small logo image, beside text logo. _Recommend size is: 50x50px_
+- __`logo_img_class`__: Extra classes for the small logo image.
+- __`logo_img_xl`__: Path to large logo image, if you set a img url it will replace the text logo & small logo with one big logo. When the sidebar is collapsed it will displays the small logo. _Recommend size is: 210x33px_
+- __`logo_img_xl_class`__: Extra classes for the large logo image.
+- __`logo_img_alt`__: Logo image alt text.
 
 ### 6.4 User Menu
+
 The user is displayed at the upper right corner of your admin panel. 
 
 - __`usermenu_enabled`__
