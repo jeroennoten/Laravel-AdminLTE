@@ -26,7 +26,7 @@ This version supports Laravel 6 and higher and included AdminLTE v2
    2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
    4. [Authentication views](#54-authentication-views)
-      1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
+      1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-manually)
 6. [Configuration](#6-configuration)
    1. [Title](#61-title)
    2. [Favicon](#62-favicon)
@@ -53,10 +53,12 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 8. [Customize views](#8-customize-views)
 9. [Issues, Questions and Pull Requests](#9-issues-questions-and-pull-requests)
 
+
 ## 1. Requirements
 
 - Laravel >= 6.x
 - PHP >= 7.2
+
 
 ## 2. Installation
 
@@ -85,6 +87,7 @@ This version supports Laravel 6 and higher and included AdminLTE v2
    >
    > You can also use **--interactive** to be guided through the process and choose what you want to install
 
+
 ## 3. Updating
 
 1. To update this package, first update the composer package:
@@ -95,7 +98,7 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 
 2. Then, update the assets
 
-   > NOTE: If you using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, delete the folder adminlte inside your `public/vendor` folder.
+   > Note: If you using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, delete the folder adminlte inside your `public/vendor` folder.
 
    Use next command to publish the new assets:
 
@@ -115,6 +118,7 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 
    - Compare with your backup files and redo the modifications you previously did to those views.
 
+
 ## 4. Usage
 
 To use the template, create a new blade file and extend the layout with `@extends('adminlte::page')`.
@@ -128,7 +132,7 @@ This template yields the following sections:
 
 All sections are in fact optional. As an example, your blade template could look like the following:
 
-```html
+```blade
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
@@ -152,101 +156,105 @@ All sections are in fact optional. As an example, your blade template could look
 
 You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
 
+
 ## 5. Artisan Console Commands
 
 ### 5.1 The `adminlte:install` Command
 
-You can install all required & additional resources with the `adminlte:install` command.
+You can install all required and additional resources with the `adminlte:install` command.
 
-Without any option it will install AdminLTE assets, config & translations.
-You can also install the Authentication Views with adding `--type=enhanced` or additional to the Authentication Views also the Basic Views & Routes with adding `--type=full` to the `adminlte:install` command.
+Without any option it will install AdminLTE package assets, config & translations.
+You can also install the Authentication Views adding `--type=enhanced` option, or additional to the Authentication Views also the Basic Views and Routes adding the `--type=full` option to the `adminlte:install` command.
 
 #### 5.1.1 Options
 
- - `--force`: Overwrite existing views by default
- - `--type=`: Installation type, Available type: none, basic, enhanced & full.
- - `--only=`: Install only specific part, Available parts: assets, config, translations, auth_views, basic_views, basic_routes & main_views. This option can not used with the with option.
- - `--with=*`: Install basic assets with specific parts, Available parts: auth_views, basic_views & basic_routes. Can be use multiple
- - `--interactive` : The installation will guide you through the process
-
+- `--force`: To force overwrite the existing views by default.
+- `--type=`: The installation type, the available types are: **none**, **basic**, **enhanced** or **full**.
+- `--only=`: To install only specific parts, the available parts are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option.
+- `--with=*`: To install the basic assets with specific parts, the available parts are: **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, example: `php artisan adminlte:install --with=auth_views --with=basic_routes`.
+- `--interactive` : The installation will guide you through the process.
 
 ### 5.2 The `adminlte:plugins` Command
 
 If you won't use cdn for the plugins, you can manage the optional plugins assets with the `adminlte:plugins` command.
 
-You can list all available plugins, install/update/remove all or specific plugins. Here are some examples for the command:
+You can list all available plugins, or install/update/remove all or specific plugins. Here are some examples for the command:
 
-Install all plugin assets
-- `artisan adminlte:plugins install`
+Install all plugin assets:
+`php artisan adminlte:plugins install`
 
-Install only Pace Progress & Select2 plugin assets
-- `artisan adminlte:plugins install --plugin=paceProgress --plugin=select2`
+Install only Pace Progress & Select2 plugin assets:
+`php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2`
 
-Update all Plugin assets
-- `artisan adminlte:plugins update`
+Update all Plugin assets:
+`php artisan adminlte:plugins update`
 
-Update only Pace Progress plugin assets
-- `artisan adminlte:plugins update`
+Update only Pace Progress plugin assets:
+`php artisan adminlte:plugins update --plugin=paceProgress`
 
-Remove all Plugin assets
-- `artisan adminlte:plugins remove`
+Remove all Plugin assets:
+`php artisan adminlte:plugins remove`
 
-Remove only Select2 plugin assets
-- `artisan adminlte:plugins remove --plugin=select2`
+Remove only Select2 plugin assets:
+`php artisan adminlte:plugins remove --plugin=select2`
 
 #### 5.2.1 Options
 
- - `operation`: Operation command, Available commands; list (default), install, update & remove.
- - `--plugin=`: Plugin Key. (Can used multiple times for the desired)
+ - `operation`: The operation command, available commands are: **list** (default), **install**, **update** or **remove**.
+ - `--plugin=`: The plugin key name (this option can be used multiple times).
  - `--interactive`: The installation will guide you through the process.
-
 
 ### 5.3 The `adminlte:update` Command
 
 This command is only a shortcut for `adminlte:install --force --only=assets`.
 
+### 5.4 Authentication Views
 
-### 5.4 Authentication views
+> Note: this is only available for Laravel 5.2 or higher versions.
 
-> Note: only for Laravel 5.2 and higher
+This package ships the following command to replace the authentication views with AdminLTE style views.
 
-This package ships the following command to replaces the authentication views with AdminLTE style views.
-
-```
+```sh
 php artisan adminlte:install --only=auth_views
 ```
 
-### 5.4.1 Using the authentication views without the `adminlte:install` command
+### 5.4.1 Using the Authentication Views Manually
 
-If you want to use the included authentication related views manually, you can create the following files and only add one line to each file:
+If you want to use the included authentication views manually, you can create the following files and only add one line to each one of these files:
 
 - `resources/views/auth/login.blade.php`:
-```blade
-@extends('adminlte::auth.login')
-```
-- `resources/views/auth/register.blade.php`
-```blade
-@extends('adminlte::auth.register')
-```
-- `resources/views/auth/verify.blade.php`
-```blade
-@extends('adminlte::auth.verify')
-```
-- `resources/views/auth/passwords/confirm.blade.php`
-```blade
-@extends('adminlte::auth.passwords.confirm')
-```
-- `resources/views/auth/passwords/email.blade.php`
-```blade
-@extends('adminlte::auth.passwords.email')
-```
-- `resources/views/auth/passwords/reset.blade.php`
-```blade
-@extends('adminlte::auth.passwords.reset')
-```
+  ```blade
+  @extends('adminlte::auth.login')
+  ```
 
-By default, the login form contains a link to the registration and password reset form.
-If you don't want a registration or password reset form, set the `register_url` respectively `password_reset_url` setting to `null` and the link will not be displayed.
+- `resources/views/auth/register.blade.php`
+  ```blade  
+  @extends('adminlte::auth.register')
+  ```
+
+- `resources/views/auth/verify.blade.php`
+  ```blade
+  @extends('adminlte::auth.verify')
+  ```
+
+- `resources/views/auth/passwords/confirm.blade.php`
+  ```blade
+  @extends('adminlte::auth.passwords.confirm')
+  ```
+
+- `resources/views/auth/passwords/email.blade.php`
+  ```blade
+  @extends('adminlte::auth.passwords.email')
+  ```
+
+- `resources/views/auth/passwords/reset.blade.php`
+  ```blade
+  @extends('adminlte::auth.passwords.reset')
+  ```
+
+By default, the login form contains a link to the registration and password reset forms.
+If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` and the respective link will not be displayed.
+
 
 ## 6. Configuration
 
