@@ -174,7 +174,9 @@ You can also install the Authentication Views adding `--type=enhanced` option, o
 - `--type=`: The installation type, the available types are: **none**, **basic**, **enhanced** or **full**.
 - `--only=`: To install only specific parts, the available parts are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option.
 - `--with=*`: To install the basic assets with specific parts, the available parts are: **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, example:
-  `php artisan adminlte:install --with=auth_views --with=basic_routes`
+  ```sh
+  php artisan adminlte:install --with=auth_views --with=basic_routes
+  ```
 - `--interactive` : The installation will guide you through the process.
 
 ### 5.2 The `adminlte:plugins` Command
@@ -184,22 +186,29 @@ If you won't use cdn for the plugins, you can manage the optional plugins assets
 You can list all available plugins, or install/update/remove all or specific plugins. Here are some examples for the command:
 
 - Install all plugin assets:
-  `php artisan adminlte:plugins install`
-
+  ```sh
+  php artisan adminlte:plugins install
+  ```
 - Install only Pace Progress & Select2 plugin assets:
-  `php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2`
-
+  ```sh
+  php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2
+  ```
 - Update all Plugin assets:
-  `php artisan adminlte:plugins update`
-
+  ```sh
+  php artisan adminlte:plugins update
+  ```
 - Update only Pace Progress plugin assets:
-  `php artisan adminlte:plugins update --plugin=paceProgress`
-
+  ```sh
+  php artisan adminlte:plugins update --plugin=paceProgress
+  ```
 - Remove all Plugin assets:
-  `php artisan adminlte:plugins remove`
-
+  ```sh
+  php artisan adminlte:plugins remove
+  ```
 - Remove only Select2 plugin assets:
-  `php artisan adminlte:plugins remove --plugin=select2`
+  ```sh
+  php artisan adminlte:plugins remove --plugin=select2
+  ```
 
 #### 5.2.1 Options
 
@@ -229,27 +238,22 @@ If you want to use the included authentication views manually, you can create th
   ```blade
   @extends('adminlte::auth.login')
   ```
-
 - `resources/views/auth/register.blade.php`
   ```blade  
   @extends('adminlte::auth.register')
   ```
-
 - `resources/views/auth/verify.blade.php`
   ```blade
   @extends('adminlte::auth.verify')
   ```
-
 - `resources/views/auth/passwords/confirm.blade.php`
   ```blade
   @extends('adminlte::auth.passwords.confirm')
   ```
-
 - `resources/views/auth/passwords/email.blade.php`
   ```blade
   @extends('adminlte::auth.passwords.email')
   ```
-
 - `resources/views/auth/passwords/reset.blade.php`
   ```blade
   @extends('adminlte::auth.passwords.reset')
