@@ -25,8 +25,8 @@ This version supports Laravel 6 and higher and included AdminLTE v2
       1. [Options](#511-options)
    2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
-   4. [Authentication views](#54-authentication-views)
-      1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-manually)
+   4. [Authentication Views](#54-authentication-views)
+      1. [Using the Authentication Views Manually](#541-using-the-authentication-views-manually)
 6. [Configuration](#6-configuration)
    1. [Title](#61-title)
    2. [Favicon](#62-favicon)
@@ -171,7 +171,8 @@ You can also install the Authentication Views adding `--type=enhanced` option, o
 - `--force`: To force overwrite the existing views by default.
 - `--type=`: The installation type, the available types are: **none**, **basic**, **enhanced** or **full**.
 - `--only=`: To install only specific parts, the available parts are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option.
-- `--with=*`: To install the basic assets with specific parts, the available parts are: **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, example: `php artisan adminlte:install --with=auth_views --with=basic_routes`.
+- `--with=*`: To install the basic assets with specific parts, the available parts are: **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, example:
+  `php artisan adminlte:install --with=auth_views --with=basic_routes`
 - `--interactive` : The installation will guide you through the process.
 
 ### 5.2 The `adminlte:plugins` Command
@@ -180,23 +181,23 @@ If you won't use cdn for the plugins, you can manage the optional plugins assets
 
 You can list all available plugins, or install/update/remove all or specific plugins. Here are some examples for the command:
 
-Install all plugin assets:
-`php artisan adminlte:plugins install`
+- Install all plugin assets:
+  `php artisan adminlte:plugins install`
 
-Install only Pace Progress & Select2 plugin assets:
-`php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2`
+- Install only Pace Progress & Select2 plugin assets:
+  `php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2`
 
-Update all Plugin assets:
-`php artisan adminlte:plugins update`
+- Update all Plugin assets:
+  `php artisan adminlte:plugins update`
 
-Update only Pace Progress plugin assets:
-`php artisan adminlte:plugins update --plugin=paceProgress`
+- Update only Pace Progress plugin assets:
+  `php artisan adminlte:plugins update --plugin=paceProgress`
 
-Remove all Plugin assets:
-`php artisan adminlte:plugins remove`
+- Remove all Plugin assets:
+  `php artisan adminlte:plugins remove`
 
-Remove only Select2 plugin assets:
-`php artisan adminlte:plugins remove --plugin=select2`
+- Remove only Select2 plugin assets:
+  `php artisan adminlte:plugins remove --plugin=select2`
 
 #### 5.2.1 Options
 
@@ -218,7 +219,7 @@ This package ships the following command to replace the authentication views wit
 php artisan adminlte:install --only=auth_views
 ```
 
-### 5.4.1 Using the Authentication Views Manually
+#### 5.4.1 Using the Authentication Views Manually
 
 If you want to use the included authentication views manually, you can create the following files and only add one line to each one of these files:
 
