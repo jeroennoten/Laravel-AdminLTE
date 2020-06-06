@@ -117,20 +117,18 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 
 ## 4. Usage
 
-To use the template, create a blade file and extend the layout with `@extends('adminlte::page')`.
+To use the template, create a new blade file and extend the layout with `@extends('adminlte::page')`.
 This template yields the following sections:
 
-- `title`: for in the `<title>` tag
-- `content_header`: title of the page, above the content
-- `content`: all of the page's content
-- `css`: extra stylesheets (located in `<head>`)
-- `js`: extra javascript (just before `</body>`)
+- `title`: for the `<title>` tag.
+- `content_header`: title of the page, above the content.
+- `content`: all of the page's content.
+- `css`: extra stylesheets (located in `<head>`).
+- `js`: extra javascript (just before `</body>`).
 
-All sections are in fact optional. Your blade template could look like the following.
+All sections are in fact optional. As an example, your blade template could look like the following:
 
 ```html
-{{-- resources/views/admin/dashboard.blade.php --}}
-
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
