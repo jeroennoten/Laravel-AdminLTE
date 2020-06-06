@@ -32,7 +32,9 @@ This version supports Laravel 6 and higher and included AdminLTE v2
    2. [Favicon](#62-favicon)
    3. [Logo](#63-logo)
    4. [User menu](#64-user-menu)
+      1. [Example of User Image and Description Code](#641-example-of-user-image-and-description-code)
    5. [Layout](#65-layout)
+      1. [Responsive Usage](#651-responsive-usage)
    6. [Classes](#66-classes)
       1. [Authentication Views Classes](#661-authentication-views-classes)
       2. [Admin Panel Classes](#662-admin-panel-classes)
@@ -327,333 +329,367 @@ The logo is displayed at the upper left corner of your admin panel. You can use 
 
 ### 6.4 User Menu
 
-The user is displayed at the upper right corner of your admin panel. 
+The user menu is displayed at the upper right corner of your admin panel. The available options are:
 
 - __`usermenu_enabled`__
 
-    Whether to enable the user menu instead of the default logout button.
+  Whether to enable the user menu instead of the default logout button.
 
 - __`usermenu_header`__
 
-    Whether to enable the header inside the user menu.
+  Whether to enable the header inside the user menu.
 
 - __`usermenu_header_class`__
 
-    Extra classes for header inside the user menu.
-
-- __`usermenu_header_class`__
-
-    Extra classes for header inside the user menu.
+  Extra classes for the header inside the user menu.
 
 - __`usermenu_image`__
 
-    Whether to enable the user image for the usermenu & lockscreen.
-
-    _**Note:**_ You need for this a extra function named `adminlte_image()` inside the `App/User`.
-    _Recommend size: 160x160px_
+  Whether to enable the user image for the usermenu & lockscreen.
+  _**Note:**_ For this, you will need an extra function named `adminlte_image()` inside the `App/User`.
+  _Recommend size is: 160x160px_
 
 - __`usermenu_desc`__
 
-    Whether to enable the user description for the usermenu.
-    _**Note:**_ You need for this a extra function named `adminlte_desc()` inside the `App/User`.
-    
+  Whether to enable the user description for the usermenu.
+  _**Note:**_ For this, you will need an extra function named `adminlte_desc()` inside the `App/User`.
+
 - __`usermenu_profile_url`__
 
-    Whether to enable the user profile url can be set dynamically for the user instead of the config key `profile_url`.
-    _**Note:**_ You need for this a extra function named `adminlte_profile_url()` inside the `App/User`. The return value should be a string, not a route or url.
+  Whether to enable the user profile url can be set dynamically for the user instead of the config key `profile_url`.
+  _**Note:**_ For this, you need an extra function named `adminlte_profile_url()` inside the `App/User`.
+  The return value should be a string, not a route or url.
 
-#### 6.4.1 User Image & Description Example Code
-Example code for the `App/User` with custom image & description functions.
+#### 6.4.1 Example of User Image and Description Code
+
+Here you have an example code for the `App/User` with custom image, description and profile url functions.
+
 ```php
-    class User extends Authenticatable
+class User extends Authenticatable
+{
+    …
+
+    public function adminlte_image()
     {
-        …
-
-        public function adminlte_image()
-        {
-            return 'https://picsum.photos/300/300';
-        }
-
-        public function adminlte_desc()
-        {
-            return 'That\'s a nice guy';
-        }
-        
-        public function adminlte_profile_url()
-        {
-            return 'profile/username';
-        }
+        return 'https://picsum.photos/300/300';
     }
+
+    public function adminlte_desc()
+    {
+        return 'That\'s a nice guy';
+    }
+
+    public function adminlte_profile_url()
+    {
+        return 'profile/username';
+    }
+}
 ```
 
 ### 6.5 Layout
+
 It's possible to change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar, and also you can enable fixed mode for the sidebar, the navbar or the footer.
 
 > **NOTE:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
 
 The following config options are available:
+
 - __`layout_topnav`__
 
-    Enables/Disables the top navigation only layout, to remove the sidebar and have your links at the top navbar. Can't be used with `layout_boxed`.
+  Enables/Disables the top navigation only layout, this will remove the sidebar and put your links at the top navbar. Can't be used with `layout_boxed`.
 
 - __`layout_boxed`__
 
-    Enables/Disables the boxed layout. Can't be used with `layout_topnav`.
+  Enables/Disables the boxed layout that stretches width only to 1250px. Can't be used with `layout_topnav`.
 
 - __`layout_fixed_sidebar`__
 
-    Enables/Disables the fixed sidebar mode. Can't be used with `layout_topnav`. 
+  Enables/Disables the fixed sidebar mode. Can't be used with `layout_topnav`.
 
 - __`layout_fixed_navbar`__
 
-    Enables/Disables the fixed navbar (top navigation) mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
+  Enables/Disables the fixed navbar (top navigation) mode, here you can set to `true` or an `array` for responsive usage. Can't be used with `layout_boxed`.
 
 - __`layout_fixed_footer`__
 
-    Enables/Disables the fixed footer mode, here you can set `true` or pass an array for responsive usage. Can't be used with `layout_boxed`.
+  Enables/Disables the fixed footer mode, here you can set `true` or an `array` for responsive usage. Can't be used with `layout_boxed`.
 
+### 6.5.1 Responsive Usage
 
-__Responsive Usage for `layout_fixed_navbar` & `layout_fixed_footer`__
+When using an array on the `layout_fixed_navbar` or `layout_fixed_footer` configuration options, you can disable or enable the fixed layout for specific viewport sizes.
 
-With responsive you can disable or enable the fixed navbar/footer for specific viewport sizes.
-
-An array with the following keys is available, you can set them to `true` or `false`:
-- `xs` from 0px to 575.99px
-- `sm` from 576px to 767.99px
-- `md` from 768px to 991.99px
-- `lg` from 992px to 1199.99px
-- `xl` from 1200px
+The following keys are available to use inside the array, you can set them to `true` or `false`:
+- `xs` represent screens from 0px to 575.99px width
+- `sm` represent screens from 576px to 767.99px width
+- `md` represent screens from 768px to 991.99px width
+- `lg` represent screens from 992px to 1199.99px width
+- `xl` represent screens from 1200px or more width
 
 __Examples__
 
-- `['xs' => true, 'lg' => false]`
-
-    Fixed from mobile to small tablet (<= 991.99px)
-
-- `['lg' => true]`
-
-    Fixed starting from desktop (>= 992px)
-
-- `['xs' => true, 'md' => false, 'xl' => true]`
-
-    Fixed from mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for small tablet and desktop (>= 768px & <= 1199.99px)
-
+- `['xs' => true, 'lg' => false]`: Fixed from mobile to small tablet (<= 991.99px)
+- `['lg' => true]`: Fixed starting from desktop (>= 992px)
+- `['xs' => true, 'md' => false, 'xl' => true]`: Fixed for mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for small tablet and desktop (>= 768px & <= 1199.99px)
 
 ### 6.6 Classes
 
 #### 6.6.1 Authentication Views Classes
-  You can change the look and behavior of the authentication views (login, register, email verification, etc).
 
-  The following config options available:
-  - __`classes_auth_card`__
-
-      Extra classes for the card box. Classes will be added to element `div.card`.
-  - __`classes_auth_header`__
-
-      Extra classes for the card box header. Classes will be added to element `div.card-header`.
-  - __`classes_auth_body`__
-
-      Extra classes for the card box body. Classes will be added to element `div.card-body`.
-  - __`classes_auth_footer`__
-
-      Extra classes for the card box footer. Classes will be added to element `div.card-footer`.
-  - __`classes_auth_icon`__
-
-      Extra classes for the input icons (font awesome icons related to input fields).
-  - __`classes_auth_btn`__
-
-      Extra classes for the submit buttons.
-
-  The set of current default values is the next one:
-
-  ```php
-  'classes_auth_card' => 'card-outline card-primary',
-  'classes_auth_header' => '',
-  'classes_auth_body' => '',
-  'classes_auth_footer' => '',
-  'classes_auth_icon' => '',
-  'classes_auth_btn' => 'btn-flat btn-primary',
-  ```
-
-  However, you can customize the options as you want to get some themes:
-
-  __Dark Theme__
-
-  ```php
-  'classes_auth_card' => 'bg-gradient-dark',
-  'classes_auth_header' => '',
-  'classes_auth_body' => 'bg-gradient-dark',
-  'classes_auth_footer' => 'text-center',
-  'classes_auth_icon' => 'text-light',
-  'classes_auth_btn' => 'btn-flat btn-light',
-  ```
-
-  __Lightblue Theme__
-  
-  ```php
-  'classes_auth_card' => '',
-  'classes_auth_header' => 'bg-gradient-info',
-  'classes_auth_body' => '',
-  'classes_auth_footer' => 'text-center',
-  'classes_auth_icon' => 'fa-lg text-info',
-  'classes_auth_btn' => 'btn-flat btn-primary',
-  ```
-
-#### 6.6.2 Admin Panel Classes
-  You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
-
-  The following config options available:
-  - __`classes_body`__
-
-      Extra classes for body.
-  - __`classes_brand`__
-
-      Extra classes for brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
-  - __`classes_brand_text`__
-
-      Extra classes for brand text. Classes will be added to element `span.brand-text`.
-  - __`classes_content_header`__
-
-      Classes for content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
-  - __`classes_content_wrapper`__
-
-      Classes for content wrapper container. Classes will be added to the container of element `div.content-wrapper`. 
-  - __`classes_content`__
-
-      Classes for content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
-  - __`classes_sidebar`__
-
-      Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
-  - __`classes_sidebar_nav`__
-
-      Extra classes for sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes that you can use here:
-      - __`nav-child-indent`__ to indent child items.
-      - __`nav-compact`__ to get a compact nav style.
-      - __`nav-flat`__ to get a flat nav style.
-      - __`nav-legacy`__ to get a legacy v2 nav style.
-  - __`classes_topnav`__
-
-      Extra classes for top navigation bar. Classes will be added to element `nav.main-header.navbar`.
-  - __`classes_topnav_nav`__
-
-      Extra classes for top navigation. Classes will be added to element `nav.main-header.navbar`.
-  - __`classes_topnav_container`__
-
-      Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
-
-
-### 6.7 Sidebar
-You can modify the sidebar, you can disable the collapsed mini sidebar, start with collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and sidebar navigation menu item animation speed.
+You can change the look and behavior of the authentication views (login, register, email verification, etc).
 
 The following config options available:
+
+- __`classes_auth_card`__
+
+  Extra classes for the card box. Classes will be added to element `div.card`.
+
+- __`classes_auth_header`__
+
+  Extra classes for the card box header. Classes will be added to element `div.card-header`.
+
+- __`classes_auth_body`__
+
+  Extra classes for the card box body. Classes will be added to element `div.card-body`.
+
+- __`classes_auth_footer`__
+
+  Extra classes for the card box footer. Classes will be added to element `div.card-footer`.
+
+- __`classes_auth_icon`__
+
+  Extra classes for the input icons (font awesome icons related to input fields).
+
+- __`classes_auth_btn`__
+
+  Extra classes for the submit buttons.
+
+The set of current default values is the next one:
+
+```php
+'classes_auth_card' => 'card-outline card-primary',
+'classes_auth_header' => '',
+'classes_auth_body' => '',
+'classes_auth_footer' => '',
+'classes_auth_icon' => '',
+'classes_auth_btn' => 'btn-flat btn-primary',
+```
+
+However, you can customize the options as you want to get some particular themes, example:
+
+__Dark Theme__
+
+```php
+'classes_auth_card' => 'bg-gradient-dark',
+'classes_auth_header' => '',
+'classes_auth_body' => 'bg-gradient-dark',
+'classes_auth_footer' => 'text-center',
+'classes_auth_icon' => 'text-light',
+'classes_auth_btn' => 'btn-flat btn-light',
+```
+
+__Lightblue Theme__
+  
+```php
+'classes_auth_card' => '',
+'classes_auth_header' => 'bg-gradient-info',
+'classes_auth_body' => '',
+'classes_auth_footer' => 'text-center',
+'classes_auth_icon' => 'fa-lg text-info',
+'classes_auth_btn' => 'btn-flat btn-primary',
+```
+
+#### 6.6.2 Admin Panel Classes
+
+You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
+
+The following config options available:
+
+- __`classes_body`__
+
+  Extra classes for body.
+
+- __`classes_brand`__
+
+  Extra classes for the brand. Classes will be added to element `a.navbar-brand` if `layout_topnav` is used, otherwise they will be added to element `a.brand-link`.
+
+- __`classes_brand_text`__
+
+  Extra classes for the brand text. Classes will be added to element `span.brand-text`.
+
+- __`classes_content_header`__
+
+  Classes for the content header container. Classes will be added to the container of element `div.content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+
+- __`classes_content_wrapper`__
+
+  Classes for content wrapper container. Classes will be added to the container of element `div.content-wrapper`.
+
+- __`classes_content`__
+
+  Classes for the content container. Classes will be added to the container of element `div.content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+
+- __`classes_sidebar`__
+
+  Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
+
+- __`classes_sidebar_nav`__
+
+  Extra classes for the sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes that you can use here:
+
+  - __`nav-child-indent`__ to indent child items.
+  - __`nav-compact`__ to get a compact nav style.
+  - __`nav-flat`__ to get a flat nav style.
+  - __`nav-legacy`__ to get a legacy v2 nav style.
+
+- __`classes_topnav`__
+
+  Extra classes for the top navigation bar. Classes will be added to element `nav.main-header.navbar`.
+
+- __`classes_topnav_nav`__
+
+  Extra classes for the top navigation. Classes will be added to element `nav.main-header.navbar`.
+
+- __`classes_topnav_container`__
+
+  Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
+
+### 6.7 Sidebar
+
+You can modify the sidebar, for example, you can disable the collapsed mini sidebar, start with collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and change the sidebar navigation menu item animation speed.
+
+The following config options available:
+
 - __`sidebar_mini`__
 
-    Enables/Disables the collapsed mini sidebar for desktop and bigger screens (>= 992px), here you can set `true`, `false` or `'md'` to enable for small tablet and bigger screens (>= 768px).
+  Enables/Disables the collapsed mini sidebar for desktop and bigger screens (>= 992px), you can set this option to `true`, `false` or `'md'` to enable for small tablet and bigger screens (>= 768px).
+
 - __`sidebar_collapse`__
 
-    Enables/Disables collapsed by default.
+  Enables/Disables the collapsed mode by default.
+
 - __`sidebar_collapse_auto_size`__
 
-    Enables/Disables auto collapse by setting min width to collapse.
+  Enables/Disables auto collapse by setting a minimun width to auto collapse.
+
 - __`sidebar_collapse_remember`__
 
-    Enables/Disables collapse remeber script.
+  Enables/Disables the collapse remeber script.
+
 - __`sidebar_collapse_remember_no_transition`__
 
-    Enables/Disables transition after reload page.
+  Enables/Disables the transition after reload page.
+
 - __`sidebar_scrollbar_theme`__
 
-    Changes sidebar scrollbar theme.
+  Changes the sidebar scrollbar theme.
+
 - __`sidebar_scrollbar_auto_hide`__
 
-    Changes sidebar scrollbar auto hide trigger.
+  Changes the sidebar scrollbar auto hide trigger.
+
 - __`sidebar_nav_accordion`__
 
-    Enables/Disables sidebar navigation accordion feature.
+  Enables/Disables the sidebar navigation accordion feature.
+
 - __`sidebar_nav_animation_speed`__
 
-    Changes the sidebar navigation slide animation speed.
-
+  Changes the sidebar slide animation speed.
 
 ### 6.8 Control Sidebar (Right Sidebar)
-Here you have the option to enable a right sidebar. When active, you can use @section('right-sidebar') The icon you configured will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while false will push the content, and have no animation. You can also choose the sidebar theme (dark or light).
+
+Here you have the option to enable a right sidebar. When active, you can use the @section('right-sidebar'). The icon you configure will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while false will push the content without animation. You can also choose the sidebar theme (dark or light).
 
 The following config options available:
 
 - __`right_sidebar`__
 
-    Enables/Disables the right sidebar.
+  Enables/Disables the right sidebar.
+
 - __`right_sidebar_icon`__
 
-    Changes the icon for the right sidebar button in main navigation.
+  Changes the icon for the right sidebar toggler button in the topnav navigation.
+
 - __`right_sidebar_theme`__
 
-    Changes the theme of the right sidebar, the following options available: `dark` & `light`.
+  Changes the theme of the right sidebar, the following options available: `dark` & `light`.
+
 - __`right_sidebar_slide`__
 
-    Enables/Disables slide animation.
+  Enables/Disables the slide animation.
+
 - __`right_sidebar_push`__
 
-    Enables/Disables push content instead of overlay for right sidebar.
+  Enables/Disables push content instead of overlay for the right sidebar.
+
 - __`right_sidebar_scrollbar_theme`__
 
-    Enables/Disables transition after reload page.
+  Change the sidebar scrollbar theme. Default value is `os-theme-light`.
+
 - __`right_sidebar_scrollbar_auto_hide`__
 
-    Changes sidebar scrollbar auto hide trigger.
-
+    Changes the sidebar scrollbar auto hide trigger. Default value is `l`.
 
 ### 6.9 URLs
-Here we have the url settings to setup the correct login/register link. Register here your dashboard, logout, login and register URLs.
+
+Here we have the url settings to setup the correct login/register links. Register here your dashboard, logout, login and register URLs.
+
 - __`use_route_url`__
 
-    Whether to use `route()` instead of `url()`.
+  Whether to use `route()` instead of `url()` Laravel method.
+
 - __`dashboard_url`__
 
-    Changes the dashboard/logo URL.
+  Changes the dashboard/logo URL.
+
 - __`logout_url`__
 
-    Changes the logout button URL.
+  Changes the logout button URL.
+
 - __`logout_method`__
 
-    Changes the logout send method, available options: `GET`, `POST` & `null` (Laravel default).
-    The logout URL automatically sends a POST request in Laravel 5.3 or higher. 
- - __`login_url`__
+  Changes the logout send method, available options are: `GET`, `POST` & `null` (Laravel default).
+  > Note: the logout URL automatically sends a `POST` request in Laravel 5.3 or higher.
 
-    Changes the login url.
+- __`login_url`__
+
+  Changes the login url.
+
 - __`register_url`__
-    
-    Changes the register link or if set `false` it will hide.
- - __`password_reset_url`__
 
-    Changes the password reset url or if set `false` it will hide.
- - __`password_email_url`__
+  Changes the register url. Set this option to `false` to hide the register link.
 
-    Changes the password email url.
- - __`profile_url`__
+- __`password_reset_url`__
 
-    Changes the user profile url and displays a button in the user menu.
+  Changes the password reset url. This url should point to the view that displays the password reset form. Set this option to `false` to hide the password reset link.
 
+- __`password_email_url`__
+
+  Changes the password email url. This url should point to the view that displays the send reset link form.
+
+- __`profile_url`__
+
+  Changes the user profile url. When not `false`, it will displays a button in the user menu.
 
 ### 6.10 Laravel Mix
+
 If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
 
-```
+```sh
 npm i @fortawesome/fontawesome-free
 npm i icheck-bootstrap
 npm i overlayscrollbars
 ```
 
-Add the following to your `bootstrap.js` file after `window.$ = window.jQuery = require('jquery');`:
+Now, add the following to your `bootstrap.js` file after `window.$ = window.jQuery = require('jquery');`:
 
-```
+```javascript
 require('overlayscrollbars');
 require('../../vendor/almasaeed2010/adminlte/dist/js/adminlte');
 ```
 
-Replace your `app.scss` content by the following:
+Also, replace your `app.scss` content by the following:
 
-```
+```scss
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic');
 @import '~@fortawesome/fontawesome-free/css/all.css';
@@ -668,23 +704,24 @@ Replace your `app.scss` content by the following:
 //@import '~bootstrap/scss/bootstrap';
 ```
 
-After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable load `app.css` & `app.js` files.
+After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable the load of `app.css` & `app.js` files.
 
 - __`enabled_laravel_mix`__
 
-    Enables Laravel Mix specific `css/js` load in master layout.
+  Enables Laravel Mix specific `css/js` load in master layout.
 
 Also, you can change the paths used to lookup for the compiled `JS` and `CSS` files using the next configuration options.
 
 - __`laravel_mix_css_path`__
 
-    Path (including file name) to the compiled `CSS` file. This path should be relative to the public folder. Default value is `css/app.css`
+  Path (including file name) to the compiled `CSS` file. This path should be relative to the public folder. Default value is `css/app.css`
 
 - __`laravel_mix_js_path`__
 
-    Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
+  Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
 
 ### 6.11 Menu
+
 Specify your menu items to display in the left sidebar. Each menu item should have a text and a URL. You can also specify an icon from Font Awesome. A string instead of an array represents a header in sidebar layout. The 'can' is a filter on Laravel's built in Gate functionality.
 
 You can configure your menu as follows:
