@@ -556,12 +556,12 @@ The following config options are available:
 
 - __`classes_topnav`__
 
-  Extra classes for the top navigation bar. Classes will be added to element `nav.main-header.navbar`. There are some built-in classes you can use here to custmoize the topnav theme:
+  Extra classes for the top navigation bar. Classes will be added to element `nav.main-header.navbar`. There are some built-in classes you can use here to customize the topnav theme:
 
   - __`navbar-<color>`__
 
   Where `<color>` is an [AdminLTE available color](https://adminlte.io/themes/v3/pages/UI/general.html).
-  > Note: You can combine `navbar-<color>` with `navbar-dark` or `navbar-light`.
+  > Note: The recommendation is to combine `navbar-<color>` with `navbar-dark` or `navbar-light`.
 
 - __`classes_topnav_nav`__
 
