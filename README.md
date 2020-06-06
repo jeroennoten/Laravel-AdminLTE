@@ -24,6 +24,7 @@ This version supports Laravel 6 and higher and included AdminLTE v2
    1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
       1. [Options](#511-options)
    2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
+      1. [Options](#521-options)
    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
    4. [Authentication Views](#54-authentication-views)
       1. [Using the Authentication Views Manually](#541-using-the-authentication-views-manually)
@@ -172,7 +173,7 @@ You can also install the Authentication Views adding `--type=enhanced` option, o
 
 #### 5.1.1 Options
 
-- `--force`: To force overwrite the existing views by default.
+- `--force`: To force overwrite the existing files by default.
 - `--type=`: The installation type, the available types are: **none**, **basic**, **enhanced** or **full**.
 - `--only=`: To install only specific parts, the available parts are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option.
 - `--with=*`: To install the basic assets with specific parts, the available parts are: **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, example:
@@ -184,7 +185,6 @@ You can also install the Authentication Views adding `--type=enhanced` option, o
 ### 5.2 The `adminlte:plugins` Command
 
 If you won't use cdn for the plugins, you can manage the optional plugins assets with the `adminlte:plugins` command.
-
 You can list all available plugins, or install/update/remove all or specific plugins. Here are some examples for the command:
 
 - Install all plugin assets:
@@ -195,7 +195,7 @@ You can list all available plugins, or install/update/remove all or specific plu
   ```sh
   php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2
   ```
-- Update all Plugin assets:
+- Update all plugin assets:
   ```sh
   php artisan adminlte:plugins update
   ```
@@ -203,7 +203,7 @@ You can list all available plugins, or install/update/remove all or specific plu
   ```sh
   php artisan adminlte:plugins update --plugin=paceProgress
   ```
-- Remove all Plugin assets:
+- Remove all plugin assets:
   ```sh
   php artisan adminlte:plugins remove
   ```
@@ -231,6 +231,9 @@ This package ships the following command to replace the authentication views wit
 ```sh
 php artisan adminlte:install --only=auth_views
 ```
+
+By default, the login form contains a link to the registration and password reset forms.
+If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` and the respective link will not be displayed.
 
 #### 5.4.1 Using the Authentication Views Manually
 
@@ -260,9 +263,6 @@ If you want to use the included authentication views manually, you can create th
   ```blade
   @extends('adminlte::auth.passwords.reset')
   ```
-
-By default, the login form contains a link to the registration and password reset forms.
-If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` and the respective link will not be displayed.
 
 
 ## 6. Configuration
@@ -414,7 +414,7 @@ The following config options are available:
 
   Enables/Disables the fixed footer mode, here you can set `true` or an `array` for responsive usage. Can't be used with `layout_boxed`.
 
-### 6.5.1 Responsive Usage
+#### 6.5.1 Responsive Usage
 
 When using an array on the `layout_fixed_navbar` or `layout_fixed_footer` configuration options, you can disable or enable the fixed layout for specific viewport sizes.
 
@@ -425,11 +425,19 @@ The following keys are available to use inside the array, you can set them to `t
 - `lg` represent screens from 992px to 1199.99px width
 - `xl` represent screens from 1200px or more width
 
-__Examples__
+__Examples:__
 
-- `['xs' => true, 'lg' => false]`: Fixed from mobile to small tablet (<= 991.99px)
-- `['lg' => true]`: Fixed starting from desktop (>= 992px)
-- `['xs' => true, 'md' => false, 'xl' => true]`: Fixed for mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for small tablet and desktop (>= 768px & <= 1199.99px)
+- `['xs' => true, 'lg' => false]`:
+
+  The element will be fixed from mobile to small tablet (<= 991.99px).
+
+- `['lg' => true]`:
+
+  The element will be fixed starting from desktop (>= 992px).
+
+- `['xs' => true, 'md' => false, 'xl' => true]`:
+
+  The element will be fixed for mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for a small tablet and normal desktop (>= 768px & <= 1199.99px)
 
 ### 6.6 Classes
 
@@ -530,7 +538,12 @@ The following config options are available:
 
 - __`classes_sidebar`__
 
-  Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`.
+  Extra classes for sidebar. Classes will be added to element `aside.main-sidebar`. There are some built-in classes you can use here to customize the sidebar theme:
+
+  - __`sidebar-dark-<color>`__
+  - __`sidebar-light-<color>`__
+
+  Where `<color>` is an [AdminLTE available color](https://adminlte.io/themes/v3/pages/UI/general.html).
 
 - __`classes_sidebar_nav`__
 
@@ -543,7 +556,12 @@ The following config options are available:
 
 - __`classes_topnav`__
 
-  Extra classes for the top navigation bar. Classes will be added to element `nav.main-header.navbar`.
+  Extra classes for the top navigation bar. Classes will be added to element `nav.main-header.navbar`. There are some built-in classes you can use here to custmoize the topnav theme:
+
+  - __`navbar-<color>`__
+
+  Where `<color>` is an [AdminLTE available color](https://adminlte.io/themes/v3/pages/UI/general.html).
+  > Note: You can combine `navbar-<color>` with `navbar-dark` or `navbar-light`.
 
 - __`classes_topnav_nav`__
 
@@ -858,7 +876,7 @@ And then add configuration to the `config/adminlte.php` file:
     JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
     // Comment next line out.
-    //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class
+    //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
     MyApp\MyMenuFilter::class,
 ]
 ```
@@ -970,7 +988,7 @@ $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
 
     $event->menu->addAfter('pages', [
         'key' => 'account_settings',
-        'text' => 'Account Settings',
+        'header' => 'Account Settings',
     ]);
 
     $event->menu->addIn('account_settings', [
@@ -1009,19 +1027,24 @@ To utilize a regex, simply prefix your pattern with `regex:` and it will get eva
 ### 6.12 Menu Filters
 
 We can set the filters you want to include for rendering the menu.
-You can add your own filters to this array after you've created them. You can comment out the GateFilter if you don't want to use Laravel's built in Gate functionality.
+You can add your own filters to this array after you've created them. You can comment out the `GateFilter` if you don't want to use Laravel's built in Gate functionality.
 
 - __`filters`__: An array of menu filters.
 
-Default menu filters are:
+The default set of menu filters is:
 
-- `JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class`
-- `JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class`
-- `JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class`
-- `JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class`
-- `JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class`
-- `JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class`
-- `JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class`
+```php
+'filters' => [
+    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
+],
+```
 
 ### 6.13 Plugins
 
@@ -1030,7 +1053,8 @@ Lets you configure which JavaScript plugins should be included. At this moment, 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported but not active.
 You can activate them with changing the config file to load it on every page, or add a section in specific blade files, this will automatically inject their CDN files.
 
-Section example:
+To inject a plugin using a blade section use the following code example:
+
 ```blade
 @section('plugins.Datatables', true)
 ```
@@ -1095,7 +1119,7 @@ Now, you are able to edit translations or add languages in the `resources/lang/v
 
 ### 7.1 Menu Translations
 
-This resource allow you to use lang files, and is active by default.
+The menu translations are enabled by default and allows you to use lang files for menu items translation.
 
 #### Configure Menu Item for Translation:
 
@@ -1115,10 +1139,10 @@ This is an example of configuration:
 
 #### Lang Files
 
-All the translation strings must be added in the `menu.php` file of each language needed. You need to declare a `key` for each one of the previously defined.
+All the translation strings must be added in the `menu.php` file of each language needed. You need to declare a `key` for each one of the menu items translations.
 The translations files are located at the `resources/lang/vendor/adminlte/` folder
 
-This is an example of the `menu.php` lang file:
+This is an example of the `resources/lang/vendor/adminlte/en/menu.php` lang file for the previous sample of configuration:
 
 ```php
 return [
