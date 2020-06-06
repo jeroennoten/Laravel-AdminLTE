@@ -21,35 +21,35 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 3. [Updating](#3-updating)
 4. [Usage](#4-usage)
 5. [Artisan Console Commands](#5-artisan-console-commands)
-    1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
-        1. [Options](#511-options)
-    2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
-    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
-    4. [Authentication views](#54-authentication-views)
-        1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
+   1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
+      1. [Options](#511-options)
+   2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
+   3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
+   4. [Authentication views](#54-authentication-views)
+      1. [Using the authentication views without the `adminlte:install` command](#541-using-the-authentication-views-without-the-adminlteinstall-command)
 6. [Configuration](#6-configuration)
-    1. [Title](#61-title)
-    2. [Favicon](#62-favicon)
-    3. [Logo](#63-logo)
-    4. [User menu](#64-user-menu)
-    5. [Layout](#65-layout)
-    6. [Classes](#66-classes)
-        1. [Authentication Views Classes](#661-authentication-views-classes)
-        2. [Admin Panel Classes](#662-admin-panel-classes)
-    7. [Sidebar](#67-sidebar)
-    8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
-    9. [URLs](#69-urls)
-    10. [Laravel Mix](#610-laravel-mix)
-    11. [Menu](#611-menu)
-        1. [Adding a Search Input](#6111-adding-a-search-input)
-        2. [Custom Menu Filters](#6112-custom-menu-filters)
-        3. [Menu configuration at runtime](#6113-menu-configuration-at-runtime)
-        4. [Active menu items](#6114-active-menu-items)
-    12. [Menu Filters](#612-menu-filters)
-    13. [Plugins](#613-plugins)
-        1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
+   1. [Title](#61-title)
+   2. [Favicon](#62-favicon)
+   3. [Logo](#63-logo)
+   4. [User menu](#64-user-menu)
+   5. [Layout](#65-layout)
+   6. [Classes](#66-classes)
+      1. [Authentication Views Classes](#661-authentication-views-classes)
+      2. [Admin Panel Classes](#662-admin-panel-classes)
+   7. [Sidebar](#67-sidebar)
+   8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
+   9. [URLs](#69-urls)
+   10. [Laravel Mix](#610-laravel-mix)
+   11. [Menu](#611-menu)
+       1. [Adding a Search Input](#6111-adding-a-search-input)
+       2. [Custom Menu Filters](#6112-custom-menu-filters)
+       3. [Menu configuration at runtime](#6113-menu-configuration-at-runtime)
+       4. [Active menu items](#6114-active-menu-items)
+   12. [Menu Filters](#612-menu-filters)
+   13. [Plugins](#613-plugins)
+       1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
 7. [Translations](#7-translations)
-    1. [Menu Translations](#71-menu-translations)
+   1. [Menu Translations](#71-menu-translations)
 8. [Customize views](#8-customize-views)
 9. [Issues, Questions and Pull Requests](#9-issues-questions-and-pull-requests)
 
@@ -62,57 +62,58 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 
 1. Require the package using composer:
 
-```sh
-composer require jeroennoten/laravel-adminlte
-```
+   ```sh
+   composer require jeroennoten/laravel-adminlte
+   ```
 
 2. (Laravel 7+ only) Require the laravel/ui package using composer:
 
-```sh
-composer require laravel/ui
-php artisan ui:controllers
-```
+   ```sh
+   composer require laravel/ui
+   php artisan ui:controllers
+   ```
 
 3. Install the package using the command (For fresh laravel installations):
 
-```sh
-php artisan adminlte:install
-```
+   ```sh
+   php artisan adminlte:install
+   ```
 
-> You can use **--basic** to avoid authentication scaffolding installation
-> You can use **--force** to overwrite any file
-> You can also use **--interactive** to be guided through the process and choose what you want to install
+   > You can use **--basic** to avoid authentication scaffolding installation
+   >
+   > You can use **--force** to overwrite any file
+   >
+   > You can also use **--interactive** to be guided through the process and choose what you want to install
 
 ## 3. Updating
 
 1. To update this package, first update the composer package:
 
-    ```
-    composer update jeroennoten/laravel-adminlte
-    ```
+   ```sh
+   composer update jeroennoten/laravel-adminlte
+   ```
 
-2. Then, we need to update the assets
+2. Then, update the assets
 
-    > If you using AdminLTE for Laravel 5.x and are upgrading Laravel 6 version, delete the folder adminlte inside your public/vendor folder.
-    
-    And then use this command to publish new assets
-    
-    ```
-    php artisan adminlte:update
-    ```
-   
+   > NOTE: If you using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, delete the folder adminlte inside your `public/vendor` folder.
+
+   Use next command to publish the new assets:
+
+   ```sh
+   php artisan adminlte:update
+   ```
+
 3. If you have [published](#8-customize-views) and modified the default master, page views or login views, you will need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your changes.
 
-    Option 1:
-    - Make a copy (or backup) of the views you have modified.
-    - Publish the views again, using
-        ```
-       php artisan adminlte:install --only=main_views
-        ```
-    - Compare and redo the modifications you previously did to those views.
-  
-   Option 2:
-   - Modify in the css, js and other assets location in the master and page views. 
+   - Make a copy (or backup) of the views you have modified, those inside the folder `resources/views/vendor/adminlte`.
+
+   - Publish the views again, using `--force` to overwrite existing files.
+
+     ```sh
+     php artisan adminlte:install --only=main_views --force
+     ```
+
+   - Compare with your backup files and redo the modifications you previously did to those views.
 
 ## 4. Usage
 
