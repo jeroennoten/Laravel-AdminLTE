@@ -6,7 +6,7 @@ use Illuminate\Support\Arr;
 
 class Builder
 {
-    protected const ADD_AFTER  = 0;
+    protected const ADD_AFTER = 0;
     protected const ADD_BEFORE = 1;
     protected const ADD_INSIDE = 2;
 
@@ -110,7 +110,7 @@ class Builder
      */
     public function itemKeyExists($itemKey)
     {
-        return (bool)$this->findItem($itemKey, $this->menu);
+        return (bool) $this->findItem($itemKey, $this->menu);
     }
 
     /**
@@ -159,7 +159,7 @@ class Builder
      *
      * @param mixed $item A menu item
      * @return mixed A new item with all the filters applied
-     */    
+     */
     protected function applyFilters($item)
     {
         if (is_string($item)) {
@@ -198,14 +198,14 @@ class Builder
         $itemKeyIdx = end($itemPath);
         reset($itemPath);
 
-        if ($where === SELF::ADD_INSIDE) {
+        if ($where === self::ADD_INSIDE) {
             $targetPath = implode('.', array_merge($itemPath, ['submenu']));
             $targetArr = Arr::get($this->menu, $targetPath, []);
             array_push($targetArr, ...$items);
         } else {
             $targetPath = implode('.', array_slice($itemPath, 0, -1)) ?: null;
             $targetArr = Arr::get($this->menu, $targetPath, $this->menu);
-            $offset = ($where === SELF::ADD_AFTER) ? 1 : 0;
+            $offset = ($where === self::ADD_AFTER) ? 1 : 0;
             array_splice($targetArr, $itemKeyIdx + $offset, 0, $items);
         }
 
