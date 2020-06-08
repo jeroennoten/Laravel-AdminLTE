@@ -6,6 +6,10 @@ use Illuminate\Support\Arr;
 
 class Builder
 {
+    protected const ADD_AFTER  = 0;
+    protected const ADD_BEFORE = 1;
+    protected const ADD_INSIDE = 2;
+
     /**
      * The set of menu items.
      *
@@ -33,7 +37,7 @@ class Builder
     /**
      * Add new items at the end of the menu.
      *
-     * @param mixed $newItems,... Items to be added
+     * @param mixed $newItems Items to be added
      */
     public function add(...$newItems)
     {
@@ -45,79 +49,33 @@ class Builder
      * Add new items after a specific menu item.
      *
      * @param mixed $itemKey The key that represents the specific menu item
-     * @param mixed $newItems,... Items to be added
+     * @param mixed $newItems Items to be added
      */
     public function addAfter($itemKey, ...$newItems)
     {
-        // Find the specific menu item. Return if not found.
-
-        if (! ($itemPath = $this->findItem($itemKey, $this->menu))) {
-            return;
-        }
-
-        // Apply the filters to the new items.
-
-        $items = $this->transformItems($newItems);
-
-        // Add new items after the specific item.
-
-        $itemKeyIdx = array_pop($itemPath);
-        $parentDotPath = implode('.', $itemPath) ?: null;
-        $parentArr = Arr::get($this->menu, $parentDotPath, $this->menu);
-        array_splice($parentArr, $itemKeyIdx + 1, 0, $items);
-        Arr::set($this->menu, $parentDotPath, $parentArr);
+        $this->addItem($itemKey, self::ADD_AFTER, ...$newItems);
     }
 
     /**
      * Add new items before a specific menu item.
      *
      * @param mixed $itemKey The key that represents the specific menu item
-     * @param mixed $newItems,... Items to be added
+     * @param mixed $newItems Items to be added
      */
     public function addBefore($itemKey, ...$newItems)
     {
-        // Find the specific menu item. Return if not found.
-
-        if (! ($itemPath = $this->findItem($itemKey, $this->menu))) {
-            return;
-        }
-
-        // Apply the filters to the new items.
-
-        $items = $this->transformItems($newItems);
-
-        // Add new items before the specific item.
-
-        $itemKeyIdx = array_pop($itemPath);
-        $parentDotPath = implode('.', $itemPath) ?: null;
-        $parentArr = Arr::get($this->menu, $parentDotPath, $this->menu);
-        array_splice($parentArr, $itemKeyIdx, 0, $items);
-        Arr::set($this->menu, $parentDotPath, $parentArr);
+        $this->addItem($itemKey, self::ADD_BEFORE, ...$newItems);
     }
 
     /**
      * Add new submenu items inside a specific menu item.
      *
      * @param mixed $itemKey The key that represents the specific menu item
-     * @param mixed $newItems,... Items to be added
+     * @param mixed $newItems Items to be added
      */
     public function addIn($itemKey, ...$newItems)
     {
-        // Find the specific menu item. Return if not found.
-
-        if (! ($itemPath = $this->findItem($itemKey, $this->menu))) {
-            return;
-        }
-
-        // Apply the filters to the new items.
-
-        $items = $this->transformItems($newItems);
-
-        // Add new items inside the specific item.
-
-        $submenuDotPath = implode('.', array_merge($itemPath, ['submenu']));
-        $submenuArr = Arr::get($this->menu, $submenuDotPath, []);
-        Arr::set($this->menu, $submenuDotPath, array_merge($submenuArr, $items));
+        $this->addItem($itemKey, self::ADD_INSIDE, ...$newItems);
     }
 
     /**
@@ -213,5 +171,44 @@ class Builder
         }
 
         return $item;
+    }
+
+    /**
+     * Add new items to the menu in a particular place, relative to a
+     * specific menu item.
+     *
+     * @param mixed $itemKey The key that represents the specific menu item
+     * @param int $where Where to add the new items
+     * @param mixed $newItems Items to be added
+     */
+    protected function addItem($itemKey, $where, ...$newItems)
+    {
+        // Find the specific menu item. Return if not found.
+
+        if (! ($itemPath = $this->findItem($itemKey, $this->menu))) {
+            return;
+        }
+
+        // Apply the filters to the new items.
+
+        $items = $this->transformItems($newItems);
+
+        // Get the target array and add the new items there.
+
+        $itemKeyIdx = end($itemPath);
+        reset($itemPath);
+
+        if ($where === SELF::ADD_INSIDE) {
+            $targetPath = implode('.', array_merge($itemPath, ['submenu']));
+            $targetArr = Arr::get($this->menu, $targetPath, []);
+            array_push($targetArr, ...$items);
+        } else {
+            $targetPath = implode('.', array_slice($itemPath, 0, -1)) ?: null;
+            $targetArr = Arr::get($this->menu, $targetPath, $this->menu);
+            $offset = ($where === SELF::ADD_AFTER) ? 1 : 0;
+            array_splice($targetArr, $itemKeyIdx + $offset, 0, $items);
+        }
+
+        Arr::set($this->menu, $targetPath, $targetArr);
     }
 }
