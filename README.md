@@ -121,6 +121,18 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 
    - Compare with your backup files and redo the modifications you previously did to those views.
 
+4. From time to time, new configuration options are added or default values are changed, so it is a recommendation to also update the package config file.
+
+   - Make a copy (or backup) of your current package configuration, the `config/adminlte.php` file.
+
+   - Now, publish the new package configuration and accept the overwrite warning.
+
+     ```sh
+     php artisan adminlte:install --only=config
+     ```
+
+   - Compare with your backup config file and redo the modifications you previously made.
+
 
 ## 4. Usage
 
