@@ -75,7 +75,7 @@ class ServiceProviderTest extends TestCase
     {
         // Check that the AdminLte instance exists on the page blade.
 
-        $view = View::make("adminlte::page");
+        $view = View::make('adminlte::page');
         View::callComposer($view);
         $viewData = $view->getData();
 

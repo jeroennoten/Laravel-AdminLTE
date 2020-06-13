@@ -105,7 +105,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
             AdminLteInstallCommand::class,
             AdminLteStatusCommand::class,
             AdminLteUpdateCommand::class,
-            AdminLtePluginCommand::class
+            AdminLtePluginCommand::class,
         ]);
     }
 
