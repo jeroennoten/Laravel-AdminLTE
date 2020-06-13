@@ -11,26 +11,52 @@ use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class AdminLte
 {
+    /**
+     * The array of menu items.
+     *
+     * @var array
+     */
     protected $menu;
 
+    /**
+     * The array of menu filters. These filters will apply on each one of the
+     * menu items in order to transforms they in some way.
+     *
+     * @var array
+     */
     protected $filters;
 
+    /**
+     * The events dispatcher.
+     *
+     * @var Dispatcher
+     */
     protected $events;
 
+    /**
+     * The application service container.
+     *
+     * @var Container
+     */
     protected $container;
 
     /**
      * Map between a valid menu filter token and his respective filter method.
+     * These filters are intended to get a specific set of menu items.
      *
      * @var array
      */
     protected $menuFilterMap;
 
-    public function __construct(
-        array $filters,
-        Dispatcher $events,
-        Container $container
-    ) {
+    /**
+     * Constructor.
+     *
+     * @param array $filters
+     * @param Dispatcher $events
+     * @param Container $container
+     */
+    public function __construct(array $filters, Dispatcher $events, Container $container)
+    {
         $this->filters = $filters;
         $this->events = $events;
         $this->container = $container;
@@ -45,9 +71,15 @@ class AdminLte
         ];
     }
 
+    /**
+     * Get all the menu items, or a specific set of these.
+     *
+     * @param string $filterToken Token representing a subset of the menu items
+     * @return array A set of menu items
+     */
     public function menu($filterToken = null)
     {
-        if (! $this->menu) {
+        if (empty($this->menu)) {
             $this->menu = $this->buildMenu();
         }
 
@@ -65,6 +97,11 @@ class AdminLte
         return $this->menu;
     }
 
+    /**
+     * Build the menu.
+     *
+     * @return array The set of menu items
+     */
     protected function buildMenu()
     {
         $builder = new Builder($this->buildFilters());
@@ -74,13 +111,21 @@ class AdminLte
         return $builder->menu;
     }
 
+    /**
+     * Build the menu filters.
+     *
+     * @return array The set of filters that will apply on each menu item
+     */
     protected function buildFilters()
     {
         return array_map([$this->container, 'make'], $this->filters);
     }
 
     /**
-     * Filter method for sidebar menu items.
+     * Filter method used to get the sidebar menu items.
+     *
+     * @param mixed $item A menu item
+     * @return bool
      */
     private function sidebarFilter($item)
     {
@@ -88,7 +133,10 @@ class AdminLte
     }
 
     /**
-     * Filter method for navbar top left menu items.
+     * Filter method used to get the top navbar left menu items.
+     *
+     * @param mixed $item A menu item
+     * @return bool
      */
     private function navbarLeftFilter($item)
     {
@@ -100,7 +148,10 @@ class AdminLte
     }
 
     /**
-     * Filter method for navbar top right menu items.
+     * Filter method used to get the top navbar right menu items.
+     *
+     * @param mixed $item A menu item
+     * @return bool
      */
     private function navbarRightFilter($item)
     {
@@ -108,7 +159,10 @@ class AdminLte
     }
 
     /**
-     * Filter method for navbar dropdown user menu items.
+     * Filter method used to get the navbar user menu items.
+     *
+     * @param mixed $item A menu item
+     * @return bool
      */
     private function navbarUserMenuFilter($item)
     {

@@ -1,33 +1,93 @@
 <?php
 
-use Illuminate\Config\Repository;
-// use Illuminate\View\Factory as View;
-use Illuminate\Events\Dispatcher;
-use JeroenNoten\LaravelAdminLte\AdminLteServiceProvider;
-use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+use JeroenNoten\LaravelAdminLte\AdminLte;
 
 class ServiceProviderTest extends TestCase
 {
-    // public function testPackagePath() {
-    //     $class = new AdminLteServiceProvider(app());
-    //     $method = new ReflectionMethod($class, 'packagePath');
-    //     $method->setAccessible(TRUE);
-    //     $this->assertStringContainsString('../test', $method->invoke($class, 'test'));
-    // }
-
-    public function testRegisterMenu()
+    /**
+     * Get package providers.
+     */
+    protected function getPackageProviders($app)
     {
-        $events = new Dispatcher();
-        $config = new Repository(
-            ['adminlte.menu' => ['item']]
-        );
+        // Register our service provider into the Laravel's application.
 
-        $menuBuilder = $this->makeMenuBuilder();
+        return ['JeroenNoten\LaravelAdminLte\AdminLteServiceProvider'];
+    }
 
-        AdminLteServiceProvider::registerMenu($events, $config);
+    public function testRegisterSingletonInstance()
+    {
+        // Check the instance of AdminLte resolver.
 
-        $events->dispatch(new BuildingMenu($menuBuilder));
+        $adminlte = $this->app->make(AdminLte::class);
+        $this->assertInstanceOf(AdminLte::class, $adminlte);
 
-        $this->assertEquals(['item'], $menuBuilder->menu);
+        // Check that a singleton instance is registered.
+
+        $this->assertSame($adminlte, $this->app->make(AdminLte::class));
+    }
+
+    public function testBootLoadViews()
+    {
+        // Check that the main views are loaded.
+
+        $this->assertTrue(View::exists('adminlte::master'));
+        $this->assertTrue(View::exists('adminlte::page'));
+        $this->assertTrue(View::exists('adminlte::auth.auth-page'));
+        $this->assertTrue(View::exists('adminlte::auth.login'));
+        $this->assertTrue(View::exists('adminlte::auth.register'));
+        $this->assertTrue(View::exists('adminlte::auth.verify'));
+        $this->assertTrue(View::exists('adminlte::auth.passwords.confirm'));
+        $this->assertTrue(View::exists('adminlte::auth.passwords.email'));
+        $this->assertTrue(View::exists('adminlte::auth.passwords.reset'));
+    }
+
+    public function testBootLoadTranslations()
+    {
+        // Check that the main translations are loaded.
+
+        $this->assertTrue(Lang::has('adminlte::adminlte.sign_in'));
+        $this->assertTrue(Lang::has('adminlte::menu.main_navigation'));
+    }
+
+    public function testBootLoadConfig()
+    {
+        // Check that config values are loaded.
+
+        $this->assertTrue(Config::has('adminlte.title'));
+        $this->assertEquals('AdminLTE 3', Config::get('adminlte.title'));
+
+        $this->assertTrue(Config::has('adminlte.menu'));
+        $this->assertTrue(is_array(Config::get('adminlte.menu')));
+    }
+
+    public function testBootRegisterCommands()
+    {
+        // Check that the artisan commands are registered.
+
+        $commands = Artisan::all();
+        $this->assertTrue(Arr::has($commands, 'adminlte:install'));
+        $this->assertTrue(Arr::has($commands, 'adminlte:status'));
+        $this->assertTrue(Arr::has($commands, 'adminlte:update'));
+        $this->assertTrue(Arr::has($commands, 'adminlte:plugins'));
+    }
+
+    public function testBootRegisterViewComposers()
+    {
+        // Check that the AdminLte instance exists on the page blade.
+
+        $view = View::make('adminlte::page');
+        View::callComposer($view);
+        $viewData = $view->getData();
+
+        $this->assertTrue(Arr::has($viewData, 'adminlte'));
+    }
+
+    public function testBootRegisterMenu()
+    {
+        $adminlte = $this->app->make(AdminLte::class);
+        $menu = $adminlte->menu();
+
+        $this->assertCount(10, $menu);
+        $this->assertEquals('search', $menu[0]['text']);
     }
 }
