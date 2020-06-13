@@ -79,7 +79,7 @@ class AdminLte
      */
     public function menu($filterToken = null)
     {
-        if (! $this->menu) {
+        if (empty($this->menu)) {
             $this->menu = $this->buildMenu();
         }
 
