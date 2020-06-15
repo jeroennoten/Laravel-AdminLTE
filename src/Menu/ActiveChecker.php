@@ -112,6 +112,7 @@ class ActiveChecker
 
         if (Str::startsWith($pattern, 'regex:')) {
             $regex = Str::substr($pattern, 6);
+
             return (bool) preg_match($regex, $this->request->path());
         }
 
