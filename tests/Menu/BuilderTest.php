@@ -10,6 +10,7 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'Home', 'url' => '/']);
 
+        $this->assertCount(1, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
     }
@@ -21,6 +22,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'Home', 'url' => '/']);
         $builder->add(['text' => 'About', 'url' => '/about']);
 
+        $this->assertCount(2, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('About', $builder->menu[1]['text']);
@@ -36,6 +38,7 @@ class BuilderTest extends TestCase
             ['text' => 'About', 'url' => '/about']
         );
 
+        $this->assertCount(2, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('About', $builder->menu[1]['text']);
@@ -48,8 +51,22 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
         $builder->addAfter('home', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertCount(2, $builder->menu);
         $this->assertEquals('Profile', $builder->menu[1]['text']);
         $this->assertEquals('/profile', $builder->menu[1]['url']);
+    }
+
+    public function testAddAfterOneNotFoundItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->addAfter('foo', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
     }
 
     public function testAddAfterMultipleItems()
@@ -60,6 +77,7 @@ class BuilderTest extends TestCase
         $builder->addAfter('home', ['text' => 'About', 'url' => '/about']);
         $builder->addAfter('home', ['text' => 'Profile', 'url' => '/profile']);
 
+        $this->assertCount(3, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('Profile', $builder->menu[1]['text']);
@@ -79,6 +97,7 @@ class BuilderTest extends TestCase
             ['text' => 'About', 'url' => '/about']
         );
 
+        $this->assertCount(3, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('Profile', $builder->menu[1]['text']);
@@ -106,6 +125,9 @@ class BuilderTest extends TestCase
             ]
         );
         $builder->addAfter('test', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(2, $builder->menu[0]['submenu']);
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][1]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['submenu'][1]['url']);
     }
@@ -116,6 +138,20 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'Profile', 'url' => '/profile', 'key' => 'profile']);
         $builder->addBefore('profile', ['text' => 'Home', 'url' => '/']);
+
+        $this->assertCount(2, $builder->menu);
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
+    }
+
+    public function testAddBeforeOneNotFoundItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->addBefore('foo', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertCount(1, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
     }
@@ -139,6 +175,9 @@ class BuilderTest extends TestCase
             ]
         );
         $builder->addBefore('test', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(2, $builder->menu[0]['submenu']);
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
     }
@@ -151,6 +190,7 @@ class BuilderTest extends TestCase
         $builder->addBefore('profile', ['text' => 'Home', 'url' => '/']);
         $builder->addBefore('profile', ['text' => 'About', 'url' => '/about']);
 
+        $this->assertCount(3, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('About', $builder->menu[1]['text']);
@@ -170,6 +210,7 @@ class BuilderTest extends TestCase
             ['text' => 'About', 'url' => '/about']
         );
 
+        $this->assertCount(3, $builder->menu);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('About', $builder->menu[1]['text']);
@@ -184,8 +225,23 @@ class BuilderTest extends TestCase
 
         $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
         $builder->addIn('home', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(1, $builder->menu[0]['submenu']);
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
+    }
+
+    public function testAddInOneNotFoundItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->addIn('foo', ['text' => 'Profile', 'url' => '/profile']);
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
     }
 
     public function testAddInMultipleItems()
@@ -196,6 +252,8 @@ class BuilderTest extends TestCase
         $builder->addIn('home', ['text' => 'Profile', 'url' => '/profile']);
         $builder->addIn('home', ['text' => 'About', 'url' => '/about']);
 
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(2, $builder->menu[0]['submenu']);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
@@ -215,6 +273,8 @@ class BuilderTest extends TestCase
             ['text' => 'About', 'url' => '/about']
         );
 
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(2, $builder->menu[0]['submenu']);
         $this->assertEquals('Home', $builder->menu[0]['text']);
         $this->assertEquals('/', $builder->menu[0]['url']);
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
@@ -232,8 +292,21 @@ class BuilderTest extends TestCase
 
         $builder->remove('home');
 
+        $this->assertCount(1, $builder->menu);
         $this->assertEquals('Profile', $builder->menu[0]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['url']);
+    }
+
+    public function testRemoveOneNotFoundItem()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+        $builder->remove('foo');
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertEquals('Home', $builder->menu[0]['text']);
+        $this->assertEquals('/', $builder->menu[0]['url']);
     }
 
     public function testRemoveMultipleItem()
@@ -247,6 +320,7 @@ class BuilderTest extends TestCase
         $builder->remove('home');
         $builder->remove('about');
 
+        $this->assertCount(1, $builder->menu);
         $this->assertEquals('Profile', $builder->menu[0]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['url']);
     }
@@ -255,14 +329,20 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder();
 
-        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
-            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
-        ],
+        $builder->add([
+            'text' => 'Home',
+            'url' => '/',
+            'key' => 'home',
+            'submenu' => [
+                ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+                ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+            ],
         ]);
 
         $builder->remove('about');
 
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(1, $builder->menu[0]['submenu']);
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
     }
@@ -271,16 +351,22 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder();
 
-        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
-            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
-            ['text' => 'Demos', 'url' => '/demos', 'key' => 'demos'],
-        ],
+        $builder->add([
+            'text' => 'Home',
+            'url' => '/',
+            'key' => 'home',
+            'submenu' => [
+                ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+                ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+                ['text' => 'Demos', 'url' => '/demos', 'key' => 'demos'],
+            ],
         ]);
 
         $builder->remove('about');
         $builder->remove('demos');
 
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(1, $builder->menu[0]['submenu']);
         $this->assertEquals('Profile', $builder->menu[0]['submenu'][0]['text']);
         $this->assertEquals('/profile', $builder->menu[0]['submenu'][0]['url']);
     }
@@ -298,13 +384,19 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder();
 
-        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-            ['text' => 'About', 'url' => '/about', 'key' => 'about'],
-            ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
-        ],
+        $builder->add([
+            'text' => 'Home',
+            'url' => '/',
+            'key' => 'home',
+            'submenu' => [
+                ['text' => 'About', 'url' => '/about', 'key' => 'about'],
+                ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+            ],
         ]);
 
+        $this->assertTrue($builder->itemKeyExists('home'));
         $this->assertTrue($builder->itemKeyExists('about'));
+        $this->assertTrue($builder->itemKeyExists('profile'));
         $this->assertFalse($builder->itemKeyExists('demos'));
     }
 
@@ -312,15 +404,25 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder();
 
-        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home', 'submenu' => [
-            ['text' => 'About', 'url' => '/about', 'key' => 'about', 'submenu' => [
-                ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+        $builder->add([
+            'text' => 'Home',
+            'url' => '/',
+            'key' => 'home',
+            'submenu' => [
+                [
+                    'text' => 'About',
+                    'url' => '/about',
+                    'key' => 'about',
+                    'submenu' => [
+                        ['text' => 'Profile', 'url' => '/profile', 'key' => 'profile'],
+                    ],
+                ],
             ],
-            ],
-        ],
         ]);
 
+        $this->assertTrue($builder->itemKeyExists('home'));
         $this->assertTrue($builder->itemKeyExists('about'));
+        $this->assertTrue($builder->itemKeyExists('profile'));
         $this->assertFalse($builder->itemKeyExists('demos'));
     }
 
