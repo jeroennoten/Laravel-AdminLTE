@@ -7,36 +7,71 @@ use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class LangFilter implements FilterInterface
 {
-    protected $langGenerator;
+    /**
+     * The translator instance.
+     *
+     * @var Translator
+     */
+    protected $translator;
 
-    public function __construct(Translator $langGenerator)
+    /**
+     * Constructor.
+     *
+     * @param Translator $translator
+     */
+    public function __construct(Translator $translator)
     {
-        $this->langGenerator = $langGenerator;
+        $this->translator = $translator;
     }
 
+    /**
+     * Transforms a menu item. Makes the item translations.
+     *
+     * @param mixed $item A menu item
+     * @param Builder $builder A menu builder instance
+     * @return mixed The transformed menu item
+     */
     public function transform($item, Builder $builder)
     {
+        // Translate the header attribute.
+
         if (isset($item['header'])) {
-            $item['header'] = $this->getTranslation($item['header']) ?? $item['header'];
+            $item['header'] = $this->getTranslation($item['header']);
         }
+
+        // Translate the text attribute.
+
         if (isset($item['text'])) {
-            $item['text'] = $this->getTranslation($item['text']) ?? $item['text'];
+            $item['text'] = $this->getTranslation($item['text']);
         }
+
+        // Translate the label attribute.
+
         if (isset($item['label'])) {
-            $item['label'] = $this->getTranslation($item['label']) ?? $item['label'];
+            $item['label'] = $this->getTranslation($item['label']);
         }
 
         return $item;
     }
 
-    protected function getTranslation($item)
+    /**
+     * Gets the translation for a given key.
+     *
+     * @param string $key The key to translate
+     * @return string The translation
+     */
+    protected function getTranslation($key)
     {
-        if ($this->langGenerator->has('menu.'.$item)) {
-            return $this->langGenerator->get('menu.'.$item);
-        } elseif ($this->langGenerator->has('adminlte::menu.'.$item)) {
-            return $this->langGenerator->get('adminlte::menu.'.$item);
+        // Check for a translation.
+
+        if ($this->translator->has('menu.'.$key)) {
+            return $this->translator->get('menu.'.$key);
+        } elseif ($this->translator->has('adminlte::menu.'.$key)) {
+            return $this->translator->get('adminlte::menu.'.$key);
         }
 
-        return $item;
+        // When no translation available, return the original key.
+
+        return $key;
     }
 }

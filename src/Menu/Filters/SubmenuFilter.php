@@ -2,38 +2,26 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
-use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class SubmenuFilter implements FilterInterface
 {
-    private $activeChecker;
-
-    public function __construct(ActiveChecker $activeChecker)
-    {
-        $this->activeChecker = $activeChecker;
-    }
-
+    /**
+     * Transforms a submenu item. Apply all the filters to the submenu items.
+     * TODO: This filter should be deleted, and instead put this logic on the
+     * menu builder.
+     *
+     * @param mixed $item A menu item
+     * @param Builder $builder A menu builder instance
+     * @return mixed The transformed menu item
+     */
     public function transform($item, Builder $builder)
     {
-        if (isset($item['submenu'])) {
+        if (MenuItemHelper::isSubmenu($item)) {
             $item['submenu'] = $builder->transformItems($item['submenu']);
-            $item['submenu_open'] = $this->activeChecker->isActive($item);
-            $item['submenu_classes'] = $this->makeSubmenuClasses($item);
-            $item['submenu_class'] = implode(' ', $item['submenu_classes']);
         }
 
         return $item;
-    }
-
-    protected function makeSubmenuClasses($item)
-    {
-        $classes = ['has-treeview'];
-
-        if ($item['submenu_open']) {
-            $classes[] = 'menu-open';
-        }
-
-        return $classes;
     }
 }
