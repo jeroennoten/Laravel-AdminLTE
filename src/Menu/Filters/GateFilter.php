@@ -25,8 +25,7 @@ class GateFilter implements FilterInterface
     }
 
     /**
-     * Transforms a menu item. Convert item to falsy value if access is not
-     * allowed.
+     * Transforms a menu item. Adds the restricted attribute to an item.
      *
      * @param mixed $item A menu item
      * @param Builder $builder A menu builder instance
@@ -34,12 +33,13 @@ class GateFilter implements FilterInterface
      */
     public function transform($item, Builder $builder)
     {
-        // If the item is not allowed, return false. Falsy items will be
-        // filtered out.
-        // TODO: This is too tricky, we need to find another alternative in
-        // replacement to convert the item into a falsy value.
+        // Set a special attribute when item is not allowed.
 
-        return $this->isAllowed($item) ? $item : false;
+        if (! $this->isAllowed($item)) {
+            $item['restricted'] = true;
+        }
+
+        return $item;
     }
 
     /**

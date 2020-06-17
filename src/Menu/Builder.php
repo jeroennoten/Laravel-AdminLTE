@@ -121,7 +121,22 @@ class Builder
      */
     public function transformItems($items)
     {
-        return array_filter(array_map([$this, 'applyFilters'], $items));
+        return array_filter(
+            array_map([$this, 'applyFilters'], $items),
+            [$this, 'itemIsAllowed']
+        );
+    }
+
+    /**
+     * Check if a menu item is allowed to be shown.
+     *
+     * @param mixed $item The menu item to check for
+     * @return bool
+     */
+    protected function itemIsAllowed($item)
+    {
+        $isRestricted = isset($item['restricted']) && $item['restricted'];
+        return ((bool) $item) && ! $isRestricted;
     }
 
     /**
