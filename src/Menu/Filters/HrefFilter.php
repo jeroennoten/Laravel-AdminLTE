@@ -4,7 +4,6 @@ namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use Illuminate\Contracts\Routing\UrlGenerator;
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class HrefFilter implements FilterInterface
 {
@@ -29,10 +28,9 @@ class HrefFilter implements FilterInterface
      * Transforms a menu item. Make the href attribute when situable.
      *
      * @param mixed $item A menu item
-     * @param Builder $builder A menu builder instance
      * @return mixed The transformed menu item
      */
-    public function transform($item, Builder $builder)
+    public function transform($item)
     {
         if (! MenuItemHelper::isHeader($item)) {
             $item['href'] = $this->makeHref($item);

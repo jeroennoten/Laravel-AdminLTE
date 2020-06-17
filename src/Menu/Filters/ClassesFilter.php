@@ -3,7 +3,6 @@
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class ClassesFilter implements FilterInterface
 {
@@ -11,10 +10,9 @@ class ClassesFilter implements FilterInterface
      * Transforms a menu item. Add classes related attributes when suitable.
      *
      * @param mixed $item A menu item
-     * @param Builder $builder A menu builder instance
      * @return mixed The transformed menu item
      */
-    public function transform($item, Builder $builder)
+    public function transform($item)
     {
         if (! MenuItemHelper::isHeader($item)) {
             $item['class'] = implode(' ', $this->makeClasses($item));

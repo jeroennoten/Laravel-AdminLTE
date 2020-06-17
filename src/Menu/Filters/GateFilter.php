@@ -3,7 +3,6 @@
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use Illuminate\Contracts\Auth\Access\Gate;
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class GateFilter implements FilterInterface
 {
@@ -28,10 +27,9 @@ class GateFilter implements FilterInterface
      * Transforms a menu item. Adds the restricted attribute to an item.
      *
      * @param mixed $item A menu item
-     * @param Builder $builder A menu builder instance
      * @return mixed The transformed menu item
      */
-    public function transform($item, Builder $builder)
+    public function transform($item)
     {
         // Set a special attribute when item is not allowed.
 

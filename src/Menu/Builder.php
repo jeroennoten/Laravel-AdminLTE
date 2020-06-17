@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu;
 
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use Illuminate\Support\Arr;
 
 class Builder
@@ -135,8 +136,8 @@ class Builder
      */
     protected function itemIsAllowed($item)
     {
-        $isRestricted = isset($item['restricted']) && $item['restricted'];
-        return ((bool) $item) && ! $isRestricted;
+        $isAllowed = ! (isset($item['restricted']) && $item['restricted']);
+        return $item && $isAllowed;
     }
 
     /**
@@ -180,6 +181,14 @@ class Builder
         if (is_string($item)) {
             return $item;
         }
+
+        // If the item is a submenu, transform all submenu items first.
+
+        if (MenuItemHelper::isSubmenu($item)) {
+            $item['submenu'] = $this->transformItems($item['submenu']);
+        }
+
+        // Now, apply all the filters on the item.
 
         foreach ($this->filters as $filter) {
             $item = $filter->transform($item, $this);
