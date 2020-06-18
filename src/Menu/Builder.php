@@ -120,24 +120,12 @@ class Builder
      * @param array $items An array with items to be transformed
      * @return array Array with the new transformed items
      */
-    public function transformItems($items)
+    protected function transformItems($items)
     {
         return array_filter(
             array_map([$this, 'applyFilters'], $items),
-            [$this, 'itemIsAllowed']
+            [MenuItemHelper::class, 'isAllowed']
         );
-    }
-
-    /**
-     * Check if a menu item is allowed to be shown.
-     *
-     * @param mixed $item The menu item to check for
-     * @return bool
-     */
-    protected function itemIsAllowed($item)
-    {
-        $isAllowed = ! (isset($item['restricted']) && $item['restricted']);
-        return $item && $isAllowed;
     }
 
     /**
@@ -154,13 +142,13 @@ class Builder
         foreach ($items as $key => $item) {
             if (isset($item['key']) && $item['key'] === $itemKey) {
                 return [$key];
-            } elseif (isset($item['submenu']) && is_array($item['submenu'])) {
+            } elseif (MenuItemHelper::isSubmenu($item)) {
 
                 // Do the recursive call to search on submenu. If we found the
                 // item, merge the path with the current one.
 
-                if ($newPath = $this->findItem($itemKey, $item['submenu'])) {
-                    return array_merge([$key, 'submenu'], $newPath);
+                if ($subPath = $this->findItem($itemKey, $item['submenu'])) {
+                    return array_merge([$key, 'submenu'], $subPath);
                 }
             }
         }
@@ -178,7 +166,7 @@ class Builder
      */
     protected function applyFilters($item)
     {
-        if (is_string($item)) {
+        if (! is_array($item)) {
             return $item;
         }
 
@@ -191,7 +179,7 @@ class Builder
         // Now, apply all the filters on the item.
 
         foreach ($this->filters as $filter) {
-            $item = $filter->transform($item, $this);
+            $item = $filter->transform($item);
         }
 
         return $item;
