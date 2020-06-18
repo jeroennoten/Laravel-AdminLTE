@@ -7,8 +7,8 @@ class DataFilter implements FilterInterface
     /**
      * Transforms a menu item. Adds the compiled data attributes when suitable.
      *
-     * @param mixed $item A menu item
-     * @return mixed The transformed menu item
+     * @param array $item A menu item
+     * @return array The transformed menu item
      */
     public function transform($item)
     {

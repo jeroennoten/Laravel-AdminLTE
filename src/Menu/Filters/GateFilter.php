@@ -26,12 +26,13 @@ class GateFilter implements FilterInterface
     /**
      * Transforms a menu item. Adds the restricted attribute to an item.
      *
-     * @param mixed $item A menu item
-     * @return mixed The transformed menu item
+     * @param array $item A menu item
+     * @return array The transformed menu item
      */
     public function transform($item)
     {
-        // Set a special attribute when item is not allowed.
+        // Set a special attribute when item is not allowed. Items with this
+        // attribute will be filtered out of the menu.
 
         if (! $this->isAllowed($item)) {
             $item['restricted'] = true;
@@ -43,7 +44,7 @@ class GateFilter implements FilterInterface
     /**
      * Check if a menu item is allowed for the current user.
      *
-     * @param mixed $item A menu item
+     * @param array $item A menu item
      * @return bool
      */
     protected function isAllowed($item)

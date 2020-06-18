@@ -166,6 +166,8 @@ class Builder
      */
     protected function applyFilters($item)
     {
+        // Filters are only applied to array type menu items.
+
         if (! is_array($item)) {
             return $item;
         }
