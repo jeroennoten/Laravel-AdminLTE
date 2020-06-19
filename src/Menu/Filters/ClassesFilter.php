@@ -16,7 +16,6 @@ class ClassesFilter implements FilterInterface
     {
         if (! MenuItemHelper::isHeader($item)) {
             $item['class'] = implode(' ', $this->makeClasses($item));
-            $item['top_nav_class'] = implode(' ', $this->makeClasses($item, true));
         }
 
         if (MenuItemHelper::isSubmenu($item)) {
@@ -27,13 +26,12 @@ class ClassesFilter implements FilterInterface
     }
 
     /**
-     * Make the classes related to a menu item.
+     * Make classes related to the nav-link component of a menu item.
      *
      * @param mixed $item A menu item
-     * @param bool $topNav Whether the item is related to the top navbar or not
      * @return array The array of classes
      */
-    protected function makeClasses($item, $topNav = false)
+    protected function makeClasses($item)
     {
         $classes = [];
 
@@ -43,26 +41,22 @@ class ClassesFilter implements FilterInterface
             $classes[] = 'active';
         }
 
-        // Add classes related to submenu items.
-
-        if (MenuItemHelper::isSubmenu($item)) {
-            $classes[] =  $topNav ? 'dropdown' : 'nav-item';
-        }
-
         return $classes;
     }
 
     /**
-     * Make the classes related to a submenu item.
+     * Make classes related to the nav-item component of a submenu item.
      *
      * @param mixed $item A menu item
      * @return array The array of classes
      */
     protected function makeSubmenuClasses($item)
     {
-        $classes = ['has-treeview'];
+        $classes = [];
 
-        if ($item['active']) {
+        // Add the menu-open class when a sidebar submenu is active.
+
+        if (MenuItemHelper::isSidebarItem($item) && $item['active']) {
             $classes[] = 'menu-open';
         }
 
