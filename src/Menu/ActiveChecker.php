@@ -23,6 +23,13 @@ class ActiveChecker
     private $url;
 
     /**
+     * Map between menu item properties and their respective test method.
+     *
+     * @var array
+     */
+    private $tests;
+
+    /**
      * Constructor.
      *
      * @param Request $request
@@ -32,6 +39,16 @@ class ActiveChecker
     {
         $this->request = $request;
         $this->url = $url;
+
+        // Fill the map with tests. These tests will check if a menu item is
+        // active or not.
+
+        $this->tests = [
+            'submenu' => [$this, 'containsActive'],
+            'active'  => [$this, 'isExplicitActive'],
+            'href'    => [$this, 'checkPattern'],
+            'url'     => [$this, 'checkPattern'],
+        ];
     }
 
     /**
@@ -43,16 +60,15 @@ class ActiveChecker
      */
     public function isActive($item)
     {
-        if (isset($item['submenu'])) {
-            return $this->containsActive($item['submenu']);
-        } elseif (isset($item['active'])) {
-            return $this->isExplicitActive($item['active']);
-        } elseif (isset($item['href'])) {
-            return $this->checkPattern($item['href']);
-        } elseif (isset($item['url'])) {
-            // Support URL for backwards compatibility.
-            return $this->checkPattern($item['url']);
+        // Return true if any of the verification tests is met.
+
+        foreach ($this->tests as $prop => $testFunc) {
+            if (isset($item[$prop]) && $testFunc($item[$prop])) {
+                return true;
+            }
         }
+
+        // Otherwise, returns false.
 
         return false;
     }
