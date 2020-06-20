@@ -104,9 +104,16 @@ class AdminLte
      */
     protected function buildMenu()
     {
+        // Create the menu builder instance.
+
         $builder = new Builder($this->buildFilters());
 
+        // Dispatch the BuildingMenu event. Listeners of this event will fill
+        // the menu.
+
         $this->events->dispatch(new BuildingMenu($builder));
+
+        // Return the set of menu items.
 
         return $builder->menu;
     }

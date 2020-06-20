@@ -44,6 +44,7 @@ class ActiveCheckerTest extends TestCase
         $isActive = $checker->isActive(
             [
                 'submenu' => [
+                    ['url' => 'foo'],
                     ['url' => 'home'],
                 ],
             ]
@@ -63,6 +64,7 @@ class ActiveCheckerTest extends TestCase
                     [
                         'text' => 'Level 1',
                         'submenu' => [
+                            ['url' => 'foo'],
                             ['url' => 'home'],
                         ],
                     ],
@@ -78,8 +80,10 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/home');
 
         $isActive = $checker->isActive(['active' => ['home']]);
-
         $this->assertTrue($isActive);
+
+        $isActive = $checker->isActive(['active' => ['about']]);
+        $this->assertFalse($isActive);
     }
 
     public function testExplicitActiveRegex()
@@ -87,8 +91,16 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/home/sub');
 
         $isActive = $checker->isActive(['active' => ['home/*']]);
-
         $this->assertTrue($isActive);
+
+        $isActive = $checker->isActive(['active' => ['home/su*']]);
+        $this->assertTrue($isActive);
+
+        $isActive = $checker->isActive(['active' => ['hom*']]);
+        $this->assertTrue($isActive);
+
+        $isActive = $checker->isActive(['active' => ['home/t*']]);
+        $this->assertFalse($isActive);
     }
 
     public function testExplicitOverridesDefault()
@@ -96,7 +108,6 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/admin/users');
 
         $isActive = $checker->isActive(['active' => ['admin']]);
-
         $this->assertFalse($isActive);
     }
 
@@ -105,7 +116,6 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/about');
 
         $isActive = $checker->isActive(['url' => 'http://example.com/about']);
-
         $this->assertTrue($isActive);
     }
 
@@ -114,7 +124,6 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/about/sub');
 
         $isActive = $checker->isActive(['url' => 'http://example.com/about/sub']);
-
         $this->assertTrue($isActive);
     }
 
@@ -123,7 +132,9 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('https://example.com/about');
 
         $isActive = $checker->isActive(['url' => 'https://example.com/about']);
+        $this->assertTrue($isActive);
 
+        $isActive = $checker->isActive(['url' => 'about']);
         $this->assertTrue($isActive);
     }
 
@@ -132,6 +143,7 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/menu?param=option');
 
         $this->assertTrue($checker->isActive(['url' => 'menu']));
+        $this->assertTrue($checker->isActive(['active' => ['menu']]));
     }
 
     public function testSubParams()
@@ -139,6 +151,7 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/menu/item1?param=option');
 
         $this->assertTrue($checker->isActive(['url' => 'menu/item1']));
+        $this->assertTrue($checker->isActive(['active' => ['menu/*']]));
     }
 
     public function testExplicitActiveRegexEvaluation()
@@ -146,5 +159,21 @@ class ActiveCheckerTest extends TestCase
         $checker = $this->makeActiveChecker('http://example.com/posts/1');
 
         $this->assertTrue($checker->isActive(['active' => ['regex:@^posts/[0-9]+$@']]));
+        $this->assertFalse($checker->isActive(['active' => ['regex:@^post/[0-9]+$@']]));
+    }
+
+    public function testActivefallbackToUrl()
+    {
+        $checker = $this->makeActiveChecker('http://example.com/home');
+
+        $isActive = $checker->isActive(
+            [
+                'url' => 'home',
+                'active' => ['about', 'no-home'],
+                'submenu' => [],
+            ]
+        );
+
+        $this->assertTrue($isActive);
     }
 }
