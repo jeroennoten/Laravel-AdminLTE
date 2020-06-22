@@ -24,7 +24,8 @@ class GateFilter implements FilterInterface
     }
 
     /**
-     * Transforms a menu item. Adds the restricted attribute to an item.
+     * Transforms a menu item. Add the restricted property to a menu item
+     * when situable.
      *
      * @param array $item A menu item
      * @return array The transformed menu item
@@ -51,20 +52,20 @@ class GateFilter implements FilterInterface
     {
         // Check if there are any permission defined for the item.
 
-        if (! isset($item['can'])) {
+        if (empty($item['can'])) {
             return true;
         }
 
-        // Read the extra arguments (a model instance can be used).
+        // Read the extra arguments (a db model instance can be used).
 
         $args = isset($item['model']) ? $item['model'] : [];
 
         // Check if the current user can perform the configured permissions.
 
-        if (! is_array($item['can'])) {
-            return $this->gate->allows($item['can'], $args);
+        if (is_string($item['can']) || is_array($item['can'])) {
+            return $this->gate->any($item['can'], $args);
         }
 
-        return $this->gate->any($item['can'], $args);
+        return true;
     }
 }

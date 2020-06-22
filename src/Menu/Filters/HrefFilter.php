@@ -40,7 +40,7 @@ class HrefFilter implements FilterInterface
     }
 
     /**
-     * Make the href attribute for an item.
+     * Make the href attribute for a menu item.
      *
      * @param array $item A menu item
      * @return string The href attribute

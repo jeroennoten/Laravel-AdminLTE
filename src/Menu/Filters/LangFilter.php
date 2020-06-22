@@ -14,6 +14,13 @@ class LangFilter implements FilterInterface
     protected $translator;
 
     /**
+     * The array of menu item properties to translate.
+     *
+     * @var array
+     */
+    protected $itemProperties;
+
+    /**
      * Constructor.
      *
      * @param Translator $translator
@@ -21,6 +28,7 @@ class LangFilter implements FilterInterface
     public function __construct(Translator $translator)
     {
         $this->translator = $translator;
+        $this->itemProperties = ['header', 'text', 'label'];
     }
 
     /**
@@ -31,22 +39,12 @@ class LangFilter implements FilterInterface
      */
     public function transform($item)
     {
-        // Translate the header attribute.
+        // Translate the menu item properties.
 
-        if (isset($item['header'])) {
-            $item['header'] = $this->getTranslation($item['header']);
-        }
-
-        // Translate the text attribute.
-
-        if (isset($item['text'])) {
-            $item['text'] = $this->getTranslation($item['text']);
-        }
-
-        // Translate the label attribute.
-
-        if (isset($item['label'])) {
-            $item['label'] = $this->getTranslation($item['label']);
+        foreach ($this->itemProperties as $prop) {
+            if (isset($item[$prop]) && is_string($item[$prop])) {
+                $item[$prop] = $this->getTranslation($item[$prop]);
+            }
         }
 
         return $item;

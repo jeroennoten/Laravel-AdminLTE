@@ -608,6 +608,36 @@ class BuilderTest extends TestCase
         $this->assertEquals('About', $builder->menu[0]['text']);
     }
 
+    public function testCanWithInvalidValues()
+    {
+        $gate = $this->makeGate();
+        $gate->define(
+            'show-about',
+            function () {return true;}
+        );
+        $gate->define(
+            'show-home',
+            function () {return false;}
+        );
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            ['text' => 'LinkA', 'url'  => 'link_a', 'can'  => false],
+            ['text' => 'LinkB', 'url'  => 'link_b', 'can'  => 1024],
+            ['text' => 'LinkC', 'url'  => 'link_c', 'can'  => ''],
+            ['text' => 'LinkD', 'url'  => 'link_d', 'can'  => []],
+            ['text' => 'LinkE', 'url'  => 'link_e']
+        );
+
+        $this->assertCount(5, $builder->menu);
+        $this->assertEquals('LinkA', $builder->menu[0]['text']);
+        $this->assertEquals('LinkB', $builder->menu[1]['text']);
+        $this->assertEquals('LinkC', $builder->menu[2]['text']);
+        $this->assertEquals('LinkD', $builder->menu[3]['text']);
+        $this->assertEquals('LinkE', $builder->menu[4]['text']);
+    }
+
     public function testMultipleCan()
     {
         $gate = $this->makeGate();

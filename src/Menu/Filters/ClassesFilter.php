@@ -26,9 +26,9 @@ class ClassesFilter implements FilterInterface
     }
 
     /**
-     * Make classes related to the nav-link component of a menu item.
+     * Make classes related to the components of a menu item.
      *
-     * @param mixed $item A menu item
+     * @param array $item A menu item
      * @return array The array of classes
      */
     protected function makeClasses($item)
@@ -45,9 +45,9 @@ class ClassesFilter implements FilterInterface
     }
 
     /**
-     * Make classes related to the nav-item component of a submenu item.
+     * Make classes related to the components of a submenu item.
      *
-     * @param mixed $item A menu item
+     * @param array $item A menu item
      * @return array The array of classes
      */
     protected function makeSubmenuClasses($item)
