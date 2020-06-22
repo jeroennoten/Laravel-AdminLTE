@@ -59,6 +59,7 @@ class HrefFilter implements FilterInterface
             if (is_array($item['route'])) {
                 $route = $item['route'][0];
                 $params = is_array($item['route'][1]) ? $item['route'][1] : [];
+
                 return $this->urlGenerator->route($route, $params);
             }
 
