@@ -62,6 +62,7 @@ class MenuItemHelper
     public static function isAllowed($item)
     {
         $isAllowed = ! (isset($item['restricted']) && $item['restricted']);
+
         return $item && $isAllowed;
     }
 

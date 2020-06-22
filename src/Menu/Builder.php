@@ -2,8 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu;
 
-use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 use Illuminate\Support\Arr;
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 
 class Builder
 {

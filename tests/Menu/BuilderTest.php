@@ -505,7 +505,7 @@ class BuilderTest extends TestCase
         $builder->add(
             [
                 'text' => 'Profile',
-                'route' => ['pages.profile', ['user' => 'data']]
+                'route' => ['pages.profile', ['user' => 'data']],
             ]
         );
 
@@ -613,11 +613,15 @@ class BuilderTest extends TestCase
         $gate = $this->makeGate();
         $gate->define(
             'show-about',
-            function () {return true;}
+            function () {
+                return true;
+            }
         );
         $gate->define(
             'show-home',
-            function () {return false;}
+            function () {
+                return false;
+            }
         );
 
         $builder = $this->makeMenuBuilder('http://example.com', $gate);
