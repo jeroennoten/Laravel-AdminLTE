@@ -16,7 +16,7 @@ use JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
-use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
@@ -31,11 +31,11 @@ class TestCase extends BaseTestCase
         return new Builder([
             new HrefFilter($this->makeUrlGenerator($uri)),
             new ActiveFilter($this->makeActiveChecker($uri)),
-            new SubmenuFilter($this->makeActiveChecker($uri)),
             new ClassesFilter(),
             new DataFilter(),
             new GateFilter($gate ?: $this->makeGate()),
             new LangFilter($this->makeTranslator($locale)),
+            new SearchFilter(),
         ]);
     }
 

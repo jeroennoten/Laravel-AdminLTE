@@ -885,7 +885,6 @@ And then add configuration to the `config/adminlte.php` file:
 'filters' => [
     JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
     // Comment next line out.
     //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
@@ -1050,7 +1049,6 @@ The default set of menu filters is:
     JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,

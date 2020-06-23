@@ -19,14 +19,16 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder();
 
+        $builder->add('MENU');
         $builder->add(['text' => 'Home', 'url' => '/']);
         $builder->add(['text' => 'About', 'url' => '/about']);
 
-        $this->assertCount(2, $builder->menu);
-        $this->assertEquals('Home', $builder->menu[0]['text']);
-        $this->assertEquals('/', $builder->menu[0]['url']);
-        $this->assertEquals('About', $builder->menu[1]['text']);
-        $this->assertEquals('/about', $builder->menu[1]['url']);
+        $this->assertCount(3, $builder->menu);
+        $this->assertEquals('MENU', $builder->menu[0]);
+        $this->assertEquals('Home', $builder->menu[1]['text']);
+        $this->assertEquals('/', $builder->menu[1]['url']);
+        $this->assertEquals('About', $builder->menu[2]['text']);
+        $this->assertEquals('/about', $builder->menu[2]['url']);
     }
 
     public function testAddMultipleItemsAtOnce()
@@ -497,10 +499,18 @@ class BuilderTest extends TestCase
     {
         $builder = $this->makeMenuBuilder();
         $this->getRouteCollection()->add(new Route('GET', 'about', ['as' => 'pages.about']));
+        $this->getRouteCollection()->add(new Route('GET', 'profile', ['as' => 'pages.profile']));
 
         $builder->add(['text' => 'About', 'route' => 'pages.about']);
+        $builder->add(
+            [
+                'text' => 'Profile',
+                'route' => ['pages.profile', ['user' => 'data']],
+            ]
+        );
 
         $this->assertEquals('http://example.com/about', $builder->menu[0]['href']);
+        $this->assertEquals('http://example.com/profile?user=data', $builder->menu[1]['href']);
     }
 
     public function testActiveClass()
@@ -508,18 +518,22 @@ class BuilderTest extends TestCase
         $builder = $this->makeMenuBuilder('http://example.com/about');
 
         $builder->add(['text' => 'About', 'url' => 'about']);
+        $builder->add(['text' => 'Profile', 'url' => 'profile']);
 
-        $this->assertContainsEquals('active', $builder->menu[0]['classes']);
+        $this->assertStringContainsString('active', $builder->menu[0]['class']);
+        $this->assertStringNotContainsString('active', $builder->menu[1]['class']);
     }
 
-    public function testActiveRoute()
+    public function testActiveClassWithRoute()
     {
         $builder = $this->makeMenuBuilder('http://example.com/about');
         $this->getRouteCollection()->add(new Route('GET', 'about', ['as' => 'pages.about']));
 
         $builder->add(['text' => 'About', 'route' => 'pages.about']);
+        $builder->add(['text' => 'Profile', 'url' => 'profile']);
 
-        $this->assertContainsEquals('active', $builder->menu[0]['classes']);
+        $this->assertStringContainsString('active', $builder->menu[0]['class']);
+        $this->assertStringNotContainsString('active', $builder->menu[1]['class']);
     }
 
     public function testSubmenuActiveWithHash()
@@ -528,6 +542,7 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
+                'text'    => 'Menu',
                 'url'     => '#',
                 'submenu' => [
                     ['url' => 'home'],
@@ -536,58 +551,26 @@ class BuilderTest extends TestCase
         );
 
         $this->assertTrue($builder->menu[0]['active']);
+        $this->assertEquals('active', $builder->menu[0]['class']);
+        $this->assertEquals('menu-open', $builder->menu[0]['submenu_class']);
     }
 
-    public function testTreeviewClass()
-    {
-        $builder = $this->makeMenuBuilder();
-
-        $builder->add(['text' => 'About', 'submenu' => []]);
-
-        $this->assertEquals('has-treeview', $builder->menu[0]['submenu_class']);
-        $this->assertEquals('dropdown', $builder->menu[0]['top_nav_class']);
-    }
-
-    public function testTreeviewMenuSubmenuClasses()
-    {
-        $builder = $this->makeMenuBuilder();
-
-        $builder->add(['text' => 'About', 'submenu' => []]);
-
-        $this->assertContainsEquals(
-            'has-treeview',
-            $builder->menu[0]['submenu_classes']
-        );
-    }
-
-    public function testSubmenuClass()
-    {
-        $builder = $this->makeMenuBuilder();
-
-        $builder->add(['text' => 'About', 'submenu' => []]);
-
-        $this->assertEquals(
-            'has-treeview',
-            $builder->menu[0]['submenu_class']
-        );
-    }
-
-    public function testClass()
+    public function testTopNavActiveClass()
     {
         $builder = $this->makeMenuBuilder('http://example.com/about');
 
-        $builder->add(['text' => 'About', 'url' => 'about']);
+        $builder->add(['text' => 'About', 'url' => 'about', 'topnav' => true]);
 
         $this->assertEquals('active', $builder->menu[0]['class']);
     }
 
-    public function testTopNavClass()
+    public function testTopNavRightActiveClass()
     {
         $builder = $this->makeMenuBuilder('http://example.com/about');
 
-        $builder->add(['text' => 'About', 'url' => 'about']);
+        $builder->add(['text' => 'About', 'url' => 'about', 'topnav_right' => true]);
 
-        $this->assertEquals('active', $builder->menu[0]['top_nav_class']);
+        $this->assertEquals('active', $builder->menu[0]['class']);
     }
 
     public function testCan()
@@ -623,6 +606,40 @@ class BuilderTest extends TestCase
 
         $this->assertCount(1, $builder->menu);
         $this->assertEquals('About', $builder->menu[0]['text']);
+    }
+
+    public function testCanWithInvalidValues()
+    {
+        $gate = $this->makeGate();
+        $gate->define(
+            'show-about',
+            function () {
+                return true;
+            }
+        );
+        $gate->define(
+            'show-home',
+            function () {
+                return false;
+            }
+        );
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            ['text' => 'LinkA', 'url'  => 'link_a', 'can'  => false],
+            ['text' => 'LinkB', 'url'  => 'link_b', 'can'  => 1024],
+            ['text' => 'LinkC', 'url'  => 'link_c', 'can'  => ''],
+            ['text' => 'LinkD', 'url'  => 'link_d', 'can'  => []],
+            ['text' => 'LinkE', 'url'  => 'link_e']
+        );
+
+        $this->assertCount(5, $builder->menu);
+        $this->assertEquals('LinkA', $builder->menu[0]['text']);
+        $this->assertEquals('LinkB', $builder->menu[1]['text']);
+        $this->assertEquals('LinkC', $builder->menu[2]['text']);
+        $this->assertEquals('LinkD', $builder->menu[3]['text']);
+        $this->assertEquals('LinkE', $builder->menu[4]['text']);
     }
 
     public function testMultipleCan()
@@ -739,5 +756,29 @@ class BuilderTest extends TestCase
             'data-test-one="content-one" data-test-two="content-two"',
             $builder->menu[0]['data-compiled']
         );
+    }
+
+    public function testSearchBarDefaultMethod()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'search', 'search' => true]);
+        $builder->add(['text' => 'Search', 'search' => true, 'method' => 'foo']);
+        $builder->add(['text' => 'Search', 'search' => true, 'method' => 'post']);
+
+        $this->assertEquals('get', $builder->menu[0]['method']);
+        $this->assertEquals('get', $builder->menu[1]['method']);
+        $this->assertEquals('post', $builder->menu[2]['method']);
+    }
+
+    public function testSearchBarDefaultName()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(['text' => 'search', 'search' => true]);
+        $builder->add(['text' => 'Search', 'search' => true, 'input_name' => 'foo']);
+
+        $this->assertEquals('q', $builder->menu[0]['input_name']);
+        $this->assertEquals('foo', $builder->menu[1]['input_name']);
     }
 }

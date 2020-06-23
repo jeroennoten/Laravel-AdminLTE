@@ -1,6 +1,6 @@
-<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item {{ $item['top_nav_class'] }}">
+<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item">
 
-    <a class="nav-link" href="{{ $item['href'] }}"
+    <a class="nav-link {{ $item['class'] }}" href="{{ $item['href'] }}"
        @if(isset($item['target'])) target="{{ $item['target'] }}" @endif
        {!! $item['data-compiled'] ?? '' !!}>
 
