@@ -86,13 +86,13 @@ class CommandHelper
         // Open the first folder. Return if fails to open.
 
         if (! is_resource($dirHandler = @opendir($dir1))) {
-            return null;
+            return;
         }
 
         // Check if the second folder exists.
 
         if (! is_dir($dir2)) {
-            return null;
+            return;
         }
 
         // Now, compare the folders.
