@@ -3,7 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class AdminLteStatusCommand extends Command
 {
@@ -160,7 +160,12 @@ class AdminLteStatusCommand extends Command
                     $dest_exist = false;
                     $dest_child_exist = false;
                 } else {
-                    $compare = CommandHelper::compareDirectories($source_base_path.$source_path[$key], $destination_base_path.$destination_child_path, '', $ignore, $ignore_ending, $recursive);
+                    $compare = CommandHelper::compareDirectories(
+                        $source_base_path.$source_path[$key],
+                        $destination_base_path.$destination_child_path,
+                        $recursive,
+                        $ignore
+                    );
 
                     if (! $dest_child_missmatch && $compare) {
                         $dest_child_missmatch = false;
@@ -173,7 +178,12 @@ class AdminLteStatusCommand extends Command
             if (! file_exists($destination_base_path.$destination_path)) {
                 $dest_exist = false;
             } else {
-                $compare = CommandHelper::compareDirectories($source_base_path.$source_path, $destination_base_path.$destination_path, '', $ignore, $ignore_ending, $recursive, null, true);
+                $compare = CommandHelper::compareDirectories(
+                    $source_base_path.$source_path,
+                    $destination_base_path.$destination_path,
+                    $recursive,
+                    $ignore
+                );
                 if ($compare === false) {
                     $dest_missmatch = true;
                 } elseif ($compare === null) {
