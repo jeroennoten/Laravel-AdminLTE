@@ -394,7 +394,7 @@ class AdminLtePluginCommand extends Command
                     $plugin_recursive,
                     $plugin_ignore
                 );
-                if (! $compare) {
+                if (! (bool) $compare) {
                     $plugin_missmatch = true;
                 }
             }

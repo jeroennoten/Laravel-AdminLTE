@@ -124,7 +124,7 @@ class CommandHelper
 
             $isDir = is_dir($source) && $recursive;
 
-            if ($isDir && ! self::compareDirectories($source, $target, $recursive, $ignores)) {
+            if ($isDir && ! (bool) self::compareDirectories($source, $target, $recursive, $ignores)) {
                 return false;
             }
         }
