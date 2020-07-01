@@ -17,7 +17,9 @@ class CommandHelper
      */
     public static function ensureDirectoryExists($dir, $mode = 0755, $recursive = true)
     {
-        File::ensureDirectoryExists($dir, $mode, $recursive);
+        if (! is_dir($dir)) {
+            mkdir($dir, $mode, $recursive);
+        }
     }
 
     /**
