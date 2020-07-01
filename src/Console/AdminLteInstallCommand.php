@@ -3,7 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class AdminLteInstallCommand extends Command
 {
@@ -184,7 +184,12 @@ class AdminLteInstallCommand extends Command
             }
         }
 
-        CommandHelper::directoryCopy($this->packagePath('resources/views'), base_path('resources/views/vendor/adminlte'), $this->option('force'), true);
+        CommandHelper::copyDirectory(
+            $this->packagePath('resources/views'),
+            base_path('resources/views/vendor/adminlte'),
+            $this->option('force'),
+            true
+        );
 
         $this->comment('Main views installed successfully.');
     }
@@ -201,7 +206,7 @@ class AdminLteInstallCommand extends Command
                 return;
             }
         }
-        CommandHelper::ensureDirectoriesExist($this->getViewPath('auth/passwords'));
+        CommandHelper::ensureDirectoryExists($this->getViewPath('auth/passwords'));
         foreach ($this->authViews as $file => $content) {
             file_put_contents($this->getViewPath($file), $content);
         }
@@ -276,7 +281,12 @@ class AdminLteInstallCommand extends Command
             }
         }
 
-        CommandHelper::directoryCopy($this->packagePath('resources/lang'), resource_path('lang/vendor/adminlte'), $this->option('force'), true);
+        CommandHelper::copyDirectory(
+            $this->packagePath('resources/lang'),
+            resource_path('lang/vendor/adminlte'),
+            $this->option('force'),
+            true
+        );
 
         $this->comment('Translation files installed successfully.');
     }
@@ -361,14 +371,26 @@ class AdminLteInstallCommand extends Command
         if (is_array($asset['package_path'])) {
             foreach ($asset['package_path'] as $key => $asset_package_path) {
                 $asset_assets_path = $asset['assets_path'][$key];
-                CommandHelper::directoryCopy(base_path($this->assets_package_path).$asset_package_path, public_path($this->assets_path).$asset_assets_path, $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
+                CommandHelper::copyDirectory(
+                    base_path($this->assets_package_path).$asset_package_path,
+                    public_path($this->assets_path).$asset_assets_path,
+                    $force,
+                    ($asset['recursive'] ?? true),
+                    ($asset['ignore'] ?? [])
+                );
             }
         } else {
-            CommandHelper::directoryCopy(base_path($this->assets_package_path).$asset['package_path'], public_path($this->assets_path).$asset['assets_path'], $force, ($asset['recursive'] ?? true), ($asset['ignore'] ?? []), ($asset['ignore_ending'] ?? null));
+            CommandHelper::copyDirectory(
+                base_path($this->assets_package_path).$asset['package_path'],
+                public_path($this->assets_path).$asset['assets_path'],
+                $force,
+                ($asset['recursive'] ?? true),
+                ($asset['ignore'] ?? [])
+            );
         }
 
         if (isset($asset['images_path']) && isset($asset['images'])) {
-            CommandHelper::ensureDirectoriesExist(public_path($this->assets_path).$asset['images_path']);
+            CommandHelper::ensureDirectoryExists(public_path($this->assets_path).$asset['images_path']);
             foreach ($asset['images'] as $image_package_path => $image_assets_path) {
                 if (file_exists(public_path($this->assets_path).$asset['images_path'].$image_assets_path) && ! $force) {
                     continue;

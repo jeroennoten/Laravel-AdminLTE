@@ -3,7 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Http\Helpers\CommandHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class AdminLteStatusCommand extends Command
 {
@@ -100,7 +100,7 @@ class AdminLteStatusCommand extends Command
 
         if (is_array($asset['package_path'])) {
             foreach ($asset['package_path'] as $key => $value) {
-                $compare_multiple += $this->compareFolder($asset['package_path'][$key], $asset['assets_path'][$key], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['ignore_ending'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
+                $compare_multiple += $this->compareFolder($asset['package_path'][$key], $asset['assets_path'][$key], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
             }
 
             $compare_multiple /= count($asset['package_path']);
@@ -112,7 +112,7 @@ class AdminLteStatusCommand extends Command
                 $compare = 0;
             }
         } else {
-            $compare = $this->compareFolder($asset['package_path'], $asset['assets_path'], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['ignore_ending'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
+            $compare = $this->compareFolder($asset['package_path'], $asset['assets_path'], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
         }
 
         return $compare;
@@ -127,12 +127,11 @@ class AdminLteStatusCommand extends Command
      * @param  $destination_base_path
      * @param  $recursive
      * @param  $ignore
-     * @param  $ignore_ending
      * @param  $images
      * @param  $images_path
      * @return int
      */
-    public function compareFolder($source_path, $destination_path, $source_base_path = null, $destination_base_path = null, $recursive = true, $ignore = [], $ignore_ending = [], $images = null, $images_path = null, $ignore_base_folder = null)
+    public function compareFolder($source_path, $destination_path, $source_base_path = null, $destination_base_path = null, $recursive = true, $ignore = [], $images = null, $images_path = null, $ignore_base_folder = null)
     {
         $dest_exist = true;
         $dest_missing = false;
@@ -160,7 +159,12 @@ class AdminLteStatusCommand extends Command
                     $dest_exist = false;
                     $dest_child_exist = false;
                 } else {
-                    $compare = CommandHelper::compareDirectories($source_base_path.$source_path[$key], $destination_base_path.$destination_child_path, '', $ignore, $ignore_ending, $recursive);
+                    $compare = CommandHelper::compareDirectories(
+                        $source_base_path.$source_path[$key],
+                        $destination_base_path.$destination_child_path,
+                        $recursive,
+                        $ignore
+                    );
 
                     if (! $dest_child_missmatch && $compare) {
                         $dest_child_missmatch = false;
@@ -173,7 +177,12 @@ class AdminLteStatusCommand extends Command
             if (! file_exists($destination_base_path.$destination_path)) {
                 $dest_exist = false;
             } else {
-                $compare = CommandHelper::compareDirectories($source_base_path.$source_path, $destination_base_path.$destination_path, '', $ignore, $ignore_ending, $recursive, null, true);
+                $compare = CommandHelper::compareDirectories(
+                    $source_base_path.$source_path,
+                    $destination_base_path.$destination_path,
+                    $recursive,
+                    $ignore
+                );
                 if ($compare === false) {
                     $dest_missmatch = true;
                 } elseif ($compare === null) {
