@@ -135,6 +135,7 @@ class ActiveChecker
         // absolute path to the given pattern.
 
         $pattern = preg_replace('@^https?://@', '*', $this->url->to($pattern));
+
         return Str::is($pattern, $this->request->url());
     }
 }
