@@ -49,9 +49,9 @@ class TestCase extends BaseTestCase
         return $translator;
     }
 
-    protected function makeActiveChecker($uri = 'http://example.com')
+    protected function makeActiveChecker($uri = 'http://example.com', $scheme = null)
     {
-        return new ActiveChecker($this->makeRequest($uri), $this->makeUrlGenerator($uri));
+        return new ActiveChecker($this->makeUrlGenerator($uri, $scheme));
     }
 
     private function makeRequest($uri)
@@ -64,9 +64,18 @@ class TestCase extends BaseTestCase
         return new AdminLte($this->getFilters(), $this->getDispatcher(), $this->makeContainer());
     }
 
-    protected function makeUrlGenerator($uri = 'http://example.com')
+    protected function makeUrlGenerator($uri = 'http://example.com', $scheme = null)
     {
-        return new UrlGenerator($this->getRouteCollection(), $this->makeRequest($uri));
+        $UrlGenerator = new UrlGenerator(
+            $this->getRouteCollection(),
+            $this->makeRequest($uri)
+        );
+
+        if ($scheme) {
+            $UrlGenerator->forceScheme($scheme);
+        }
+
+        return $UrlGenerator;
     }
 
     protected function makeGate()
