@@ -176,4 +176,18 @@ class ActiveCheckerTest extends TestCase
 
         $this->assertTrue($isActive);
     }
+
+    public function testWithForcedScheme()
+    {
+        $checker = $this->makeActiveChecker('http://example.com/about', 'https');
+
+        $isActive = $checker->isActive(['url' => 'about']);
+        $this->assertTrue($isActive);
+
+        $isActive = $checker->isActive(['url' => 'http://example.com/about']);
+        $this->assertTrue($isActive);
+
+        $isActive = $checker->isActive(['url' => 'https://example.com/about']);
+        $this->assertTrue($isActive);
+    }
 }

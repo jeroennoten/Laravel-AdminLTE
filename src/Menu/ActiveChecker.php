@@ -32,12 +32,11 @@ class ActiveChecker
     /**
      * Constructor.
      *
-     * @param Request $request
      * @param UrlGenerator $url
      */
-    public function __construct(Request $request, UrlGenerator $url)
+    public function __construct(UrlGenerator $url)
     {
-        $this->request = $request;
+        $this->request = $url->getRequest();
         $this->url = $url;
 
         // Fill the map with tests. These tests will check if a menu item is
@@ -135,6 +134,8 @@ class ActiveChecker
         // If pattern is not a regex, check if the requested url matches the
         // absolute path to the given pattern.
 
-        return Str::is($this->url->to($pattern), $this->request->url());
+        $pattern = preg_replace('@^https?://@', '*', $this->url->to($pattern));
+
+        return Str::is($pattern, $this->request->url());
     }
 }
