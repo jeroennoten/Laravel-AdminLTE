@@ -164,7 +164,6 @@ class AdminLteInstallCommand extends Command
             if ($this->option('type') == 'full') {
                 $this->exportBasicViews();
                 $this->exportBasicRoutes();
-                $this->exportMainViews();
             }
         }
 
