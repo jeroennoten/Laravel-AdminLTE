@@ -193,19 +193,15 @@ class Builder
      *
      * @param mixed $itemKey The key that represents the specific menu item
      * @param int $where Where to add the new items
-     * @param mixed $newItems Items to be added
+     * @param mixed $items Items to be added
      */
-    protected function addItem($itemKey, $where, ...$newItems)
+    protected function addItem($itemKey, $where, ...$items)
     {
         // Find the specific menu item. Return if not found.
 
         if (! ($itemPath = $this->findItem($itemKey, $this->menu))) {
             return;
         }
-
-        // Apply the filters to the new items.
-
-        $items = $this->transformItems($newItems);
 
         // Get the target array and add the new items there.
 
@@ -224,5 +220,9 @@ class Builder
         }
 
         Arr::set($this->menu, $targetPath, $targetArr);
+
+        // Apply the filters because the menu now have new items.
+
+        $this->menu = $this->transformItems($this->menu);
     }
 }
