@@ -573,6 +573,24 @@ class BuilderTest extends TestCase
         $this->assertEquals('active', $builder->menu[0]['class']);
     }
 
+    public function testSubmenuClassWhenAddInMultipleItems()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        // Add a new link item.
+
+        $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
+
+        // Add elements inside the previous one, now it will be a submenu item.
+
+        $builder->addIn('home', ['text' => 'Profile', 'url' => '/profile']);
+        $builder->addIn('home', ['text' => 'About', 'url' => '/about']);
+
+        // Check the "submenu_class" attribute is added.
+
+        $this->assertTrue(isset($builder->menu[0]['submenu_class']));
+    }
+
     public function testCan()
     {
         $gate = $this->makeGate();
