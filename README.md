@@ -870,7 +870,7 @@ class MyMenuFilter implements FilterInterface
     public function transform($item)
     {
         if (isset($item['permission']) && ! Laratrust::isAbleTo($item['permission'])) {
-            return false;
+            $item['restricted'] = true;
         }
 
         return $item;
