@@ -626,6 +626,29 @@ class BuilderTest extends TestCase
         $this->assertEquals('About', $builder->menu[0]['text']);
     }
 
+    public function testCanAddOneRestrictedItem()
+    {
+        $gate = $this->makeGate();
+        $gate->define(
+            'show-home',
+            function () {
+                return false;
+            }
+        );
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            [
+                'text' => 'Home',
+                'url'  => '/',
+                'can'  => 'show-home',
+            ]
+        );
+
+        $this->assertCount(0, $builder->menu);
+    }
+
     public function testCanWithInvalidValues()
     {
         $gate = $this->makeGate();

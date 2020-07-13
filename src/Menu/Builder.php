@@ -43,7 +43,10 @@ class Builder
     public function add(...$newItems)
     {
         $items = $this->transformItems($newItems);
-        array_push($this->menu, ...$items);
+
+        if (! empty($items)) {
+            array_push($this->menu, ...$items);
+        }
     }
 
     /**
