@@ -3,45 +3,70 @@
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use Illuminate\Contracts\Routing\UrlGenerator;
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 
 class HrefFilter implements FilterInterface
 {
+    /**
+     * The url generator instance.
+     *
+     * @var UrlGenerator
+     */
     protected $urlGenerator;
 
+    /**
+     * Constructor.
+     *
+     * @param UrlGenerator $urlGenerator
+     */
     public function __construct(UrlGenerator $urlGenerator)
     {
         $this->urlGenerator = $urlGenerator;
     }
 
-    public function transform($item, Builder $builder)
+    /**
+     * Transforms a menu item. Make the href attribute when situable.
+     *
+     * @param array $item A menu item
+     * @return array The transformed menu item
+     */
+    public function transform($item)
     {
-        if (! isset($item['header'])) {
+        if (! MenuItemHelper::isHeader($item)) {
             $item['href'] = $this->makeHref($item);
-        }
-
-        if (isset($item['submenu'])) {
-            $item['submenu'] = array_map(function ($subitem) use ($builder) {
-                return $this->transform($subitem, $builder);
-            }, $item['submenu']);
         }
 
         return $item;
     }
 
+    /**
+     * Make the href attribute for a menu item.
+     *
+     * @param array $item A menu item
+     * @return string The href attribute
+     */
     protected function makeHref($item)
     {
+        // If url attribute is available, use it to make the href.
+
         if (isset($item['url'])) {
             return $this->urlGenerator->to($item['url']);
         }
 
+        // When url is not available, check for route attribute.
+
         if (isset($item['route'])) {
             if (is_array($item['route'])) {
-                return $this->urlGenerator->route($item['route'][0], $item['route'][1]);
+                $route = $item['route'][0];
+                $params = is_array($item['route'][1]) ? $item['route'][1] : [];
+
+                return $this->urlGenerator->route($route, $params);
             }
 
             return $this->urlGenerator->route($item['route']);
         }
+
+        // When no url or route, return a default value.
 
         return '#';
     }

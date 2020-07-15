@@ -790,7 +790,7 @@ Here is a basic example of a menu configuration:
 With a single string, you specify a menu header item to separate the items.
 With an array, you specify a menu item, `text` and `url` or `route` are required attributes.
 The `icon` attribute is optional, you get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out.
-The available icons that you can use are those from [Font Awesome](https://fontawesome.io/icons/).
+The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons).
 Just specify the name of the icon and it will appear in front of your menu item.
 
 It's also possible to add menu items to the top navigation while the sidebar is enabled, you just need to set the `topnav` attribute to `true`. You can also set `topnav_right` for put the item on the right side of the topnav or `topnav_user` to place it in the user menu (above the user-body).
@@ -862,16 +862,15 @@ For example, with Laratrust:
 
 namespace MyApp;
 
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface;
 use Laratrust\Laratrust;
 
 class MyMenuFilter implements FilterInterface
 {
-    public function transform($item, Builder $builder)
+    public function transform($item)
     {
         if (isset($item['permission']) && ! Laratrust::isAbleTo($item['permission'])) {
-            return false;
+            $item['restricted'] = true;
         }
 
         return $item;
@@ -885,7 +884,6 @@ And then add configuration to the `config/adminlte.php` file:
 'filters' => [
     JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
     // Comment next line out.
     //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
@@ -1050,7 +1048,6 @@ The default set of menu filters is:
     JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,

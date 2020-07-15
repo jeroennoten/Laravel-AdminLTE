@@ -2,23 +2,34 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 
 class SearchFilter implements FilterInterface
 {
-    public function transform($item, Builder $builder)
+    /**
+     * Transforms a menu item. Makes the proper search bar configuration.
+     *
+     * @param array $item A menu item
+     * @return array The transformed menu item
+     */
+    public function transform($item)
     {
-        if (! isset($item['search'])) {
-            $item['search'] = false;
-        } elseif ($item['search'] === true) {
-            if (! isset($item['method'])) {
-                $item['method'] = 'get';
-            } elseif (isset($item['method']) && ! in_array(strtolower($item['method']), ['post', 'get'])) {
-                $item['method'] = 'get';
-            }
-            if (! isset($item['input_name'])) {
-                $item['input_name'] = 'q';
-            }
+        if (! MenuItemHelper::isSearchBar($item)) {
+            return $item;
+        }
+
+        // Configure search bar method.
+
+        if (! isset($item['method'])) {
+            $item['method'] = 'get';
+        } elseif (! in_array(strtolower($item['method']), ['post', 'get'])) {
+            $item['method'] = 'get';
+        }
+
+        // Configure search bar input name.
+
+        if (! isset($item['input_name'])) {
+            $item['input_name'] = 'q';
         }
 
         return $item;

@@ -54,6 +54,19 @@ class MenuItemHelper
     }
 
     /**
+     * Check if a menu item is allowed to be shown.
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isAllowed($item)
+    {
+        $isAllowed = ! (isset($item['restricted']) && $item['restricted']);
+
+        return $item && $isAllowed;
+    }
+
+    /**
      * Check if a menu item is valid for the sidebar section.
      *
      * @param mixed $item

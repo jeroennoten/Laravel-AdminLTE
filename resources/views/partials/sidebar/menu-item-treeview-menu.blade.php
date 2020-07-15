@@ -1,4 +1,4 @@
-<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item {{ $item['submenu_class'] }}">
+<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item has-treeview {{ $item['submenu_class'] }}">
 
     {{-- Menu toggler --}}
     <a class="nav-link {{ $item['class'] }} @if(isset($item['shift'])) {{ $item['shift'] }} @endif"

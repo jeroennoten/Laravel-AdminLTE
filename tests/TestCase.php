@@ -16,7 +16,7 @@ use JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
-use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
@@ -31,11 +31,11 @@ class TestCase extends BaseTestCase
         return new Builder([
             new HrefFilter($this->makeUrlGenerator($uri)),
             new ActiveFilter($this->makeActiveChecker($uri)),
-            new SubmenuFilter($this->makeActiveChecker($uri)),
             new ClassesFilter(),
             new DataFilter(),
             new GateFilter($gate ?: $this->makeGate()),
             new LangFilter($this->makeTranslator($locale)),
+            new SearchFilter(),
         ]);
     }
 
@@ -49,9 +49,9 @@ class TestCase extends BaseTestCase
         return $translator;
     }
 
-    protected function makeActiveChecker($uri = 'http://example.com')
+    protected function makeActiveChecker($uri = 'http://example.com', $scheme = null)
     {
-        return new ActiveChecker($this->makeRequest($uri), $this->makeUrlGenerator($uri));
+        return new ActiveChecker($this->makeUrlGenerator($uri, $scheme));
     }
 
     private function makeRequest($uri)
@@ -64,9 +64,18 @@ class TestCase extends BaseTestCase
         return new AdminLte($this->getFilters(), $this->getDispatcher(), $this->makeContainer());
     }
 
-    protected function makeUrlGenerator($uri = 'http://example.com')
+    protected function makeUrlGenerator($uri = 'http://example.com', $scheme = null)
     {
-        return new UrlGenerator($this->getRouteCollection(), $this->makeRequest($uri));
+        $UrlGenerator = new UrlGenerator(
+            $this->getRouteCollection(),
+            $this->makeRequest($uri)
+        );
+
+        if ($scheme) {
+            $UrlGenerator->forceScheme($scheme);
+        }
+
+        return $UrlGenerator;
     }
 
     protected function makeGate()
