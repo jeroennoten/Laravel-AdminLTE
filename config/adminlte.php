@@ -351,8 +351,7 @@ return [
     */
 
     'plugins' => [
-        [
-            'name' => 'Datatables',
+        'Datatables' => [
             'active' => false,
             'files' => [
                 [
@@ -372,8 +371,7 @@ return [
                 ],
             ],
         ],
-        [
-            'name' => 'Select2',
+        'Select2' => [
             'active' => false,
             'files' => [
                 [
@@ -388,8 +386,7 @@ return [
                 ],
             ],
         ],
-        [
-            'name' => 'Chartjs',
+        'Chartjs' => [
             'active' => false,
             'files' => [
                 [
@@ -399,8 +396,7 @@ return [
                 ],
             ],
         ],
-        [
-            'name' => 'Sweetalert2',
+        'Sweetalert2' => [
             'active' => false,
             'files' => [
                 [
@@ -410,8 +406,7 @@ return [
                 ],
             ],
         ],
-        [
-            'name' => 'Pace',
+        'Pace' => [
             'active' => false,
             'files' => [
                 [
