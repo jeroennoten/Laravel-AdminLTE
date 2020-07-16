@@ -1057,7 +1057,7 @@ The default set of menu filters is:
 
 ### 6.13 Plugins
 
-Lets you configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via `<script>` and `<link>` tags. The plugin **name**, **active** status and the **files** array (even empty) are all required attributes. The **files**, when added, need to have a **type** attribute (`js` or `css`), an **asset** attribute (`true` or `false`) and a **location** (`string`). When **asset** is set to `true`, the **location** will be output using the Laravel's `asset()` function.
+Lets you configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via `<script>` and `<link>` tags. The plugin **active** status and the **files** array (even empty) are all required attributes. The **files**, when added, need to have a **type** attribute (`js` or `css`), an **asset** attribute (`true` or `false`) and a **location** (`string`). When **asset** is set to `true`, the **location** will be output using the Laravel's `asset()` function.
 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported but not active.
 You can activate them with changing the config file to load it on every page, or add a section in specific blade files, this will automatically inject their CDN files.
@@ -1079,8 +1079,7 @@ Also, you can add and configure new plugins modifying the plugin variable, using
 
 ```php
 'plugins' => [
-    [
-        'name' => 'Plugin Name',
+    'Plugin Name' => [
         'active' => true,
         'files' => [
             [
