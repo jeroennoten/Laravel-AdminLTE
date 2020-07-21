@@ -3,19 +3,90 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
 
 class AdminLteStatusCommand extends Command
 {
-    protected $signature = 'adminlte:status '.
-        '{--include-images : Includes AdminLTE asset images to the checkup}';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'adminlte:status ';
 
-    protected $description = 'Checks the install status for AdminLTE assets, routes & views.';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Checks the installation status of the AdminLTE resources';
 
-    protected $extra_steps = [
-        'config', 'translations', 'main_views', 'auth_views', 'basic_views',
-        'basic_routes',
+    /**
+     * Array with all the available package resources.
+     *
+     * @var array
+     */
+    protected $pkgResources;
+
+    /**
+     * Array with the output table headers (columns).
+     *
+     * @var array
+     */
+    protected $tblHeaders = [
+        'Package Resource',
+        'Description',
+        'Status',
+        'Required'
     ];
+
+    /**
+     * Array with the available resource status.
+     *
+     * @var array
+     */
+    protected $status = [
+        'installed' => [
+            'description' => 'Installed',
+            'legend' => 'The package resource is correctly installed',
+        ],
+        'mismatch' => [
+            'description' => 'Mismatch',
+            'legend' => 'The installed resource mismatch the package resource (Update available or resource modified)',
+        ],
+        'uninstalled' => [
+            'description' => 'Not Installed',
+            'legend' => 'The package resource is not installed',
+        ],
+    ];
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Fill the array with the package resources.
+
+        $this->pkgResources = [
+            'assets'       => new AssetsResource(),
+            'config'       => new ConfigResource(),
+            'translations' => new TranslationsResource(),
+            'main_views'   => new MainViewsResource(),
+            'auth_views'   => new AuthViewsResource(),
+            'basic_views'  => new BasicViewsResource(),
+            'basic_routes' => new BasicRoutesResource(),
+        ];
+    }
 
     /**
      * Execute the console command.
@@ -24,256 +95,79 @@ class AdminLteStatusCommand extends Command
      */
     public function handle()
     {
-        $headers = ['Group', 'Assets Name', 'Status', 'Required'];
-        $step_count = 5;
-        $table_content = [];
-        $install_command = new AdminLteInstallCommand();
+        // Define the array that will hold the output table content.
 
-        $assets = $install_command->getProtected('assets');
-        $package_path = $install_command->getProtected('package_path');
+        $tblContent = [];
 
-        $this->line('Checking Installation ...');
-        $bar = $this->output->createProgressBar($step_count);
+        // Create a progress bar.
+
+        $steps = count($this->pkgResources);
+        $bar = $this->output->createProgressBar($steps);
+
+        // Initialize the status check procedure.
+
+        $this->line('Checking the resources installation ...');
         $bar->start();
 
-        // Checking Assets
-        foreach ($assets as $asset_key => $asset) {
-            $table_content[] = ['assets', $asset['name'], $this->resolveCompare($this->checkAsset($asset_key, $this->option('include-images'))), 'true'];
+        foreach ($this->pkgResources as $name => $resource) {
+
+            // Fill the status row of the current resource.
+
+            $tblContent[] = [
+                $name,
+                $resource->get('description'),
+                $this->getResourceStatus($resource),
+                var_export($resource->get('required'), true),
+            ];
+
+            // Advance the progress bar.
+
+            $bar->advance();
         }
-        $bar->advance();
 
-        // Checking Config
-        $table_content[] = ['config', 'Default Config', $this->resolveCompare($this->compareFile($package_path.'config/adminlte.php', base_path('config/adminlte.php'))), 'true'];
-        $bar->advance();
-
-        // Checking Translations
-        $table_content[] = ['translations', 'Default Translations', $this->resolveCompare($this->compareFolder('resources/lang', 'resources/lang', $package_path, base_path(), true, ['menu.php'])), 'true'];
-        $bar->advance();
-
-        // Checking Main Views
-        $table_content[] = ['auth_views', 'Auth Views', $this->resolveCompare($this->compareAuthViews()), 'false'];
-        $bar->advance();
-
-        // Checking Main Views
-        $table_content[] = ['main_views', 'Main Views', $this->resolveCompare($this->compareFolder('resources/views', 'resources/views/vendor/adminlte/', $package_path, base_path(), true)), 'false'];
-        $bar->advance();
+        // Finish the progress bar.
 
         $bar->finish();
+        $this->line('All resources checked succesfully!');
 
-        $this->line('');
-        $this->line('Installation Checked');
+        // Display the resource status table.
 
-        $this->table($headers, $table_content);
+        $this->table($this->tblHeaders, $tblContent);
+
+        // Display the legends.
+
+        $this->displayStatusLegends();
     }
 
     /**
-     * Resolve Compare.
+     * Get the installation status of a package resource.
      *
-     * @param  $compare
-     * @return string
+     * @param PackageResource $resource The package resource to check
+     * @return string The resource status
      */
-    protected function resolveCompare($compare)
+    protected function getResourceStatus($resource)
     {
-        if ($compare === 1) {
-            return 'Installed';
-        } elseif ($compare === 2) {
-            return 'Update Available / Modified';
-        } elseif ($compare === 0) {
-            return 'Not Installed';
+        $status = $this->status['uninstalled'];
+
+        if ($resource->installed()) {
+            $status = $this->status['installed'];
+        } elseif ($resource->exists()) {
+            $status = $this->status['mismatch'];
         }
+
+        return $status['description'];
     }
 
     /**
-     * Check Plugin.
+     * Display the legends of the resource status values.
      *
-     * @param  $asset_key
-     * @param  $include_images
-     * @return string
+     * @return void
      */
-    protected function checkAsset($asset_key, $include_images)
+    protected function displayStatusLegends()
     {
-        $install_command = new AdminLteInstallCommand();
-        $asset = $install_command->getProtected('assets')[$asset_key];
-        $assets_path = $install_command->getProtected('assets_path');
-        $package_path = $install_command->getProtected('assets_package_path');
-        $compare = $compare_multiple = null;
-
-        if (is_array($asset['package_path'])) {
-            foreach ($asset['package_path'] as $key => $value) {
-                $compare_multiple += $this->compareFolder($asset['package_path'][$key], $asset['assets_path'][$key], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
-            }
-
-            $compare_multiple /= count($asset['package_path']);
-            if ($compare_multiple == 1) {
-                $compare = 1;
-            } elseif ($compare_multiple >= 1) {
-                $compare = 2;
-            } elseif ($compare_multiple <= 1) {
-                $compare = 0;
-            }
-        } else {
-            $compare = $this->compareFolder($asset['package_path'], $asset['assets_path'], base_path($package_path), public_path($assets_path), $asset['recursive'] ?? true, $asset['ignore'] ?? [], $asset['images'] ?? null, $asset['images_path'] ?? null);
-        }
-
-        return $compare;
-    }
-
-    /**
-     * Compare Folder.
-     *
-     * @param  $source_path
-     * @param  $destination_path
-     * @param  $source_base_path
-     * @param  $destination_base_path
-     * @param  $recursive
-     * @param  $ignore
-     * @param  $images
-     * @param  $images_path
-     * @return int
-     */
-    public function compareFolder($source_path, $destination_path, $source_base_path = null, $destination_base_path = null, $recursive = true, $ignore = [], $images = null, $images_path = null, $ignore_base_folder = null)
-    {
-        $dest_exist = true;
-        $dest_missing = false;
-        $dest_missmatch = false;
-        $dest_child_exist = true;
-        $dest_child_missmatch = false;
-
-        if (! $source_base_path) {
-            $source_base_path = base_path();
-        }
-        if (substr($source_base_path, -1) !== '/') {
-            $source_base_path .= '/';
-        }
-
-        if (! $destination_base_path) {
-            $destination_base_path = public_path();
-        }
-        if (substr($destination_base_path, -1) !== '/') {
-            $destination_base_path .= '/';
-        }
-
-        if (is_array($source_path)) {
-            foreach ($source_path as $key => $destination_child_path) {
-                if (! file_exists($destination_base_path.$destination_child_path)) {
-                    $dest_exist = false;
-                    $dest_child_exist = false;
-                } else {
-                    $compare = CommandHelper::compareDirectories(
-                        $source_base_path.$source_path[$key],
-                        $destination_base_path.$destination_child_path,
-                        $recursive,
-                        $ignore
-                    );
-
-                    if (! $dest_child_missmatch && $compare) {
-                        $dest_child_missmatch = false;
-                    } else {
-                        $dest_child_missmatch = true;
-                    }
-                }
-            }
-        } else {
-            if (! file_exists($destination_base_path.$destination_path)) {
-                $dest_exist = false;
-            } else {
-                $compare = CommandHelper::compareDirectories(
-                    $source_base_path.$source_path,
-                    $destination_base_path.$destination_path,
-                    $recursive,
-                    $ignore
-                );
-                if ($compare === false) {
-                    $dest_missmatch = true;
-                } elseif ($compare === null) {
-                    $dest_missing = true;
-                }
-            }
-        }
-
-        if ($images_path && $images) {
-            $asset_images_path = $images_path;
-
-            foreach ($images as $image_destination_path => $image_asset_path) {
-                $compareFile = $this->compareFile($source_base_path.$image_destination_path, $destination_base_path.$images_path.$image_asset_path);
-                if ($compareFile === 0) {
-                    $dest_child_exist = false;
-                } elseif ($compareFile == 1) {
-                    $dest_child_missmatch = false;
-                } elseif ($compareFile == 2) {
-                    $dest_child_missmatch = true;
-                }
-            }
-        }
-
-        if ($dest_exist && $dest_child_exist && ! $ignore_base_folder && (! $dest_missmatch && ! $dest_child_missmatch) && ! $dest_missing) {
-            return 1;
-        } elseif ($dest_exist && (($dest_missmatch || $dest_child_missmatch) || ! $dest_child_exist)) {
-            return 2;
-        } elseif (! $dest_exist || $dest_missing) {
-            return 0;
-        }
-    }
-
-    /**
-     * Compare File.
-     *
-     * @param  $source_file
-     * @param  $destination_file
-     * @return int
-     */
-    public function compareFile($source_file, $destination_file)
-    {
-        $file_exist = true;
-        $file_missmatch = false;
-
-        if (! file_exists($destination_file)) {
-            $file_exist = false;
-        } else {
-            $compare = sha1_file($source_file) === sha1_file($destination_file);
-            if (! $compare) {
-                $file_missmatch = true;
-            }
-        }
-
-        if ($file_exist && (! $file_missmatch)) {
-            return 1;
-        } elseif ($file_exist && $file_missmatch) {
-            return 2;
-        } elseif (! $file_exist) {
-            return 0;
-        }
-    }
-
-    /**
-     * Compare Auth Views.
-     *
-     * @return int
-     */
-    public function compareAuthViews()
-    {
-        $install_command = new AdminLteInstallCommand();
-        $auth_views = $install_command->getProtected('authViews');
-        $view_exists = true;
-        $view_found = 0;
-        $view_excepted = count($auth_views);
-
-        foreach ($auth_views as $file_name => $file_content) {
-            $file = $install_command->getViewPath($file_name);
-            if (file_exists($file)) {
-                $dest_file_content = file_get_contents($file);
-                if (strpos($dest_file_content, $file_content) !== false) {
-                    $view_found++;
-                }
-            }
-        }
-
-        if ($view_found === 0) {
-            return 0;
-        } elseif ($view_found === $view_excepted) {
-            return 1;
-        } elseif ($view_found !== $view_excepted) {
-            return 2;
+        foreach ($this->status as $status) {
+            $legend = implode(': ', array_values($status));
+            $this->comment($legend);
         }
     }
 }

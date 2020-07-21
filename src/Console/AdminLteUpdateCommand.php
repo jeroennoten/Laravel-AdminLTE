@@ -6,9 +6,19 @@ use Illuminate\Console\Command;
 
 class AdminLteUpdateCommand extends Command
 {
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
     protected $signature = 'adminlte:update ';
 
-    protected $description = 'Updated the all the required assets for AdminLTE';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Update all the required assets for AdminLTE';
 
     /**
      * Execute the console command.
@@ -17,8 +27,8 @@ class AdminLteUpdateCommand extends Command
      */
     public function handle()
     {
-        $this->call('adminlte:install', [
-            '--force' => true, '--only' => 'assets',
-        ]);
+        $options = ['--force' => true, '--only' => ['assets']];
+
+        $this->call('adminlte:install', $options);
     }
 }
