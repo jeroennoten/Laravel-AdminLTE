@@ -155,7 +155,7 @@ class AdminLteInstallCommand extends Command
             $this->handleOptions($optValues, $this->optWithResources, 'with');
         }
 
-        $this->info('The installation is complete.');
+        $this->line('The installation is complete.');
     }
 
     /**

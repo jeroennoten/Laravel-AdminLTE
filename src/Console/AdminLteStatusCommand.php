@@ -35,18 +35,6 @@ class AdminLteStatusCommand extends Command
     protected $pkgResources;
 
     /**
-     * Array with the output table headers (columns).
-     *
-     * @var array
-     */
-    protected $tblHeaders = [
-        'Package Resource',
-        'Description',
-        'Status',
-        'Required'
-    ];
-
-    /**
      * Array with the available resource status.
      *
      * @var array
@@ -55,14 +43,17 @@ class AdminLteStatusCommand extends Command
         'installed' => [
             'description' => 'Installed',
             'legend' => 'The package resource is correctly installed',
+            'color' => 'green',
         ],
         'mismatch' => [
             'description' => 'Mismatch',
-            'legend' => 'The installed resource mismatch the package resource (Update available or resource modified)',
+            'legend' => 'The installed resource mismatch the package resource (update available or resource modified)',
+            'color' => 'yellow',
         ],
         'uninstalled' => [
             'description' => 'Not Installed',
             'legend' => 'The package resource is not installed',
+            'color' => 'red',
         ],
     ];
 
@@ -95,7 +86,45 @@ class AdminLteStatusCommand extends Command
      */
     public function handle()
     {
-        // Define the array that will hold the output table content.
+        // Display the resources status table.
+
+        $this->showResourcesStatus();
+
+        // Display the legends table.
+
+        $this->line('');
+        $this->showStatusLegends();
+    }
+
+    /**
+     * Display the resources status table.
+     *
+     * @return void
+     */
+    protected function showResourcesStatus()
+    {
+        // Define the table headers.
+
+        $tblHeader = [
+            $this->styleOutput('Package Resource', 'blue'),
+            $this->styleOutput('Description', 'blue'),
+            $this->styleOutput('Status', 'blue'),
+            $this->styleOutput('Required', 'blue'),
+        ];
+
+        // Display the table.
+
+        $this->table($tblHeader, $this->getStatusTableRows());
+    }
+
+    /**
+     * Get the rows for the resources status table.
+     *
+     * @return array
+     */
+    protected function getStatusTableRows()
+    {
+        // Define the array that will hold the table rows.
 
         $tblContent = [];
 
@@ -128,19 +157,15 @@ class AdminLteStatusCommand extends Command
         // Finish the progress bar.
 
         $bar->finish();
+        $this->line('');
         $this->line('All resources checked succesfully!');
+        $this->line('');
 
-        // Display the resource status table.
-
-        $this->table($this->tblHeaders, $tblContent);
-
-        // Display the legends.
-
-        $this->displayStatusLegends();
+        return $tblContent;
     }
 
     /**
-     * Get the installation status of a package resource.
+     * Get the status of a package resource.
      *
      * @param PackageResource $resource The package resource to check
      * @return string The resource status
@@ -155,19 +180,48 @@ class AdminLteStatusCommand extends Command
             $status = $this->status['mismatch'];
         }
 
-        return $status['description'];
+        return $this->styleOutput($status['description'], $status['color']);
     }
 
     /**
-     * Display the legends of the resource status values.
+     * Display the legends of the status values.
      *
      * @return void
      */
-    protected function displayStatusLegends()
+    protected function showStatusLegends()
     {
+        $this->line('Legends:');
+
+        // Create a table for the legends.
+
+        $tblHeader = [
+            $this->styleOutput('Status', 'blue'),
+            $this->styleOutput('Description', 'blue'),
+        ];
+
+        $tblContent = [];
+
         foreach ($this->status as $status) {
-            $legend = implode(': ', array_values($status));
-            $this->comment($legend);
+            $tblContent[] = [
+                $this->styleOutput($status['description'], $status['color']),
+                $status['legend'],
+            ];
         }
+
+        // Display the legends table.
+
+        $this->table($tblHeader, $tblContent);
+    }
+
+    /**
+     * Give an output style to text.
+     *
+     * @param string $text The text to style
+     * @param string $color The output color for the text
+     * @return string The styled text
+     */
+    protected function styleOutput($text, $color)
+    {
+        return "<fg={$color}>{$text}</>";
     }
 }
