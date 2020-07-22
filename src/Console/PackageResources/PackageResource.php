@@ -23,20 +23,6 @@ abstract class PackageResource
     protected $messages;
 
     /**
-     * Path to the package root folder.
-     *
-     * @var string
-     */
-    protected $packagePath = __DIR__.'/../../../';
-
-    /**
-     * Path to the package stubs folder.
-     *
-     * @var string
-     */
-    protected $stubsPath = __DIR__.'/../stubs';
-
-    /**
      * Install or export the resource.
      *
      * @return void
@@ -86,52 +72,5 @@ abstract class PackageResource
         }
 
         return $this->messages[$key];
-    }
-
-    /**
-     * Get the fully qualified path to some package resource.
-     *
-     * @param string $path Relative path to the resource
-     * @return string Fully qualified path to the resource
-     */
-    protected function getPackagePath($path = null)
-    {
-        if (! $path) {
-            return $this->packagePath;
-        }
-
-        return $this->packagePath.DIRECTORY_SEPARATOR.$path;
-    }
-
-    /**
-     * Get the fully qualified path to some package stub resource.
-     *
-     * @param string $path Relative path to the stub resource
-     * @return string Fully qualified path to the stub resource
-     */
-    protected function getStubPath($path = null)
-    {
-        if (! $path) {
-            return $this->stubsPath;
-        }
-
-        return $this->stubsPath.DIRECTORY_SEPARATOR.$path;
-    }
-
-    /**
-     * Get the fully qualified path relative to the configured view path.
-     *
-     * @param string $path Relative path to some view
-     * @return string Fully qualified path to the view
-     */
-    protected function getViewPath($path = null)
-    {
-        $basePath = config('view.paths')[0] ?? resource_path('views');
-
-        if (! $path) {
-            return $basePath;
-        }
-
-        return $basePath.DIRECTORY_SEPARATOR.$path;
     }
 }

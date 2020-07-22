@@ -8,6 +8,20 @@ use Illuminate\Support\Str;
 class CommandHelper
 {
     /**
+     * Path to the package root folder.
+     *
+     * @var string
+     */
+    protected static $packagePath = __DIR__.'/../../';
+
+    /**
+     * Path to the package stubs folder.
+     *
+     * @var string
+     */
+    protected static $stubsPath = __DIR__.'/../Console/stubs';
+
+    /**
      * Ensure a directory exists by creating it when needed.
      *
      * @param string $dir The path of the directory
@@ -165,6 +179,53 @@ class CommandHelper
     public static function removeDirectory($dir)
     {
         return File::deleteDirectory($dir);
+    }
+
+    /**
+     * Get the fully qualified path to some package resource.
+     *
+     * @param string $path Relative path to the resource
+     * @return string Fully qualified path to the resource
+     */
+    public static function getPackagePath($path = null)
+    {
+        if (! $path) {
+            return self::$packagePath;
+        }
+
+        return self::$packagePath.DIRECTORY_SEPARATOR.$path;
+    }
+
+    /**
+     * Get the fully qualified path to some package stub resource.
+     *
+     * @param string $path Relative path to the stub resource
+     * @return string Fully qualified path to the stub resource
+     */
+    public static function getStubPath($path = null)
+    {
+        if (! $path) {
+            return self::$stubsPath;
+        }
+
+        return self::$stubsPath.DIRECTORY_SEPARATOR.$path;
+    }
+
+    /**
+     * Get the fully qualified path relative to the configured view path.
+     *
+     * @param string $path Relative path to some view
+     * @return string Fully qualified path to the view
+     */
+    public static function getViewPath($path = null)
+    {
+        $basePath = config('view.paths')[0] ?? resource_path('views');
+
+        if (! $path) {
+            return $basePath;
+        }
+
+        return $basePath.DIRECTORY_SEPARATOR.$path;
     }
 
     /**

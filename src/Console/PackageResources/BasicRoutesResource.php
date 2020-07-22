@@ -18,7 +18,7 @@ class BasicRoutesResource extends PackageResource
 
         $this->resource = [
             'description' => 'The package routes',
-            'source'      => $this->getStubPath('routes.stub'),
+            'source'      => CommandHelper::getStubPath('routes.stub'),
             'target'      => base_path('routes/web.php'),
             'required'    => false,
         ];

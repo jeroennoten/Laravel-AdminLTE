@@ -33,7 +33,7 @@ class AuthViewsResource extends PackageResource
         $this->resource = [
             'description' => 'The package authentication views',
             'source'      => $this->authViewsContent,
-            'target'      => $this->getViewPath('auth'),
+            'target'      => CommandHelper::getViewPath('auth'),
             'required'    => false,
         ];
 

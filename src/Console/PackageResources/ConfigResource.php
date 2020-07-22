@@ -18,7 +18,7 @@ class ConfigResource extends PackageResource
 
         $this->resource = [
             'description' => 'Default package configuration',
-            'source'      => $this->getPackagePath('config/adminlte.php'),
+            'source'      => CommandHelper::getPackagePath('config/adminlte.php'),
             'target'      => config_path('adminlte.php'),
             'required'    => true,
         ];

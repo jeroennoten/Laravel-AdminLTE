@@ -18,17 +18,6 @@ class CommandTestCase extends TestCase
     }
 
     /**
-     * Get the fully qualified path to some package resource.
-     *
-     * @param string $path Relative path to resource
-     * @return string Fully qualified path to resource
-     */
-    protected function packagePath($path)
-    {
-        return __DIR__.'/../../'.$path;
-    }
-
-    /**
      * Ensure a list of files/folders do not exists by deleting it.
      *
      * @param string $resources The files/folders paths.
@@ -80,7 +69,7 @@ class CommandTestCase extends TestCase
      */
     protected function installVendorAssets()
     {
-        $resource = $this->packagePath('vendor/almasaeed2010');
+        $resource = CommandHelper::getPackagePath('vendor/almasaeed2010');
         $target = base_path('vendor/almasaeed2010');
 
         // Check if vendor assets are already installed.

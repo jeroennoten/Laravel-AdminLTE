@@ -18,7 +18,7 @@ class TranslationsResource extends PackageResource
 
         $this->resource = [
             'description' => 'Default package translations',
-            'source'      => $this->getPackagePath('resources/lang'),
+            'source'      => CommandHelper::getPackagePath('resources/lang'),
             'target'      => resource_path('lang/vendor/adminlte'),
             'required'    => true,
         ];

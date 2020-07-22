@@ -18,8 +18,8 @@ class MainViewsResource extends PackageResource
 
         $this->resource = [
             'description' => 'The package main views',
-            'source'      => $this->getPackagePath('resources/views'),
-            'target'      => $this->getViewPath('vendor/adminlte'),
+            'source'      => CommandHelper::getPackagePath('resources/views'),
+            'target'      => CommandHelper::getViewPath('vendor/adminlte'),
             'required'    => false,
         ];
 

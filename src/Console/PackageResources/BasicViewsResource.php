@@ -28,7 +28,7 @@ class BasicViewsResource extends PackageResource
         $this->resource = [
             'description' => 'The package basic views',
             'source'      => $this->basicViewsContent,
-            'target'      => $this->getViewPath(),
+            'target'      => CommandHelper::getViewPath(),
             'required'    => false,
         ];
 
@@ -54,7 +54,7 @@ class BasicViewsResource extends PackageResource
         foreach ($this->resource['source'] as $file => $stub) {
             $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
             CommandHelper::ensureDirectoryExists(dirname($target));
-            copy($this->getStubPath($stub), $target);
+            copy(CommandHelper::getStubPath($stub), $target);
         }
     }
 
@@ -87,7 +87,7 @@ class BasicViewsResource extends PackageResource
     {
         foreach ($this->resource['source'] as $file => $stub) {
             $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
-            $content = file_get_contents($this->getStubPath($stub));
+            $content = file_get_contents(CommandHelper::getStubPath($stub));
 
             if (! $this->basicViewInstalled($target, $content)) {
                 return false;

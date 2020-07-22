@@ -10,8 +10,7 @@ class DummyResource extends PackageResource
         // Fill the resource data.
 
         $this->resource = [
-            'package_path' => $this->getPackagePath(),
-            'stub_path' => $this->getStubPath(),
+            'source' => 'source',
         ];
 
         // Fill the installation messages.
@@ -43,7 +42,7 @@ class InstallBasicTest extends CommandTestCase
     {
         $res = new DummyResource();
 
-        $this->assertNotNull($res->get('stub_path'));
+        $this->assertNotNull($res->get('source'));
         $this->assertNull($res->get('foo'));
     }
 
@@ -53,26 +52,6 @@ class InstallBasicTest extends CommandTestCase
 
         $this->assertNotNull($res->getInstallMessage('install'));
         $this->assertEmpty($res->getInstallMessage('foo'));
-    }
-
-    public function testResourceGetPackagePath()
-    {
-        $res = new DummyResource();
-
-        $this->assertEquals(
-            realpath($res->get('package_path')),
-            realpath(__DIR__.'/../../')
-        );
-    }
-
-    public function testResourceGetStubPath()
-    {
-        $res = new DummyResource();
-
-        $this->assertEquals(
-            realpath($res->get('stub_path')),
-            realpath(__DIR__.'/../../src/Console/stubs')
-        );
     }
 
     public function testInstallWithInvalidOption()
