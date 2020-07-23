@@ -106,10 +106,10 @@ class AdminLteStatusCommand extends Command
         // Define the table headers.
 
         $tblHeader = [
-            $this->styleOutput('Package Resource', 'blue'),
-            $this->styleOutput('Description', 'blue'),
-            $this->styleOutput('Status', 'blue'),
-            $this->styleOutput('Required', 'blue'),
+            $this->styleOutput('Package Resource', 'cyan'),
+            $this->styleOutput('Description', 'cyan'),
+            $this->styleOutput('Status', 'cyan'),
+            $this->styleOutput('Required', 'cyan'),
         ];
 
         // Get the table rows.
@@ -196,13 +196,13 @@ class AdminLteStatusCommand extends Command
      */
     protected function showStatusLegends()
     {
-        $this->line('Resource status legends:');
+        $this->line('Status legends:');
 
         // Create the table headers for the legends.
 
         $tblHeader = [
-            $this->styleOutput('Status', 'blue'),
-            $this->styleOutput('Description', 'blue'),
+            $this->styleOutput('Status', 'cyan'),
+            $this->styleOutput('Description', 'cyan'),
         ];
 
         // Create the table rows for the legends.
