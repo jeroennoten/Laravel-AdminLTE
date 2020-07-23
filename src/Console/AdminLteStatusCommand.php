@@ -35,23 +35,23 @@ class AdminLteStatusCommand extends Command
     protected $pkgResources;
 
     /**
-     * Array with the available resource status.
+     * Array with the possible resources statuses.
      *
      * @var array
      */
     protected $status = [
         'installed' => [
-            'description' => 'Installed',
+            'label' => 'Installed',
             'legend' => 'The package resource is correctly installed',
             'color' => 'green',
         ],
         'mismatch' => [
-            'description' => 'Mismatch',
+            'label' => 'Mismatch',
             'legend' => 'The installed resource mismatch the package resource (update available or resource modified)',
             'color' => 'yellow',
         ],
         'uninstalled' => [
-            'description' => 'Not Installed',
+            'label' => 'Not Installed',
             'legend' => 'The package resource is not installed',
             'color' => 'red',
         ],
@@ -86,7 +86,7 @@ class AdminLteStatusCommand extends Command
      */
     public function handle()
     {
-        // Display the resources status table.
+        // Display the resources installation status.
 
         $this->showResourcesStatus();
 
@@ -97,7 +97,7 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Display the resources status table.
+     * Display the resources status.
      *
      * @return void
      */
@@ -112,9 +112,14 @@ class AdminLteStatusCommand extends Command
             $this->styleOutput('Required', 'blue'),
         ];
 
+        // Get the table rows.
+
+        $tblContent = $this->getResourcesStatusRows();
+
         // Display the table.
 
-        $this->table($tblHeader, $this->getStatusTableRows());
+        $this->line('');
+        $this->table($tblHeader, $tblContent);
     }
 
     /**
@@ -122,7 +127,7 @@ class AdminLteStatusCommand extends Command
      *
      * @return array
      */
-    protected function getStatusTableRows()
+    protected function getResourcesStatusRows()
     {
         // Define the array that will hold the table rows.
 
@@ -149,7 +154,7 @@ class AdminLteStatusCommand extends Command
                 var_export($resource->get('required'), true),
             ];
 
-            // Advance the progress bar.
+            // Advance the progress bar one step.
 
             $bar->advance();
         }
@@ -159,13 +164,14 @@ class AdminLteStatusCommand extends Command
         $bar->finish();
         $this->line('');
         $this->line('All resources checked succesfully!');
-        $this->line('');
+
+        // Return the rows.
 
         return $tblContent;
     }
 
     /**
-     * Get the status of a package resource.
+     * Get the installation status of a package resource.
      *
      * @param PackageResource $resource The package resource to check
      * @return string The resource status
@@ -180,30 +186,32 @@ class AdminLteStatusCommand extends Command
             $status = $this->status['mismatch'];
         }
 
-        return $this->styleOutput($status['description'], $status['color']);
+        return $this->styleOutput($status['label'], $status['color']);
     }
 
     /**
-     * Display the legends of the status values.
+     * Display the legends of the possible status values.
      *
      * @return void
      */
     protected function showStatusLegends()
     {
-        $this->line('Legends:');
+        $this->line('Resource status legends:');
 
-        // Create a table for the legends.
+        // Create the table headers for the legends.
 
         $tblHeader = [
             $this->styleOutput('Status', 'blue'),
             $this->styleOutput('Description', 'blue'),
         ];
 
+        // Create the table rows for the legends.
+
         $tblContent = [];
 
         foreach ($this->status as $status) {
             $tblContent[] = [
-                $this->styleOutput($status['description'], $status['color']),
+                $this->styleOutput($status['label'], $status['color']),
                 $status['legend'],
             ];
         }
@@ -214,9 +222,9 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Give an output style to text.
+     * Give output style to some text.
      *
-     * @param string $text The text to style
+     * @param string $text The text to be styled
      * @param string $color The output color for the text
      * @return string The styled text
      */
