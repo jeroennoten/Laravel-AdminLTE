@@ -47,6 +47,22 @@ class ConfigResource extends PackageResource
     }
 
     /**
+     * Uninstall/Remove the resource.
+     *
+     * @return void
+     */
+    public function uninstall()
+    {
+        $target = $this->resource['target'];
+
+        // Uninstall the configuration file.
+
+        if (is_file($target)) {
+            unlink($target);
+        }
+    }
+
+    /**
      * Check if the resource already exists on the target destination.
      *
      * @return bool

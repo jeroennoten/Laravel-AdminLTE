@@ -6,10 +6,10 @@ abstract class PackageResource
 {
     /**
      * The resource data. Generally, a resource will contain the next keys:
-     * description: The resource description.
-     * source: The source of the resource.
-     * target: The target destination for the resource.
-     * required: Whether the resource is required for the package to work.
+     * - description: The resource description.
+     * - source: The source of the resource.
+     * - target: The target destination for the resource.
+     * - required: Whether the resource is required for the package to work.
      *
      * @var array
      */
@@ -28,6 +28,13 @@ abstract class PackageResource
      * @return void
      */
     abstract public function install();
+
+    /**
+     * Uninstall or remove the resource.
+     *
+     * @return void
+     */
+    abstract public function uninstall();
 
     /**
      * Check if the resource already exists on the target destination.

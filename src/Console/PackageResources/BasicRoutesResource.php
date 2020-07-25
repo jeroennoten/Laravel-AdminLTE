@@ -57,6 +57,25 @@ class BasicRoutesResource extends PackageResource
     }
 
     /**
+     * Uninstall/Remove the resource.
+     *
+     * @return void
+     */
+    public function uninstall()
+    {
+        $routes = file_get_contents($this->resource['source']);
+        $target = $this->resource['target'];
+
+        // If the target routes file exists, remove the package routes.
+
+        if (is_file($target)) {
+            $targetContent = file_get_contents($target);
+            $targetContent = str_replace($routes, '', $targetContent);
+            file_put_contents($target, $targetContent);
+        }
+    }
+
+    /**
      * Check if the resource already exists on the target destination.
      *
      * @return bool

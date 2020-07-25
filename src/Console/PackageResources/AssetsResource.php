@@ -104,6 +104,20 @@ class AssetsResource extends PackageResource
     }
 
     /**
+     * Uninstall/Remove the resource.
+     *
+     * @return void
+     */
+    public function uninstall()
+    {
+        // Uninstall the basic assets.
+
+        foreach ($this->resource['source'] as $asset) {
+            $this->uninstallAsset($asset);
+        }
+    }
+
+    /**
      * Check if the resource already exists on the target destination.
      *
      * @return bool
@@ -248,5 +262,22 @@ class AssetsResource extends PackageResource
         }
 
         return $installed;
+    }
+
+    /**
+     * Uninstall or remove the specified asset.
+     *
+     * @param array $asset An array with the asset data.
+     * @return void
+     */
+    protected function uninstallAsset($asset)
+    {
+        $target = $asset['target'];
+
+        // Uninstall the asset (actually, the target should be a folder).
+
+        if (is_dir($target)) {
+            CommandHelper::removeDirectory($target);
+        }
     }
 }

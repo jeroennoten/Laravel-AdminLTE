@@ -59,6 +59,24 @@ class BasicViewsResource extends PackageResource
     }
 
     /**
+     * Uninstall/Remove the resource.
+     *
+     * @return void
+     */
+    public function uninstall()
+    {
+        // Remove the package basic views.
+
+        foreach ($this->resource['source'] as $file => $tub) {
+            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+
+            if (is_file($target)) {
+                unlink($target);
+            }
+        }
+    }
+
+    /**
      * Check if the resource already exists on the target destination.
      *
      * @return bool

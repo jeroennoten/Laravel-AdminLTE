@@ -50,6 +50,22 @@ class MainViewsResource extends PackageResource
     }
 
     /**
+     * Uninstall/Remove the resource.
+     *
+     * @return void
+     */
+    public function uninstall()
+    {
+        $target = $this->resource['target'];
+
+        // Uninstall the package main views.
+
+        if (is_dir($target)) {
+            CommandHelper::removeDirectory($target);
+        }
+    }
+
+    /**
      * Check if the resource already exists on the target destination.
      *
      * @return bool
