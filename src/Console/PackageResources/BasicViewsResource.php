@@ -25,14 +25,12 @@ class BasicViewsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->resource = [
-            'description' => 'The package basic views',
-            'source'      => $this->basicViewsContent,
-            'target'      => CommandHelper::getViewPath(),
-            'required'    => false,
-        ];
+        $this->description = 'The default package basic views';
+        $this->source = $this->basicViewsContent;
+        $this->target = CommandHelper::getViewPath();
+        $this->required = false;
 
-        // Fill the installation messages.
+        // Fill the set of installation messages.
 
         $this->messages = [
             'install'   => 'Install the AdminLTE basic views?',
@@ -51,8 +49,8 @@ class BasicViewsResource extends PackageResource
         // Install the basic views. We going to replace the content of any
         // existing basic view.
 
-        foreach ($this->resource['source'] as $file => $stub) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $stub) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
             CommandHelper::ensureDirectoryExists(dirname($target));
             copy(CommandHelper::getStubPath($stub), $target);
         }
@@ -67,8 +65,8 @@ class BasicViewsResource extends PackageResource
     {
         // Remove the package basic views.
 
-        foreach ($this->resource['source'] as $file => $tub) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $tub) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (is_file($target)) {
                 unlink($target);
@@ -85,8 +83,8 @@ class BasicViewsResource extends PackageResource
     {
         // Check if any of the basic views already exists.
 
-        foreach ($this->resource['source'] as $file => $stub) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $stub) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (is_file($target)) {
                 return true;
@@ -103,8 +101,8 @@ class BasicViewsResource extends PackageResource
      */
     public function installed()
     {
-        foreach ($this->resource['source'] as $file => $stub) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $stub) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
             $content = file_get_contents(CommandHelper::getStubPath($stub));
 
             if (! $this->basicViewInstalled($target, $content)) {

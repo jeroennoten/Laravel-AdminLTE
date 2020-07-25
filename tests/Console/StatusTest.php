@@ -4,8 +4,8 @@ class StatusTest extends CommandTestCase
 {
     public function testBasicStatus()
     {
-        $configRes = $this->getResources()['config'];
-        $transRes = $this->getResources()['translations'];
+        $configRes = $this->getResources('config');
+        $transRes = $this->getResources('translations');
 
         // Install some resources.
 

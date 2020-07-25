@@ -22,9 +22,10 @@ class CommandTestCase extends TestCase
     /**
      * Get the array of resources.
      *
+     * @param string $name Name of the resource.
      * @return array
      */
-    protected function getResources()
+    protected function getResources($name = null)
     {
         if (! isset($this->resources)) {
             $this->resources = [
@@ -38,7 +39,7 @@ class CommandTestCase extends TestCase
             ];
         }
 
-        return $this->resources;
+        return $name ? $this->resources[$name] : $this->resources;
     }
 
     /**
@@ -69,7 +70,7 @@ class CommandTestCase extends TestCase
         // Create a dummy resource on the target destination. This will fire
         // an overwrite warning when trying to install the resource later.
 
-        $target = $res->get('target');
+        $target = $res->target;
 
         if ($resName === 'assets') {
             $target = $target.DIRECTORY_SEPARATOR.'adminlte';

@@ -16,14 +16,12 @@ class TranslationsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->resource = [
-            'description' => 'Default package translations',
-            'source'      => CommandHelper::getPackagePath('resources/lang'),
-            'target'      => resource_path('lang/vendor/adminlte'),
-            'required'    => true,
-        ];
+        $this->description = 'The default package translations files';
+        $this->source = CommandHelper::getPackagePath('resources/lang');
+        $this->target = resource_path('lang/vendor/adminlte');
+        $this->required = true;
 
-        // Fill the installation messages.
+        // Fill the set of installation messages.
 
         $this->messages = [
             'install'   => 'Install the package translations files?',
@@ -41,12 +39,7 @@ class TranslationsResource extends PackageResource
     {
         // Install the translations files.
 
-        CommandHelper::copyDirectory(
-            $this->resource['source'],
-            $this->resource['target'],
-            true,
-            true
-        );
+        CommandHelper::copyDirectory($this->source, $this->target, true, true);
     }
 
     /**
@@ -56,12 +49,10 @@ class TranslationsResource extends PackageResource
      */
     public function uninstall()
     {
-        $target = $this->resource['target'];
-
         // Uninstall the translation files.
 
-        if (is_dir($target)) {
-            CommandHelper::removeDirectory($target);
+        if (is_dir($this->target)) {
+            CommandHelper::removeDirectory($this->target);
         }
     }
 
@@ -72,7 +63,7 @@ class TranslationsResource extends PackageResource
      */
     public function exists()
     {
-        return is_dir($this->resource['target']);
+        return is_dir($this->target);
     }
 
     /**
@@ -83,8 +74,8 @@ class TranslationsResource extends PackageResource
     public function installed()
     {
         return (bool) CommandHelper::compareDirectories(
-            $this->resource['source'],
-            $this->resource['target'],
+            $this->source,
+            $this->target,
             true
         );
     }

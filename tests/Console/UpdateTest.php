@@ -4,7 +4,7 @@ class UpdateTest extends CommandTestCase
 {
     public function testUpdateAssets()
     {
-        $res = $this->getResources()['assets'];
+        $res = $this->getResources('assets');
 
         // Ensure the required vendor assets exists.
 
@@ -27,7 +27,7 @@ class UpdateTest extends CommandTestCase
 
     public function testUpdateAssetsOverwrite()
     {
-        $res = $this->getResources()['assets'];
+        $res = $this->getResources('assets');
 
         // Ensure the required vendor assets exists.
 

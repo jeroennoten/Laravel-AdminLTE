@@ -5,18 +5,39 @@ namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 abstract class PackageResource
 {
     /**
-     * The resource data. Generally, a resource will contain the next keys:
-     * - description: The resource description.
-     * - source: The source of the resource.
-     * - target: The target destination for the resource.
-     * - required: Whether the resource is required for the package to work.
+     * The package resource description. A litle summary of what this
+     * resource contains.
      *
-     * @var array
+     * @var string
      */
-    protected $resource;
+    public $description;
 
     /**
-     * The set of installation messages.
+     * The resource source. Usually the source will be a set of paths to files
+     * and/or folders.
+     *
+     * @var mixed
+     */
+    protected $source;
+
+    /**
+     * The resource target. The destination of the resource, usually a root
+     * folder or file.
+     *
+     * @var mixed
+     */
+    public $target;
+
+    /**
+     * Whether this resource is required for the package in order to work fine.
+     *
+     * @var bool
+     */
+    public $required;
+
+    /**
+     * The set of installation messages for this resource. Usually, the array
+     * should contains keys for 'install', 'overwrite' and 'success' messages.
      *
      * @var array
      */
@@ -51,25 +72,9 @@ abstract class PackageResource
     abstract public function installed();
 
     /**
-     * Get some resource data.
-     * TODO: We should do better, it is not fine to expose all resource data.
-     *
-     * @param string $key The keyword of the data to get from resource
-     * @return mixed
-     */
-    public function get($key)
-    {
-        if (! isset($this->resource[$key])) {
-            return;
-        }
-
-        return $this->resource[$key];
-    }
-
-    /**
      * Get an installation message.
      *
-     * @param string $key The message keyword.
+     * @param string $key The message keyword
      * @return string
      */
     public function getInstallMessage($key)

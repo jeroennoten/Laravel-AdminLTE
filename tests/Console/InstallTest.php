@@ -8,17 +8,9 @@ class InstallTest extends CommandTestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testResourceGetData()
-    {
-        $res = $this->getResources()['config'];
-
-        $this->assertNotNull($res->get('target'));
-        $this->assertNull($res->get('foo'));
-    }
-
     public function testResourceGetInstallMsg()
     {
-        $res = $this->getResources()['config'];
+        $res = $this->getResources('config');
 
         $this->assertNotNull($res->getInstallMessage('install'));
         $this->assertEmpty($res->getInstallMessage('foo'));
@@ -156,9 +148,9 @@ class InstallTest extends CommandTestCase
     public function testInstallOnlyMultipleResources()
     {
         $resources = [
-            $this->getResources()['auth_views'],
-            $this->getResources()['config'],
-            $this->getResources()['translations'],
+            $this->getResources('auth_views'),
+            $this->getResources('config'),
+            $this->getResources('translations'),
         ];
 
         // Uninstall the resources.
@@ -193,9 +185,9 @@ class InstallTest extends CommandTestCase
     public function testInstallWithoutType()
     {
         $resources = [
-            $this->getResources()['assets'],
-            $this->getResources()['config'],
-            $this->getResources()['translations'],
+            $this->getResources('assets'),
+            $this->getResources('config'),
+            $this->getResources('translations'),
         ];
 
         // Ensure the required vendor assets exists.
@@ -228,10 +220,10 @@ class InstallTest extends CommandTestCase
     public function testInstallWithTypeEnhanced()
     {
         $resources = [
-            $this->getResources()['assets'],
-            $this->getResources()['config'],
-            $this->getResources()['translations'],
-            $this->getResources()['auth_views'],
+            $this->getResources('assets'),
+            $this->getResources('config'),
+            $this->getResources('translations'),
+            $this->getResources('auth_views'),
         ];
 
         // Ensure the required vendor assets exists.
@@ -264,12 +256,12 @@ class InstallTest extends CommandTestCase
     public function testInstallWithTypeFull()
     {
         $resources = [
-            $this->getResources()['assets'],
-            $this->getResources()['config'],
-            $this->getResources()['translations'],
-            $this->getResources()['auth_views'],
-            $this->getResources()['basic_views'],
-            $this->getResources()['basic_routes'],
+            $this->getResources('assets'),
+            $this->getResources('config'),
+            $this->getResources('translations'),
+            $this->getResources('auth_views'),
+            $this->getResources('basic_views'),
+            $this->getResources('basic_routes'),
         ];
 
         // Ensure the required vendor assets exists.
@@ -308,9 +300,9 @@ class InstallTest extends CommandTestCase
     public function testInstallWithAdditionalResource()
     {
         $baseResources = [
-            $this->getResources()['assets'],
-            $this->getResources()['config'],
-            $this->getResources()['translations'],
+            $this->getResources('assets'),
+            $this->getResources('config'),
+            $this->getResources('translations'),
         ];
 
         $newRes = ['main_views', 'auth_views', 'basic_views', 'basic_routes'];
@@ -325,7 +317,7 @@ class InstallTest extends CommandTestCase
 
             $allResources = array_merge(
                 $baseResources,
-                [$this->getResources()[$name]]
+                [$this->getResources($name)]
             );
 
             // Ensure the target resources do not exists.
@@ -355,11 +347,11 @@ class InstallTest extends CommandTestCase
     public function testInstallWithMultipleAdditionalResources()
     {
         $resources = [
-            $this->getResources()['assets'],
-            $this->getResources()['config'],
-            $this->getResources()['translations'],
-            $this->getResources()['basic_routes'],
-            $this->getResources()['auth_views'],
+            $this->getResources('assets'),
+            $this->getResources('config'),
+            $this->getResources('translations'),
+            $this->getResources('basic_routes'),
+            $this->getResources('auth_views'),
         ];
 
         // Ensure the required vendor assets exists.

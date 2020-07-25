@@ -16,14 +16,12 @@ class MainViewsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->resource = [
-            'description' => 'The package main views',
-            'source'      => CommandHelper::getPackagePath('resources/views'),
-            'target'      => CommandHelper::getViewPath('vendor/adminlte'),
-            'required'    => false,
-        ];
+        $this->description = 'The default package main views';
+        $this->source = CommandHelper::getPackagePath('resources/views');
+        $this->target = CommandHelper::getViewPath('vendor/adminlte');
+        $this->required = false;
 
-        // Fill the installation messages.
+        // Fill the set of installation messages.
 
         $this->messages = [
             'install'   => 'Install the AdminLTE main views?',
@@ -41,12 +39,7 @@ class MainViewsResource extends PackageResource
     {
         // Install the main views.
 
-        CommandHelper::copyDirectory(
-            $this->resource['source'],
-            $this->resource['target'],
-            true,
-            true
-        );
+        CommandHelper::copyDirectory($this->source, $this->target, true, true);
     }
 
     /**
@@ -56,12 +49,10 @@ class MainViewsResource extends PackageResource
      */
     public function uninstall()
     {
-        $target = $this->resource['target'];
-
         // Uninstall the package main views.
 
-        if (is_dir($target)) {
-            CommandHelper::removeDirectory($target);
+        if (is_dir($this->target)) {
+            CommandHelper::removeDirectory($this->target);
         }
     }
 
@@ -72,7 +63,7 @@ class MainViewsResource extends PackageResource
      */
     public function exists()
     {
-        return is_dir($this->resource['target']);
+        return is_dir($this->target);
     }
 
     /**
@@ -83,8 +74,8 @@ class MainViewsResource extends PackageResource
     public function installed()
     {
         return (bool) CommandHelper::compareDirectories(
-            $this->resource['source'],
-            $this->resource['target'],
+            $this->source,
+            $this->target,
             true
         );
     }

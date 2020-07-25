@@ -30,14 +30,12 @@ class AuthViewsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->resource = [
-            'description' => 'The package authentication views',
-            'source'      => $this->authViewsContent,
-            'target'      => CommandHelper::getViewPath('auth'),
-            'required'    => false,
-        ];
+        $this->description = 'The default package authentication views';
+        $this->source = $this->authViewsContent;
+        $this->target = CommandHelper::getViewPath('auth');
+        $this->required = false;
 
-        // Fill the installation messages.
+        // Fill the set of installation messages.
 
         $this->messages = [
             'install'   => 'Install the AdminLTE authentication views?',
@@ -56,8 +54,8 @@ class AuthViewsResource extends PackageResource
         // Install the authentication views. We going to replace the content
         // of any existing authentication view.
 
-        foreach ($this->resource['source'] as $file => $content) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $content) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
             CommandHelper::ensureDirectoryExists(dirname($target));
             file_put_contents($target, $content);
         }
@@ -72,8 +70,8 @@ class AuthViewsResource extends PackageResource
     {
         // Remove the package authentication views.
 
-        foreach ($this->resource['source'] as $file => $content) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $content) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (is_file($target)) {
                 unlink($target);
@@ -90,8 +88,8 @@ class AuthViewsResource extends PackageResource
     {
         // Check if any of the authentication views already exists.
 
-        foreach ($this->resource['source'] as $file => $content) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $content) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (is_file($target)) {
                 return true;
@@ -108,8 +106,8 @@ class AuthViewsResource extends PackageResource
      */
     public function installed()
     {
-        foreach ($this->resource['source'] as $file => $content) {
-            $target = $this->resource['target'].DIRECTORY_SEPARATOR.$file;
+        foreach ($this->source as $file => $content) {
+            $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (! $this->authViewInstalled($target, $content)) {
                 return false;

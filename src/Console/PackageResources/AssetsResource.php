@@ -14,9 +14,15 @@ class AssetsResource extends PackageResource
      */
     public function __construct()
     {
-        // Define the array of required assets.
+        // Fill the resource data.
 
-        $assets = [
+        $this->description = 'The AdminLTE required assets';
+        $this->target = public_path('vendor');
+        $this->required = true;
+
+        // Define the array of required assets (source).
+
+        $this->source = [
             'adminlte' => [
                 'name' => 'AdminLTE v3',
                 'source' => base_path('vendor/almasaeed2010/adminlte/'),
@@ -71,16 +77,7 @@ class AssetsResource extends PackageResource
             ],
         ];
 
-        // Fill the resource data.
-
-        $this->resource = [
-            'description' => 'AdminLTE required assets',
-            'source'      => $assets,
-            'target'      => public_path('vendor'),
-            'required'    => true,
-        ];
-
-        // Fill the installation messages.
+        // Fill the set of installation messages.
 
         $this->messages = [
             'install'   => 'Install the basic package assets?',
@@ -96,9 +93,9 @@ class AssetsResource extends PackageResource
      */
     public function install()
     {
-        // Install the basic assets.
+        // Install the AdminLTE basic assets.
 
-        foreach ($this->resource['source'] as $asset) {
+        foreach ($this->source as $asset) {
             $this->installAsset($asset);
         }
     }
@@ -110,9 +107,9 @@ class AssetsResource extends PackageResource
      */
     public function uninstall()
     {
-        // Uninstall the basic assets.
+        // Uninstall the AdminLTE basic assets.
 
-        foreach ($this->resource['source'] as $asset) {
+        foreach ($this->source as $asset) {
             $this->uninstallAsset($asset);
         }
     }
@@ -124,7 +121,7 @@ class AssetsResource extends PackageResource
      */
     public function exists()
     {
-        foreach ($this->resource['source'] as $asset) {
+        foreach ($this->source as $asset) {
             if ($this->assetExists($asset)) {
                 return true;
             }
@@ -140,7 +137,7 @@ class AssetsResource extends PackageResource
      */
     public function installed()
     {
-        foreach ($this->resource['source'] as $asset) {
+        foreach ($this->source as $asset) {
             if (! $this->assetInstalled($asset)) {
                 return false;
             }
@@ -150,14 +147,14 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Install the specified AdminLte asset.
+     * Install the specified AdminLTE asset.
      *
-     * @param array $asset An array with the asset data.
+     * @param array $asset An array with the asset data
      * @return void
      */
     protected function installAsset($asset)
     {
-        // Check if we need to export the entire asset.
+        // Check if we just need to export the entire asset.
 
         if (! isset($asset['resources'])) {
             $this->exportResource($asset);
@@ -176,9 +173,9 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Exports the specified resource (file/folder).
+     * Exports the specified resource (usually a file or folder).
      *
-     * @param array $res An array with the resource data.
+     * @param array $res An array with the resource data
      * @return void
      */
     protected function exportResource($res)
@@ -200,9 +197,9 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Check if the asset already exists on the target destination.
+     * Check if the specified asset already exists on the target destination.
      *
-     * @param array $asset An array with the asset data.
+     * @param array $asset An array with the asset data
      * @return bool
      */
     protected function assetExists($asset)
@@ -211,9 +208,9 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Check if the asset is correctly installed.
+     * Check if the specified asset is correctly installed.
      *
-     * @param array $asset An array with the asset data.
+     * @param array $asset An array with the asset data
      * @return bool
      */
     protected function assetInstalled($asset)
@@ -240,7 +237,7 @@ class AssetsResource extends PackageResource
     /**
      * Check if the specified resource is correctly installed.
      *
-     * @param array $res An array with the resource data.
+     * @param array $res An array with the resource data
      * @return bool
      */
     protected function resourceInstalled($res)
@@ -267,7 +264,7 @@ class AssetsResource extends PackageResource
     /**
      * Uninstall or remove the specified asset.
      *
-     * @param array $asset An array with the asset data.
+     * @param array $asset An array with the asset data
      * @return void
      */
     protected function uninstallAsset($asset)

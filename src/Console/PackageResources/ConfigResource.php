@@ -16,14 +16,12 @@ class ConfigResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->resource = [
-            'description' => 'Default package configuration',
-            'source'      => CommandHelper::getPackagePath('config/adminlte.php'),
-            'target'      => config_path('adminlte.php'),
-            'required'    => true,
-        ];
+        $this->description = 'The default package configuration file';
+        $this->source = CommandHelper::getPackagePath('config/adminlte.php');
+        $this->target = config_path('adminlte.php');
+        $this->required = true;
 
-        // Fill the installation messages.
+        // Fill the set of installation messages.
 
         $this->messages = [
             'install'   => 'Install the package config file?',
@@ -41,9 +39,8 @@ class ConfigResource extends PackageResource
     {
         // Install the configuration file.
 
-        $target = $this->resource['target'];
-        CommandHelper::ensureDirectoryExists(dirname($target));
-        copy($this->resource['source'], $target);
+        CommandHelper::ensureDirectoryExists(dirname($this->target));
+        copy($this->source, $this->target);
     }
 
     /**
@@ -53,12 +50,10 @@ class ConfigResource extends PackageResource
      */
     public function uninstall()
     {
-        $target = $this->resource['target'];
-
         // Uninstall the configuration file.
 
-        if (is_file($target)) {
-            unlink($target);
+        if (is_file($this->target)) {
+            unlink($this->target);
         }
     }
 
@@ -69,7 +64,7 @@ class ConfigResource extends PackageResource
      */
     public function exists()
     {
-        return is_file($this->resource['target']);
+        return is_file($this->target);
     }
 
     /**
@@ -79,9 +74,6 @@ class ConfigResource extends PackageResource
      */
     public function installed()
     {
-        return CommandHelper::compareFiles(
-            $this->resource['source'],
-            $this->resource['target']
-        );
+        return CommandHelper::compareFiles($this->source, $this->target);
     }
 }

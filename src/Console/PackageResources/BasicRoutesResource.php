@@ -16,12 +16,10 @@ class BasicRoutesResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->resource = [
-            'description' => 'The package routes',
-            'source'      => CommandHelper::getStubPath('routes.stub'),
-            'target'      => base_path('routes/web.php'),
-            'required'    => false,
-        ];
+        $this->description = 'The package routes';
+        $this->source = CommandHelper::getStubPath('routes.stub');
+        $this->target = base_path('routes/web.php');
+        $this->required = false;
 
         // Fill the installation messages.
 
@@ -47,13 +45,12 @@ class BasicRoutesResource extends PackageResource
 
         // Get the routes to install.
 
-        $routes = file_get_contents($this->resource['source']);
+        $routes = file_get_contents($this->source);
 
         // Add the routes.
 
-        $target = $this->resource['target'];
-        CommandHelper::ensureDirectoryExists(dirname($target));
-        file_put_contents($target, $routes, FILE_APPEND);
+        CommandHelper::ensureDirectoryExists(dirname($this->target));
+        file_put_contents($this->target, $routes, FILE_APPEND);
     }
 
     /**
@@ -63,15 +60,14 @@ class BasicRoutesResource extends PackageResource
      */
     public function uninstall()
     {
-        $routes = file_get_contents($this->resource['source']);
-        $target = $this->resource['target'];
+        $routes = file_get_contents($this->source);
 
         // If the target routes file exists, remove the package routes.
 
-        if (is_file($target)) {
-            $targetContent = file_get_contents($target);
+        if (is_file($this->target)) {
+            $targetContent = file_get_contents($this->target);
             $targetContent = str_replace($routes, '', $targetContent);
-            file_put_contents($target, $targetContent);
+            file_put_contents($this->target, $targetContent);
         }
     }
 
@@ -82,18 +78,17 @@ class BasicRoutesResource extends PackageResource
      */
     public function exists()
     {
-        $routes = file_get_contents($this->resource['source']);
-        $target = $this->resource['target'];
+        $routes = file_get_contents($this->source);
 
         // First, check if the target routes file exists.
 
-        if (! is_file($target)) {
+        if (! is_file($this->target)) {
             return false;
         }
 
         // Now, check if the target file already contains the routes.
 
-        $targetContent = file_get_contents($target);
+        $targetContent = file_get_contents($this->target);
 
         return (strpos($targetContent, $routes) !== false);
     }

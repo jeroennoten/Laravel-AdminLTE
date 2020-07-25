@@ -149,9 +149,9 @@ class AdminLteStatusCommand extends Command
 
             $tblContent[] = [
                 $name,
-                $resource->get('description'),
+                $resource->description,
                 $this->getResourceStatus($resource),
-                var_export($resource->get('required'), true),
+                var_export($resource->required, true),
             ];
 
             // Advance the progress bar one step.
