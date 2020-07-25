@@ -1,17 +1,11 @@
 <?php
 
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
-
 class StatusTest extends CommandTestCase
 {
     public function testBasicStatus()
     {
-        $configRes = new ConfigResource();
-        $transRes = new TranslationsResource();
-
-        $configTarget = $configRes->get('target');
-        $transTarget = $transRes->get('target');
+        $configRes = $this->getResources()['config'];
+        $transRes = $this->getResources()['translations'];
 
         // Install some resources.
 
@@ -19,14 +13,14 @@ class StatusTest extends CommandTestCase
 
         // Change the config file.
 
-        $this->ensureResourceExists($configTarget);
+        $this->createDummyResource('config', $configRes);
 
         // Ensure state is correct.
 
         $this->assertFalse($configRes->installed());
         $this->assertTrue($transRes->installed());
 
-        // Run the check of the resource status.
+        // Run the check of the resources status.
 
         $this->artisan('adminlte:status')
              ->expectsOutput('Checking the resources installation ...')
@@ -35,6 +29,7 @@ class StatusTest extends CommandTestCase
 
         // Clear installed resources.
 
-        $this->ensureResourcesNotExists($configTarget, $transTarget);
+        $configRes->uninstall();
+        $transRes->uninstall();
     }
 }

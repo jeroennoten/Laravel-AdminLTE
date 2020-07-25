@@ -1,10 +1,46 @@
 <?php
 
-use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
 
 class CommandTestCase extends TestCase
 {
+    /**
+     * Array to store the set of resources.
+     *
+     * @var array
+     */
+    protected $resources;
+
+    /**
+     * Get the array of resources.
+     *
+     * @return array
+     */
+    protected function getResources()
+    {
+        if (! isset($this->resources)) {
+            $this->resources = [
+                'assets'       => new AssetsResource(),
+                'config'       => new ConfigResource(),
+                'translations' => new TranslationsResource(),
+                'main_views'   => new MainViewsResource(),
+                'auth_views'   => new AuthViewsResource(),
+                'basic_views'  => new BasicViewsResource(),
+                'basic_routes' => new BasicRoutesResource(),
+            ];
+        }
+
+        return $this->resources;
+    }
+
     /**
      * Get package providers.
      *
@@ -18,47 +54,59 @@ class CommandTestCase extends TestCase
     }
 
     /**
-     * Ensure a list of files/folders do not exists by deleting it.
+     * Create dummy files for a particular resource.
      *
-     * @param string $resources The files/folders paths.
-     * @return void.
+     * @param string $resName
+     * @param PackageResource $res
+     * @return void
      */
-    protected function ensureResourcesNotExists(...$resources)
+    protected function createDummyResource($resName, $res)
     {
-        foreach ($resources as $res) {
-            $this->ensureResourceNotExists($res);
+        // Uninstall the resource.
+
+        $res->uninstall();
+
+        // Create a dummy resource on the target destination. This will fire
+        // an overwrite warning when trying to install the resource later.
+
+        $target = $res->get('target');
+
+        if ($resName === 'assets') {
+            $target = $target.DIRECTORY_SEPARATOR.'adminlte';
+            CommandHelper::EnsureDirectoryExists($target);
+        } elseif ($resName === 'config') {
+            $this->createDummyFile($target);
+        } elseif ($resName === 'translations') {
+            $target = $target.DIRECTORY_SEPARATOR.'en/adminlte.php';
+            $this->createDummyFile($target);
+        } elseif ($resName === 'main_views') {
+            $target = $target.DIRECTORY_SEPARATOR.'master.blade.php';
+            $this->createDummyFile($target);
+        } elseif ($resName === 'auth_views') {
+            $target = $target.DIRECTORY_SEPARATOR.'login.blade.php';
+            $this->createDummyFile($target);
+        } elseif ($resName === 'basic_views') {
+            $target = $target.DIRECTORY_SEPARATOR.'home.blade.php';
+            $this->createDummyFile($target);
+        } elseif ($resName === 'basic_routes') {
+            $stubFile = CommandHelper::getStubPath('routes.stub');
+            $content = file_get_contents($stubFile);
+            $this->createDummyFile($target, $content);
         }
     }
 
     /**
-     * Ensure a file/folder do not exists by deleting it.
+     * Create a dummy file with some content.
      *
-     * @param string $path Absolute path to the resource
+     * @param string $filePath
+     * @param string $content
      * @return void
      */
-    protected function ensureResourceNotExists($path)
+    protected function createDummyFile($filePath, $content = null)
     {
-        if (is_file($path)) {
-            File::delete($path);
-        } elseif (is_dir($path)) {
-            File::deleteDirectory($path);
-        }
-    }
-
-    /**
-     * Ensure a file/folder exists by creating it.
-     *
-     * @param string $path absolute path to the resource
-     * @return void
-     */
-    protected function ensureResourceExists($path)
-    {
-        if (pathinfo($path, PATHINFO_EXTENSION)) {
-            CommandHelper::ensureDirectoryExists(dirname($path));
-            file_put_contents($path, 'stub-content');
-        } else {
-            CommandHelper::ensureDirectoryExists($path);
-        }
+        $content = $content ?? 'dummy-content';
+        CommandHelper::ensureDirectoryExists(dirname($filePath));
+        file_put_contents($filePath, $content);
     }
 
     /**

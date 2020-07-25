@@ -1,22 +1,18 @@
 <?php
 
-use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
-
 class UpdateTest extends CommandTestCase
 {
     public function testUpdateAssets()
     {
-        $res = new AssetsResource();
-        $target = $res->get('target');
+        $res = $this->getResources()['assets'];
 
         // Ensure the required vendor assets exists.
 
         $this->installVendorAssets();
 
-        // Ensure the target resources do not exists.
+        // Ensure the target resource do not exists.
 
-        $this->ensureResourceNotExists($target);
+        $res->uninstall();
 
         // Update resource using the artisan command.
 
@@ -25,13 +21,13 @@ class UpdateTest extends CommandTestCase
 
         // Clear installed resources.
 
-        $this->ensureResourceNotExists($target);
+        $res->uninstall();
+        $this->assertFalse($res->installed());
     }
 
     public function testUpdateAssetsOverwrite()
     {
-        $res = new AssetsResource();
-        $target = $res->get('target');
+        $res = $this->getResources()['assets'];
 
         // Ensure the required vendor assets exists.
 
@@ -39,8 +35,7 @@ class UpdateTest extends CommandTestCase
 
         // Ensure a target resource exists.
 
-        $adminAssetTarget = $res->get('source')['adminlte']['target'];
-        $this->ensureResourceExists($adminAssetTarget);
+        $this->createDummyResource('assets', $res);
 
         // Update resource using the artisan command.
 
@@ -49,6 +44,7 @@ class UpdateTest extends CommandTestCase
 
         // Clear installed resources.
 
-        $this->ensureResourceNotExists($target);
+        $res->uninstall();
+        $this->assertFalse($res->installed());
     }
 }
