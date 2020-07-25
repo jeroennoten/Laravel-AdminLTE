@@ -42,7 +42,7 @@ class AdminLteStatusCommand extends Command
     protected $status = [
         'installed' => [
             'label' => 'Installed',
-            'legend' => 'The package resource is correctly installed',
+            'legend' => 'The resource is installed and matches with the default package resource',
             'color' => 'green',
         ],
         'mismatch' => [
