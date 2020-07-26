@@ -190,7 +190,7 @@ You can also install the package **Authentication Views** adding `--type=enhance
 
 - `--only=*`: To install only specific resources, the available resources are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option. Also you can use this option multiple times, for example:
   ```sh
-  php artisan adminlte:install --only=config --with=main_views
+  php artisan adminlte:install --only=config --only=main_views
   ```
 
 - `--with=*`: To install with additional resources, the available resources are: **main_views**, **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, examples:
@@ -239,7 +239,7 @@ You can list all available plugins, or install/update/remove all or specific plu
 
 ### 5.3 The `adminlte:update` Command
 
-This command is only a shortcut for `adminlte:install --force --only=assets`.
+This command is only a shortcut for `php artisan adminlte:install --force --only=assets`.
 
 > Note this command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refers to section [Updating](#3-updating) to check how to make a complete update.
 
