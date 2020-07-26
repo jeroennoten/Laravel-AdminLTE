@@ -61,9 +61,7 @@ class InstallTest extends CommandTestCase
     {
         // We can't do these test on old laravel versions.
 
-        $cmd = new ReflectionClass('Illuminate\Testing\PendingCommand');
-
-        if (! $cmd->hasMethod('expectsConfirmation')) {
+        if (! class_exists('Illuminate\Testing\PendingCommand')) {
             $this->assertTrue(true);
 
             return;
@@ -109,9 +107,7 @@ class InstallTest extends CommandTestCase
     {
         // We can't do these test on old laravel versions.
 
-        $cmd = new ReflectionClass('Illuminate\Testing\PendingCommand');
-
-        if (! $cmd->hasMethod('expectsConfirmation')) {
+        if (! class_exists('Illuminate\Testing\PendingCommand')) {
             $this->assertTrue(true);
 
             return;
