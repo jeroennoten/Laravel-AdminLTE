@@ -2,7 +2,6 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class AssetsResource extends PackageResource

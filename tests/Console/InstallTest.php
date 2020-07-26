@@ -62,7 +62,6 @@ class InstallTest extends CommandTestCase
         // Test installation of the resources when using --interactive.
 
         foreach ($this->getResources() as $name => $res) {
-
             $confirmMsg = $res->getInstallMessage('install');
 
             // Ensure the required vendor assets exists, if needed.
@@ -101,7 +100,6 @@ class InstallTest extends CommandTestCase
         // Test installation of the resources when an overwrite will occurs.
 
         foreach ($this->getResources() as $name => $res) {
-
             $confirmMsg = $res->getInstallMessage('overwrite');
 
             // Ensure the required vendor assets exists, if needed.
@@ -314,7 +312,6 @@ class InstallTest extends CommandTestCase
         // Test using --with over the array of additional resources.
 
         foreach ($newRes as $name) {
-
             $allResources = array_merge(
                 $baseResources,
                 [$this->getResources($name)]

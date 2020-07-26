@@ -2,7 +2,6 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class BasicRoutesResource extends PackageResource
@@ -90,7 +89,7 @@ class BasicRoutesResource extends PackageResource
 
         $targetContent = file_get_contents($this->target);
 
-        return (strpos($targetContent, $routes) !== false);
+        return strpos($targetContent, $routes) !== false;
     }
 
     /**
