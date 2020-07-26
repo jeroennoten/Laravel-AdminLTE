@@ -59,6 +59,15 @@ class InstallTest extends CommandTestCase
 
     public function testInstallOnlyInteractive()
     {
+        // We can't do these test on old laravel versions.
+
+        $cmd = new ReflectionClass('Illuminate\Testing\PendingCommand');
+
+        if (! $cmd->hasMethod('expectsConfirmation')) {
+            $this->assertTrue(true);
+            return;
+        }
+
         // Test installation of the resources when using --interactive.
 
         foreach ($this->getResources() as $name => $res) {
@@ -97,6 +106,15 @@ class InstallTest extends CommandTestCase
 
     public function testInstallOnlyOverwrite()
     {
+        // We can't do these test on old laravel versions.
+
+        $cmd = new ReflectionClass('Illuminate\Testing\PendingCommand');
+
+        if (! $cmd->hasMethod('expectsConfirmation')) {
+            $this->assertTrue(true);
+            return;
+        }
+
         // Test installation of the resources when an overwrite will occurs.
 
         foreach ($this->getResources() as $name => $res) {
