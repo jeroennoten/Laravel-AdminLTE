@@ -65,6 +65,7 @@ class InstallTest extends CommandTestCase
 
         if (! $cmd->hasMethod('expectsConfirmation')) {
             $this->assertTrue(true);
+
             return;
         }
 
@@ -112,6 +113,7 @@ class InstallTest extends CommandTestCase
 
         if (! $cmd->hasMethod('expectsConfirmation')) {
             $this->assertTrue(true);
+
             return;
         }
 
