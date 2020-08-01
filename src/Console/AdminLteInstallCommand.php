@@ -22,7 +22,7 @@ class AdminLteInstallCommand extends Command
         {--type=basic : The installation type: basic (default), enhanced or full}
         {--only=* : To install only specific resources: assets, config, translations, auth_views, basic_views, basic_routes or main_views. Can\'t be used with option --with}
         {--with=* : To install with additional resources: auth_views, basic_views, basic_routes or main_views}
-        {--force : Force the overwrite of existing files}
+        {--force : To force the overwrite of existing files}
         {--interactive : The installation will guide you through the process}';
 
     /**
