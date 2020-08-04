@@ -35,7 +35,7 @@ class AdminLtePluginCommand extends Command
     /**
      * The plugins package resource instance.
      *
-     * @var PackageResource
+     * @var PluginsResource
      */
     protected $plugins;
 
@@ -451,7 +451,7 @@ class AdminLtePluginCommand extends Command
     /**
      * Show the summary table for some operation.
      *
-     * @param string $rows The table rows.
+     * @param array $rows The table rows.
      * @return void
      */
     protected function showSummaryTable($rows)
