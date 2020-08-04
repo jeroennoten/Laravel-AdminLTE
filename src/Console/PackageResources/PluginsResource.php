@@ -376,7 +376,7 @@ class PluginsResource extends PackageResource
     }
 
     /**
-     * Exports the specified resource (usually a file or folder).
+     * Exports the specified resource (usually a folder).
      *
      * @param array $res An array with the resource data
      * @return void
@@ -393,9 +393,6 @@ class PluginsResource extends PackageResource
                 $res['recursive'] ?? true,
                 $res['ignore'] ?? []
             );
-        } elseif (is_file($res['source'])) {
-            CommandHelper::ensureDirectoryExists(dirname($res['target']));
-            copy($res['source'], $res['target']);
         }
     }
 
@@ -466,11 +463,6 @@ class PluginsResource extends PackageResource
                 $res['recursive'] ?? true,
                 $res['ignore'] ?? []
             );
-        } elseif (is_file($res['source'])) {
-            $installed = CommandHelper::compareFiles(
-                $res['source'],
-                $res['target']
-            );
         }
 
         return $installed;
@@ -500,7 +492,7 @@ class PluginsResource extends PackageResource
     }
 
     /**
-     * Removes the specified resource (usually a file or folder).
+     * Removes the specified resource (usually a folder).
      *
      * @param array $res An array with the resource data
      * @return void
@@ -511,8 +503,6 @@ class PluginsResource extends PackageResource
 
         if (is_dir($target)) {
             CommandHelper::removeDirectory($target);
-        } elseif (is_file($target)) {
-            unlink($target);
         }
     }
 }
