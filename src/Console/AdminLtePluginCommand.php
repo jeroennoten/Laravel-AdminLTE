@@ -360,6 +360,7 @@ class AdminLtePluginCommand extends Command
         // Install the plugin.
 
         $this->plugins->install($pluginKey);
+
         return true;
     }
 
@@ -443,6 +444,7 @@ class AdminLtePluginCommand extends Command
         // Remove the plugin.
 
         $this->plugins->uninstall($pluginKey);
+
         return true;
     }
 

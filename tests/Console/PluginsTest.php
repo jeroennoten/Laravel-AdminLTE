@@ -14,8 +14,8 @@ class PluginsTest extends CommandTestCase
     {
         $plugins = new PluginsResource();
 
-        $this->assertFalse($plugins->exists("dummy"));
-        $this->assertFalse($plugins->installed("dummy"));
+        $this->assertFalse($plugins->exists('dummy'));
+        $this->assertFalse($plugins->installed('dummy'));
     }
 
     public function testWithInvalidOperation()
@@ -44,7 +44,7 @@ class PluginsTest extends CommandTestCase
 
         // Test install all the plugins.
 
-        $this->artisan("adminlte:plugins install");
+        $this->artisan('adminlte:plugins install');
 
         // Check that all the plugins are installed.
 
@@ -54,7 +54,7 @@ class PluginsTest extends CommandTestCase
 
         // Test uninstall all the plugins.
 
-        $this->artisan("adminlte:plugins remove");
+        $this->artisan('adminlte:plugins remove');
 
         // Check that all the plugins are removed.
 
@@ -76,7 +76,7 @@ class PluginsTest extends CommandTestCase
 
         // Test install the plugins.
 
-        $this->artisan("adminlte:plugins install --plugin=datatables --plugin=dummy --plugin=icheckBootstrap")
+        $this->artisan('adminlte:plugins install --plugin=datatables --plugin=dummy --plugin=icheckBootstrap')
              ->expectsOutput('The plugin key: dummy is not valid!');
 
         // Check that the plugins are installed.
@@ -87,7 +87,7 @@ class PluginsTest extends CommandTestCase
 
         // Test uninstall the plugins.
 
-        $this->artisan("adminlte:plugins remove --plugin=datatables --plugin=dummy --plugin=icheckBootstrap")
+        $this->artisan('adminlte:plugins remove --plugin=datatables --plugin=dummy --plugin=icheckBootstrap')
              ->expectsOutput('The plugin key: dummy is not valid!');
 
         // Check that the plugins are removed.
@@ -124,28 +124,28 @@ class PluginsTest extends CommandTestCase
 
         // Test install with --interactive option (response with no).
 
-        $this->artisan("adminlte:plugins install --plugin=icheckBootstrap --interactive")
+        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap --interactive')
              ->expectsConfirmation($installMsg, 'no');
 
         $this->assertFalse($plugins->installed($pluginKey));
 
         // Test install with --interactive option (response with yes).
 
-        $this->artisan("adminlte:plugins install --plugin=icheckBootstrap --interactive")
+        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap --interactive')
              ->expectsConfirmation($installMsg, 'yes');
 
         $this->assertTrue($plugins->installed($pluginKey));
 
         // Test uninstall with --interactive option (response with no).
 
-        $this->artisan("adminlte:plugins remove --plugin=icheckBootstrap --interactive")
+        $this->artisan('adminlte:plugins remove --plugin=icheckBootstrap --interactive')
              ->expectsConfirmation($removeMsg, 'no');
 
         $this->assertTrue($plugins->installed($pluginKey));
 
         // Test uninstall with --interactive option (response with yes).
 
-        $this->artisan("adminlte:plugins remove --plugin=icheckBootstrap --interactive")
+        $this->artisan('adminlte:plugins remove --plugin=icheckBootstrap --interactive')
              ->expectsConfirmation($removeMsg, 'yes');
 
         $this->assertFalse($plugins->installed($pluginKey));
@@ -174,14 +174,14 @@ class PluginsTest extends CommandTestCase
 
         // Test install when an overwrite will occurs (response with no).
 
-        $this->artisan("adminlte:plugins install --plugin=icheckBootstrap")
+        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap')
              ->expectsConfirmation($overwriteMsg, 'no');
 
         $this->assertFalse($plugins->installed($pluginKey));
 
         // Test install when an overwrite will occurs (response with yes).
 
-        $this->artisan("adminlte:plugins install --plugin=icheckBootstrap")
+        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap')
              ->expectsConfirmation($overwriteMsg, 'yes');
 
         $this->assertTrue($plugins->installed($pluginKey));

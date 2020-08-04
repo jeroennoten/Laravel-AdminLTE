@@ -13,7 +13,7 @@ class PluginsResource extends PackageResource
      * - target: The target of the plugin (relative to base target)
      * - resources: An array with resources data items.
      * - ignore: A list of file patterns to ignore.
-     * - recursive: Whether to copy files recursively (default is true)
+     * - recursive: Whether to copy files recursively (default is true).
      *
      * When the target is not specified, the source will be used as the
      * relative path to the base target destination. A resource can contain the
