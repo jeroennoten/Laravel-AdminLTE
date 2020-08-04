@@ -203,38 +203,39 @@ You can also install the package **Authentication Views** adding `--type=enhance
 
 ### 5.2 The `adminlte:plugins` Command
 
-If you won't use cdn for the plugins, you can manage the optional plugins assets with the `adminlte:plugins` command.
-You can list all available plugins, or install/update/remove all or specific plugins. Here are some examples for the command:
+If you won't use cdn for the plugins, you can manage the optional plugins with the `adminlte:plugins` command.
+You can **list**, **install** or **remove** all available plugins or specific plugins. Here are some examples for the command:
 
-- Install all plugin assets:
+- List the status of all available plugins:
+  ```sh
+  php artisan adminlte:plugins
+  ```
+- List the status of the specified plugins:
+  ```sh
+  php artisan adminlte:plugins --plugin=datatables --plugin=select2
+  ```
+- Install all the available plugins:
   ```sh
   php artisan adminlte:plugins install
   ```
-- Install only Pace Progress & Select2 plugin assets:
+- Install only Pace Progress & Select2 plugins:
   ```sh
   php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2
   ```
-- Update all plugin assets:
-  ```sh
-  php artisan adminlte:plugins update
-  ```
-- Update only Pace Progress plugin assets:
-  ```sh
-  php artisan adminlte:plugins update --plugin=paceProgress
-  ```
-- Remove all plugin assets:
+- Remove all the available plugins:
   ```sh
   php artisan adminlte:plugins remove
   ```
-- Remove only Select2 plugin assets:
+- Remove only Select2 plugin:
   ```sh
   php artisan adminlte:plugins remove --plugin=select2
   ```
 
 #### 5.2.1 Options
 
- - `operation`: The operation command, available commands are: **list** (default), **install**, **update** or **remove**.
- - `--plugin=`: The plugin key name (this option can be used multiple times).
+ - `operation`: The type of operation: **list** (default), **install** or **remove**.
+ - `--plugin=`: To apply the operation only over the specified plugins, the value should be a plugin key.
+ - `--force`: To force the overwrite of existing files.
  - `--interactive`: The installation will guide you through the process.
 
 ### 5.3 The `adminlte:update` Command
