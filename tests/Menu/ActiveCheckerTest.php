@@ -144,6 +144,8 @@ class ActiveCheckerTest extends TestCase
 
         $this->assertTrue($checker->isActive(['url' => 'menu']));
         $this->assertTrue($checker->isActive(['active' => ['menu']]));
+        $this->assertTrue($checker->isActive(['active' => ['menu?param=option']]));
+        $this->assertFalse($checker->isActive(['active' => ['menu?param=foo']]));
     }
 
     public function testSubParams()
