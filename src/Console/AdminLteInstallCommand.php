@@ -3,87 +3,124 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
 
 class AdminLteInstallCommand extends Command
 {
-    protected $signature = 'adminlte:install '.
-        '{--force : Overwrite existing views by default}'.
-        '{--type= : Installation type, Available type: none, enhanced & full.}'.
-        '{--only= : Install only specific part, Available parts: assets, config, translations, auth_views, basic_views, basic_routes & main_views. This option can not used with the with option.}'.
-        '{--with=* : Install basic assets with specific parts, Available parts: auth_views, basic_views, basic_routes & main_views}'.
-        '{--interactive : The installation will guide you through the process}';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'adminlte:install
+        {--type=basic : The installation type: basic (default), enhanced or full}
+        {--only=* : To install only specific resources: assets, config, translations, auth_views, basic_views, basic_routes or main_views. Can\'t be used with option --with}
+        {--with=* : To install with additional resources: auth_views, basic_views, basic_routes or main_views}
+        {--force : To force the overwrite of existing files}
+        {--interactive : The installation will guide you through the process}';
 
-    protected $description = 'Install all the required files for AdminLTE and the authentication views and routes';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Install all the required files for AdminLTE, and additional resources';
 
-    protected $authViews = [
-        'auth/login.blade.php'             => '@extends(\'adminlte::auth.login\')',
-        'auth/register.blade.php'          => '@extends(\'adminlte::auth.register\')',
-        'auth/verify.blade.php'            => '@extends(\'adminlte::auth.verify\')',
-        'auth/passwords/confirm.blade.php' => '@extends(\'adminlte::auth.passwords.confirm\')',
-        'auth/passwords/email.blade.php'   => '@extends(\'adminlte::auth.passwords.email\')',
-        'auth/passwords/reset.blade.php'   => '@extends(\'adminlte::auth.passwords.reset\')',
-    ];
+    /**
+     * Array with all the available package resources.
+     *
+     * @var array
+     */
+    protected $pkgResources;
 
-    protected $basicViews = [
-        'home.stub' => 'home.blade.php',
-    ];
+    /**
+     * Array with all the installed packages on the current execution.
+     *
+     * @var array
+     */
+    protected $installedResources;
 
-    protected $package_path = __DIR__.'/../../';
+    /**
+     * Array with the resources available for the --only options.
+     *
+     * @var array
+     */
+    protected $optOnlyResources;
 
-    protected $assets_path = 'vendor/';
+    /**
+     * Array with the resources available for the --with options.
+     *
+     * @var array
+     */
+    protected $optWithResources;
 
-    protected $assets_package_path = 'vendor/almasaeed2010/adminlte/';
+    /**
+     * Array with the resources available for the --type options.
+     *
+     * @var array
+     */
+    protected $optTypeResources;
 
-    protected $assets = [
-        'adminlte' => [
-            'name' => 'AdminLTE v3',
-            'package_path' => [
-                'dist/css/',
-                'dist/js/',
-            ],
-            'assets_path' => [
-                'adminlte/dist/css',
-                'adminlte/dist/js',
-            ],
-            'images_path' => 'adminlte/dist/img/',
-            'images' => [
-                'dist/img/AdminLTELogo.png' => 'AdminLTELogo.png',
-            ],
-            'recursive' => false,
-            'ignore' => [
-                'demo.js',
-            ],
-        ],
-        'fontawesomeFree' => [
-            'name' => 'FontAwesome 5 Free',
-            'package_path' => 'plugins/fontawesome-free',
-            'assets_path' => 'fontawesome-free',
-        ],
-        'bootstrap' => [
-            'name' => 'Bootstrap 4 (js files only)',
-            'package_path' => 'plugins/bootstrap',
-            'assets_path' => 'bootstrap',
-        ],
-        'popper' => [
-            'name' => 'Popper.js (Bootstrap 4 requirement)',
-            'package_path' => 'plugins/popper',
-            'assets_path' => 'popper',
-        ],
-        'jquery' => [
-            'name' => 'jQuery (Bootstrap 4 requirement)',
-            'package_path' => 'plugins/jquery',
-            'assets_path' => 'jquery',
-            'ignore' => [
-                'core.js', 'jquery.slim.js', 'jquery.slim.min.js', 'jquery.slim.min.map',
-            ],
-        ],
-        'overlayScrollbars' => [
-            'name' => 'Overlay Scrollbars',
-            'package_path' => 'plugins/overlayScrollbars',
-            'assets_path' => 'overlayScrollbars',
-        ],
-    ];
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        // Fill the array with the package resources.
+
+        $this->pkgResources = [
+            'assets'       => new AssetsResource(),
+            'config'       => new ConfigResource(),
+            'translations' => new TranslationsResource(),
+            'main_views'   => new MainViewsResource(),
+            'auth_views'   => new AuthViewsResource(),
+            'basic_views'  => new BasicViewsResource(),
+            'basic_routes' => new BasicRoutesResource(),
+        ];
+
+        // Add the resources related to each available --type option.
+
+        $basic = ['assets', 'config', 'translations'];
+        $enhanced = array_merge($basic, ['auth_views']);
+        $full = array_merge($enhanced, ['basic_views', 'basic_routes']);
+
+        $this->optTypeResources = [
+            'basic'    => $basic,
+            'enhanced' => $enhanced,
+            'full'     => $full,
+        ];
+
+        // Add the resources related to each available --only option.
+
+        $this->optOnlyResources = [
+            'assets'       => ['assets'],
+            'config'       => ['config'],
+            'translations' => ['translations'],
+            'main_views'   => ['main_views'],
+            'auth_views'   => ['auth_views'],
+            'basic_views'  => ['basic_views'],
+            'basic_routes' => ['basic_routes'],
+        ];
+
+        // Add the resources related to each available --with option.
+
+        $this->optWithResources = [
+            'main_views'   => ['main_views'],
+            'auth_views'   => ['auth_views'],
+            'basic_views'  => ['basic_views'],
+            'basic_routes' => ['basic_routes'],
+        ];
+    }
 
     /**
      * Execute the console command.
@@ -92,320 +129,124 @@ class AdminLteInstallCommand extends Command
      */
     public function handle()
     {
-        if ($this->option('only')) {
-            switch ($this->option('only')) {
-            case 'assets':
-                $this->exportAssets();
+        // Reset the variable that keep track of the installed packages.
 
-                break;
+        $this->installedResources = [];
 
-            case 'config':
-                $this->exportConfig();
+        // Check if option --only is used. In this case, install the specified
+        // parts and return.
 
-                break;
-
-            case 'translations':
-                $this->exportTranslations();
-
-                break;
-
-            case 'main_views':
-                $this->exportMainViews();
-
-                break;
-
-            case 'auth_views':
-                $this->exportAuthViews();
-
-                break;
-
-            case 'basic_views':
-                $this->exportBasicViews();
-
-                break;
-
-            case 'basic_routes':
-                $this->exportBasicRoutes();
-
-                break;
-
-            default:
-                $this->error('Invalid option!');
-                break;
-            }
+        if ($optValues = $this->option('only')) {
+            $this->handleOptions($optValues, $this->optOnlyResources, 'only');
 
             return;
         }
 
-        if ($this->option('type') == 'basic' || $this->option('type') != 'none' || ! $this->option('type')) {
-            $this->exportAssets();
-            $this->exportConfig();
-            $this->exportTranslations();
+        // Handle the --type option. Default value for this option is "basic"
+        // installation type.
+
+        $optValue = $this->option('type');
+        $this->handleOption($optValue, $this->optTypeResources, 'type');
+
+        // Check if option --with is used. In this case, also install the
+        // specified parts.
+
+        if ($optValues = $this->option('with')) {
+            $this->handleOptions($optValues, $this->optWithResources, 'with');
         }
 
-        if ($this->option('with')) {
-            if (in_array('main_views', $this->option('with'))) {
-                $this->exportMainViews();
-            }
-            if (in_array('auth_views', $this->option('with'))) {
-                $this->exportAuthViews();
-            }
-            if (in_array('basic_views', $this->option('with'))) {
-                $this->exportBasicViews();
-            }
-            if (in_array('basic_routes', $this->option('with'))) {
-                $this->exportBasicRoutes();
-            }
-        }
-        if ($this->option('type') != 'none') {
-            if ($this->option('type') == 'enhanced' || $this->option('type') == 'full') {
-                $this->exportAuthViews();
-            }
-            if ($this->option('type') == 'full') {
-                $this->exportBasicViews();
-                $this->exportBasicRoutes();
-            }
-        }
-
-        $this->info('AdminLTE Installation complete.');
+        $this->line('The installation is complete.');
     }
 
     /**
-     * Export the main views.
+     * Handle multiple option values.
      *
+     * @param array $values An array with the option values
+     * @param array $resources An array with the resources of each option
+     * @param string $opt Descriptive name of the handled option
      * @return void
      */
-    protected function exportMainViews()
+    protected function handleOptions($values, $resources, $opt)
     {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install AdminLTE main views?')) {
-                return;
-            }
+        foreach ($values as $value) {
+            $this->handleOption($value, $resources, $opt);
         }
-
-        CommandHelper::copyDirectory(
-            $this->packagePath('resources/views'),
-            base_path('resources/views/vendor/adminlte'),
-            $this->option('force'),
-            true
-        );
-
-        $this->comment('Main views installed successfully.');
     }
 
     /**
-     * Export the authentication views.
+     * Handle an option value.
      *
+     * @param string $value A string with the option value
+     * @param array $resources An array with the resources of each option
+     * @param string $opt Descriptive name of the handled option
      * @return void
      */
-    protected function exportAuthViews()
+    protected function handleOption($value, $resources, $opt)
     {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install AdminLTE authentication views?')) {
-                return;
-            }
-        }
-        CommandHelper::ensureDirectoryExists($this->getViewPath('auth/passwords'));
-        foreach ($this->authViews as $file => $content) {
-            file_put_contents($this->getViewPath($file), $content);
-        }
-        $this->comment('Authentication views installed successfully.');
-    }
-
-    /**
-     * Export the basic views.
-     *
-     * @return void
-     */
-    protected function exportBasicViews()
-    {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install AdminLTE basic views?')) {
-                return;
-            }
-        }
-        foreach ($this->basicViews as $key => $value) {
-            if (file_exists($view = $this->getViewPath($value)) && ! $this->option('force')) {
-                if (! $this->confirm("The [{$value}] view already exists. Do you want to replace it?")) {
-                    continue;
-                }
-            }
-            copy(
-                __DIR__.'/stubs/'.$key,
-                $view
-            );
-        }
-        $this->comment('Basic views installed successfully.');
-    }
-
-    /**
-     * Export the authentication routes.
-     *
-     * @return void
-     */
-    protected function exportBasicRoutes()
-    {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install AdminLTE basic routes?')) {
-                return;
-            }
-        }
-
-        $file = file_get_contents(base_path('routes/web.php'));
-        $newRoutes = file_get_contents(__DIR__.'/stubs/routes.stub');
-
-        if (! strpos($file, $newRoutes)) {
-            file_put_contents(
-                base_path('routes/web.php'),
-                file_get_contents(__DIR__.'/stubs/routes.stub'),
-                FILE_APPEND
-            );
-            $this->comment('Basic routes installed successfully.');
+        if (! isset($resources[$value])) {
+            $this->comment("The option --{$opt}={$value} is invalid!");
 
             return;
         }
-        $this->comment('Basic routes already installed.');
+
+        // Install all the resources related to the option value.
+
+        $this->exportPackageResources(...$resources[$value]);
     }
 
     /**
-     * Export the translation files.
+     * Install multiple packages resources.
      *
+     * @param string $resources The resources to install
      * @return void
      */
-    protected function exportTranslations()
+    protected function exportPackageResources(...$resources)
     {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install AdminLTE authentication translations?')) {
-                return;
+        foreach ($resources as $resource) {
+
+            // Check if resource was already installed on the current command
+            // execution. This can happen, for example, when using:
+            // php artisan --type=full --with=auth_views
+
+            if (isset($this->installedResources[$resource])) {
+                continue;
             }
+
+            $this->exportPackageResource($resource);
+            $this->installedResources[$resource] = true;
         }
-
-        CommandHelper::copyDirectory(
-            $this->packagePath('resources/lang'),
-            resource_path('lang/vendor/adminlte'),
-            $this->option('force'),
-            true
-        );
-
-        $this->comment('Translation files installed successfully.');
     }
 
     /**
-     * Copy all the content of the Assets Folder to Public Directory.
-     */
-    protected function exportAssets()
-    {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install the basic package assets?')) {
-                return;
-            }
-        }
-
-        foreach ($this->assets as $asset_key => $asset) {
-            $this->copyAssets($asset_key, $this->option('force'));
-        }
-
-        $this->comment('Basic Assets Installation complete.');
-    }
-
-    /**
-     * Install the config file.
-     */
-    protected function exportConfig()
-    {
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install the package config file?')) {
-                return;
-            }
-        }
-        if (file_exists(config_path('adminlte.php')) && ! $this->option('force')) {
-            if (! $this->confirm('The AdminLTE configuration file already exists. Do you want to replace it?')) {
-                return;
-            }
-        }
-        copy(
-            $this->packagePath('config/adminlte.php'),
-            config_path('adminlte.php')
-        );
-
-        $this->comment('Configuration Files installed successfully.');
-    }
-
-    /**
-     * Get Package Path.
-     */
-    protected function packagePath($path)
-    {
-        return $this->package_path.$path;
-    }
-
-    /**
-     * Get full view path relative to the application's configured view path.
+     * Install a package resource.
      *
-     * @param  string  $path
-     * @return string
-     */
-    public function getViewPath($path)
-    {
-        return implode(DIRECTORY_SEPARATOR, [
-            config('view.paths')[0] ?? resource_path('views'), $path,
-        ]);
-    }
-
-    /**
-     * Copy Assets Data.
-     *
-     * @param  string  $asset_name
-     * @param  bool $force
+     * @param string $resource The keyword of the resource to install
      * @return void
      */
-    protected function copyAssets($asset_name, $force = false)
+    protected function exportPackageResource($resource)
     {
-        if (! isset($this->assets[$asset_name])) {
+        $resource = $this->pkgResources[$resource];
+        $installMsg = $resource->getInstallMessage('install');
+        $overwriteMsg = $resource->getInstallMessage('overwrite');
+        $successMsg = $resource->getInstallMessage('success');
+
+        // Check if the --interactive option is enabled.
+
+        if ($this->option('interactive') && ! $this->confirm($installMsg)) {
             return;
         }
 
-        $asset = $this->assets[$asset_name];
+        // Check for overwrite warning.
 
-        if (is_array($asset['package_path'])) {
-            foreach ($asset['package_path'] as $key => $asset_package_path) {
-                $asset_assets_path = $asset['assets_path'][$key];
-                CommandHelper::copyDirectory(
-                    base_path($this->assets_package_path).$asset_package_path,
-                    public_path($this->assets_path).$asset_assets_path,
-                    $force,
-                    ($asset['recursive'] ?? true),
-                    ($asset['ignore'] ?? [])
-                );
-            }
-        } else {
-            CommandHelper::copyDirectory(
-                base_path($this->assets_package_path).$asset['package_path'],
-                public_path($this->assets_path).$asset['assets_path'],
-                $force,
-                ($asset['recursive'] ?? true),
-                ($asset['ignore'] ?? [])
-            );
+        $isOverwrite = ! $this->option('force') && $resource->exists();
+
+        if ($isOverwrite && ! $this->confirm($overwriteMsg)) {
+            return;
         }
 
-        if (isset($asset['images_path']) && isset($asset['images'])) {
-            CommandHelper::ensureDirectoryExists(public_path($this->assets_path).$asset['images_path']);
-            foreach ($asset['images'] as $image_package_path => $image_assets_path) {
-                if (file_exists(public_path($this->assets_path).$asset['images_path'].$image_assets_path) && ! $force) {
-                    continue;
-                }
-                copy(base_path($this->assets_package_path).$image_package_path, public_path($this->assets_path).$asset['images_path'].$image_assets_path);
-            }
-        }
-    }
+        // Install the resource.
 
-    /**
-     * Get Protected.
-     *
-     * @return array
-     */
-    public function getProtected($var)
-    {
-        return $this->{$var};
+        $resource->install();
+        $this->info($successMsg);
     }
 }

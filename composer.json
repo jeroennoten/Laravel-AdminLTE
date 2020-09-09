@@ -16,7 +16,8 @@
   },
   "autoload-dev": {
     "classmap": [
-      "tests/TestCase.php"
+      "tests/TestCase.php",
+      "tests/Console/CommandTestCase.php"
     ]
   },
   "extra": {

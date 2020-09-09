@@ -615,4 +615,43 @@ class CommandHelperTest extends TestCase
 
         $this->assertDirectoryNotExists($this->sourceFolder);
     }
+
+    public function testGetPackagePath()
+    {
+        $this->assertEquals(
+            realpath(CommandHelper::getPackagePath()),
+            realpath(__DIR__.'/../../')
+        );
+
+        $this->assertEquals(
+            realpath(CommandHelper::getPackagePath('public')),
+            realpath(__DIR__.'/../../public')
+        );
+    }
+
+    public function testGetStubPath()
+    {
+        $this->assertEquals(
+            realpath(CommandHelper::getStubPath()),
+            realpath(__DIR__.'/../../src/Console/stubs')
+        );
+
+        $this->assertEquals(
+            realpath(CommandHelper::getStubPath('home.stub')),
+            realpath(__DIR__.'/../../src/Console/stubs/home.stub')
+        );
+    }
+
+    public function testGetViewsPath()
+    {
+        $this->assertEquals(
+            realpath(CommandHelper::getViewPath()),
+            realpath(resource_path('views'))
+        );
+
+        $this->assertEquals(
+            realpath(CommandHelper::getViewPath('home.blade.php')),
+            realpath(resource_path('views/home.blade.php'))
+        );
+    }
 }

@@ -3,276 +3,86 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\PluginsResource;
 
 class AdminLtePluginCommand extends Command
 {
-    protected $signature = 'adminlte:plugins '.
-        '{operation? : Operation command, Available commands; list, install, update & remove}'.
-        '{--plugin=* : Plugin Key}'.
-        '{--interactive : The installation will guide you through the process}';
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'adminlte:plugins
+        {operation=list : The type of operation: list (default), install or remove}
+        {--plugin=* : To apply the operation only over the specified plugins, the value should be a plugin key}
+        {--force : To force the overwrite of existing files}
+        {--interactive : The installation will guide you through the process}';
 
-    protected $description = 'Manages additional plugin files for AdminLTE';
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Manages the installation and removal of additional AdminLTE plugins';
 
-    protected $plugins = [
-        'bootstrapColorpicker' => [
-            'name' => 'Bootstrap Colorpicker',
-            'package_path' => 'bootstrap-colorpicker',
-            'assets_path' => 'bootstrap-colorpicker',
+    /**
+     * Array with the operations handlers.
+     *
+     * @var array
+     */
+    protected $opHandlers;
+
+    /**
+     * The plugins package resource instance.
+     *
+     * @var PluginsResource
+     */
+    protected $plugins;
+
+    /**
+     * Array with the possible statuses of the plugins.
+     *
+     * @var array
+     */
+    protected $status = [
+        'installed' => [
+            'label' => 'Installed',
+            'legend' => 'The plugin is installed and matches with the default package plugin',
+            'color' => 'green',
         ],
-        'bootstrapSlider' => [
-            'name' => 'Bootstrap Slider',
-            'package_path' => 'bootstrap-slider',
-            'assets_path' => 'bootstrap-slider',
+        'mismatch' => [
+            'label' => 'Mismatch',
+            'legend' => 'The installed plugin mismatch the package plugin (update available or plugin modified)',
+            'color' => 'yellow',
         ],
-        'bootstrapSwitch' => [
-            'name' => 'Bootstrap Switch',
-            'package_path' => 'bootstrap-switch',
-            'assets_path' => 'bootstrap-switch',
-        ],
-        'bootstrap4Duallistbox' => [
-            'name' => 'Bootstrap4 Duallistbox',
-            'package_path' => 'bootstrap4-duallistbox',
-            'assets_path' => 'bootstrap4-duallistbox',
-        ],
-        'bsCustomFileInput' => [
-            'name' => 'bs-custom-file-input',
-            'package_path' => 'bs-custom-file-input',
-            'assets_path' => 'bs-custom-file-input',
-        ],
-        'chartJs' => [
-            'name' => 'Chart.js',
-            'package_path' => 'chart.js',
-            'assets_path' => 'chart.js',
-        ],
-        'datatables' => [
-            'name' => 'Datatables',
-            'package_path' => [
-                'datatables',
-                'datatables-bs4',
-            ],
-            'assets_path' => [
-                'datatables/js',
-                'datatables',
-            ],
-        ],
-        'datatablesPlugins' => [
-            'name' => 'Datatables Plugins',
-            'package_path' => [
-                'datatables-autofill',
-                'datatables-buttons',
-                'datatables-colreorder',
-                'datatables-fixedcolumns',
-                'datatables-fixedheader',
-                'datatables-keytable',
-                'datatables-responsive',
-                'datatables-rowgroup',
-                'datatables-rowreorder',
-                'datatables-scroller',
-                'datatables-select',
-                'pdfmake',
-                'jszip',
-            ],
-            'assets_path' => [
-                'datatables-plugins/autofill',
-                'datatables-plugins/buttons',
-                'datatables-plugins/colreorder',
-                'datatables-plugins/fixedcolumns',
-                'datatables-plugins/fixedheader',
-                'datatables-plugins/keytable',
-                'datatables-plugins/responsive',
-                'datatables-plugins/rowgroup',
-                'datatables-plugins/rowreorder',
-                'datatables-plugins/scroller',
-                'datatables-plugins/select',
-                'datatables-plugins/pdfmake',
-                'datatables-plugins/jszip',
-            ],
-        ],
-        'daterangepicker' => [
-            'name' => 'DateRangePicker',
-            'package_path' => [
-                'daterangepicker',
-                'moment',
-            ],
-            'assets_path' => [
-                'daterangepicker',
-                'moment',
-            ],
-        ],
-        'ekkoLightbox' => [
-            'name' => 'Ekko Lightbox',
-            'package_path' => 'ekko-lightbox',
-            'assets_path' => 'ekko-lightbox',
-        ],
-        'fastclick' => [
-            'name' => 'Fastclick',
-            'package_path' => 'fastclick',
-            'assets_path' => 'fastclick',
-        ],
-        'filterizr' => [
-            'name' => 'Filterizr',
-            'package_path' => 'filterizr',
-            'assets_path' => 'filterizr',
-            'ignore' => ['*.d.ts'],
-            'recursive' => false,
-        ],
-        'flagIconCss' => [
-            'name' => 'Flag Icon Css',
-            'package_path' => 'flag-icon-css',
-            'assets_path' => 'flag-icon-css',
-        ],
-        'flot' => [
-            'name' => 'Flot',
-            'package_path' => 'flot',
-            'assets_path' => 'flot',
-        ],
-        'fullcalendar' => [
-            'name' => 'Fullcalendar',
-            'package_path' => 'fullcalendar',
-            'assets_path' => 'fullcalendar',
-            'ignore' => ['*.d.ts', '*.json', '*.md'],
-        ],
-        'fullcalendarPlugins' => [
-            'name' => 'Fullcalendar Plugins',
-            'package_path' => [
-                'fullcalendar-bootstrap',
-                'fullcalendar-daygrid',
-                'fullcalendar-interaction',
-                'fullcalendar-timegrid',
-            ],
-            'assets_path' => [
-                'fullcalendar-plugins/bootstrap',
-                'fullcalendar-plugins/daygrid',
-                'fullcalendar-plugins/interaction',
-                'fullcalendar-plugins/timegrid',
-            ],
-            'ignore' => ['*.d.ts', '*.json', '*.md'],
-        ],
-        'icheckBootstrap' => [
-            'name' => 'iCheck Bootstrap',
-            'package_path' => 'icheck-bootstrap',
-            'assets_path' => 'icheck-bootstrap',
-            'ignore' => ['*.json', '*.md'],
-        ],
-        'inputmask' => [
-            'name' => 'InputMask',
-            'package_path' => 'inputmask',
-            'assets_path' => 'inputmask',
-        ],
-        'ionRangslider' => [
-            'name' => 'ion RangeSlider',
-            'package_path' => 'ion-rangeslider',
-            'assets_path' => 'ion-rangeslider',
-            'ignore' => ['*.json', '*.md', '.editorconfig'],
-        ],
-        'jqueryKnob' => [
-            'name' => 'jQuery Knob',
-            'package_path' => 'jquery-knob',
-            'assets_path' => 'jquery-knob',
-        ],
-        'jqueryMapael' => [
-            'name' => 'jQuery Mapael',
-            'package_path' => [
-                'jquery-mapael',
-                'raphael',
-                'jquery-mousewheel',
-            ],
-            'assets_path' => [
-                'jquery-mapael',
-                'raphael',
-                'jquery-mousewheel',
-            ],
-            'ignore' => ['*.json', '*.md', '.editorconfig'],
-        ],
-        'jqueryUi' => [
-            'name' => 'jQuery UI',
-            'package_path' => [
-                'jquery-ui',
-                'jquery-ui/images',
-            ],
-            'assets_path' => [
-                'jquery-ui',
-                'jquery-ui/images',
-            ],
-            'recursive' => false,
-            'ignore' => ['*.json', '*.md', '*.html', '.editorconfig'],
-        ],
-        'jqueryValidation' => [
-            'name' => 'jQuery Validation',
-            'package_path' => 'jquery-validation',
-            'assets_path' => 'jquery-validation',
-        ],
-        'jqvmap' => [
-            'name' => 'jQVMap',
-            'package_path' => 'jqvmap',
-            'assets_path' => 'jqvmap',
-        ],
-        'jsgrid' => [
-            'name' => 'jsGrid',
-            'package_path' => [
-                'jsgrid',
-                'jsgrid/i18n',
-            ],
-            'assets_path' => [
-                'jsgrid',
-                'jsgrid/i18n',
-            ],
-            'recursive' => false,
-        ],
-        'paceProgress' => [
-            'name' => 'Pace Progress',
-            'package_path' => 'pace-progress',
-            'assets_path' => 'pace-progress',
-        ],
-        'select2' => [
-            'name' => 'Select 2 with Bootstrap 4 Theme',
-            'package_path' => [
-                'select2',
-                'select2-bootstrap4-theme',
-            ],
-            'assets_path' => [
-                'select2',
-                'select2-bootstrap4-theme',
-            ],
-            'ignore' => ['*.json', '*.md'],
-        ],
-        'sparklines' => [
-            'name' => 'Sparklines',
-            'package_path' => 'sparklines',
-            'assets_path' => 'sparklines',
-        ],
-        'summernote' => [
-            'name' => 'Summernote',
-            'package_path' => 'summernote',
-            'assets_path' => 'summernote',
-        ],
-        'sweetalert2' => [
-            'name' => 'Sweetalert 2 with Bootstrap 4 Theme',
-            'package_path' => [
-                'sweetalert2',
-                'sweetalert2-theme-bootstrap-4',
-            ],
-            'assets_path' => [
-                'sweetalert2',
-                'sweetalert2-theme-bootstrap-4',
-            ],
-        ],
-        'tempusdominusBootstrap4' => [
-            'name' => 'Tempusdominus Bootstrap 4',
-            'package_path' => 'tempusdominus-bootstrap-4',
-            'assets_path' => 'tempusdominus-bootstrap-4',
-        ],
-        'toastr' => [
-            'name' => 'Toastr',
-            'package_path' => 'toastr',
-            'assets_path' => 'toastr',
+        'uninstalled' => [
+            'label' => 'Not Installed',
+            'legend' => 'The plugin is not installed',
+            'color' => 'red',
         ],
     ];
 
-    protected $assets_path = 'vendor/';
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        parent::__construct();
 
-    protected $package_path = 'vendor/almasaeed2010/adminlte/';
+        // Fill the available operations handlers.
+
+        $this->opHandlers = [
+            'list'    => [$this, 'showPlugins'],
+            'install' => [$this, 'installPlugins'],
+            'remove'  => [$this, 'removePlugins'],
+        ];
+
+        // Create the plugins resource instance.
+
+        $this->plugins = new PluginsResource();
+    }
 
     /**
      * Execute the console command.
@@ -281,244 +91,376 @@ class AdminLtePluginCommand extends Command
      */
     public function handle()
     {
-        $operation = $this->arguments()['operation'];
+        // Get the type of operation to perform.
 
-        if (! $operation) {
-            $operation = 'list';
-        }
+        $op = $this->argument('operation');
 
-        switch ($operation) {
-        case 'install':
-            $this->copyPlugins();
-            $this->info('AdminLTE Plugin Install complete.');
+        // Check if the operation is valid.
 
-            break;
+        if (! isset($this->opHandlers[$op])) {
+            $this->error("The specified operation: {$op} is not valid!");
 
-        case 'update':
-            $this->copyPlugins(true);
-            $this->info('AdminLTE Plugin Update complete.');
-
-            break;
-
-        case 'remove':
-            $this->removePlugins();
-            $this->info('AdminLTE Plugin Remove complete.');
-
-            break;
-
-        default:
-            if ($operation != 'list' && $operation != '') {
-                $this->error('Invalid operation!');
-            } else {
-                $this->listPlugins();
-            }
-
-            break;
-        }
-    }
-
-    /**
-     * List Plugins.
-     *
-     * @return void
-     */
-    protected function listPlugins()
-    {
-        $headers = ['Plugin Name', 'Plugin Key', 'Status'];
-        $plugins = [];
-
-        $bar = $this->output->createProgressBar(count($this->plugins));
-
-        $this->line('Checking Plugins');
-
-        $bar->start();
-
-        foreach ($this->plugins as $plugin_key => $plugin) {
-            $plugins[] = [$plugin['name'], $plugin_key, $this->checkPlugin($plugin_key)];
-            $bar->advance();
-        }
-
-        $bar->finish();
-
-        $this->line('');
-        $this->line('Plugins Checked');
-
-        $this->table($headers, $plugins);
-    }
-
-    /**
-     * Check Plugin.
-     *
-     * @return void
-     */
-    protected function checkPlugin($plugin_key)
-    {
-        $plugin_exist = true;
-        $plugin_missmatch = false;
-        $plugin_child_exist = true;
-        $plugin_child_missmatch = false;
-        $plugin_public_path = public_path($this->assets_path);
-        $plugin_base_path = base_path($this->package_path.'plugins/');
-        $plugin_package_path = $this->plugins[$plugin_key]['package_path'];
-        $plugin_assets_path = $this->plugins[$plugin_key]['assets_path'];
-        $plugin_ignore = $this->plugins[$plugin_key]['ignore'] ?? [];
-        $plugin_recursive = $this->plugins[$plugin_key]['recursive'] ?? true;
-
-        if (is_array($plugin_assets_path)) {
-            foreach ($plugin_assets_path as $key => $assets_path) {
-                if (! file_exists($plugin_public_path.$assets_path)) {
-                    $plugin_exist = false;
-                    $plugin_child_exist = false;
-                } else {
-                    $compare = CommandHelper::compareDirectories(
-                        $plugin_base_path.$plugin_package_path[$key],
-                        $plugin_public_path.$assets_path,
-                        $plugin_recursive,
-                        $plugin_ignore
-                    );
-
-                    if (! $plugin_child_missmatch && $compare) {
-                        $plugin_child_missmatch = false;
-                    } else {
-                        $plugin_child_missmatch = true;
-                    }
-                }
-            }
-        } else {
-            if (! file_exists($plugin_public_path.$plugin_assets_path)) {
-                $plugin_exist = false;
-            } else {
-                $compare = CommandHelper::compareDirectories(
-                    $plugin_base_path.$plugin_package_path,
-                    $plugin_public_path.$plugin_assets_path,
-                    $plugin_recursive,
-                    $plugin_ignore
-                );
-                if (! (bool) $compare) {
-                    $plugin_missmatch = true;
-                }
-            }
-        }
-
-        if ($plugin_exist && $plugin_child_exist && (! $plugin_missmatch && ! $plugin_child_missmatch)) {
-            return 'Installed';
-        } elseif ($plugin_exist && (($plugin_missmatch || $plugin_child_missmatch) || ! $plugin_child_exist)) {
-            return 'Update Available';
-        } elseif (! $plugin_exist) {
-            return 'Not Installed';
-        }
-    }
-
-    /**
-     * Copy all Plugin Assets to Public Directory.
-     */
-    protected function copyPlugins($force = null)
-    {
-        if (! $plugins = $this->option('plugin')) {
-            $plugins = $this->plugins;
-        }
-
-        $bar = $this->output->createProgressBar(count($plugins));
-
-        $bar->start();
-
-        if ($this->option('interactive')) {
-            if (! $this->confirm('Install the plugin package assets?')) {
-                return;
-            }
-        }
-
-        foreach ($plugins as $plugin_key => $plugin) {
-            if (is_string($plugin)) {
-                $plugin_key = $plugin;
-            }
-
-            if (! isset($this->plugins[$plugin_key])) {
-                $this->error('Plugin Key not found: '.$plugin_key.'.');
-                continue;
-            }
-
-            $plugin_keys[] = $plugin_key;
-            $plugin = $this->plugins[$plugin_key];
-
-            if ($this->option('interactive')) {
-                if (! $this->confirm('Install the '.$plugin['name'].' assets?')) {
-                    continue;
-                }
-            }
-            if (is_array($plugin['package_path'])) {
-                foreach ($plugin['package_path'] as $key => $plugin_package_path) {
-                    $plugin_assets_path = $plugin['assets_path'][$key];
-                    CommandHelper::copyDirectory(
-                        base_path($this->package_path).'plugins/'.$plugin_package_path,
-                        public_path($this->assets_path).$plugin_assets_path,
-                        $force,
-                        ($plugin['recursive'] ?? true),
-                        ($plugin['ignore'] ?? [])
-                    );
-                }
-            } else {
-                CommandHelper::copyDirectory(
-                    base_path($this->package_path).'plugins/'.$plugin['package_path'],
-                    public_path($this->assets_path).$plugin['assets_path'],
-                    $force,
-                    ($plugin['recursive'] ?? true),
-                    ($plugin['ignore'] ?? [])
-                );
-            }
-
-            $bar->advance();
-        }
-
-        $bar->finish();
-        $this->line('');
-    }
-
-    /**
-     * Removes all Plugin Assets to Public Directory.
-     */
-    protected function removePlugins()
-    {
-        if (! $this->confirm('Do you really want to remove the plugin package assets?')) {
             return;
         }
 
-        if (! $plugins = $this->option('plugin')) {
-            $plugins = $this->plugins;
+        // Call the handler of the operation.
+
+        $handler = $this->opHandlers[$op];
+        $handler();
+    }
+
+    /**
+     * Display a list with the installation status of the plugins.
+     *
+     * @return void
+     */
+    protected function showPlugins()
+    {
+        // Show the plugins status.
+
+        $pluginsKeys = $this->getAffectedPlugins();
+        $this->showPluginsStatus($pluginsKeys);
+
+        // Display the legends table.
+
+        $this->line('');
+        $this->showStatusLegends();
+    }
+
+    /**
+     * Get the list of plugins keys that should be affected by an operation.
+     *
+     * @return array An array with plugins keys
+     */
+    protected function getAffectedPlugins()
+    {
+        // First, check if the user has specified the plugins keys.
+
+        if (! empty($this->option('plugin'))) {
+            return $this->option('plugin');
         }
 
-        $plugin_keys = [];
+        // Otherwise, return a list with all the available plugins keys.
 
-        foreach ($plugins as $plugin_key => $plugin) {
-            if (is_string($plugin)) {
-                $plugin_key = $plugin;
-            }
+        return array_keys($this->plugins->getSourceData());
+    }
 
-            if (! isset($this->plugins[$plugin_key])) {
-                $this->error('Plugin Key not found: '.$plugin_key.'.');
+    /**
+     * Display the plugins status.
+     *
+     * @param array $pluginsKeys Array with the plugins keys to evaluate
+     * @return void
+     */
+    protected function showPluginsStatus($pluginsKeys)
+    {
+        // Define the table headers.
+
+        $tblHeader = [
+            $this->styleOutput('Plugin Name', 'cyan'),
+            $this->styleOutput('Plugin Key', 'cyan'),
+            $this->styleOutput('Status', 'cyan'),
+        ];
+
+        // Create a progress bar.
+
+        $bar = $this->output->createProgressBar(count($pluginsKeys));
+
+        // Initialize the status check procedure.
+
+        $tblContent = [];
+        $this->line('Checking the plugins installation ...');
+        $bar->start();
+
+        foreach ($pluginsKeys as $key) {
+
+            // Advance the progress bar one step.
+
+            $bar->advance();
+
+            // Get the plugin data.
+
+            $pluginData = $this->plugins->getSourceData($key);
+
+            if (empty($pluginData)) {
+                $this->line('');
+                $this->error("The plugin key: {$key} is not valid!");
                 continue;
             }
 
-            $plugin_keys[] = $plugin_key;
-            $plugin = $this->plugins[$plugin_key];
+            // Fill the status row of the current plugin.
 
-            if ($this->option('interactive')) {
-                if (! $this->confirm('Remove the '.$plugin['name'].' assets?')) {
-                    continue;
-                }
-            }
-            if (is_array($plugin['package_path'])) {
-                foreach ($plugin['package_path'] as $key => $plugin_package_path) {
-                    $plugin_assets_path = $plugin['assets_path'][$key];
-                    $plugin_path = public_path($this->assets_path).$plugin_assets_path;
-                    CommandHelper::removeDirectory($plugin_path);
-                }
-            } else {
-                $plugin_path = public_path($this->assets_path).$plugin['assets_path'];
-                CommandHelper::removeDirectory($plugin_path);
-            }
+            $status = $this->getPluginStatus($key);
+            $tblContent[] = [$pluginData['name'], $key, $status];
         }
 
-        $this->info('Plugins removed: '.implode(', ', $plugin_keys).'.');
+        // Finish the progress bar.
+
+        $bar->finish();
+        $this->line('');
+        $this->line('All plugins checked succesfully!');
+        $this->line('');
+
+        // Display the plugins installation status.
+
+        $this->table($tblHeader, $tblContent);
+    }
+
+    /**
+     * Get the installation status of a plugin.
+     *
+     * @param string $pluginKey The plugin key
+     * @return string The plugin status
+     */
+    protected function getPluginStatus($pluginKey)
+    {
+        $status = $this->status['uninstalled'];
+
+        if ($this->plugins->installed($pluginKey)) {
+            $status = $this->status['installed'];
+        } elseif ($this->plugins->exists($pluginKey)) {
+            $status = $this->status['mismatch'];
+        }
+
+        return $this->styleOutput($status['label'], $status['color']);
+    }
+
+    /**
+     * Display the legends of the possible status values.
+     *
+     * @return void
+     */
+    protected function showStatusLegends()
+    {
+        $this->line('Status legends:');
+
+        // Create the table headers for the legends.
+
+        $tblHeader = [
+            $this->styleOutput('Status', 'cyan'),
+            $this->styleOutput('Description', 'cyan'),
+        ];
+
+        // Create the table rows for the legends.
+
+        $tblContent = [];
+
+        foreach ($this->status as $status) {
+            $tblContent[] = [
+                $this->styleOutput($status['label'], $status['color']),
+                $status['legend'],
+            ];
+        }
+
+        // Display the legends table.
+
+        $this->table($tblHeader, $tblContent);
+    }
+
+    /**
+     * Give output style to some text.
+     *
+     * @param string $text The text to be styled
+     * @param string $color The output color for the text
+     * @return string The styled text
+     */
+    protected function styleOutput($text, $color)
+    {
+        return "<fg={$color}>{$text}</>";
+    }
+
+    /**
+     * Installs the specified list of plugins (all if none specified).
+     *
+     * @return void
+     */
+    protected function installPlugins()
+    {
+        $summary = [];
+
+        // Get the list of plugins to be installed.
+
+        $pluginsKeys = $this->getAffectedPlugins();
+
+        // Create a progress bar.
+
+        $bar = $this->output->createProgressBar(count($pluginsKeys));
+        $bar->start();
+
+        // Install the plugins.
+
+        foreach ($pluginsKeys as $pluginKey) {
+
+            // Advance the progress bar one step.
+
+            $bar->advance();
+
+            // Install the plugin.
+
+            if ($this->installPlugin($pluginKey)) {
+                $status = $this->styleOutput('Installed', 'green');
+            } else {
+                $status = $this->styleOutput('Not Installed / Invalid', 'red');
+            }
+
+            $summary[] = [$pluginKey, $status];
+        }
+
+        // Finish the progress bar.
+
+        $bar->finish();
+        $this->line('');
+        $this->line('The plugins installation is complete. Summary:');
+        $this->line('');
+
+        // Show summary of installed plugins.
+
+        $this->showSummaryTable($summary);
+    }
+
+    /**
+     * Install the specified plugin.
+     *
+     * @param string $pluginKey The plugin string key
+     * @return bool Whether the plugin was succesfully installed
+     */
+    protected function installPlugin($pluginKey)
+    {
+        // Customize the output messages.
+
+        $confirmMsg = $this->plugins->getInstallMessage('install');
+        $overwriteMsg = $this->plugins->getInstallMessage('overwrite');
+
+        $confirmMsg = strtr($confirmMsg, [':plugin' => $pluginKey]);
+        $overwriteMsg = strtr($overwriteMsg, [':plugin' => $pluginKey]);
+
+        // Check if the plugin is valid.
+
+        if (empty($this->plugins->getSourceData($pluginKey))) {
+            $this->line('');
+            $this->error("The plugin key: {$pluginKey} is not valid!");
+
+            return false;
+        }
+
+        // Check if the --interactive option is enabled.
+
+        if ($this->option('interactive') && ! $this->confirm($confirmMsg)) {
+            return false;
+        }
+
+        // Check for overwrite warning.
+
+        $force = $this->option('force');
+        $isOverwrite = ! $force && $this->plugins->exists($pluginKey);
+
+        if ($isOverwrite && ! $this->confirm($overwriteMsg)) {
+            return false;
+        }
+
+        // Install the plugin.
+
+        $this->plugins->install($pluginKey);
+
+        return true;
+    }
+
+    /**
+     * Removes the specified list of plugins (all if none specified).
+     *
+     * @return void
+     */
+    protected function removePlugins()
+    {
+        $summary = [];
+
+        // Get the list of plugins to remove.
+
+        $pluginsKeys = $this->getAffectedPlugins();
+
+        // Create a progress bar.
+
+        $bar = $this->output->createProgressBar(count($pluginsKeys));
+        $bar->start();
+
+        // Remove the plugins.
+
+        foreach ($pluginsKeys as $pluginKey) {
+
+            // Advance the progress bar one step.
+
+            $bar->advance();
+
+            // Remove the plugin.
+
+            if ($this->removePlugin($pluginKey)) {
+                $status = $this->styleOutput('Removed', 'green');
+            } else {
+                $status = $this->styleOutput('Not Removed / Invalid', 'red');
+            }
+
+            $summary[] = [$pluginKey, $status];
+        }
+
+        // Finish the progress bar.
+
+        $bar->finish();
+        $this->line('');
+        $this->line('The plugins removal is complete. Summary:');
+        $this->line('');
+
+        // Show summary of removed plugins.
+
+        $this->showSummaryTable($summary);
+    }
+
+    /**
+     * Remove/Uninstall the specified plugin.
+     *
+     * @param string $pluginKey The plugin string key
+     * @return bool Whether the plugin was succesfully removed
+     */
+    protected function removePlugin($pluginKey)
+    {
+        // Customize the output messages.
+
+        $confirmMsg = $this->plugins->getInstallMessage('remove');
+        $confirmMsg = strtr($confirmMsg, [':plugin' => $pluginKey]);
+
+        // Check if the plugin is valid.
+
+        if (empty($this->plugins->getSourceData($pluginKey))) {
+            $this->line('');
+            $this->error("The plugin key: {$pluginKey} is not valid!");
+
+            return false;
+        }
+
+        // Check if the --interactive option is enabled.
+
+        if ($this->option('interactive') && ! $this->confirm($confirmMsg)) {
+            return false;
+        }
+
+        // Remove the plugin.
+
+        $this->plugins->uninstall($pluginKey);
+
+        return true;
+    }
+
+    /**
+     * Show the summary table for some operation.
+     *
+     * @param array $rows The table rows.
+     * @return void
+     */
+    protected function showSummaryTable($rows)
+    {
+        $header = [
+            $this->styleOutput('Plugin Key', 'cyan'),
+            $this->styleOutput('Status', 'cyan'),
+        ];
+
+        $this->table($header, $rows);
     }
 }
