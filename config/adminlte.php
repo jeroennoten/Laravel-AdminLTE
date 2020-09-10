@@ -430,6 +430,6 @@ return [
     | Here we can modify the livewire configuration.
     |
     */
-    
+
     'livewire' => false,
 ];
