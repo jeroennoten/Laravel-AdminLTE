@@ -61,26 +61,30 @@ For an older package version, review and use the following ones:
 
 ## 1. Requirements
 
+The current package requirements are:
+
 - Laravel >= 6.x
 - PHP >= 7.2
 
 
 ## 2. Installation
 
-1. Require the package using composer:
+> Please note the next steps are valid for a fresh installation procedure, if you are updating the package, refers to the [Updating](#3-updating) section.
+
+1. On the root folder of your Laravel project, require the package using composer:
 
    ```sh
    composer require jeroennoten/laravel-adminlte
    ```
 
-2. (Laravel 7+ only) Require the laravel/ui package using composer:
+2. **(For Laravel 7+ only)** Require the `laravel/ui` package using composer:
 
    ```sh
    composer require laravel/ui
    php artisan ui:controllers
    ```
 
-3. Install the package using the next command (for fresh laravel installations):
+3. Finally, install the package required resources using the next command:
 
    ```sh
    php artisan adminlte:install
