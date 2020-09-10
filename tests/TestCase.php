@@ -1,42 +1,57 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Auth\GenericUser;
-use Illuminate\Events\Dispatcher;
-use Illuminate\Routing\UrlGenerator;
-use Illuminate\Routing\RouteCollection;
-use JeroenNoten\LaravelAdminLte\AdminLte;
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
-use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
-use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
-use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
+use Illuminate\Events\Dispatcher;
+use Illuminate\Http\Request;
+use Illuminate\Routing\RouteCollection;
+use Illuminate\Routing\UrlGenerator;
+use JeroenNoten\LaravelAdminLte\AdminLte;
+use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
+use JeroenNoten\LaravelAdminLte\Menu\Builder;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter;
-use JeroenNoten\LaravelAdminLte\Menu\Filters\SubmenuFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
+use JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter;
+use Orchestra\Testbench\TestCase as BaseTestCase;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-class TestCase extends PHPUnit_Framework_TestCase
+class TestCase extends BaseTestCase
 {
     private $dispatcher;
 
     private $routeCollection;
 
-    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
+    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null, $locale = 'en')
     {
         return new Builder([
             new HrefFilter($this->makeUrlGenerator($uri)),
             new ActiveFilter($this->makeActiveChecker($uri)),
-            new SubmenuFilter(),
             new ClassesFilter(),
+            new DataFilter(),
             new GateFilter($gate ?: $this->makeGate()),
+            new LangFilter($this->makeTranslator($locale)),
+            new SearchFilter(),
         ]);
     }
 
-    protected function makeActiveChecker($uri = 'http://example.com')
+    protected function makeTranslator($locale = 'en')
     {
-        return new ActiveChecker($this->makeRequest($uri), $this->makeUrlGenerator($uri));
+        $translationLoader = new Illuminate\Translation\FileLoader(new Illuminate\Filesystem\Filesystem, 'resources/lang/');
+
+        $translator = new Illuminate\Translation\Translator($translationLoader, $locale);
+        $translator->addNamespace('adminlte', 'resources/lang/');
+
+        return $translator;
+    }
+
+    protected function makeActiveChecker($uri = 'http://example.com', $scheme = null)
+    {
+        return new ActiveChecker($this->makeUrlGenerator($uri, $scheme));
     }
 
     private function makeRequest($uri)
@@ -49,9 +64,18 @@ class TestCase extends PHPUnit_Framework_TestCase
         return new AdminLte($this->getFilters(), $this->getDispatcher(), $this->makeContainer());
     }
 
-    protected function makeUrlGenerator($uri = 'http://example.com')
+    protected function makeUrlGenerator($uri = 'http://example.com', $scheme = null)
     {
-        return new UrlGenerator($this->getRouteCollection(), $this->makeRequest($uri));
+        $UrlGenerator = new UrlGenerator(
+            $this->getRouteCollection(),
+            $this->makeRequest($uri)
+        );
+
+        if ($scheme) {
+            $UrlGenerator->forceScheme($scheme);
+        }
+
+        return $UrlGenerator;
     }
 
     protected function makeGate()
