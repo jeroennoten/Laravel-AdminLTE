@@ -28,6 +28,15 @@
         <link rel="stylesheet" href="//cdn.datatables.net/v/bs/dt-1.10.18/datatables.min.css">
     @endif
 
+    @if(config('adminlte.livewire'))
+        {{-- Livewire Style --}}
+        @if(app()->version() >= 7)
+            @livewireStyles
+        @else
+            <livewire:styles />
+        @endif
+    @endif
+
     @yield('adminlte_css')
 
     <!--[if lt IE 9]>
@@ -59,6 +68,15 @@
 @if(config('adminlte.plugins.chartjs'))
     <!-- ChartJS -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js"></script>
+@endif
+
+@if(config('adminlte.livewire'))
+    {{-- Livewire Script --}}
+    @if(app()->version() >= 7)
+        @livewireScripts
+    @else
+        <livewire:scripts />
+    @endif
 @endif
 
 @yield('adminlte_js')

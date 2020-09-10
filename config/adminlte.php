@@ -221,4 +221,15 @@ return [
         'select2'    => true,
         'chartjs'    => true,
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Livewire configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here we can modify the livewire configuration.
+    |
+    */
+    
+    'livewire' => true,
 ];
