@@ -69,7 +69,7 @@ The current package requirements are:
 
 ## 2. Installation
 
-> Please note the next steps are valid for a fresh installation procedure, if you are updating the package, refers to the [Updating](#3-updating) section.
+> Please, note the next steps are valid for a fresh installation procedure, if you are updating the package, refers to the [Updating](#3-updating) section.
 
 1. On the root folder of your Laravel project, require the package using composer:
 
@@ -84,7 +84,7 @@ The current package requirements are:
    php artisan ui:controllers
    ```
 
-3. Finally, install the package required resources using the next command:
+3. Finally, install the required package resources using the next command:
 
    ```sh
    php artisan adminlte:install
