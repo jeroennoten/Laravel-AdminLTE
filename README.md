@@ -328,11 +328,11 @@ In order to change the package configuration, the configuration file should be p
 php artisan adminlte:install --only=config
 ```
 
-Now, you are able to edit the `config/adminlte.php` file to configure the title, layout, menu, URLs etc. On the next sections, we going to review all the available configuration options.Let starts with the most basic ones.
+Now, you are able to edit the `config/adminlte.php` file to configure the title, layout, menu, URLs etc. On the next sections, we going to review all the available configuration options. Let starts with the most basic ones.
 
 ### 6.1 Title
 
-This is the default title for your admin panel, this goes into the title tag of your page. However, you can also override it per page with the title section. Optionally, you can also specify a title prefix and/or postfix.
+This is the default title for your admin panel, this goes into the title tag of your page. However, you can override it per page with the available title section. Optionally, you can also specify a title prefix and/or postfix.
 
 The following config options are available:
 
@@ -342,7 +342,7 @@ The following config options are available:
 
 ### 6.2 Favicon
 
-Favicons could be used easily. There are two different ways to do this. Please, add all the favicons in the `public/favicons/` folder. The next combinations of configuration options determine how the favicons are used:
+Favicons could be used easily. There are two different ways to do this. Take in mind that all the favicons should be placed in the `public/favicons/` folder. The next two combinations determines how the favicons will be used:
 
 - __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
@@ -377,9 +377,9 @@ Favicons could be used easily. There are two different ways to do this. Please, 
 The logo is displayed at the upper left corner of your admin panel. You can use basic `HTML` code here if you want a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images: one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alternate text for both logos. The available option are:
 
 - __`logo`__: The text logo content, can use `HTML` code.
-- __`logo_img`__: The path to the small logo image. _The recommend size is: 50x50px_
+- __`logo_img`__: The path to the small logo image. The recommend size is: _50x50px_
 - __`logo_img_class`__: Extra classes for the small logo image.
-- __`logo_img_xl`__: The path to the large logo image, if you set a img url here, then it will replace the text & small logo with one big logo. When the sidebar is collapsed it will displays only the small logo. _The recommend size is: 210x33px_
+- __`logo_img_xl`__: The path to the large logo image, if you set a img url here, then it will replace the text & small logo with one big logo. When the sidebar is collapsed it will displays only the small logo. The recommend size is: _210x33px_
 - __`logo_img_xl_class`__: Extra classes for the large logo image.
 - __`logo_img_alt`__: The alternate text for the logo images.
 
