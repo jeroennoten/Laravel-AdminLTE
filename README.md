@@ -97,45 +97,45 @@ The current package requirements are:
 
 ## 3. Updating
 
-1. To update this package, first update the composer package:
+1. To update this package, first update the package with the next composer command:
 
    ```sh
    composer update jeroennoten/laravel-adminlte
    ```
 
-2. Then, update the AdminLTE assets
+2. Then, update the required AdminLTE assets resources
 
-   > Note: If you using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, delete the folder adminlte inside your `public/vendor` folder.
+   > Note: If you using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, first delete the folder adminlte inside your `public/vendor` directory.
 
-   Use next command to publish the new assets:
+   In order to publish the new assets, execute the next command:
 
    ```sh
    php artisan adminlte:update
    ```
 
-3. If you have [published](#8-customize-views) and modified the default master, page or other view, you will need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your changes.
+3. If you have [published](#8-customize-views) and modified the default `master.blade.php` file, `page.blade.php` file or any other view related to this package, you will need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your files previosuly. To update the views, you may follow next steps:
 
    - Make a copy (or backup) of the views you have modified, those inside the folder `resources/views/vendor/adminlte`.
 
-   - Publish the views again, using `--force` to overwrite any existing files.
+   - Publish the new set of views, using the `--force` option to overwrite the existing files.
 
      ```sh
      php artisan adminlte:install --only=main_views --force
      ```
 
-   - Compare with your backup files and redo the modifications you previously did to those views.
+   - Compare the new installed views with your backup files and redo the modifications you previously did to those views.
 
-4. From time to time, new configuration options are added or default values are changed, so it is a recommendation to also update the package config file.
+4. From time to time, new configuration options may be added or default values may be changed, so it is also a recommendation to verify and update the package config file if needed. To update the configuration, you may follow next steps:
 
-   - Make a copy (or backup) of your current package configuration, the `config/adminlte.php` file.
+   - Make a copy (or backup) of your current package configuration file, the `config/adminlte.php` file.
 
-   - Now, publish the new package configuration and accept the overwrite warning (or use `--force` option).
+   - Now, publish the new package configuration file and accept the overwrite warning (or use `--force` option to avoid the warning).
 
      ```sh
      php artisan adminlte:install --only=config
      ```
 
-   - Compare with your backup config file and redo the modifications you previously made.
+   - Compare with your backup configuration file and redo the modifications you previously made.
 
 
 ## 4. Usage
