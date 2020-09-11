@@ -93,6 +93,8 @@ The current package requirements are:
    > You can use **--force** option to overwrite any existing file
    >
    > You can use **--interactive** option to be guided through the process and choose what you want to install
+   > 
+   > You can check the installation status of the package resources with the command `php artisan adminlte:status`
 
 
 ## 3. Updating
@@ -140,18 +142,18 @@ The current package requirements are:
 
 ## 4. Usage
 
-To use the template, create a new blade file and extend the layout with `@extends('adminlte::page')`.
-This template yields the following main sections:
+To use the blade template provided by this package, just create a new blade file and extend the layout with `@extends('adminlte::page')`.
+The template yields the following main sections:
 
-- `title`: for the `<title>` tag.
-- `content_header`: title of the page, above the content.
-- `content`: all of the page's content.
-- `footer`: content of the page footer.
-- `right-sidebar`: content of the right sidebar.
-- `css`: extra stylesheets (located in `<head>`).
-- `js`: extra javascript (just before `</body>`).
+- `title`: to setup the content of the `<title>` tag.
+- `content_header`: to setup the title of the page (above the main content).
+- `content`: to setup all of the page's main content.
+- `footer`: to setup the content of the page footer.
+- `right-sidebar`: to setup the content of the right (control) sidebar.
+- `css`: to add extra stylesheets (inside the `<head>` tag).
+- `js`: to add extra javascript (just before the `</body>` tag).
 
-All sections are in fact optional. As an example, your most common blade template could look like the following:
+All the mentioned sections, in fact, are optional. As a basic example, your most common blade template could look like the following one:
 
 ```blade
 @extends('adminlte::page')
@@ -175,7 +177,9 @@ All sections are in fact optional. As an example, your most common blade templat
 @stop
 ```
 
-You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
+Now, you just return this view from a controller, as usual. It is recommended to check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel. As a first preview, this is an example image of what you can get with the previous blade template:
+
+![AdminLTE Dashboard](assets/img/dashboard.png)
 
 
 ## 5. Artisan Console Commands
