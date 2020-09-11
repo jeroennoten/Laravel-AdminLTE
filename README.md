@@ -30,7 +30,7 @@ For an older package version, review and use the following ones:
    4. [The `adminlte:status` Command](#54-the-adminltestatus-command)
    5. [Authentication Views](#55-authentication-views)
       1. [Using the Authentication Views Manually](#551-using-the-authentication-views-manually)
-6. [Configuration](#6-configuration)
+6. [Basic Configuration](#6-basic-configuration)
    1. [Title](#61-title)
    2. [Favicon](#62-favicon)
    3. [Logo](#63-logo)
@@ -217,7 +217,7 @@ You can also install the package **Authentication Views** adding `--type=enhance
 ### 5.2 The `adminlte:plugins` Command
 
 If you won't use the content delivery network (`CDN`) to include new plugins, you are able to manage some optional plugins with the `php artisan adminlte:plugins` command.
-You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file, please refers to the section [Plugins](#613-plugins). Here are some examples that helps to explain the command options:
+You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file in order to use it, please refers to the section [Plugins](#613-plugins). Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
   ```sh
@@ -320,37 +320,38 @@ In case you want to use the package authentication views manually, you can creat
   ```
 
 
-## 6. Configuration
+## 6. Basic Configuration
 
-First, publish the configuration file (if you don't see the `adminlte.php` file inside the `config` folder):
+In order to change the package configuration, the configuration file should be published. So if you don't see the `adminlte.php` file inside the `config` folder, then publish the configuration file with the next command:
 
 ```sh
 php artisan adminlte:install --only=config
 ```
 
-Now, edit `config/adminlte.php` to configure the title, layout, menu, URLs etc. All configuration options are explained in the comments. However, we going to give a fast review here.
+Now, you are able to edit the `config/adminlte.php` file to configure the title, layout, menu, URLs etc. On the next sections, we going to review all the available configuration options.Let starts with the most basic ones.
 
 ### 6.1 Title
 
-The default title of your admin panel, this goes into the title tag of your page. You can override it per page with the title section. You can optionally also specify a title prefix and/or postfix.
+This is the default title for your admin panel, this goes into the title tag of your page. However, you can also override it per page with the title section. Optionally, you can also specify a title prefix and/or postfix.
 
 The following config options are available:
 
-- __`title`__: Default title.
+- __`title`__: The default title.
 - __`title_prefix`__: The title prefix.
 - __`title_postfix`__: The title postfix.
 
 ### 6.2 Favicon
 
-Favicons could be used easily. There are two different ways to do this. Please add all favicons in the dir public/favicons/.
+Favicons could be used easily. There are two different ways to do this. Please, add all the favicons in the `public/favicons/` folder. The next combinations of configuration options determine how the favicons are used:
 
 - __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
-  Whit this configuration the file `public/favicons/favicon.ico` is used.
+  Whit the previous configuration, the file `public/favicons/favicon.ico` will be used.
 
 - __`['use_ico_only' => false, 'use_full_favicon' => true]`__
 
-  Whit this configuration more favicon files in `public/favicons/` folder will be used. The activated code is:
+  Whit the previous configuration, multiple favicon files located on the `public/favicons/` folder will be used. The current code to use multiple favicons is the next one:
+
   ```blade
   <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
   <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicons/apple-icon-57x57.png') }}">
@@ -373,18 +374,18 @@ Favicons could be used easily. There are two different ways to do this. Please a
 
 ### 6.3 Logo
 
-The logo is displayed at the upper left corner of your admin panel. You can use basic HTML here if you want a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images: one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alt text for both logos.
+The logo is displayed at the upper left corner of your admin panel. You can use basic `HTML` code here if you want a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images: one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alternate text for both logos. The available option are:
 
-- __`logo`__: Text logo content, can be HTML.
-- __`logo_img`__: Path to the small logo image, beside text logo. _Recommend size is: 50x50px_
+- __`logo`__: The text logo content, can use `HTML` code.
+- __`logo_img`__: The path to the small logo image. _The recommend size is: 50x50px_
 - __`logo_img_class`__: Extra classes for the small logo image.
-- __`logo_img_xl`__: Path to large logo image, if you set a img url it will replace the text logo & small logo with one big logo. When the sidebar is collapsed it will displays the small logo. _Recommend size is: 210x33px_
+- __`logo_img_xl`__: The path to the large logo image, if you set a img url here, then it will replace the text & small logo with one big logo. When the sidebar is collapsed it will displays only the small logo. _The recommend size is: 210x33px_
 - __`logo_img_xl_class`__: Extra classes for the large logo image.
-- __`logo_img_alt`__: Logo image alt text.
+- __`logo_img_alt`__: The alternate text for the logo images.
 
 ### 6.4 User Menu
 
-The user menu is displayed at the upper right corner of your admin panel. The available options are:
+The user menu is displayed at the upper right corner of your admin panel. The available options for the user menu are:
 
 - __`usermenu_enabled`__
 
@@ -392,32 +393,33 @@ The user menu is displayed at the upper right corner of your admin panel. The av
 
 - __`usermenu_header`__
 
-  Whether to enable the header inside the user menu.
+  Whether to enable the header section inside the user menu.
 
 - __`usermenu_header_class`__
 
-  Extra classes for the header inside the user menu.
+  Extra classes for the header section inside the user menu.
 
 - __`usermenu_image`__
 
   Whether to enable the user image for the usermenu & lockscreen.
-  _**Note:**_ For this, you will need an extra function named `adminlte_image()` inside the `App/User`.
-  _Recommend size is: 160x160px_
+
+  > **Important:** for this feature, you will need to add an extra function named `adminlte_image()` inside the `User` model, usually located on the `app/User.php` file. The recommend image size is: _160x160px_.
 
 - __`usermenu_desc`__
 
   Whether to enable the user description for the usermenu.
-  _**Note:**_ For this, you will need an extra function named `adminlte_desc()` inside the `App/User`.
+
+  > **Important:** for this feature, you will need to add an extra function named `adminlte_desc()` inside the `User` model, usually located on the `app/User.php` file.
 
 - __`usermenu_profile_url`__
 
-  Whether to enable the user profile url can be set dynamically for the user instead of the config key `profile_url`.
-  _**Note:**_ For this, you need an extra function named `adminlte_profile_url()` inside the `App/User`.
-  The return value should be a string, not a route or url.
+  Whether to enable if the user profile url can be set dynamically for the user instead of using the config option `profile_url`.
+
+  > **Important:** for this feature, you need to add an extra function named `adminlte_profile_url()` inside the `User` model. The return value should be a string, not a route or url.
 
 #### 6.4.1 Example Code of User Image and Description
 
-Here you have an example code for the `App/User` with custom image, description and profile url functions.
+Here you have an example code for the `User` model with the custom image, description and profile url functions.
 
 ```php
 class User extends Authenticatable
