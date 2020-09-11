@@ -217,7 +217,7 @@ You can also install the package **Authentication Views** adding `--type=enhance
 ### 5.2 The `adminlte:plugins` Command
 
 If you won't use the content delivery network (`CDN`) to include new plugins, you are able to manage some optional plugins with the `php artisan adminlte:plugins` command.
-You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Here are some examples that helps to explain the command options:
+You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file, please refers to the section [Plugins](#613-plugins). Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
   ```sh
@@ -279,7 +279,8 @@ The table also shows a column which tells what resources are required for the pa
 ### 5.5 Authentication Views
 
 > Note: this is only available for Laravel 5.2 or higher versions.
-> Note: From Laravel 7 and higher versions, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
+
+> Note: from Laravel 7 and higher versions, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
 
 This package provides the following command to replace the Laravel defaults authentication views with AdminLTE styled views.
 
