@@ -184,40 +184,43 @@ Now, you just return this view from a controller, as usual. It is recommended to
 
 ## 5. Artisan Console Commands
 
+This package provides a few artisan commands in order to manage its resources. These commands are explained in the next sections.
+
 ### 5.1 The `adminlte:install` Command
 
-You can install all the required and some additional resources using the `adminlte:install` command.
+You can install all the required and some additional package resources using the `php artisan adminlte:install` command.
 
-Without any option it will install the AdminLTE package assets, the configuration file and translations.
+Without any option it will install the AdminLTE package assets, the configuration file and the translations.
 You can also install the package **Authentication Views** adding `--type=enhanced` option, or additional to the Authentication Views also the package **Basic Views** and **Routes** adding the `--type=full` option to the `adminlte:install` command.
 
 #### 5.1.1 Options
 
-- `--force`: To force the overwrite of any existing files by default.
+- `--force`: Use this option to force the overwrite of any existing files by default.
 
-- `--type=`: The installation type, the available types are: **basic** (default value), **enhanced** or **full**.
+- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **enhanced** or **full**.
 
-- `--only=*`: To install only specific resources, the available resources are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option. Also you can use this option multiple times, for example:
+- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
   ```sh
   php artisan adminlte:install --only=config --only=main_views
   ```
 
-- `--with=*`: To install with additional resources, the available resources are: **main_views**, **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, examples:
+- `--with=*`: Use this option to install with additional resources, the available resources are: **main_views**, **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, examples:
   ```sh
   php artisan adminlte:install --with=auth_views --with=basic_routes
   php artisan adminlte:install --type=full --with=main_views
   ```
 
-- `--interactive` : To enable the installation guide you through the process.
+- `--interactive` : Use this to enable be guided through the installation process and choose what you want to install.
 
 ### 5.2 The `adminlte:plugins` Command
 
-If you won't use cdn for the plugins, you can manage the optional plugins with the `adminlte:plugins` command.
-You can **list**, **install** or **remove** all available plugins or specific plugins. Here are some examples for the command:
+If you won't use the content delivery network (`CDN`) to include new plugins, you are able to manage some optional plugins with the `php artisan adminlte:plugins` command.
+You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Here are some examples that helps to explain the command options:
 
-- List the status of all available plugins:
+- List the status of all the available plugins:
   ```sh
   php artisan adminlte:plugins
+  php artisan adminlte:plugins list
   ```
 - List the status of the specified plugins:
   ```sh
@@ -242,16 +245,16 @@ You can **list**, **install** or **remove** all available plugins or specific pl
 
 #### 5.2.1 Options
 
- - `operation`: The type of operation: **list** (default), **install** or **remove**.
- - `--plugin=`: To apply the operation only over the specified plugins, the value should be a plugin key.
- - `--force`: To force the overwrite of existing files.
- - `--interactive`: The installation will guide you through the process.
+ - `operation`: The type of the operation: **list** (default), **install** or **remove**.
+ - `--plugin=`: Use this option to apply the operation only over the specified plugins, the value of the option should be a plugin key.
+ - `--force`: Use this option to force the overwrite of existing files.
+ - `--interactive`: Use this option to enable be guided through the operation process and choose what you want to do on each step.
 
 ### 5.3 The `adminlte:update` Command
 
 This command is only a shortcut for `php artisan adminlte:install --force --only=assets`.
 
-> Note this command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refers to section [Updating](#3-updating) to check how to make a complete update.
+> Note: this command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refers to section [Updating](#3-updating) to check how to make a complete update.
 
 ### 5.4 The `adminlte:status` Command
 
@@ -274,19 +277,20 @@ The table also shows a column which tells what resources are required for the pa
 ### 5.5 Authentication Views
 
 > Note: this is only available for Laravel 5.2 or higher versions.
+> Note: the authentication views are part of the `laravel/ui` package starting
+> from Laravel version 7 or higher.
 
-This package ships the following command to replace the authentication views with AdminLTE style views.
+This package provides the following command to replace the Laravel defaults authentication views with AdminLTE styled views.
 
 ```sh
 php artisan adminlte:install --only=auth_views
 ```
 
-By default, the login form contains a link to the registration and password reset forms.
-If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` and the respective link will not be displayed.
+By default, the login view contains a link to the registration and password reset views. If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` on the `adminlte.php` configuration file and the respective link will not be displayed.
 
 #### 5.5.1 Using the Authentication Views Manually
 
-If you want to use the included authentication views manually, you can create the following files and only add one line to each one of these files:
+In case you want to use the package authentication views manually, you can create the following files and only add one line to each one of these files:
 
 - **resources/views/auth/login.blade.php**:
   ```blade
