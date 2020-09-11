@@ -36,13 +36,14 @@ For an older package version, review and use the following ones:
    3. [Logo](#63-logo)
    4. [User Menu](#64-user-menu)
       1. [Example Code of User Image and Description](#641-example-code-of-user-image-and-description)
-   5. [Layout](#65-layout)
-      1. [Responsive Usage](#651-responsive-usage)
-   6. [Classes](#66-classes)
-      1. [Authentication Views Classes](#661-authentication-views-classes)
-      2. [Admin Panel Classes](#662-admin-panel-classes)
-   7. [Sidebar](#67-sidebar)
-   8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
+7. [Layout and Styling Configuration](#7-layout-and-styling-configuration)
+   1. [Layout](#71-layout)
+      1. [Responsive Usage](#711-responsive-usage)
+   2. [Classes](#72-classes)
+      1. [Authentication Views Classes](#721-authentication-views-classes)
+      2. [Admin Panel Classes](#722-admin-panel-classes)
+   3. [Sidebar](#73-sidebar)
+   4. [Control Sidebar (Right Sidebar)](#74-control-sidebar-right-sidebar)
    9. [URLs](#69-urls)
    10. [Laravel Mix](#610-laravel-mix)
    11. [Menu](#611-menu)
@@ -443,11 +444,15 @@ class User extends Authenticatable
 }
 ```
 
-### 6.5 Layout
+## 7. Layout and Styling Configuration
 
-It's possible to change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar, and also you can enable fixed mode for the sidebar, the navbar or the footer.
+The next set of configuration options enables you to change the layout and style of your admin panel.
 
-> **NOTE:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
+### 7.1 Layout
+
+It's possible to change the admin panel layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar, and also you can enable a fixed mode for the sidebar, the navbar or the footer.
+
+> **Important:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
 
 The following config options are available:
 
@@ -471,7 +476,7 @@ The following config options are available:
 
   Enables/Disables the fixed footer mode, here you can set `true` or an `array` for responsive usage. Can't be used with `layout_boxed`.
 
-#### 6.5.1 Responsive Usage
+#### 7.1.1 Responsive Usage
 
 When using an array on the `layout_fixed_navbar` or `layout_fixed_footer` configuration options, you can disable or enable the fixed layout for specific viewport sizes.
 
@@ -496,9 +501,9 @@ __Examples:__
 
   The element will be fixed for mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for a small tablet and normal desktop (>= 768px & <= 1199.99px)
 
-### 6.6 Classes
+### 7.2 Classes
 
-#### 6.6.1 Authentication Views Classes
+#### 7.2.1 Authentication Views Classes
 
 You can change the look and behavior of the authentication views (login, register, email verification, etc).
 
@@ -539,7 +544,9 @@ The set of current default values is the next one:
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-However, you can customize the options as you want to get some particular themes, example:
+![Default Login](assets/img/login-default.png)
+
+However, you can customize the options as you want to get some particular themes, for example:
 
 __Dark Theme__
 
@@ -552,6 +559,8 @@ __Dark Theme__
 'classes_auth_btn' => 'btn-flat btn-light',
 ```
 
+![Dark Login](assets/img/login-dark.png)
+
 __Lightblue Theme__
   
 ```php
@@ -563,7 +572,9 @@ __Lightblue Theme__
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-#### 6.6.2 Admin Panel Classes
+![Lightblue Login](assets/img/login-lblue.png)
+
+#### 7.2.2 Admin Panel Classes
 
 You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
 
@@ -571,7 +582,7 @@ The following config options are available:
 
 - __`classes_body`__
 
-  Extra classes for body.
+  Extra classes for the body.
 
 - __`classes_brand`__
 
@@ -606,7 +617,7 @@ The following config options are available:
 
   Extra classes for the sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes that you can use here:
 
-  - __`nav-child-indent`__ to indent child items.
+  - __`nav-child-indent`__ to indent the child items.
   - __`nav-compact`__ to get a compact nav style.
   - __`nav-flat`__ to get a flat nav style.
   - __`nav-legacy`__ to get a legacy v2 nav style.
@@ -618,7 +629,8 @@ The following config options are available:
   - __`navbar-<color>`__
 
   Where `<color>` is an [AdminLTE available color](https://adminlte.io/themes/v3/pages/UI/general.html).
-  > Note: The recommendation is to combine `navbar-<color>` with `navbar-dark` or `navbar-light`.
+
+  > **Note:** The recommendation is to combine the classes `navbar-<color>` with `navbar-dark` or `navbar-light`.
 
 - __`classes_topnav_nav`__
 
@@ -628,9 +640,9 @@ The following config options are available:
 
   Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
 
-### 6.7 Sidebar
+### 7.3 Sidebar
 
-You can modify the sidebar, for example, you can disable the collapsed mini sidebar, start with collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and change the sidebar navigation menu item animation speed.
+You can modify the sidebar, for example, you can disable the collapsed mini sidebar, start with a collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember option, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and change the sidebar navigation menu item animation speed.
 
 The following config options are available:
 
@@ -652,7 +664,7 @@ The following config options are available:
 
 - __`sidebar_collapse_remember_no_transition`__
 
-  Enables/Disables the transition after reload page.
+  Enables/Disables the transition after reloading the page.
 
 - __`sidebar_scrollbar_theme`__
 
@@ -670,9 +682,9 @@ The following config options are available:
 
   Changes the sidebar slide animation speed.
 
-### 6.8 Control Sidebar (Right Sidebar)
+### 7.4 Control Sidebar (Right Sidebar)
 
-Here you have the option to enable a right sidebar. When active, you can use the `@section('right-sidebar')`. The icon you configure will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while false will push the content without animation. You can also choose the sidebar theme (dark or light).
+Here you have the option to enable a right sidebar. When active, you can use the `@section('right-sidebar')` section to setup his content. The icon you configure will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while `false` will push the content without animation. You can also choose the sidebar theme (dark or light).
 
 The following config options are available:
 
@@ -694,7 +706,7 @@ The following config options are available:
 
 - __`right_sidebar_push`__
 
-  Enables/Disables push content instead of overlay for the right sidebar.
+  Enables/Disables push the content instead of overlay for the right sidebar.
 
 - __`right_sidebar_scrollbar_theme`__
 
