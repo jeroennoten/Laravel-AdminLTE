@@ -544,7 +544,7 @@ The set of current default values is the next one:
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-![Default Login](assets/img/login-default.png)
+<img src="assets/img/login-default.png" alt="Default Login" width="100"/>
 
 However, you can customize the options as you want to get some particular themes, for example:
 
