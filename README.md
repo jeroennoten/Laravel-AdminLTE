@@ -544,7 +544,7 @@ The set of current default values is the next one:
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-<img src="assets/img/login-default.png" alt="Default Login" width="100"/>
+<img src="assets/img/login-default.png" alt="Default Login" width="200"/>
 
 However, you can customize the options as you want to get some particular themes, for example:
 
@@ -559,7 +559,7 @@ __Dark Theme__
 'classes_auth_btn' => 'btn-flat btn-light',
 ```
 
-![Dark Login](assets/img/login-dark.png)
+<img src="assets/img/login-dark.png" alt="Dark Login" width="200"/>
 
 __Lightblue Theme__
   
@@ -572,7 +572,7 @@ __Lightblue Theme__
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-![Lightblue Login](assets/img/login-lblue.png)
+<img src="assets/img/login-lblue.png" alt="Lightblue Login" width="200"/>
 
 #### 7.2.2 Admin Panel Classes
 
