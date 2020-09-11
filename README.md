@@ -77,12 +77,14 @@ The current package requirements are:
    composer require jeroennoten/laravel-adminlte
    ```
 
-2. **(For Laravel 7+ only)** Require the `laravel/ui` package using composer:
+2. **(For Laravel 7+ only)** If you want to install the authentication scaffolding, then require the `laravel/ui` package using composer:
 
    ```sh
    composer require laravel/ui
-   php artisan ui:controllers
+   php artisan ui vue --auth
    ```
+
+   > Note: it is recommended to read [Laravel Authentication Docs](https://laravel.com/docs/7.x/authentication) for details.
 
 3. Finally, install the required package resources using the next command:
 
@@ -277,8 +279,7 @@ The table also shows a column which tells what resources are required for the pa
 ### 5.5 Authentication Views
 
 > Note: this is only available for Laravel 5.2 or higher versions.
-> Note: the authentication views are part of the `laravel/ui` package starting
-> from Laravel version 7 or higher.
+> Note: From Laravel 7 and higher versions, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
 
 This package provides the following command to replace the Laravel defaults authentication views with AdminLTE styled views.
 
@@ -286,7 +287,7 @@ This package provides the following command to replace the Laravel defaults auth
 php artisan adminlte:install --only=auth_views
 ```
 
-By default, the login view contains a link to the registration and password reset views. If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` on the `adminlte.php` configuration file and the respective link will not be displayed.
+By default, the provided login view contains a link to the registration and password reset views. If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` on the `adminlte.php` configuration file and the respective link will not be displayed.
 
 #### 5.5.1 Using the Authentication Views Manually
 
