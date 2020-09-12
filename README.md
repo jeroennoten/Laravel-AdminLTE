@@ -447,15 +447,15 @@ The next configuration options provides a way to setup the urls for the login/re
 
 - __`use_route_url`__
 
-  Whether to use `route()` instead of the `url()` Laravel method.
+  Whether to use `route()` instead of the `url()` Laravel method to generate the urls.
 
 - __`dashboard_url`__
 
-  Changes the dashboard/logo URL.
+  Changes the dashboard/logo URL. This URL will be used, for example, when you click on the upper left logo.
 
 - __`logout_url`__
 
-  Changes the logout button URL.
+  Changes the logout button URL. This URL will be used when you click on the logout button.
 
 - __`logout_method`__
 
@@ -465,7 +465,7 @@ The next configuration options provides a way to setup the urls for the login/re
 
 - __`login_url`__
 
-  Changes the login URL.
+  Changes the login URL. This URL will be used when you click on the login button.
 
 - __`register_url`__
 
@@ -521,11 +521,14 @@ The following config options are available:
 When using an array on the `layout_fixed_navbar` or `layout_fixed_footer` configuration options, you can disable or enable the fixed layout for specific viewport sizes.
 
 The following keys are available to use inside the array, you can set them to `true` or `false`:
-- `xs` represent screens from 0px to 575.99px width
-- `sm` represent screens from 576px to 767.99px width
-- `md` represent screens from 768px to 991.99px width
-- `lg` represent screens from 992px to 1199.99px width
-- `xl` represent screens from 1200px or more width
+
+Key  | Description
+-----|------------
+`xs` | Represent screens from 0px to 575.99px width
+`sm` | Represent screens from 576px to 767.99px width
+`md` | Represent screens from 768px to 991.99px width
+`lg` | Represent screens from 992px to 1199.99px width
+`xl` | Represent screens from 1200px or more width
 
 __Examples:__
 
@@ -545,9 +548,7 @@ __Examples:__
 
 #### 7.2.1 Authentication Views Classes
 
-You can change the look and behavior of the authentication views (login, register, email verification, etc).
-
-The following config options are available:
+You can change the look and behavior of the authentication views (login, register, email verification, etc). The following config options are available:
 
 - __`classes_auth_card`__
 
@@ -573,7 +574,10 @@ The following config options are available:
 
   Extra classes for the submit buttons.
 
-The set of current default values is the next one:
+The set of current default values and the look is the next one:
+
+<img src="assets/img/login-default.png"
+     alt="Default Login" width="200" align="right"/>
 
 ```php
 'classes_auth_card' => 'card-outline card-primary',
@@ -584,11 +588,12 @@ The set of current default values is the next one:
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-<img src="assets/img/login-default.png" alt="Default Login" width="200"/>
-
 However, you can customize the options as you want to get some particular themes, for example:
 
 __Dark Theme__
+
+<img src="assets/img/login-dark.png"
+     alt="Dark Login" width="200" align="right"/>
 
 ```php
 'classes_auth_card' => 'bg-gradient-dark',
@@ -599,10 +604,11 @@ __Dark Theme__
 'classes_auth_btn' => 'btn-flat btn-light',
 ```
 
-<img src="assets/img/login-dark.png" alt="Dark Login" width="200"/>
-
 __Lightblue Theme__
-  
+
+<img src="assets/img/login-lblue.png"
+     alt="Lightblue Login" width="200" align="right"/>
+
 ```php
 'classes_auth_card' => '',
 'classes_auth_header' => 'bg-gradient-info',
@@ -611,8 +617,6 @@ __Lightblue Theme__
 'classes_auth_icon' => 'fa-lg text-info',
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
-
-<img src="assets/img/login-lblue.png" alt="Lightblue Login" width="200"/>
 
 #### 7.2.2 Admin Panel Classes
 
@@ -738,7 +742,7 @@ The following config options are available:
 
 - __`right_sidebar_theme`__
 
-  Changes the theme of the right sidebar, the following options available: `dark` & `light`.
+  Changes the theme of the right sidebar, the following options are available: `dark` & `light`.
 
 - __`right_sidebar_slide`__
 
