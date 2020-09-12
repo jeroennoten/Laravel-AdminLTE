@@ -23,9 +23,9 @@ For an older package version, review and use the following ones:
 4. [Usage](#4-usage)
 5. [Artisan Console Commands](#5-artisan-console-commands)
    1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
-      1. [Options](#511-options)
+      1. [Command Options](#511-command-options)
    2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
-      1. [Options](#521-options)
+      1. [Command Options](#521-command-options)
    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
    4. [The `adminlte:status` Command](#54-the-adminltestatus-command)
    5. [Authentication Views](#55-authentication-views)
@@ -70,7 +70,7 @@ The current package requirements are:
 
 ## 2. Installation
 
-> Please, note the next steps are valid for a fresh installation procedure, if you are updating the package, refers to the [Updating](#3-updating) section.
+> **Note:** the next steps are valid for a fresh installation procedure, if you are updating the package, refers to the [Updating](#3-updating) section.
 
 1. On the root folder of your Laravel project, require the package using composer:
 
@@ -85,7 +85,7 @@ The current package requirements are:
    php artisan ui vue --auth
    ```
 
-   > Note: it is recommended to read [Laravel Authentication Docs](https://laravel.com/docs/7.x/authentication) for details.
+   > **Note:** it is a recommendation to read the [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) for details about the authentication scaffolding.
 
 3. Finally, install the required package resources using the next command:
 
@@ -93,16 +93,16 @@ The current package requirements are:
    php artisan adminlte:install
    ```
 
-   > You can use **--force** option to overwrite any existing file
+   > You can use **--force** option to overwrite existing files.
    >
-   > You can use **--interactive** option to be guided through the process and choose what you want to install
+   > You can use **--interactive** option to be guided through the process and choose what you want to install.
    > 
    > You can check the installation status of the package resources with the command `php artisan adminlte:status`
 
 
 ## 3. Updating
 
-1. To update this package, first update the package with the next composer command:
+1. First, update the package with the next composer command:
 
    ```sh
    composer update jeroennoten/laravel-adminlte
@@ -110,15 +110,15 @@ The current package requirements are:
 
 2. Then, update the required AdminLTE assets resources
 
-   > Note: If you using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, first delete the folder adminlte inside your `public/vendor` directory.
+   > **Note:** if you are using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, first delete the folder adminlte inside your `public/vendor` directory.
 
-   In order to publish the new assets, execute the next command:
+   In order to publish the new AdminLTE assets, execute the next command:
 
    ```sh
    php artisan adminlte:update
    ```
 
-3. If you have [published](#8-customize-views) and modified the default `master.blade.php` file, `page.blade.php` file or any other view related to this package, you will need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your files previosuly. To update the views, you may follow next steps:
+3. If you have [published](#8-customize-views) and modified the default `master.blade.php` file, `page.blade.php` file or any other view provided with this package, you may need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your files previosuly. To update the views, you may follow next steps:
 
    - Make a copy (or backup) of the views you have modified, those inside the folder `resources/views/vendor/adminlte`.
 
@@ -145,18 +145,17 @@ The current package requirements are:
 
 ## 4. Usage
 
-To use the blade template provided by this package, just create a new blade file and extend the layout with `@extends('adminlte::page')`.
-The template yields the following main sections:
+To use the blade template provided by this package, just create a new blade file and extend the layout with `@extends('adminlte::page')`. The template yields the following main sections:
 
-- `title`: to setup the content of the `<title>` tag.
-- `content_header`: to setup the title of the page (above the main content).
-- `content`: to setup all of the page's main content.
-- `footer`: to setup the content of the page footer.
-- `right-sidebar`: to setup the content of the right (control) sidebar.
+- `title`: to fill the content of the `<title>` tag.
+- `content_header`: to fill the title of the page (above the main content).
+- `content`: to fill all of the page's main content.
+- `footer`: to fill the content of the page footer.
+- `right-sidebar`: to fill the content of the right (control) sidebar.
 - `css`: to add extra stylesheets (inside the `<head>` tag).
 - `js`: to add extra javascript (just before the `</body>` tag).
 
-All the mentioned sections, in fact, are optional. As a basic example, your most common blade template could look like the following one:
+In fact, all the mentioned sections are optional. As a basic example, your most common blade template could look like the following one:
 
 ```blade
 @extends('adminlte::page')
@@ -180,23 +179,21 @@ All the mentioned sections, in fact, are optional. As a basic example, your most
 @stop
 ```
 
-Now, you just return this view from a controller, as usual. It is recommended to check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel. As a first preview, this is an example image of what you can get with the previous blade template:
+Now, and as usual, you just return this view from a controller. It is a recommendation to check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade template:
 
 ![AdminLTE Dashboard](assets/img/dashboard.png)
 
 
 ## 5. Artisan Console Commands
 
-This package provides a few artisan commands in order to manage its resources. These commands are explained in the next sections.
+This package provides some artisan commands in order to manage its resources. These commands are explained in the next sections.
 
 ### 5.1 The `adminlte:install` Command
 
-You can install all the required and some additional package resources using the `php artisan adminlte:install` command.
+You can install all the required and some additional package resources using the `php artisan adminlte:install` command. Without any option it will install the AdminLTE package assets, the configuration file and the translations.
+You can also install the package **Authentication Views** adding the `--type=enhanced` option, or additional to the Authentication Views also the package **Basic Views** and **Routes** adding the `--type=full` option to the command.
 
-Without any option it will install the AdminLTE package assets, the configuration file and the translations.
-You can also install the package **Authentication Views** adding `--type=enhanced` option, or additional to the Authentication Views also the package **Basic Views** and **Routes** adding the `--type=full` option to the `adminlte:install` command.
-
-#### 5.1.1 Options
+#### 5.1.1 Command Options
 
 - `--force`: Use this option to force the overwrite of any existing files by default.
 
@@ -218,7 +215,7 @@ You can also install the package **Authentication Views** adding `--type=enhance
 ### 5.2 The `adminlte:plugins` Command
 
 If you won't use the content delivery network (`CDN`) to include new plugins, you are able to manage some optional plugins with the `php artisan adminlte:plugins` command.
-You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file in order to use it, please refers to the section [Plugins](#613-plugins). Here are some examples that helps to explain the command options:
+You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](#613-plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
   ```sh
@@ -246,7 +243,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
   php artisan adminlte:plugins remove --plugin=select2
   ```
 
-#### 5.2.1 Options
+#### 5.2.1 Command Options
 
  - `operation`: The type of the operation: **list** (default), **install** or **remove**.
  - `--plugin=`: Use this option to apply the operation only over the specified plugins, the value of the option should be a plugin key.
@@ -257,7 +254,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
 
 This command is only a shortcut for `php artisan adminlte:install --force --only=assets`.
 
-> Note: this command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refers to section [Updating](#3-updating) to check how to make a complete update.
+> **Note:** this command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refer to section [Updating](#3-updating) to check how to make a complete update.
 
 ### 5.4 The `adminlte:status` Command
 
@@ -279,9 +276,9 @@ The table also shows a column which tells what resources are required for the pa
 
 ### 5.5 Authentication Views
 
-> Note: this is only available for Laravel 5.2 or higher versions.
+> **Note:** this is only available for Laravel 5.2 or higher versions.
 
-> Note: from Laravel 7 and higher versions, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
+> **Note:** from Laravel 7 and higher versions, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
 
 This package provides the following command to replace the Laravel defaults authentication views with AdminLTE styled views.
 
