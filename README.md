@@ -595,6 +595,8 @@ __Dark Theme__
 <img src="assets/img/login-dark.png"
      alt="Dark Login" width="200" align="right"/>
 
+A dark background with light buttons and icons.
+
 ```php
 'classes_auth_card' => 'bg-gradient-dark',
 'classes_auth_header' => '',
@@ -608,6 +610,8 @@ __Lightblue Theme__
 
 <img src="assets/img/login-lblue.png"
      alt="Lightblue Login" width="200" align="right"/>
+
+A lightblue header background with lightblue icons.
 
 ```php
 'classes_auth_card' => '',
