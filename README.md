@@ -36,6 +36,7 @@ For an older package version, review and use the following ones:
    3. [Logo](#63-logo)
    4. [User Menu](#64-user-menu)
       1. [Example Code of User Image and Description](#641-example-code-of-user-image-and-description)
+   5. [URLs](#65-urls)
 7. [Layout and Styling Configuration](#7-layout-and-styling-configuration)
    1. [Layout](#71-layout)
       1. [Responsive Usage](#711-responsive-usage)
@@ -44,7 +45,6 @@ For an older package version, review and use the following ones:
       2. [Admin Panel Classes](#722-admin-panel-classes)
    3. [Sidebar](#73-sidebar)
    4. [Control Sidebar (Right Sidebar)](#74-control-sidebar-right-sidebar)
-   9. [URLs](#69-urls)
    10. [Laravel Mix](#610-laravel-mix)
    11. [Menu](#611-menu)
        1. [Adding a Search Input](#6111-adding-a-search-input)
@@ -444,6 +444,49 @@ class User extends Authenticatable
 }
 ```
 
+### 6.5 URLs
+
+The next configuration options provides a way to setup the urls for the login/register and other links. Register here your dashboard, logout, login and register URLs.
+
+- __`use_route_url`__
+
+  Whether to use `route()` instead of the `url()` Laravel method.
+
+- __`dashboard_url`__
+
+  Changes the dashboard/logo URL.
+
+- __`logout_url`__
+
+  Changes the logout button URL.
+
+- __`logout_method`__
+
+  Changes the logout send method, the available options are: `GET`, `POST` & `null` (Laravel default).
+
+  > **Note:** the logout URL automatically sends a `POST` request in Laravel 5.3 or higher.
+
+- __`login_url`__
+
+  Changes the login URL.
+
+- __`register_url`__
+
+  Changes the register URL. Set this option to `false` to hide the register link shown on the login view.
+
+- __`password_reset_url`__
+
+  Changes the password reset URL. This url should point to the view that displays the password reset form. Set this option to `false` to hide the password reset link shown on the login view.
+
+- __`password_email_url`__
+
+  Changes the password email URL. This url should point to the view that displays the send reset link form.
+
+- __`profile_url`__
+
+  Changes the user profile URL. When not `false`, it will displays a button in the user menu.
+
+
 ## 7. Layout and Styling Configuration
 
 The next set of configuration options enables you to change the layout and style of your admin panel.
@@ -715,47 +758,6 @@ The following config options are available:
 - __`right_sidebar_scrollbar_auto_hide`__
 
     Changes the sidebar scrollbar auto hide trigger. Default value is `l`.
-
-### 6.9 URLs
-
-Here we have the url settings to setup the correct login/register links. Register here your dashboard, logout, login and register URLs.
-
-- __`use_route_url`__
-
-  Whether to use `route()` instead of `url()` Laravel method.
-
-- __`dashboard_url`__
-
-  Changes the dashboard/logo URL.
-
-- __`logout_url`__
-
-  Changes the logout button URL.
-
-- __`logout_method`__
-
-  Changes the logout send method, available options are: `GET`, `POST` & `null` (Laravel default).
-  > Note: the logout URL automatically sends a `POST` request in Laravel 5.3 or higher.
-
-- __`login_url`__
-
-  Changes the login url.
-
-- __`register_url`__
-
-  Changes the register url. Set this option to `false` to hide the register link.
-
-- __`password_reset_url`__
-
-  Changes the password reset url. This url should point to the view that displays the password reset form. Set this option to `false` to hide the password reset link.
-
-- __`password_email_url`__
-
-  Changes the password email url. This url should point to the view that displays the send reset link form.
-
-- __`profile_url`__
-
-  Changes the user profile url. When not `false`, it will displays a button in the user menu.
 
 ### 6.10 Laravel Mix
 
