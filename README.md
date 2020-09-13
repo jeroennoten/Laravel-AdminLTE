@@ -45,13 +45,14 @@ For an older package version, review and use the following ones:
       2. [Admin Panel Classes](#722-admin-panel-classes)
    3. [Sidebar](#73-sidebar)
    4. [Control Sidebar (Right Sidebar)](#74-control-sidebar-right-sidebar)
+8. [Menu Configuration](#8-menu-configuration)
+   1. [Menu](#81-menu)
+   2. [Adding a Search Input](#82-adding-a-search-input)
+   3. [Custom Menu Filters](#83-custom-menu-filters)
+   4. [Menu Configuration at Runtime](#84-menu-configuration-at-runtime)
+      1. [Config on Service Provider](#841-config-on-service-provider)
+
    10. [Laravel Mix](#610-laravel-mix)
-   11. [Menu](#611-menu)
-       1. [Adding a Search Input](#6111-adding-a-search-input)
-       2. [Custom Menu Filters](#6112-custom-menu-filters)
-       3. [Menu Configuration at Runtime](#6113-menu-configuration-at-runtime)
-       4. [Active Menu Items](#6114-active-menu-items)
-   12. [Menu Filters](#612-menu-filters)
    13. [Plugins](#613-plugins)
        1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
 7. [Translations](#7-translations)
@@ -764,6 +765,364 @@ The following config options are available:
 
     Changes the sidebar scrollbar auto hide trigger. Default value is `l`.
 
+
+## 8. Menu Configuration
+
+The next set of configuration options gives you the ability to configure the menu items.
+
+### 8.1 Menu
+
+You can specify the set of menu items to display in the left sidebar and/or the top navbar. A menu item representing a link should have a `text` attribute and an `url` (or `route`) attribute. Also, and optionally, you can specify an icon from [Font Awesome](https://fontawesome.com) for every menu item using the `icon` attribute. A single string instead of an array represents a header in the sidebar, a header is used to group items under a label. However, a header may also be represented by an array containing the `header` attribute. There is also a `can` attribute that can be used as a filter with the Laravel's built in [Gate](https://laravel.com/docs/authorization#gates) functionality.
+
+Here is a basic example of a menu configuration:
+
+```php
+'menu' => [
+    'MAIN NAVIGATION',
+    [
+        'text' => 'Blog',
+        'url'  => 'admin/blog',
+    ],
+    [
+        'text' => 'Pages',
+        'url'  => 'admin/pages',
+        'icon' => 'fas fa-fw fa-file',
+    ],
+    [
+        'text'   => 'Show my website',
+        'url'    => '/',
+        'target' => '_blank',
+    ],
+    [
+        'header' => 'ACCOUNT SETTINGS',
+    ],
+    [
+        'text'  => 'Profile',
+        'route' => 'admin.profile',
+        'icon'  => 'fas fa-fw fa-user',
+    ],
+    [
+        'text'  => 'Change Password',
+        'route' => 'admin.password',
+        'icon'  => 'fas fa-fw fa-lock',
+    ],
+],
+```
+
+On the next table, we give a summary of the available attributes for the menu items. Take in consideration that most of these attributes are optional. Some of these attributes will be explained better later.
+
+Attribute      | Description
+---------------|------------
+`text`         | Text representing the name of the item.
+`url`          | An URL path, usually used on link items.
+`route`        | A Route name, usually used on link items.
+`icon`         | A font awesome icon for the item.
+`ìcon_color`   | An AdminLTE color for the icon (info, primary, etc).
+`header`       | Text representing the name of a header (only for headers).
+`label`        | Text for a badge associated with the item.
+`label_color`  | An AdminLTE color for the badge (info, primary, etc).
+`topnav`       | Bool to place the item on the top navbar.
+`topnav_user`  | Bool to place the item in the user menu.
+`topnav_right` | Bool to place the item in the right section of top navbar.
+`submenu`      | Array with child items that enables nested menus.
+`can`          | Filters related to the item for use with Laravel's Gate.
+`key`          | A unique identifier key for reference the item.
+`data`         | Array with `data-*` attributes for the item.
+`active`       | To define when the item should have the active style.
+
+Now, we give a better explanations for some of the previous attributes:
+
+- The __`route`__ attribute:
+
+  You can use this attribute to assign a Laravel route name to a link item, for example:
+
+  ```php
+  [
+      'text'  => 'Profile',
+      'route' => 'admin.profile',
+      'icon'  => 'fas fa-fw fa-user',
+  ],
+  ```
+
+  Even more, you can pass parameters to your route using an array where the first value is the route name and the second value an array with the parameters, as shown next:
+
+  ```php
+  [
+      'text'  => 'Profile',
+      'route' => ['admin.profile', ['userID' => '673']],
+      'icon'  => 'fas fa-fw fa-user',
+  ],
+  ```
+
+- The __`icon`__ attribute:
+
+  This attribute is optional, and you will get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out. The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons). Just specify the name of the icon and it will appear in front of your menu item.
+
+- The __`topnav`__, __`topnav_right`__ and __`topnav_user`__ attributes:
+
+  It's possible to add menu items to the top navigation while the sidebar is enabled, you need to set the `topnav` attribute to `true` for this feature. Also, you can set the `topnav_right` attribute for put the item on the right side of the topnav or set the `topnav_user` attribute to place the menu item in the user menu (above the user-body).
+
+  > **Note:** when the top navigation layout is enabled, all menu items will appear in the top navigation.
+
+- The __`key`__ attribute:
+
+  In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier. You can use this identifier later to add new items before or after the item represented by this `key` identifier.
+
+- The __`data`__ attribute:
+
+  In order to add `data-*` attributes to your menu items, you can simply add an associative array called `data` to the item. Here is a basic example:
+
+  ```php
+  [
+      'text' => 'New post',
+      'url'  => 'admin/blog/new',
+      'data' => [
+          'test-one' => 'content-one',
+          'test-two' => 'content-two',
+      ],
+  ]
+  ```
+
+  Then the previous menu item will be rendered as this:
+
+  ```html
+  <a class="nav-link" href="http://<domain>/admin/blog/new"
+     data-test-one="content-one"
+     data-test-two="content-two">
+      <i class="far fa-fw fa-circle"></i>
+      <p>New post</p>
+  </a>
+  ```
+
+- The __`can`__ attribute:
+
+  You may use the `can` attribute if you want to conditionally show a menu item. This integrates with the [Laravel's Gate](https://laravel.com/docs/authorization#gates) functionality. If you need to conditionally show a header item, you need to wrap it in an array using the `header` attribute. You can also use multiple conditions entries with an array as value, check the next example for details:
+
+  ```php
+  [
+      [
+          'header' => 'BLOG',
+          'url'    => 'admin/blog',
+          'can'    => 'manage-blog',
+      ],
+      [
+          'text' => 'Add new post',
+          'url'  => 'admin/blog/new',
+          'can'  => ['add-blog-post', 'other-right'],
+      ],
+  ]
+  ```
+
+  So, in the previous example the header will show only if the user has the `manage-blog` right, and the link will show if the user has `add-blog-post` or `other-right` rights.
+
+- The __`active`__ attribute:
+
+  By default, a menu item is considered active if any of the following conditions holds:
+
+  - The current path matches the `url` parameter.
+  - The current path is a sub-path of the `url` parameter.
+  - If it has a submenu containing an active menu item.
+
+  To override this behavior, you can specify an `active` attribute with an array of URLs to be matched. Even more, asterisks and regular expressions are supported on this attribute to be more flexible with particular cases. To utilize a regex, simply prefix your pattern with `regex:` and it will get evaluated automatically. The pattern will attempt to match the path of the URL returned by `request()->path()`, which returns the current URL without the domain name. At next, we can see an example that uses multiple definitions for the active state:
+
+  ```php
+  [
+      'text'   => 'Pages',
+      'url'    => 'pages',
+      'active' => ['pages', 'content', 'content/*', 'regex:@^content/[0-9]+$@']
+  ]
+  ```
+
+### 8.2 Adding a Search Input
+
+It's possible to add a search input in your menu, using a menu item with the following configuration of attributes:
+
+```php
+[
+    'search' => true,
+    'url' => 'test',                     // the form action
+    'method' => 'POST',                  // the form method
+    'input_name' => 'menu-search-input', // the input name
+    'text' => 'Search',                  // the input placeholder
+],
+```
+
+### 8.3 Custom Menu Filters
+
+You can set the filters you want to include for rendering the menu using the `filters` configuration of the config file. You can add your own filters to this array after you've created them. You can comment out the `GateFilter` if you don't want to use Laravel's built in Gate functionality. The current default set of menu filters is:
+
+```php
+'filters' => [
+    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
+],
+```
+
+If you need to use a custom menu filter, you can add your own menu filters to the previous array. This can be useful, for example, when you are using a third-party package for authorization (instead of the Laravel's Gate functionality).
+
+In order to provide more details, we going to show an example of how you can configure the [Laratrust Package](https://laratrust.santigarcor.me/). Start by creating your custom filter implementation:
+
+```php
+<?php
+
+namespace MyApp;
+
+use JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface;
+use Laratrust\Laratrust;
+
+class MyMenuFilter implements FilterInterface
+{
+    public function transform($item)
+    {
+        if (isset($item['permission']) && ! Laratrust::isAbleTo($item['permission'])) {
+            $item['restricted'] = true;
+        }
+
+        return $item;
+    }
+}
+```
+
+And then add the following configuration to the `config/adminlte.php` file:
+
+```php
+'filters' => [
+    ...
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+    // Comment next line out to remove the Gate filter.
+    //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+    MyApp\MyMenuFilter::class,
+]
+```
+
+### 8.4 Menu Configuration at Runtime
+
+It is also possible to configure the menu at runtime, for example in the boot method of any service provider or from a controller. You can add new menu items at the end of the menu, before or after a specific menu item, and also inside a menu item as a submenu item. You can use this feature if your menu is not static, for example when it depends on your database or the locale configuration.
+
+It is also possible to combine both approaches, a static configured menu with dinamics modifications. The menu will simply be concatenated and the order of the service providers will determine the order in the menu.
+
+The available menu builder methods are:
+
+- __`add(...$newItems)`__
+
+  Adds one or multiple menu items, you can use the item's attributes to place the item/s in the sidebar or the topnav menus (right, left or user menu).
+
+- __`addAfter($itemKey, ...$newItems)`__
+
+  Adds one or multiple menu items after a specific menu item (distinguished by his `key` attribute).
+
+- __`addBefore($itemKey, ...$newItems)`__
+
+  Adds one or multiple menu items before a specific menu item (distinguished by his `key` attribute).
+
+- __`addIn($itemKey, ...$newItems)`__
+
+  Adds one or multiple menu items inside a specific menu item (distinguished by his `key` attribute) as submenu or child item/s.
+
+- __`remove($itemKey)`__
+
+  Removes one specific menu item (distinguished by his `key` attribute).
+
+- __`itemKeyExists($itemKey)`__
+
+  Checks if a specific menu item exists, searched by the `key` attribute.
+
+On the next example we going to give a basic overview of how to use the methods. First, we add a `key` attribute to a particular menu item.
+
+```php
+[
+    'key'         => 'pages',
+    'text'        => 'Pages',
+    'url'         => 'admin/pages',
+    'icon'        => 'far fa-fw fa-file',
+],
+```
+
+Then, we going to add the next menu items.
+
+1. `Account Settings` after `Pages`
+2. `Notifications` inside `Account Settings`
+3. `Profile` before `Notifications`
+
+So, after listening for the `BuildingMenu` event dispatched by this package, we can write the next lines in order to add the mentioned new items:
+
+```php
+$events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+
+    $event->menu->addAfter('pages', [
+        'key' => 'account_settings',
+        'header' => 'Account Settings',
+    ]);
+
+    $event->menu->addIn('account_settings', [
+        'key' => 'account_settings_notifications',
+        'text' => 'Notifications',
+        'url' => 'account/edit/notifications',
+    ]);
+
+    $event->menu->addBefore('account_settings_notifications', [
+        'key' => 'account_settings_profile',
+        'text' => 'Profile',
+        'url' => 'account/edit/profile',
+    ]);
+});
+```
+
+The event-based approach is used to make sure that the code that builds the menu runs only when the admin panel is actually displayed, and not on every request.
+
+#### 8.4.1 Config on Service Provider
+
+To configure the menu at runtime on a particular service provider, just register a handler or callback for the `MenuBuilding` event, for example, in the `boot()` method:
+
+```php
+use Illuminate\Contracts\Events\Dispatcher;
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(Dispatcher $events)
+    {
+        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+            // Add some items to the menu...
+            $event->menu->add('MAIN NAVIGATION');
+            $event->menu->add([
+                'text' => 'Blog',
+                'url' => 'admin/blog',
+            ]);
+        });
+    }
+}
+```
+
+The attributes for a menu item are the same explained previously. Here is a more practical example that uses translations and the database:
+
+```php
+public function boot(Dispatcher $events)
+{
+    $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+
+        $event->menu->add(trans('menu.pages'));
+
+        $items = Page::all()->map(function (Page $page) {
+            return [
+                'text' => $page['title'],
+                'url' => route('admin.pages.edit', $page)
+            ];
+        });
+
+        $event->menu->add(...$items);
+    });
+}
+```
+
+
 ### 6.10 Laravel Mix
 
 If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
@@ -813,311 +1172,6 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 - __`laravel_mix_js_path`__
 
   Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
-
-### 6.11 Menu
-
-You can specify the menu items to display in the left sidebar. Each menu item should have a text and an URL (or Route). You can also specify an icon from Font Awesome. A string instead of an array represents a header in the sidebar. The `can` option is a filter on Laravel's built in Gate functionality.
-
-Here is a basic example of a menu configuration:
-
-```php
-'menu' => [
-    'MAIN NAVIGATION',
-    [
-        'text' => 'Blog',
-        'url' => 'admin/blog',
-    ],
-    [
-        'text' => 'Pages',
-        'url' => 'admin/pages',
-        'icon' => 'fas fa-fw fa-file',
-    ],
-    [
-        'text' => 'Show my website',
-        'url' => '/',
-        'target' => '_blank',
-    ],
-    'ACCOUNT SETTINGS',
-    [
-        'text' => 'Profile',
-        'route' => 'admin.profile',
-        'icon' => 'fas fa-fw fa-user',
-    ],
-    [
-        'text' => 'Change Password',
-        'route' => 'admin.password',
-        'icon' => 'fas fa-fw fa-lock',
-    ],
-],
-```
-
-With a single string, you specify a menu header item to separate the items.
-With an array, you specify a menu item, `text` and `url` or `route` are required attributes.
-The `icon` attribute is optional, you get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out.
-The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons).
-Just specify the name of the icon and it will appear in front of your menu item.
-
-It's also possible to add menu items to the top navigation while the sidebar is enabled, you just need to set the `topnav` attribute to `true`. You can also set `topnav_right` for put the item on the right side of the topnav or `topnav_user` to place it in the user menu (above the user-body).
-When the top navigation layout is enabled, all menu items will appear in the top navigation.
-
-To place an item dynamically you can use the `key` attribute, with this option you set an unique identifier. You can use this identifier later to add new items before or after the item represented by this `key` identifier.
-
-To add `data-attributes` to your menu links, your can simply add an associative array called `data`. Here is a basic example:
-
-```php
-[
-    [
-        'header' => 'BLOG',
-        'url' => 'admin/blog',
-        'data' => [
-            'test' => 'content',
-        ],
-    ],
-    [
-        'text' => 'Add new post',
-        'url' => 'admin/blog/new',
-        'data' => [
-            'test-one' => 'content-one',
-            'test-two' => 'content-two',
-        ],
-    ],
-]
-```
-
-Use the `can` attribute if you want to conditionally show the menu item. This integrates with the Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` attribute. You can also use multiples `can` entries with an array, see the second example:
-
-```php
-[
-    [
-        'header' => 'BLOG',
-        'url' => 'admin/blog',
-        'can' => 'manage-blog',
-    ],
-    [
-        'text' => 'Add new post',
-        'url' => 'admin/blog/new',
-        'can' => ['add-blog-post', 'other-right'],
-    ],
-]
-```
-
-#### 6.11.1 Adding a Search Input
-
-It's possible to add a search input in your menu, using a menu item with the following configuration:
-
-```php
-[
-    'search' => true,
-    'url' => 'test',                     // the form action
-    'method' => 'POST',                  // the form method
-    'input_name' => 'menu-search-input', // the input name
-    'text' => 'Search',                  // the input placeholder
-],
-```
-
-#### 6.11.2 Custom Menu Filters
-
-If you need to use custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).
-
-For example, with Laratrust:
-
-```php
-<?php
-
-namespace MyApp;
-
-use JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface;
-use Laratrust\Laratrust;
-
-class MyMenuFilter implements FilterInterface
-{
-    public function transform($item)
-    {
-        if (isset($item['permission']) && ! Laratrust::isAbleTo($item['permission'])) {
-            $item['restricted'] = true;
-        }
-
-        return $item;
-    }
-}
-```
-
-And then add configuration to the `config/adminlte.php` file:
-
-```php
-'filters' => [
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-    // Comment next line out.
-    //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
-    MyApp\MyMenuFilter::class,
-]
-```
-
-#### 6.11.3 Menu Configuration at Runtime
-
-It is also possible to configure the menu at runtime, e.g. in the boot of any service provider or from a controller.
-You can add new menu items at end of the menu, before or after a specific menu item and also inside a menu item as a submenu item. 
-Use this if your menu is not static, for example when it depends on your database or the locale.
-It is also possible to combine both approaches. The menu will be simply concatenated and the order of the service providers
-will determine the order in the menu.
-
-The available Menu Builder methods are:
-
-- __`add(...$newItems)`__
-
-  Adds one or multiple menu items to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`addAfter($itemKey, ...$newItems)`__
-
-  Adds one or multiple menu items after a specific menu item to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`addBefore($itemKey, ...$newItems)`__
-
-  Adds one or multiple menu items before a specific menu item to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`addIn($itemKey, ...$newItems)`__
-
-  Adds one or multiple menu items inside a specific menu item as sub menu item to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`remove($itemKey)`__
-
-  Removes one specific menu item.
-
-- __`itemKeyExists($itemKey)`__
-
-  Checks if a specific menu item exists, searched by the `key` attribute.
-
-To configure the menu at runtime, just register a handler or callback for the `MenuBuilding` event, for example, in the `boot()` method of a service provider:
-
-```php
-use Illuminate\Contracts\Events\Dispatcher;
-use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
-
-class AppServiceProvider extends ServiceProvider
-{
-    public function boot(Dispatcher $events)
-    {
-        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add('MAIN NAVIGATION');
-            $event->menu->add([
-                'text' => 'Blog',
-                'url' => 'admin/blog',
-            ]);
-        });
-    }
-}
-```
-
-The configuration options for a menu item are the same explained previously.
-
-Here is a more practical example that uses translations and the database:
-
-```php
-public function boot(Dispatcher $events)
-{
-    $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-        $event->menu->add(trans('menu.pages'));
-
-        $items = Page::all()->map(function (Page $page) {
-            return [
-                'text' => $page['title'],
-                'url' => route('admin.pages.edit', $page)
-            ];
-        });
-
-        $event->menu->add(...$items);
-    });
-}
-```
-
-This event-based approach is used to make sure that the code that builds the menu runs only when the admin panel is actually displayed and not on every request.
-
-__Basic `AddAfter`, `AddBefore` & `AddIn` Examples:__
-
-In this example we add a `key` attribute to the pages menu item.
-
-```php
-[
-    'key'         => 'pages',
-    'text'        => 'pages',
-    'url'         => 'admin/pages',
-    'icon'        => 'far fa-fw fa-file',
-    'label'       => 4,
-    'label_color' => 'success',
-],
-```
-
-Now we going to add the next menu items.
-
-1. __Account Settings__ after __Pages__
-2. __Notifications__ inside __Account Settings__
-3. __Profile__ before __Notifications__
-
-For this, we use the next code:
-
-```php
-$events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-
-    $event->menu->addAfter('pages', [
-        'key' => 'account_settings',
-        'header' => 'Account Settings',
-    ]);
-
-    $event->menu->addIn('account_settings', [
-        'key' => 'account_settings_notifications',
-        'text' => 'Notifications',
-        'url' => 'account/edit/notifications',
-    ]);
-
-    $event->menu->addBefore('account_settings_notifications', [
-        'key' => 'account_settings_profile',
-        'text' => 'Profile',
-        'url' => 'account/edit/profile',
-    ]);
-});
-```
-
-#### 6.11.4 Active Menu Items
-
-By default, a menu item is considered active if any of the following conditions holds:
-- The current path matches the `url` parameter
-- The current path is a sub-path of the `url` parameter
-- If it has a submenu containing an active menu item
-
-To override this behavior, you can specify an `active` parameter with an array of active URLs, asterisks and regular expressions are supported.
-
-To utilize a regex, simply prefix your pattern with `regex:` and it will get evaluated automatically. The pattern will attempt to match the path of the URL, returned by `request()->path()`, which returns the current URL without the domain name. Example:
-
-```php
-[
-    'text' => 'Pages',
-    'url' => 'pages',
-    'active' => ['pages', 'content', 'content/*', 'regex:@^content/[0-9]+$@']
-]
-```
-
-### 6.12 Menu Filters
-
-We can set the filters you want to include for rendering the menu.
-You can add your own filters to this array after you've created them. You can comment out the `GateFilter` if you don't want to use Laravel's built in Gate functionality.
-
-- __`filters`__: An array of menu filters.
-
-The default set of menu filters is:
-
-```php
-'filters' => [
-    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
-],
-```
 
 ### 6.13 Plugins
 
@@ -1171,7 +1225,7 @@ You can change the Pace plugin theme, modifying the css file location when using
 
 ```php
 'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
-``` 
+```
 
 - __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
 - __Available themes are__: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
