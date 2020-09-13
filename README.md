@@ -119,7 +119,7 @@ The current package requirements are:
    php artisan adminlte:update
    ```
 
-3. If you have [published](#8-customize-views) and modified the default `master.blade.php` file, `page.blade.php` file or any other view provided with this package, you may need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your files previosuly. To update the views, you may follow next steps:
+3. If you have [published](#11-customize-views) and modified the default `master.blade.php` file, `page.blade.php` file or any other view provided with this package, you may need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your files previosuly. To update the views, you may follow next steps:
 
    - Make a copy (or backup) of the views you have modified, those inside the folder `resources/views/vendor/adminlte`.
 
@@ -216,7 +216,7 @@ You can also install the package **Authentication Views** adding the `--type=enh
 ### 5.2 The `adminlte:plugins` Command
 
 If you won't use the content delivery network (`CDN`) to include new plugins, you are able to manage some optional plugins with the `php artisan adminlte:plugins` command.
-You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](#613-plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
+You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](#91-plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
   ```sh
