@@ -7,7 +7,7 @@
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io) with Laravel 6 or higher. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
+This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io/themes/v3/) with Laravel 6 or higher. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
 For an older package version, review and use the following ones:
 - Version **1.x** or branch **laravel5-adminlte2**:
@@ -51,14 +51,14 @@ For an older package version, review and use the following ones:
    3. [Custom Menu Filters](#83-custom-menu-filters)
    4. [Menu Configuration at Runtime](#84-menu-configuration-at-runtime)
       1. [Config on Service Provider](#841-config-on-service-provider)
-
-   10. [Laravel Mix](#610-laravel-mix)
-   13. [Plugins](#613-plugins)
-       1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
-7. [Translations](#7-translations)
-   1. [Menu Translations](#71-menu-translations)
-8. [Customize Views](#8-customize-views)
-9. [Issues, Questions and Pull Requests](#9-issues-questions-and-pull-requests)
+9. [Other Configuration](#9-other-configuration)
+   1. [Plugins](#91-plugins)
+      1. [Pace Plugin Configuration](#911-pace-plugin-configuration)
+   2. [Laravel Mix](#92-laravel-mix)
+10. [Translations](#10-translations)
+    1. [Menu Translations](#101-menu-translations)
+11. [Customize Views](#11-customize-views)
+12. [Issues, Questions and Pull Requests](#12-issues-questions-and-pull-requests)
 
 
 ## 1. Requirements
@@ -180,7 +180,7 @@ In fact, all the mentioned sections are optional. As a basic example, your most 
 @stop
 ```
 
-Now, and as usual, you just return this view from a controller. It is a recommendation to check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade template:
+Now, and as usual, you just return this view from a controller. It is a recommendation to check out [AdminLTE v3](https://adminlte.io/themes/v3/) to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade template:
 
 ![AdminLTE Dashboard](assets/img/dashboard.png)
 
@@ -293,27 +293,27 @@ By default, the provided login view contains a link to the registration and pass
 
 In case you want to use the package authentication views manually, you can create the following files and only add one line to each one of these files:
 
-- **resources/views/auth/login.blade.php**:
+- _resources/views/auth/login.blade.php_:
   ```blade
   @extends('adminlte::auth.login')
   ```
-- **resources/views/auth/register.blade.php**
+- _resources/views/auth/register.blade.php_
   ```blade  
   @extends('adminlte::auth.register')
   ```
-- **resources/views/auth/verify.blade.php**
+- _resources/views/auth/verify.blade.php_
   ```blade
   @extends('adminlte::auth.verify')
   ```
-- **resources/views/auth/passwords/confirm.blade.php**
+- _resources/views/auth/passwords/confirm.blade.php_
   ```blade
   @extends('adminlte::auth.passwords.confirm')
   ```
-- **resources/views/auth/passwords/email.blade.php**
+- _resources/views/auth/passwords/email.blade.php_
   ```blade
   @extends('adminlte::auth.passwords.email')
   ```
-- **resources/views/auth/passwords/reset.blade.php**
+- _resources/views/auth/passwords/reset.blade.php_
   ```blade
   @extends('adminlte::auth.passwords.reset')
   ```
@@ -809,13 +809,13 @@ Here is a basic example of a menu configuration:
 ],
 ```
 
-On the next table, we give a summary of the available attributes for the menu items. Take in consideration that most of these attributes are optional. Some of these attributes will be explained better later.
+On the next table, we give a summary of the available attributes for the menu items. Take in consideration that most of these attributes are optional. Some of these attributes will be explained later with more details.
 
 Attribute      | Description
 ---------------|------------
 `text`         | Text representing the name of the item.
 `url`          | An URL path, usually used on link items.
-`route`        | A Route name, usually used on link items.
+`route`        | A route name, usually used on link items.
 `icon`         | A font awesome icon for the item.
 `ìcon_color`   | An AdminLTE color for the icon (info, primary, etc).
 `header`       | Text representing the name of a header (only for headers).
@@ -830,7 +830,7 @@ Attribute      | Description
 `data`         | Array with `data-*` attributes for the item.
 `active`       | To define when the item should have the active style.
 
-Now, we give a better explanations for some of the previous attributes:
+Now, we going to give detailed explanations for some of the previous attributes:
 
 - The __`route`__ attribute:
 
@@ -841,7 +841,7 @@ Now, we give a better explanations for some of the previous attributes:
       'text'  => 'Profile',
       'route' => 'admin.profile',
       'icon'  => 'fas fa-fw fa-user',
-  ],
+  ]
   ```
 
   Even more, you can pass parameters to your route using an array where the first value is the route name and the second value an array with the parameters, as shown next:
@@ -851,7 +851,7 @@ Now, we give a better explanations for some of the previous attributes:
       'text'  => 'Profile',
       'route' => ['admin.profile', ['userID' => '673']],
       'icon'  => 'fas fa-fw fa-user',
-  ],
+  ]
   ```
 
 - The __`icon`__ attribute:
@@ -866,7 +866,7 @@ Now, we give a better explanations for some of the previous attributes:
 
 - The __`key`__ attribute:
 
-  In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier. You can use this identifier later to add new items before or after the item represented by this `key` identifier.
+  In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier. You can use this identifier later to add new items before or after the item represented by this `key` identifier. For more details, checkout section [Menu Configuration at Runtime](#84-menu-configuration-at-runtime)
 
 - The __`data`__ attribute:
 
@@ -883,7 +883,7 @@ Now, we give a better explanations for some of the previous attributes:
   ]
   ```
 
-  Then the previous menu item will be rendered as this:
+  Then, the previous menu item will be rendered as this:
 
   ```html
   <a class="nav-link" href="http://<domain>/admin/blog/new"
@@ -919,8 +919,8 @@ Now, we give a better explanations for some of the previous attributes:
 
   By default, a menu item is considered active if any of the following conditions holds:
 
-  - The current path matches the `url` parameter.
-  - The current path is a sub-path of the `url` parameter.
+  - The current path matches the `url` attribute.
+  - The current path is a sub-path of the `url` attribute.
   - If it has a submenu containing an active menu item.
 
   To override this behavior, you can specify an `active` attribute with an array of URLs to be matched. Even more, asterisks and regular expressions are supported on this attribute to be more flexible with particular cases. To utilize a regex, simply prefix your pattern with `regex:` and it will get evaluated automatically. The pattern will attempt to match the path of the URL returned by `request()->path()`, which returns the current URL without the domain name. At next, we can see an example that uses multiple definitions for the active state:
@@ -1123,9 +1123,64 @@ public function boot(Dispatcher $events)
 ```
 
 
-### 6.10 Laravel Mix
+## 9. Other Configuration
 
-If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
+### 9.1 Plugins
+
+The `plugins` configuration lets you configure which plugins should be included. Every plugin is represented with an array with attributes. The plugin **active** status and the **files** array (even empty) are required attributes for a plugin. The **files**, when added, need to have a **type** attribute (`js` or `css`), an **asset** attribute (`true` or `false`) and also a **location** (`string`). When the **asset** attribute is set to `true`, the **location** will be output using the Laravel's `asset()` function.
+
+By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are configured out-of-the-box with `CDN` files but not active. You can activate them changing the config file `active` attribute to load it on every page, or instead add a section in some specific blade files, this will automatically inject their CDN files. To inject a plugin using a blade section directive use the following code at the init of your blade template:
+
+```blade
+@section('plugins.Datatables', true)
+```
+
+By default, you can use the next plugins:
+- `Datatables`
+- `Select2`
+- `Chartjs`
+- `Sweetalert2`
+- `Pace`
+
+However, you can add and configure new plugins modifying the `plugins` configuration option, using the example structure below:
+
+```php
+'plugins' => [
+    ...
+    'Plugin Name' => [
+        'active' => true,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => false,
+                'location' => '//cdn.plugin.net/plugin.min.js',
+            ],
+            [
+                'type' => 'css',
+                'asset' => true,
+                'location' => 'css/plugin.min.css',
+            ],
+        ],
+    ],
+]
+```
+
+The `active` value will enable/disable the plugin injection. Each plugin have a `files` array, that contain arrays with file types (`js` or `css`), and a `location`. If the `asset` value is `true`, the injection will use the `asset()` function.
+
+#### 9.1.1 Pace Plugin Configuration
+
+You can change the Pace plugin theme modifying the `css` file location when using the `CDN` injection.
+
+```php
+'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
+```
+
+- __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
+- __Available themes are__: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
+
+### 9.2 Laravel Mix
+
+If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following `NPM` packages:
 
 ```sh
 npm i @fortawesome/fontawesome-free
@@ -1157,7 +1212,7 @@ Also, replace your `app.scss` content by the following:
 //@import '~bootstrap/scss/bootstrap';
 ```
 
-After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable the load of `app.css` & `app.js` files.
+After preparing the Laravel Mix vendor files, set the `enabled_laravel_mix` configuration option to `true` to enable the load of `app.css` & `app.js` files.
 
 - __`enabled_laravel_mix`__
 
@@ -1173,69 +1228,10 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 
   Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
 
-### 6.13 Plugins
 
-Lets you configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via `<script>` and `<link>` tags. The plugin **active** status and the **files** array (even empty) are all required attributes. The **files**, when added, need to have a **type** attribute (`js` or `css`), an **asset** attribute (`true` or `false`) and a **location** (`string`). When **asset** is set to `true`, the **location** will be output using the Laravel's `asset()` function.
+## 10. Translations
 
-By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported but not active.
-You can activate them with changing the config file to load it on every page, or add a section in specific blade files, this will automatically inject their CDN files.
-
-To inject a plugin using a blade section use the following code example:
-
-```blade
-@section('plugins.Datatables', true)
-```
-
-By default, you can use the next plugins:
-- `Datatables`
-- `Select2`
-- `Chartjs`
-- `Sweetalert2`
-- `Pace`
-
-Also, you can add and configure new plugins modifying the plugin variable, using the example structure below:
-
-```php
-'plugins' => [
-    'Plugin Name' => [
-        'active' => true,
-        'files' => [
-            [
-                'type' => 'js',
-                'asset' => false,
-                'location' => '//cdn.plugin.net/plugin.min.js',
-            ],
-            [
-                'type' => 'css',
-                'asset' => true,
-                'location' => 'css/plugin.min.css',
-            ],
-        ],
-    ],
-]
-```
-
-With the `name` string you specify the plugin name, and the `active` value will enable/disable the plugin injection.
-Each plugin have a `files` array, that contain arrays with file type (`js` or `css`), and a `location`.
-If the `asset` value is `true`, the injection will use the `asset()` function.
-
-#### 6.13.1 Pace Plugin Configuration
-
-You can change the Pace plugin theme, modifying the css file location when using the CDN injection.
-
-```php
-'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
-```
-
-- __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
-- __Available themes are__: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
-
-
-## 7. Translations
-
-At the moment, English, German, French, Dutch, Portuguese, Spanish and Turkish translations are available out of the box.
-Just specify the language in `config/app.php`.
-If you need to modify the texts or add other languages, you can publish the language files:
+At the moment, English, German, French, Dutch, Portuguese, Spanish and Turkish translations are available out of the box. Just specify the `locale` configuration option in `config/app.php` file of your Laravel project. If you need to modify the texts or add other languages, you can publish the language files:
 
 ```sh
 php artisan adminlte:install --only=translations
@@ -1243,21 +1239,20 @@ php artisan adminlte:install --only=translations
 
 Now, you are able to edit translations or add languages in the `resources/lang/vendor/adminlte` folder.
 
-### 7.1 Menu Translations
+### 10.1 Menu Translations
 
-The menu translations are enabled by default and allows you to use lang files for menu items translation.
+The menu translations are enabled by default and allows you to use `lang` files for menu items translation.
 
 #### Configure Menu Item for Translation:
 
-First, we need to configure the menu. We add translation `keys` to the `text` and `header` attributes. These are the currently supported menu attributes for translations.
-This is an example of configuration:
+You need to configure the menu items to support translations. For this, you need to add translation `keys` to the `text` and/or `header` attributes. These are the currently supported menu attributes for translations. This is an example of the configuration you need:
 
 ```php
 [
-    'header' => 'account_settings_trans'
+    'header' => 'account_settings_trans_key',
 ],
 [
-    'text' => 'profile_trans',
+    'text' => 'profile_trans_key',
     'url'  => 'admin/settings',
     'icon' => 'user',
 ],
@@ -1265,33 +1260,36 @@ This is an example of configuration:
 
 #### Lang Files
 
-All the translation strings must be added in the `menu.php` file of each language needed. You need to declare a `key` for each one of the menu items translations.
-The translations files are located at the `resources/lang/vendor/adminlte/` folder
-
-This is an example of the `resources/lang/vendor/adminlte/en/menu.php` lang file for the previous sample of configuration:
+All the translation strings keys configured must be added in the `menu.php` file of each locale needed. You need to declare a `key` for each one of the menu items you want to translate. The translations files are located at the `resources/lang/vendor/adminlte/` folder. This is an example of the `resources/lang/vendor/adminlte/en/menu.php` lang file for the previous sample of configuration:
 
 ```php
 return [
-    'account_settings_trans'  => 'ACCOUNT SETTINGS',
-    'profile_trans'           => 'Profile',
+    'account_settings_trans_key'  => 'ACCOUNT SETTINGS',
+    'profile_trans_key'           => 'Profile',
 ];
 ```
 
-## 8. Customize Views
 
-If you need full control over the provided views, you can publish them:
+## 11. Customize Views
+
+If you need full control or customization over the package provided views, you can publish them:
 
 ```sh
 php artisan adminlte:install --only=main_views
 ```
 
-Now, you can edit the views in the `resources/views/vendor/adminlte` folder.
+Now, you can edit the views in the `resources/views/vendor/adminlte` folder to make any customization you want.
+
+> **Important:** If you publish the package views, it is a recommendation to follow the update procedure explained on section [Updating](#3-updating) if a new version of this package include changes on these views.
 
 
-## 9. Issues, Questions and Pull Requests
+## 12. Issues, Questions and Pull Requests
 
-You can report issues and ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
+You can report issues or ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please, start your issue with `ISSUE: ` and your question with `QUESTION: ` in the subject.
 
-If you have a question, check the closed issues first.
+If you have a question, it is recommended to search and check the closed issues first.
 
-To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more info.
+To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more info. When submitting a Pull Request take the next notes into consideration:
+
+- Check that the Pull Request don't introduce a high downgrade on the code quality.
+- If the Pull Request introduce new features, consider adding an explanation of this feature on the README file documentation, if needed.
