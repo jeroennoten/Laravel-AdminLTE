@@ -187,7 +187,15 @@ Now, and as usual, you just return this view from a controller. It is a recommen
 
 ## 5. Artisan Console Commands
 
-This package provides some artisan commands in order to manage its resources. These commands are explained in the next sections.
+This package provides some artisan commands in order to manage its resources. These commands are explained in the next sections. First, we going to give a little summary of the available resources, they are distinguished by a key name:
+
+- __`assets`__: The set of AdminLTE required assets, including dependencies like `Bootstrap` and `jQuery`.
+- __`config`__: The package configuration file.
+- __`translations`__: The set of translations files used by the package.
+- __`auth_views`__: A set of AdminLTE styled authentication views to replace the Laravel default ones.
+- __`basic_views`__: A home blade view that shows a basic template usage.
+- __`basic_routes`__: Routes definitions for the authentication scaffolding.
+- __`main_views`__: The set of package blade views that, in conjunction, provides the main layout you usually will extend.
 
 ### 5.1 The `adminlte:install` Command
 
@@ -1038,10 +1046,10 @@ On the next example we going to give a basic overview of how to use the methods.
 
 ```php
 [
-    'key'         => 'pages',
-    'text'        => 'Pages',
-    'url'         => 'admin/pages',
-    'icon'        => 'far fa-fw fa-file',
+    'key'  => 'pages',
+    'text' => 'Pages',
+    'url'  => 'admin/pages',
+    'icon' => 'far fa-fw fa-file',
 ],
 ```
 
