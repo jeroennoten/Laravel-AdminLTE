@@ -52,6 +52,7 @@ This version supports Laravel 6 and higher and included AdminLTE v2
    12. [Menu Filters](#612-menu-filters)
    13. [Plugins](#613-plugins)
        1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
+   14. [Livewire](#614-livewire)
 7. [Translations](#7-translations)
    1. [Menu Translations](#71-menu-translations)
 8. [Customize Views](#8-customize-views)
@@ -1139,6 +1140,28 @@ You can change the Pace plugin theme, modifying the css file location when using
 
 - __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
 - __Available themes are__: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
+
+### 6.14 Livewire
+
+Before enable the livewire in the theme, you must installed the laravel livewire.
+
+```php
+composer require livewire/livewire
+```
+After that just enable the livewire in config.php
+
+```php
+/*
+    |--------------------------------------------------------------------------
+    | Livewire configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here we can modify the livewire configuration.
+    |
+    */
+
+    'livewire' => true,
+```
 
 
 ## 7. Translations
