@@ -55,6 +55,7 @@ For an older package version, review and use the following ones:
    1. [Plugins](#91-plugins)
       1. [Pace Plugin Configuration](#911-pace-plugin-configuration)
    2. [Laravel Mix](#92-laravel-mix)
+   3. [Livewire](#93-livewire)
 10. [Translations](#10-translations)
     1. [Menu Translations](#101-menu-translations)
 11. [Customize Views](#11-customize-views)
@@ -1236,6 +1237,27 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 
   Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
 
+### 9.3 Livewire
+
+Before enable the livewire in the theme you must installed the laravel livewire.
+
+```php
+composer require livewire/livewire
+```
+After that just enable the livewire in config.php
+
+```php
+/*
+    |--------------------------------------------------------------------------
+    | Livewire configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here we can modify the livewire configuration.
+    |
+    */
+
+    'livewire' => true,
+```
 
 ## 10. Translations
 
