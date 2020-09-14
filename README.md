@@ -3,16 +3,17 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 [![Build Status](https://travis-ci.org/jeroennoten/Laravel-AdminLTE.svg?branch=master)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
 [![Quality Score](https://img.shields.io/scrutinizer/g/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
+[![Code Coverage](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE/?branch=master)
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 
-This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io) with Laravel 6 or higher. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package just provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
+This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io/themes/v3/) with Laravel 6 or higher. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled views instead of the default Laravel ones is also included.
 
-If you want use the older versions, please use the following versions:
-- Version 1.x or branch laravel5-adminlte2:
-This version supports Laravel 5 and included AdminLTE v2
-- Version 2.x or branch laravel6-adminlte2:
-This version supports Laravel 6 and higher and included AdminLTE v2
+For an older package version, review and use the following ones:
+- Version **1.x** or branch **laravel5-adminlte2**:
+  This version supports Laravel 5 and include AdminLTE v2
+- Version **2.x** or branch **laravel6-adminlte2**:
+  This version supports Laravel 6 or higher and include AdminLTE v2
 
 ## Table of Contents
 
@@ -22,43 +23,47 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 4. [Usage](#4-usage)
 5. [Artisan Console Commands](#5-artisan-console-commands)
    1. [The `adminlte:install` Command](#51-the-adminlteinstall-command)
-      1. [Options](#511-options)
+      1. [Command Options](#511-command-options)
    2. [The `adminlte:plugins` Command](#52-the-adminlteplugins-command)
-      1. [Options](#521-options)
+      1. [Command Options](#521-command-options)
    3. [The `adminlte:update` Command](#53-the-adminlteupdate-command)
    4. [The `adminlte:status` Command](#54-the-adminltestatus-command)
    5. [Authentication Views](#55-authentication-views)
       1. [Using the Authentication Views Manually](#551-using-the-authentication-views-manually)
-6. [Configuration](#6-configuration)
+6. [Basic Configuration](#6-basic-configuration)
    1. [Title](#61-title)
    2. [Favicon](#62-favicon)
    3. [Logo](#63-logo)
    4. [User Menu](#64-user-menu)
       1. [Example Code of User Image and Description](#641-example-code-of-user-image-and-description)
-   5. [Layout](#65-layout)
-      1. [Responsive Usage](#651-responsive-usage)
-   6. [Classes](#66-classes)
-      1. [Authentication Views Classes](#661-authentication-views-classes)
-      2. [Admin Panel Classes](#662-admin-panel-classes)
-   7. [Sidebar](#67-sidebar)
-   8. [Control Sidebar (Right Sidebar)](#68-control-sidebar-right-sidebar)
-   9. [URLs](#69-urls)
-   10. [Laravel Mix](#610-laravel-mix)
-   11. [Menu](#611-menu)
-       1. [Adding a Search Input](#6111-adding-a-search-input)
-       2. [Custom Menu Filters](#6112-custom-menu-filters)
-       3. [Menu Configuration at Runtime](#6113-menu-configuration-at-runtime)
-       4. [Active Menu Items](#6114-active-menu-items)
-   12. [Menu Filters](#612-menu-filters)
-   13. [Plugins](#613-plugins)
-       1. [Pace Plugin Configuration](#6131-pace-plugin-configuration)
-7. [Translations](#7-translations)
-   1. [Menu Translations](#71-menu-translations)
-8. [Customize Views](#8-customize-views)
-9. [Issues, Questions and Pull Requests](#9-issues-questions-and-pull-requests)
+   5. [URLs](#65-urls)
+7. [Layout and Styling Configuration](#7-layout-and-styling-configuration)
+   1. [Layout](#71-layout)
+      1. [Responsive Usage](#711-responsive-usage)
+   2. [Classes](#72-classes)
+      1. [Authentication Views Classes](#721-authentication-views-classes)
+      2. [Admin Panel Classes](#722-admin-panel-classes)
+   3. [Sidebar](#73-sidebar)
+   4. [Control Sidebar (Right Sidebar)](#74-control-sidebar-right-sidebar)
+8. [Menu Configuration](#8-menu-configuration)
+   1. [Menu](#81-menu)
+   2. [Adding a Search Input](#82-adding-a-search-input)
+   3. [Custom Menu Filters](#83-custom-menu-filters)
+   4. [Menu Configuration at Runtime](#84-menu-configuration-at-runtime)
+      1. [Config on Service Provider](#841-config-on-service-provider)
+9. [Other Configuration](#9-other-configuration)
+   1. [Plugins](#91-plugins)
+      1. [Pace Plugin Configuration](#911-pace-plugin-configuration)
+   2. [Laravel Mix](#92-laravel-mix)
+10. [Translations](#10-translations)
+    1. [Menu Translations](#101-menu-translations)
+11. [Customize Views](#11-customize-views)
+12. [Issues, Questions and Pull Requests](#12-issues-questions-and-pull-requests)
 
 
 ## 1. Requirements
+
+The current package requirements are:
 
 - Laravel >= 6.x
 - PHP >= 7.2
@@ -66,87 +71,92 @@ This version supports Laravel 6 and higher and included AdminLTE v2
 
 ## 2. Installation
 
-1. Require the package using composer:
+> **Note:** the next steps are valid for a fresh installation procedure, if you are updating the package, refers to the [Updating](#3-updating) section.
+
+1. On the root folder of your Laravel project, require the package using composer:
 
    ```sh
    composer require jeroennoten/laravel-adminlte
    ```
 
-2. (Laravel 7+ only) Require the laravel/ui package using composer:
+2. **(For Laravel 7+ only)** If you want to install the authentication scaffolding, then require the `laravel/ui` package using composer:
 
    ```sh
    composer require laravel/ui
-   php artisan ui:controllers
+   php artisan ui vue --auth
    ```
 
-3. Install the package using the next command (for fresh laravel installations):
+   > **Note:** it is a recommendation to read the [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) for details about the authentication scaffolding.
+
+3. Finally, install the required package resources using the next command:
 
    ```sh
    php artisan adminlte:install
    ```
 
-   > You can use **--force** option to overwrite any existing file
+   > You can use **--force** option to overwrite existing files.
    >
-   > You can use **--interactive** option to be guided through the process and choose what you want to install
+   > You can use **--interactive** option to be guided through the process and choose what you want to install.
+   > 
+   > You can check the installation status of the package resources with the command `php artisan adminlte:status`
 
 
 ## 3. Updating
 
-1. To update this package, first update the composer package:
+1. First, update the package with the next composer command:
 
    ```sh
    composer update jeroennoten/laravel-adminlte
    ```
 
-2. Then, update the AdminLTE assets
+2. Then, update the required AdminLTE assets resources
 
-   > Note: If you using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, delete the folder adminlte inside your `public/vendor` folder.
+   > **Note:** if you are using AdminLTE for Laravel 5.x and are upgrading to Laravel 6 version, first delete the folder adminlte inside your `public/vendor` directory.
 
-   Use next command to publish the new assets:
+   In order to publish the new AdminLTE assets, execute the next command:
 
    ```sh
    php artisan adminlte:update
    ```
 
-3. If you have [published](#8-customize-views) and modified the default master, page or other view, you will need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your changes.
+3. If you have [published](#11-customize-views) and modified the default `master.blade.php` file, `page.blade.php` file or any other view provided with this package, you may need to update them too. Please, note there could be huge updates on these views, so it is highly recommended to backup your files previosuly. To update the views, you may follow next steps:
 
    - Make a copy (or backup) of the views you have modified, those inside the folder `resources/views/vendor/adminlte`.
 
-   - Publish the views again, using `--force` to overwrite any existing files.
+   - Publish the new set of views, using the `--force` option to overwrite the existing files.
 
      ```sh
      php artisan adminlte:install --only=main_views --force
      ```
 
-   - Compare with your backup files and redo the modifications you previously did to those views.
+   - Compare the new installed views with your backup files and redo the modifications you previously did to those views.
 
-4. From time to time, new configuration options are added or default values are changed, so it is a recommendation to also update the package config file.
+4. From time to time, new configuration options may be added or default values may be changed, so it is also a recommendation to verify and update the package config file if needed. To update the configuration, you may follow next steps:
 
-   - Make a copy (or backup) of your current package configuration, the `config/adminlte.php` file.
+   - Make a copy (or backup) of your current package configuration file, the `config/adminlte.php` file.
 
-   - Now, publish the new package configuration and accept the overwrite warning (or use `--force` option).
+   - Now, publish the new package configuration file and accept the overwrite warning (or use `--force` option to avoid the warning).
 
      ```sh
      php artisan adminlte:install --only=config
      ```
 
-   - Compare with your backup config file and redo the modifications you previously made.
+   - Compare with your backup configuration file and redo the modifications you previously made.
 
 
 ## 4. Usage
 
-To use the template, create a new blade file and extend the layout with `@extends('adminlte::page')`.
-This template yields the following main sections:
+To use the blade template provided by this package, just create a new blade file and extend the layout with `@extends('adminlte::page')`. The template yields the following main sections:
 
-- `title`: for the `<title>` tag.
-- `content_header`: title of the page, above the content.
-- `content`: all of the page's content.
-- `footer`: content of the page footer.
-- `right-sidebar`: content of the right sidebar.
-- `css`: extra stylesheets (located in `<head>`).
-- `js`: extra javascript (just before `</body>`).
+- `title`: to fill the content of the `<title>` tag.
+- `content_header`: to fill the title of the page (above the main content).
+- `content`: to fill all of the page's main content.
+- `footer`: to fill the content of the page footer.
+- `right-sidebar`: to fill the content of the right (control) sidebar.
+- `css`: to add extra stylesheets (inside the `<head>` tag).
+- `js`: to add extra javascript (just before the `</body>` tag).
 
-All sections are in fact optional. As an example, your most common blade template could look like the following:
+In fact, all the mentioned sections are optional. As a basic example, your most common blade template could look like the following one:
 
 ```blade
 @extends('adminlte::page')
@@ -170,45 +180,56 @@ All sections are in fact optional. As an example, your most common blade templat
 @stop
 ```
 
-You now just return this view from your controller, as usual. Check out [AdminLTE](https://almsaeedstudio.com) to find out how to build beautiful content for your admin panel.
+Now, and as usual, you just return this view from a controller. It is a recommendation to check out [AdminLTE v3](https://adminlte.io/themes/v3/) to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade template:
+
+![AdminLTE Dashboard](assets/img/dashboard.png)
 
 
 ## 5. Artisan Console Commands
 
+This package provides some artisan commands in order to manage its resources. These commands are explained in the next sections. First, we going to give a little summary of the available resources, they are distinguished by a key name:
+
+- __`assets`__: The set of AdminLTE required assets, including dependencies like `Bootstrap` and `jQuery`.
+- __`config`__: The package configuration file.
+- __`translations`__: The set of translations files used by the package.
+- __`auth_views`__: A set of AdminLTE styled authentication views to replace the Laravel default ones.
+- __`basic_views`__: A home blade view that shows a basic template usage.
+- __`basic_routes`__: Routes definitions for the authentication scaffolding.
+- __`main_views`__: The set of package blade views that, in conjunction, provides the main layout you usually will extend.
+
 ### 5.1 The `adminlte:install` Command
 
-You can install all the required and some additional resources using the `adminlte:install` command.
+You can install all the required and some additional package resources using the `php artisan adminlte:install` command. Without any option it will install the AdminLTE package assets, the configuration file and the translations.
+You can also install the package **Authentication Views** adding the `--type=enhanced` option, or additional to the Authentication Views also the package **Basic Views** and **Routes** adding the `--type=full` option to the command.
 
-Without any option it will install the AdminLTE package assets, the configuration file and translations.
-You can also install the package **Authentication Views** adding `--type=enhanced` option, or additional to the Authentication Views also the package **Basic Views** and **Routes** adding the `--type=full` option to the `adminlte:install` command.
+#### 5.1.1 Command Options
 
-#### 5.1.1 Options
+- `--force`: Use this option to force the overwrite of any existing files by default.
 
-- `--force`: To force the overwrite of any existing files by default.
+- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **enhanced** or **full**.
 
-- `--type=`: The installation type, the available types are: **basic** (default value), **enhanced** or **full**.
-
-- `--only=*`: To install only specific resources, the available resources are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option. Also you can use this option multiple times, for example:
+- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **config**, **translations**, **auth_views**, **basic_views**, **basic_routes** or **main_views**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
   ```sh
   php artisan adminlte:install --only=config --only=main_views
   ```
 
-- `--with=*`: To install with additional resources, the available resources are: **main_views**, **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, examples:
+- `--with=*`: Use this option to install with additional resources, the available resources are: **main_views**, **auth_views**, **basic_views** or **basic_routes**. This option can be used multiple times, examples:
   ```sh
   php artisan adminlte:install --with=auth_views --with=basic_routes
   php artisan adminlte:install --type=full --with=main_views
   ```
 
-- `--interactive` : To enable the installation guide you through the process.
+- `--interactive` : Use this to enable be guided through the installation process and choose what you want to install.
 
 ### 5.2 The `adminlte:plugins` Command
 
-If you won't use cdn for the plugins, you can manage the optional plugins with the `adminlte:plugins` command.
-You can **list**, **install** or **remove** all available plugins or specific plugins. Here are some examples for the command:
+If you won't use the content delivery network (`CDN`) to include new plugins, you are able to manage some optional plugins with the `php artisan adminlte:plugins` command.
+You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check wich plugins are available executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#54-the-adminltestatus-command)). Note that after the plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](#91-plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
 
-- List the status of all available plugins:
+- List the status of all the available plugins:
   ```sh
   php artisan adminlte:plugins
+  php artisan adminlte:plugins list
   ```
 - List the status of the specified plugins:
   ```sh
@@ -231,18 +252,18 @@ You can **list**, **install** or **remove** all available plugins or specific pl
   php artisan adminlte:plugins remove --plugin=select2
   ```
 
-#### 5.2.1 Options
+#### 5.2.1 Command Options
 
- - `operation`: The type of operation: **list** (default), **install** or **remove**.
- - `--plugin=`: To apply the operation only over the specified plugins, the value should be a plugin key.
- - `--force`: To force the overwrite of existing files.
- - `--interactive`: The installation will guide you through the process.
+ - `operation`: The type of the operation: **list** (default), **install** or **remove**.
+ - `--plugin=`: Use this option to apply the operation only over the specified plugins, the value of the option should be a plugin key.
+ - `--force`: Use this option to force the overwrite of existing files.
+ - `--interactive`: Use this option to enable be guided through the operation process and choose what you want to do on each step.
 
 ### 5.3 The `adminlte:update` Command
 
 This command is only a shortcut for `php artisan adminlte:install --force --only=assets`.
 
-> Note this command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refers to section [Updating](#3-updating) to check how to make a complete update.
+> **Note:** this command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refer to section [Updating](#3-updating) to check how to make a complete update.
 
 ### 5.4 The `adminlte:status` Command
 
@@ -264,78 +285,80 @@ The table also shows a column which tells what resources are required for the pa
 
 ### 5.5 Authentication Views
 
-> Note: this is only available for Laravel 5.2 or higher versions.
+> **Note:** this is only available for Laravel 5.2 or higher versions.
 
-This package ships the following command to replace the authentication views with AdminLTE style views.
+> **Note:** from Laravel 7 and higher versions, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
+
+This package provides the following command to replace the Laravel defaults authentication views with AdminLTE styled views.
 
 ```sh
 php artisan adminlte:install --only=auth_views
 ```
 
-By default, the login form contains a link to the registration and password reset forms.
-If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` and the respective link will not be displayed.
+By default, the provided login view contains a link to the registration and password reset views. If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` on the `adminlte.php` configuration file and the respective link will not be displayed.
 
 #### 5.5.1 Using the Authentication Views Manually
 
-If you want to use the included authentication views manually, you can create the following files and only add one line to each one of these files:
+In case you want to use the package authentication views manually, you can create the following files and only add one line to each one of these files:
 
-- **resources/views/auth/login.blade.php**:
+- _resources/views/auth/login.blade.php_:
   ```blade
   @extends('adminlte::auth.login')
   ```
-- **resources/views/auth/register.blade.php**
+- _resources/views/auth/register.blade.php_
   ```blade  
   @extends('adminlte::auth.register')
   ```
-- **resources/views/auth/verify.blade.php**
+- _resources/views/auth/verify.blade.php_
   ```blade
   @extends('adminlte::auth.verify')
   ```
-- **resources/views/auth/passwords/confirm.blade.php**
+- _resources/views/auth/passwords/confirm.blade.php_
   ```blade
   @extends('adminlte::auth.passwords.confirm')
   ```
-- **resources/views/auth/passwords/email.blade.php**
+- _resources/views/auth/passwords/email.blade.php_
   ```blade
   @extends('adminlte::auth.passwords.email')
   ```
-- **resources/views/auth/passwords/reset.blade.php**
+- _resources/views/auth/passwords/reset.blade.php_
   ```blade
   @extends('adminlte::auth.passwords.reset')
   ```
 
 
-## 6. Configuration
+## 6. Basic Configuration
 
-First, publish the configuration file (if you don't see the `adminlte.php` file inside the `config` folder):
+In order to change the package configuration, the configuration file should be published. So if you don't see the `adminlte.php` file inside the `config` folder, then publish the configuration file with the next command:
 
 ```sh
 php artisan adminlte:install --only=config
 ```
 
-Now, edit `config/adminlte.php` to configure the title, layout, menu, URLs etc. All configuration options are explained in the comments. However, we going to give a fast review here.
+Now, you are able to edit the `config/adminlte.php` file to configure the title, layout, menu, URLs etc. On the next sections, we going to review all the available configuration options. Let starts with the most basic ones.
 
 ### 6.1 Title
 
-The default title of your admin panel, this goes into the title tag of your page. You can override it per page with the title section. You can optionally also specify a title prefix and/or postfix.
+This is the default title for your admin panel, this goes into the title tag of your page. However, you can override it per page with the available title section. Optionally, you can also specify a title prefix and/or postfix.
 
 The following config options are available:
 
-- __`title`__: Default title.
+- __`title`__: The default title.
 - __`title_prefix`__: The title prefix.
 - __`title_postfix`__: The title postfix.
 
 ### 6.2 Favicon
 
-Favicons could be used easily. There are two different ways to do this. Please add all favicons in the dir public/favicons/.
+Favicons could be used easily. There are two different ways to do this. Take in mind that all the favicons should be placed in the `public/favicons/` folder. The next two combinations determines how the favicons will be used:
 
 - __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
-  Whit this configuration the file `public/favicons/favicon.ico` is used.
+  Whit the previous configuration, the file `public/favicons/favicon.ico` will be used.
 
 - __`['use_ico_only' => false, 'use_full_favicon' => true]`__
 
-  Whit this configuration more favicon files in `public/favicons/` folder will be used. The activated code is:
+  Whit the previous configuration, multiple favicon files located on the `public/favicons/` folder will be used. The current code to use multiple favicons is the next one:
+
   ```blade
   <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
   <link rel="apple-touch-icon" sizes="57x57" href="{{ asset('favicons/apple-icon-57x57.png') }}">
@@ -358,18 +381,18 @@ Favicons could be used easily. There are two different ways to do this. Please a
 
 ### 6.3 Logo
 
-The logo is displayed at the upper left corner of your admin panel. You can use basic HTML here if you want a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images: one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alt text for both logos.
+The logo is displayed at the upper left corner of your admin panel. You can use basic `HTML` code here if you want a simple text logo with a small image logo (e.g. 50 x 50 pixels), or you can use two images: one big (e.g. 210 x 33 pixels) and one small (e.g. 50 x 50 pixels). You can also change the sizes of the images and the alternate text for both logos. The available option are:
 
-- __`logo`__: Text logo content, can be HTML.
-- __`logo_img`__: Path to the small logo image, beside text logo. _Recommend size is: 50x50px_
+- __`logo`__: The text logo content, can use `HTML` code.
+- __`logo_img`__: The path to the small logo image. The recommend size is: _50x50px_
 - __`logo_img_class`__: Extra classes for the small logo image.
-- __`logo_img_xl`__: Path to large logo image, if you set a img url it will replace the text logo & small logo with one big logo. When the sidebar is collapsed it will displays the small logo. _Recommend size is: 210x33px_
+- __`logo_img_xl`__: The path to the large logo image, if you set a img url here, then it will replace the text & small logo with one big logo. When the sidebar is collapsed it will displays only the small logo. The recommend size is: _210x33px_
 - __`logo_img_xl_class`__: Extra classes for the large logo image.
-- __`logo_img_alt`__: Logo image alt text.
+- __`logo_img_alt`__: The alternate text for the logo images.
 
 ### 6.4 User Menu
 
-The user menu is displayed at the upper right corner of your admin panel. The available options are:
+The user menu is displayed at the upper right corner of your admin panel. The available options for the user menu are:
 
 - __`usermenu_enabled`__
 
@@ -377,32 +400,33 @@ The user menu is displayed at the upper right corner of your admin panel. The av
 
 - __`usermenu_header`__
 
-  Whether to enable the header inside the user menu.
+  Whether to enable the header section inside the user menu.
 
 - __`usermenu_header_class`__
 
-  Extra classes for the header inside the user menu.
+  Extra classes for the header section inside the user menu.
 
 - __`usermenu_image`__
 
   Whether to enable the user image for the usermenu & lockscreen.
-  _**Note:**_ For this, you will need an extra function named `adminlte_image()` inside the `App/User`.
-  _Recommend size is: 160x160px_
+
+  > **Important:** for this feature, you will need to add an extra function named `adminlte_image()` inside the `User` model, usually located on the `app/User.php` file. The recommend image size is: _160x160px_.
 
 - __`usermenu_desc`__
 
   Whether to enable the user description for the usermenu.
-  _**Note:**_ For this, you will need an extra function named `adminlte_desc()` inside the `App/User`.
+
+  > **Important:** for this feature, you will need to add an extra function named `adminlte_desc()` inside the `User` model, usually located on the `app/User.php` file.
 
 - __`usermenu_profile_url`__
 
-  Whether to enable the user profile url can be set dynamically for the user instead of the config key `profile_url`.
-  _**Note:**_ For this, you need an extra function named `adminlte_profile_url()` inside the `App/User`.
-  The return value should be a string, not a route or url.
+  Whether to enable if the user profile url can be set dynamically for the user instead of using the config option `profile_url`.
+
+  > **Important:** for this feature, you need to add an extra function named `adminlte_profile_url()` inside the `User` model. The return value should be a string, not a route or url.
 
 #### 6.4.1 Example Code of User Image and Description
 
-Here you have an example code for the `App/User` with custom image, description and profile url functions.
+Here you have an example code for the `User` model with the custom image, description and profile url functions.
 
 ```php
 class User extends Authenticatable
@@ -426,11 +450,58 @@ class User extends Authenticatable
 }
 ```
 
-### 6.5 Layout
+### 6.5 URLs
 
-It's possible to change the layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar, and also you can enable fixed mode for the sidebar, the navbar or the footer.
+The next configuration options provides a way to setup the urls for the login/register and other links. Register here your dashboard, logout, login and register URLs.
 
-> **NOTE:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
+- __`use_route_url`__
+
+  Whether to use `route()` instead of the `url()` Laravel method to generate the urls.
+
+- __`dashboard_url`__
+
+  Changes the dashboard/logo URL. This URL will be used, for example, when you click on the upper left logo.
+
+- __`logout_url`__
+
+  Changes the logout button URL. This URL will be used when you click on the logout button.
+
+- __`logout_method`__
+
+  Changes the logout send method, the available options are: `GET`, `POST` & `null` (Laravel default).
+
+  > **Note:** the logout URL automatically sends a `POST` request in Laravel 5.3 or higher.
+
+- __`login_url`__
+
+  Changes the login URL. This URL will be used when you click on the login button.
+
+- __`register_url`__
+
+  Changes the register URL. Set this option to `false` to hide the register link shown on the login view.
+
+- __`password_reset_url`__
+
+  Changes the password reset URL. This url should point to the view that displays the password reset form. Set this option to `false` to hide the password reset link shown on the login view.
+
+- __`password_email_url`__
+
+  Changes the password email URL. This url should point to the view that displays the send reset link form.
+
+- __`profile_url`__
+
+  Changes the user profile URL. When not `false`, it will displays a button in the user menu.
+
+
+## 7. Layout and Styling Configuration
+
+The next set of configuration options enables you to change the layout and style of your admin panel.
+
+### 7.1 Layout
+
+It's possible to change the admin panel layout, you can use a top navigation (navbar) only layout, a boxed layout with sidebar, and also you can enable a fixed mode for the sidebar, the navbar or the footer.
+
+> **Important:** Currently, you cannot use a boxed layout with a fixed navbar or a fixed footer. Also, do not enable `layout_topnav` and `layout_boxed` at the same time. Anything else can be mixed together.
 
 The following config options are available:
 
@@ -454,16 +525,19 @@ The following config options are available:
 
   Enables/Disables the fixed footer mode, here you can set `true` or an `array` for responsive usage. Can't be used with `layout_boxed`.
 
-#### 6.5.1 Responsive Usage
+#### 7.1.1 Responsive Usage
 
 When using an array on the `layout_fixed_navbar` or `layout_fixed_footer` configuration options, you can disable or enable the fixed layout for specific viewport sizes.
 
 The following keys are available to use inside the array, you can set them to `true` or `false`:
-- `xs` represent screens from 0px to 575.99px width
-- `sm` represent screens from 576px to 767.99px width
-- `md` represent screens from 768px to 991.99px width
-- `lg` represent screens from 992px to 1199.99px width
-- `xl` represent screens from 1200px or more width
+
+Key  | Description
+-----|------------
+`xs` | Represent screens from 0px to 575.99px width
+`sm` | Represent screens from 576px to 767.99px width
+`md` | Represent screens from 768px to 991.99px width
+`lg` | Represent screens from 992px to 1199.99px width
+`xl` | Represent screens from 1200px or more width
 
 __Examples:__
 
@@ -479,13 +553,11 @@ __Examples:__
 
   The element will be fixed for mobile (<= 767.99px) and extra large desktops (>= 1200px) but not for a small tablet and normal desktop (>= 768px & <= 1199.99px)
 
-### 6.6 Classes
+### 7.2 Classes
 
-#### 6.6.1 Authentication Views Classes
+#### 7.2.1 Authentication Views Classes
 
-You can change the look and behavior of the authentication views (login, register, email verification, etc).
-
-The following config options are available:
+You can change the look and behavior of the authentication views (login, register, email verification, etc). The following config options are available:
 
 - __`classes_auth_card`__
 
@@ -511,7 +583,10 @@ The following config options are available:
 
   Extra classes for the submit buttons.
 
-The set of current default values is the next one:
+The set of current default values and the look is the next one:
+
+<img src="assets/img/login-default.png"
+     alt="Default Login" width="200" align="right"/>
 
 ```php
 'classes_auth_card' => 'card-outline card-primary',
@@ -522,9 +597,14 @@ The set of current default values is the next one:
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-However, you can customize the options as you want to get some particular themes, example:
+However, you can customize the options as you want to get some particular themes, for example:
 
 __Dark Theme__
+
+<img src="assets/img/login-dark.png"
+     alt="Dark Login" width="200" align="right"/>
+
+A dark background with light buttons and icons.
 
 ```php
 'classes_auth_card' => 'bg-gradient-dark',
@@ -536,7 +616,12 @@ __Dark Theme__
 ```
 
 __Lightblue Theme__
-  
+
+<img src="assets/img/login-lblue.png"
+     alt="Lightblue Login" width="200" align="right"/>
+
+A lightblue header background with lightblue icons.
+
 ```php
 'classes_auth_card' => '',
 'classes_auth_header' => 'bg-gradient-info',
@@ -546,7 +631,7 @@ __Lightblue Theme__
 'classes_auth_btn' => 'btn-flat btn-primary',
 ```
 
-#### 6.6.2 Admin Panel Classes
+#### 7.2.2 Admin Panel Classes
 
 You can change the look and behavior of the admin panel, you can add extra classes to body, brand, sidebar, sidebar navigation, top navigation and top navigation container.
 
@@ -554,7 +639,7 @@ The following config options are available:
 
 - __`classes_body`__
 
-  Extra classes for body.
+  Extra classes for the body.
 
 - __`classes_brand`__
 
@@ -589,7 +674,7 @@ The following config options are available:
 
   Extra classes for the sidebar navigation. Classes will be added to element `ul.nav.nav-pills.nav-sidebar`. There are some built-in classes that you can use here:
 
-  - __`nav-child-indent`__ to indent child items.
+  - __`nav-child-indent`__ to indent the child items.
   - __`nav-compact`__ to get a compact nav style.
   - __`nav-flat`__ to get a flat nav style.
   - __`nav-legacy`__ to get a legacy v2 nav style.
@@ -601,7 +686,8 @@ The following config options are available:
   - __`navbar-<color>`__
 
   Where `<color>` is an [AdminLTE available color](https://adminlte.io/themes/v3/pages/UI/general.html).
-  > Note: The recommendation is to combine `navbar-<color>` with `navbar-dark` or `navbar-light`.
+
+  > **Note:** The recommendation is to combine the classes `navbar-<color>` with `navbar-dark` or `navbar-light`.
 
 - __`classes_topnav_nav`__
 
@@ -611,9 +697,9 @@ The following config options are available:
 
   Extra classes for top navigation bar container. Classes will be added to the `div` wrapper inside element `nav.main-header.navbar`.
 
-### 6.7 Sidebar
+### 7.3 Sidebar
 
-You can modify the sidebar, for example, you can disable the collapsed mini sidebar, start with collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and change the sidebar navigation menu item animation speed.
+You can modify the sidebar, for example, you can disable the collapsed mini sidebar, start with a collapsed sidebar, enable sidebar auto collapse on specific screen size, enable sidebar collapse remember option, change the scrollbar theme or auto hide option, disable sidebar navigation accordion and change the sidebar navigation menu item animation speed.
 
 The following config options are available:
 
@@ -635,7 +721,7 @@ The following config options are available:
 
 - __`sidebar_collapse_remember_no_transition`__
 
-  Enables/Disables the transition after reload page.
+  Enables/Disables the transition after reloading the page.
 
 - __`sidebar_scrollbar_theme`__
 
@@ -653,9 +739,9 @@ The following config options are available:
 
   Changes the sidebar slide animation speed.
 
-### 6.8 Control Sidebar (Right Sidebar)
+### 7.4 Control Sidebar (Right Sidebar)
 
-Here you have the option to enable a right sidebar. When active, you can use the `@section('right-sidebar')`. The icon you configure will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while false will push the content without animation. You can also choose the sidebar theme (dark or light).
+Here you have the option to enable a right sidebar. When active, you can use the `@section('right-sidebar')` section to setup his content. The icon you configure will be displayed at the end of the top menu, and will show/hide the sidebar. The slide option will slide the sidebar over the content, while `false` will push the content without animation. You can also choose the sidebar theme (dark or light).
 
 The following config options are available:
 
@@ -669,7 +755,7 @@ The following config options are available:
 
 - __`right_sidebar_theme`__
 
-  Changes the theme of the right sidebar, the following options available: `dark` & `light`.
+  Changes the theme of the right sidebar, the following options are available: `dark` & `light`.
 
 - __`right_sidebar_slide`__
 
@@ -677,7 +763,7 @@ The following config options are available:
 
 - __`right_sidebar_push`__
 
-  Enables/Disables push content instead of overlay for the right sidebar.
+  Enables/Disables push the content instead of overlay for the right sidebar.
 
 - __`right_sidebar_scrollbar_theme`__
 
@@ -687,50 +773,422 @@ The following config options are available:
 
     Changes the sidebar scrollbar auto hide trigger. Default value is `l`.
 
-### 6.9 URLs
 
-Here we have the url settings to setup the correct login/register links. Register here your dashboard, logout, login and register URLs.
+## 8. Menu Configuration
 
-- __`use_route_url`__
+The next set of configuration options gives you the ability to configure the menu items.
 
-  Whether to use `route()` instead of `url()` Laravel method.
+### 8.1 Menu
 
-- __`dashboard_url`__
+You can specify the set of menu items to display in the left sidebar and/or the top navbar. A menu item representing a link should have a `text` attribute and an `url` (or `route`) attribute. Also, and optionally, you can specify an icon from [Font Awesome](https://fontawesome.com) for every menu item using the `icon` attribute. A single string instead of an array represents a header in the sidebar, a header is used to group items under a label. However, a header may also be represented by an array containing the `header` attribute. There is also a `can` attribute that can be used as a filter with the Laravel's built in [Gate](https://laravel.com/docs/authorization#gates) functionality.
 
-  Changes the dashboard/logo URL.
+Here is a basic example of a menu configuration:
 
-- __`logout_url`__
+```php
+'menu' => [
+    'MAIN NAVIGATION',
+    [
+        'text' => 'Blog',
+        'url'  => 'admin/blog',
+    ],
+    [
+        'text' => 'Pages',
+        'url'  => 'admin/pages',
+        'icon' => 'fas fa-fw fa-file',
+    ],
+    [
+        'text'   => 'Show my website',
+        'url'    => '/',
+        'target' => '_blank',
+    ],
+    [
+        'header' => 'ACCOUNT SETTINGS',
+    ],
+    [
+        'text'  => 'Profile',
+        'route' => 'admin.profile',
+        'icon'  => 'fas fa-fw fa-user',
+    ],
+    [
+        'text'  => 'Change Password',
+        'route' => 'admin.password',
+        'icon'  => 'fas fa-fw fa-lock',
+    ],
+],
+```
 
-  Changes the logout button URL.
+On the next table, we give a summary of the available attributes for the menu items. Take in consideration that most of these attributes are optional. Some of these attributes will be explained later with more details.
 
-- __`logout_method`__
+Attribute      | Description
+---------------|------------
+`text`         | Text representing the name of the item.
+`url`          | An URL path, usually used on link items.
+`route`        | A route name, usually used on link items.
+`icon`         | A font awesome icon for the item.
+`ìcon_color`   | An AdminLTE color for the icon (info, primary, etc).
+`header`       | Text representing the name of a header (only for headers).
+`label`        | Text for a badge associated with the item.
+`label_color`  | An AdminLTE color for the badge (info, primary, etc).
+`topnav`       | Bool to place the item on the top navbar.
+`topnav_user`  | Bool to place the item in the user menu.
+`topnav_right` | Bool to place the item in the right section of top navbar.
+`submenu`      | Array with child items that enables nested menus.
+`can`          | Filters related to the item for use with Laravel's Gate.
+`key`          | A unique identifier key for reference the item.
+`data`         | Array with `data-*` attributes for the item.
+`active`       | To define when the item should have the active style.
 
-  Changes the logout send method, available options are: `GET`, `POST` & `null` (Laravel default).
-  > Note: the logout URL automatically sends a `POST` request in Laravel 5.3 or higher.
+Now, we going to give detailed explanations for some of the previous attributes:
 
-- __`login_url`__
+- The __`route`__ attribute:
 
-  Changes the login url.
+  You can use this attribute to assign a Laravel route name to a link item, for example:
 
-- __`register_url`__
+  ```php
+  [
+      'text'  => 'Profile',
+      'route' => 'admin.profile',
+      'icon'  => 'fas fa-fw fa-user',
+  ]
+  ```
 
-  Changes the register url. Set this option to `false` to hide the register link.
+  Even more, you can pass parameters to your route using an array where the first value is the route name and the second value an array with the parameters, as shown next:
 
-- __`password_reset_url`__
+  ```php
+  [
+      'text'  => 'Profile',
+      'route' => ['admin.profile', ['userID' => '673']],
+      'icon'  => 'fas fa-fw fa-user',
+  ]
+  ```
 
-  Changes the password reset url. This url should point to the view that displays the password reset form. Set this option to `false` to hide the password reset link.
+- The __`icon`__ attribute:
 
-- __`password_email_url`__
+  This attribute is optional, and you will get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out. The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons). Just specify the name of the icon and it will appear in front of your menu item.
 
-  Changes the password email url. This url should point to the view that displays the send reset link form.
+- The __`topnav`__, __`topnav_right`__ and __`topnav_user`__ attributes:
 
-- __`profile_url`__
+  It's possible to add menu items to the top navigation while the sidebar is enabled, you need to set the `topnav` attribute to `true` for this feature. Also, you can set the `topnav_right` attribute for put the item on the right side of the topnav or set the `topnav_user` attribute to place the menu item in the user menu (above the user-body).
 
-  Changes the user profile url. When not `false`, it will displays a button in the user menu.
+  > **Note:** when the top navigation layout is enabled, all menu items will appear in the top navigation.
 
-### 6.10 Laravel Mix
+- The __`key`__ attribute:
 
-If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following NPM packages:
+  In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier. You can use this identifier later to add new items before or after the item represented by this `key` identifier. For more details, checkout section [Menu Configuration at Runtime](#84-menu-configuration-at-runtime)
+
+- The __`data`__ attribute:
+
+  In order to add `data-*` attributes to your menu items, you can simply add an associative array called `data` to the item. Here is a basic example:
+
+  ```php
+  [
+      'text' => 'New post',
+      'url'  => 'admin/blog/new',
+      'data' => [
+          'test-one' => 'content-one',
+          'test-two' => 'content-two',
+      ],
+  ]
+  ```
+
+  Then, the previous menu item will be rendered as this:
+
+  ```html
+  <a class="nav-link" href="http://<domain>/admin/blog/new"
+     data-test-one="content-one"
+     data-test-two="content-two">
+      <i class="far fa-fw fa-circle"></i>
+      <p>New post</p>
+  </a>
+  ```
+
+- The __`can`__ attribute:
+
+  You may use the `can` attribute if you want to conditionally show a menu item. This integrates with the [Laravel's Gate](https://laravel.com/docs/authorization#gates) functionality. If you need to conditionally show a header item, you need to wrap it in an array using the `header` attribute. You can also use multiple conditions entries with an array as value, check the next example for details:
+
+  ```php
+  [
+      [
+          'header' => 'BLOG',
+          'url'    => 'admin/blog',
+          'can'    => 'manage-blog',
+      ],
+      [
+          'text' => 'Add new post',
+          'url'  => 'admin/blog/new',
+          'can'  => ['add-blog-post', 'other-right'],
+      ],
+  ]
+  ```
+
+  So, in the previous example the header will show only if the user has the `manage-blog` right, and the link will show if the user has `add-blog-post` or `other-right` rights.
+
+- The __`active`__ attribute:
+
+  By default, a menu item is considered active if any of the following conditions holds:
+
+  - The current path matches the `url` attribute.
+  - The current path is a sub-path of the `url` attribute.
+  - If it has a submenu containing an active menu item.
+
+  To override this behavior, you can specify an `active` attribute with an array of URLs to be matched. Even more, asterisks and regular expressions are supported on this attribute to be more flexible with particular cases. To utilize a regex, simply prefix your pattern with `regex:` and it will get evaluated automatically. The pattern will attempt to match the path of the URL returned by `request()->path()`, which returns the current URL without the domain name. At next, we can see an example that uses multiple definitions for the active state:
+
+  ```php
+  [
+      'text'   => 'Pages',
+      'url'    => 'pages',
+      'active' => ['pages', 'content', 'content/*', 'regex:@^content/[0-9]+$@']
+  ]
+  ```
+
+### 8.2 Adding a Search Input
+
+It's possible to add a search input in your menu, using a menu item with the following configuration of attributes:
+
+```php
+[
+    'search' => true,
+    'url' => 'test',                     // the form action
+    'method' => 'POST',                  // the form method
+    'input_name' => 'menu-search-input', // the input name
+    'text' => 'Search',                  // the input placeholder
+],
+```
+
+### 8.3 Custom Menu Filters
+
+You can set the filters you want to include for rendering the menu using the `filters` configuration of the config file. You can add your own filters to this array after you've created them. You can comment out the `GateFilter` if you don't want to use Laravel's built in Gate functionality. The current default set of menu filters is:
+
+```php
+'filters' => [
+    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
+],
+```
+
+If you need to use a custom menu filter, you can add your own menu filters to the previous array. This can be useful, for example, when you are using a third-party package for authorization (instead of the Laravel's Gate functionality).
+
+In order to provide more details, we going to show an example of how you can configure the [Laratrust Package](https://laratrust.santigarcor.me/). Start by creating your custom filter implementation:
+
+```php
+<?php
+
+namespace MyApp;
+
+use JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface;
+use Laratrust\Laratrust;
+
+class MyMenuFilter implements FilterInterface
+{
+    public function transform($item)
+    {
+        if (isset($item['permission']) && ! Laratrust::isAbleTo($item['permission'])) {
+            $item['restricted'] = true;
+        }
+
+        return $item;
+    }
+}
+```
+
+And then add the following configuration to the `config/adminlte.php` file:
+
+```php
+'filters' => [
+    ...
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
+    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
+    // Comment next line out to remove the Gate filter.
+    //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
+    MyApp\MyMenuFilter::class,
+]
+```
+
+### 8.4 Menu Configuration at Runtime
+
+It is also possible to configure the menu at runtime, for example in the boot method of any service provider or from a controller. You can add new menu items at the end of the menu, before or after a specific menu item, and also inside a menu item as a submenu item. You can use this feature if your menu is not static, for example when it depends on your database or the locale configuration.
+
+It is also possible to combine both approaches, a static configured menu with dinamics modifications. The menu will simply be concatenated and the order of the service providers will determine the order in the menu.
+
+The available menu builder methods are:
+
+- __`add(...$newItems)`__
+
+  Adds one or multiple menu items, you can use the item's attributes to place the item/s in the sidebar or the topnav menus (right, left or user menu).
+
+- __`addAfter($itemKey, ...$newItems)`__
+
+  Adds one or multiple menu items after a specific menu item (distinguished by his `key` attribute).
+
+- __`addBefore($itemKey, ...$newItems)`__
+
+  Adds one or multiple menu items before a specific menu item (distinguished by his `key` attribute).
+
+- __`addIn($itemKey, ...$newItems)`__
+
+  Adds one or multiple menu items inside a specific menu item (distinguished by his `key` attribute) as submenu or child item/s.
+
+- __`remove($itemKey)`__
+
+  Removes one specific menu item (distinguished by his `key` attribute).
+
+- __`itemKeyExists($itemKey)`__
+
+  Checks if a specific menu item exists, searched by the `key` attribute.
+
+On the next example we going to give a basic overview of how to use the methods. First, we add a `key` attribute to a particular menu item.
+
+```php
+[
+    'key'  => 'pages',
+    'text' => 'Pages',
+    'url'  => 'admin/pages',
+    'icon' => 'far fa-fw fa-file',
+],
+```
+
+Then, we going to add the next menu items.
+
+1. `Account Settings` after `Pages`
+2. `Notifications` inside `Account Settings`
+3. `Profile` before `Notifications`
+
+So, after listening for the `BuildingMenu` event dispatched by this package, we can write the next lines in order to add the mentioned new items:
+
+```php
+$events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+
+    $event->menu->addAfter('pages', [
+        'key' => 'account_settings',
+        'header' => 'Account Settings',
+    ]);
+
+    $event->menu->addIn('account_settings', [
+        'key' => 'account_settings_notifications',
+        'text' => 'Notifications',
+        'url' => 'account/edit/notifications',
+    ]);
+
+    $event->menu->addBefore('account_settings_notifications', [
+        'key' => 'account_settings_profile',
+        'text' => 'Profile',
+        'url' => 'account/edit/profile',
+    ]);
+});
+```
+
+The event-based approach is used to make sure that the code that builds the menu runs only when the admin panel is actually displayed, and not on every request.
+
+#### 8.4.1 Config on Service Provider
+
+To configure the menu at runtime on a particular service provider, just register a handler or callback for the `MenuBuilding` event, for example, in the `boot()` method:
+
+```php
+use Illuminate\Contracts\Events\Dispatcher;
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+
+class AppServiceProvider extends ServiceProvider
+{
+    public function boot(Dispatcher $events)
+    {
+        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+            // Add some items to the menu...
+            $event->menu->add('MAIN NAVIGATION');
+            $event->menu->add([
+                'text' => 'Blog',
+                'url' => 'admin/blog',
+            ]);
+        });
+    }
+}
+```
+
+The attributes for a menu item are the same explained previously. Here is a more practical example that uses translations and the database:
+
+```php
+public function boot(Dispatcher $events)
+{
+    $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+
+        $event->menu->add(trans('menu.pages'));
+
+        $items = Page::all()->map(function (Page $page) {
+            return [
+                'text' => $page['title'],
+                'url' => route('admin.pages.edit', $page)
+            ];
+        });
+
+        $event->menu->add(...$items);
+    });
+}
+```
+
+
+## 9. Other Configuration
+
+### 9.1 Plugins
+
+The `plugins` configuration lets you configure which plugins should be included. Every plugin is represented with an array with attributes. The plugin **active** status and the **files** array (even empty) are required attributes for a plugin. The **files**, when added, need to have a **type** attribute (`js` or `css`), an **asset** attribute (`true` or `false`) and also a **location** (`string`). When the **asset** attribute is set to `true`, the **location** will be output using the Laravel's `asset()` function.
+
+By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are configured out-of-the-box with `CDN` files but not active. You can activate them changing the config file `active` attribute to load it on every page, or instead add a section in some specific blade files, this will automatically inject their CDN files. To inject a plugin using a blade section directive use the following code at the init of your blade template:
+
+```blade
+@section('plugins.Datatables', true)
+```
+
+By default, you can use the next plugins:
+- `Datatables`
+- `Select2`
+- `Chartjs`
+- `Sweetalert2`
+- `Pace`
+
+However, you can add and configure new plugins modifying the `plugins` configuration option, using the example structure below:
+
+```php
+'plugins' => [
+    ...
+    'Plugin Name' => [
+        'active' => true,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => false,
+                'location' => '//cdn.plugin.net/plugin.min.js',
+            ],
+            [
+                'type' => 'css',
+                'asset' => true,
+                'location' => 'css/plugin.min.css',
+            ],
+        ],
+    ],
+]
+```
+
+The `active` value will enable/disable the plugin injection. Each plugin have a `files` array, that contain arrays with file types (`js` or `css`), and a `location`. If the `asset` value is `true`, the injection will use the `asset()` function.
+
+#### 9.1.1 Pace Plugin Configuration
+
+You can change the Pace plugin theme modifying the `css` file location when using the `CDN` injection.
+
+```php
+'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
+```
+
+- __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
+- __Available themes are__: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
+
+### 9.2 Laravel Mix
+
+If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following `NPM` packages:
 
 ```sh
 npm i @fortawesome/fontawesome-free
@@ -762,7 +1220,7 @@ Also, replace your `app.scss` content by the following:
 //@import '~bootstrap/scss/bootstrap';
 ```
 
-After preparing the Laravel Mix vendor files, set `enabled_laravel_mix` to `true` to enable the load of `app.css` & `app.js` files.
+After preparing the Laravel Mix vendor files, set the `enabled_laravel_mix` configuration option to `true` to enable the load of `app.css` & `app.js` files.
 
 - __`enabled_laravel_mix`__
 
@@ -778,374 +1236,10 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 
   Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
 
-### 6.11 Menu
 
-You can specify the menu items to display in the left sidebar. Each menu item should have a text and an URL (or Route). You can also specify an icon from Font Awesome. A string instead of an array represents a header in the sidebar. The `can` option is a filter on Laravel's built in Gate functionality.
+## 10. Translations
 
-Here is a basic example of a menu configuration:
-
-```php
-'menu' => [
-    'MAIN NAVIGATION',
-    [
-        'text' => 'Blog',
-        'url' => 'admin/blog',
-    ],
-    [
-        'text' => 'Pages',
-        'url' => 'admin/pages',
-        'icon' => 'fas fa-fw fa-file',
-    ],
-    [
-        'text' => 'Show my website',
-        'url' => '/',
-        'target' => '_blank',
-    ],
-    'ACCOUNT SETTINGS',
-    [
-        'text' => 'Profile',
-        'route' => 'admin.profile',
-        'icon' => 'fas fa-fw fa-user',
-    ],
-    [
-        'text' => 'Change Password',
-        'route' => 'admin.password',
-        'icon' => 'fas fa-fw fa-lock',
-    ],
-],
-```
-
-With a single string, you specify a menu header item to separate the items.
-With an array, you specify a menu item, `text` and `url` or `route` are required attributes.
-The `icon` attribute is optional, you get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out.
-The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons).
-Just specify the name of the icon and it will appear in front of your menu item.
-
-It's also possible to add menu items to the top navigation while the sidebar is enabled, you just need to set the `topnav` attribute to `true`. You can also set `topnav_right` for put the item on the right side of the topnav or `topnav_user` to place it in the user menu (above the user-body).
-When the top navigation layout is enabled, all menu items will appear in the top navigation.
-
-To place an item dynamically you can use the `key` attribute, with this option you set an unique identifier. You can use this identifier later to add new items before or after the item represented by this `key` identifier.
-
-To add `data-attributes` to your menu links, your can simply add an associative array called `data`. Here is a basic example:
-
-```php
-[
-    [
-        'header' => 'BLOG',
-        'url' => 'admin/blog',
-        'data' => [
-            'test' => 'content',
-        ],
-    ],
-    [
-        'text' => 'Add new post',
-        'url' => 'admin/blog/new',
-        'data' => [
-            'test-one' => 'content-one',
-            'test-two' => 'content-two',
-        ],
-    ],
-]
-```
-
-Use the `can` attribute if you want to conditionally show the menu item. This integrates with the Laravel's `Gate` functionality. If you need to conditionally show headers as well, you need to wrap it in an array like other menu items, using the `header` attribute. You can also use multiples `can` entries with an array, see the second example:
-
-```php
-[
-    [
-        'header' => 'BLOG',
-        'url' => 'admin/blog',
-        'can' => 'manage-blog',
-    ],
-    [
-        'text' => 'Add new post',
-        'url' => 'admin/blog/new',
-        'can' => ['add-blog-post', 'other-right'],
-    ],
-]
-```
-
-#### 6.11.1 Adding a Search Input
-
-It's possible to add a search input in your menu, using a menu item with the following configuration:
-
-```php
-[
-    'search' => true,
-    'url' => 'test',                     // the form action
-    'method' => 'POST',                  // the form method
-    'input_name' => 'menu-search-input', // the input name
-    'text' => 'Search',                  // the input placeholder
-],
-```
-
-#### 6.11.2 Custom Menu Filters
-
-If you need to use custom filters, you can easily add your own menu filters to this package. This can be useful when you are using a third-party package for authorization (instead of Laravel's `Gate` functionality).
-
-For example, with Laratrust:
-
-```php
-<?php
-
-namespace MyApp;
-
-use JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface;
-use Laratrust\Laratrust;
-
-class MyMenuFilter implements FilterInterface
-{
-    public function transform($item)
-    {
-        if (isset($item['permission']) && ! Laratrust::isAbleTo($item['permission'])) {
-            $item['restricted'] = true;
-        }
-
-        return $item;
-    }
-}
-```
-
-And then add configuration to the `config/adminlte.php` file:
-
-```php
-'filters' => [
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-    // Comment next line out.
-    //JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
-    MyApp\MyMenuFilter::class,
-]
-```
-
-#### 6.11.3 Menu Configuration at Runtime
-
-It is also possible to configure the menu at runtime, e.g. in the boot of any service provider or from a controller.
-You can add new menu items at end of the menu, before or after a specific menu item and also inside a menu item as a submenu item. 
-Use this if your menu is not static, for example when it depends on your database or the locale.
-It is also possible to combine both approaches. The menu will be simply concatenated and the order of the service providers
-will determine the order in the menu.
-
-The available Menu Builder methods are:
-
-- __`add(...$newItems)`__
-
-  Adds one or multiple menu items to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`addAfter($itemKey, ...$newItems)`__
-
-  Adds one or multiple menu items after a specific menu item to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`addBefore($itemKey, ...$newItems)`__
-
-  Adds one or multiple menu items before a specific menu item to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`addIn($itemKey, ...$newItems)`__
-
-  Adds one or multiple menu items inside a specific menu item as sub menu item to the sidebar menu or topnav menus (right, left or usermenu).
-
-- __`remove($itemKey)`__
-
-  Removes one specific menu item.
-
-- __`itemKeyExists($itemKey)`__
-
-  Checks if a specific menu item exists, searched by the `key` attribute.
-
-To configure the menu at runtime, just register a handler or callback for the `MenuBuilding` event, for example, in the `boot()` method of a service provider:
-
-```php
-use Illuminate\Contracts\Events\Dispatcher;
-use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
-
-class AppServiceProvider extends ServiceProvider
-{
-    public function boot(Dispatcher $events)
-    {
-        $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-            $event->menu->add('MAIN NAVIGATION');
-            $event->menu->add([
-                'text' => 'Blog',
-                'url' => 'admin/blog',
-            ]);
-        });
-    }
-}
-```
-
-The configuration options for a menu item are the same explained previously.
-
-Here is a more practical example that uses translations and the database:
-
-```php
-public function boot(Dispatcher $events)
-{
-    $events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-        $event->menu->add(trans('menu.pages'));
-
-        $items = Page::all()->map(function (Page $page) {
-            return [
-                'text' => $page['title'],
-                'url' => route('admin.pages.edit', $page)
-            ];
-        });
-
-        $event->menu->add(...$items);
-    });
-}
-```
-
-This event-based approach is used to make sure that the code that builds the menu runs only when the admin panel is actually displayed and not on every request.
-
-__Basic `AddAfter`, `AddBefore` & `AddIn` Examples:__
-
-In this example we add a `key` attribute to the pages menu item.
-
-```php
-[
-    'key'         => 'pages',
-    'text'        => 'pages',
-    'url'         => 'admin/pages',
-    'icon'        => 'far fa-fw fa-file',
-    'label'       => 4,
-    'label_color' => 'success',
-],
-```
-
-Now we going to add the next menu items.
-
-1. __Account Settings__ after __Pages__
-2. __Notifications__ inside __Account Settings__
-3. __Profile__ before __Notifications__
-
-For this, we use the next code:
-
-```php
-$events->listen(BuildingMenu::class, function (BuildingMenu $event) {
-
-    $event->menu->addAfter('pages', [
-        'key' => 'account_settings',
-        'header' => 'Account Settings',
-    ]);
-
-    $event->menu->addIn('account_settings', [
-        'key' => 'account_settings_notifications',
-        'text' => 'Notifications',
-        'url' => 'account/edit/notifications',
-    ]);
-
-    $event->menu->addBefore('account_settings_notifications', [
-        'key' => 'account_settings_profile',
-        'text' => 'Profile',
-        'url' => 'account/edit/profile',
-    ]);
-});
-```
-
-#### 6.11.4 Active Menu Items
-
-By default, a menu item is considered active if any of the following conditions holds:
-- The current path matches the `url` parameter
-- The current path is a sub-path of the `url` parameter
-- If it has a submenu containing an active menu item
-
-To override this behavior, you can specify an `active` parameter with an array of active URLs, asterisks and regular expressions are supported.
-
-To utilize a regex, simply prefix your pattern with `regex:` and it will get evaluated automatically. The pattern will attempt to match the path of the URL, returned by `request()->path()`, which returns the current URL without the domain name. Example:
-
-```php
-[
-    'text' => 'Pages',
-    'url' => 'pages',
-    'active' => ['pages', 'content', 'content/*', 'regex:@^content/[0-9]+$@']
-]
-```
-
-### 6.12 Menu Filters
-
-We can set the filters you want to include for rendering the menu.
-You can add your own filters to this array after you've created them. You can comment out the `GateFilter` if you don't want to use Laravel's built in Gate functionality.
-
-- __`filters`__: An array of menu filters.
-
-The default set of menu filters is:
-
-```php
-'filters' => [
-    JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
-],
-```
-
-### 6.13 Plugins
-
-Lets you configure which JavaScript plugins should be included. At this moment, DataTables, Select2, Chartjs and SweetAlert are added out-of-the-box, including the Javascript and CSS files from a CDN via `<script>` and `<link>` tags. The plugin **active** status and the **files** array (even empty) are all required attributes. The **files**, when added, need to have a **type** attribute (`js` or `css`), an **asset** attribute (`true` or `false`) and a **location** (`string`). When **asset** is set to `true`, the **location** will be output using the Laravel's `asset()` function.
-
-By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are supported but not active.
-You can activate them with changing the config file to load it on every page, or add a section in specific blade files, this will automatically inject their CDN files.
-
-To inject a plugin using a blade section use the following code example:
-
-```blade
-@section('plugins.Datatables', true)
-```
-
-By default, you can use the next plugins:
-- `Datatables`
-- `Select2`
-- `Chartjs`
-- `Sweetalert2`
-- `Pace`
-
-Also, you can add and configure new plugins modifying the plugin variable, using the example structure below:
-
-```php
-'plugins' => [
-    'Plugin Name' => [
-        'active' => true,
-        'files' => [
-            [
-                'type' => 'js',
-                'asset' => false,
-                'location' => '//cdn.plugin.net/plugin.min.js',
-            ],
-            [
-                'type' => 'css',
-                'asset' => true,
-                'location' => 'css/plugin.min.css',
-            ],
-        ],
-    ],
-]
-```
-
-With the `name` string you specify the plugin name, and the `active` value will enable/disable the plugin injection.
-Each plugin have a `files` array, that contain arrays with file type (`js` or `css`), and a `location`.
-If the `asset` value is `true`, the injection will use the `asset()` function.
-
-#### 6.13.1 Pace Plugin Configuration
-
-You can change the Pace plugin theme, modifying the css file location when using the CDN injection.
-
-```php
-'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
-``` 
-
-- __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
-- __Available themes are__: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
-
-
-## 7. Translations
-
-At the moment, English, German, French, Dutch, Portuguese, Spanish and Turkish translations are available out of the box.
-Just specify the language in `config/app.php`.
-If you need to modify the texts or add other languages, you can publish the language files:
+At the moment, English, German, French, Dutch, Portuguese, Spanish and Turkish translations are available out of the box. Just specify the `locale` configuration option in `config/app.php` file of your Laravel project. If you need to modify the texts or add other languages, you can publish the language files:
 
 ```sh
 php artisan adminlte:install --only=translations
@@ -1153,21 +1247,20 @@ php artisan adminlte:install --only=translations
 
 Now, you are able to edit translations or add languages in the `resources/lang/vendor/adminlte` folder.
 
-### 7.1 Menu Translations
+### 10.1 Menu Translations
 
-The menu translations are enabled by default and allows you to use lang files for menu items translation.
+The menu translations are enabled by default and allows you to use `lang` files for menu items translation.
 
 #### Configure Menu Item for Translation:
 
-First, we need to configure the menu. We add translation `keys` to the `text` and `header` attributes. These are the currently supported menu attributes for translations.
-This is an example of configuration:
+You need to configure the menu items to support translations. For this, you need to add translation `keys` to the `text` and/or `header` attributes. These are the currently supported menu attributes for translations. This is an example of the configuration you need:
 
 ```php
 [
-    'header' => 'account_settings_trans'
+    'header' => 'account_settings_trans_key',
 ],
 [
-    'text' => 'profile_trans',
+    'text' => 'profile_trans_key',
     'url'  => 'admin/settings',
     'icon' => 'user',
 ],
@@ -1175,33 +1268,36 @@ This is an example of configuration:
 
 #### Lang Files
 
-All the translation strings must be added in the `menu.php` file of each language needed. You need to declare a `key` for each one of the menu items translations.
-The translations files are located at the `resources/lang/vendor/adminlte/` folder
-
-This is an example of the `resources/lang/vendor/adminlte/en/menu.php` lang file for the previous sample of configuration:
+All the translation strings keys configured must be added in the `menu.php` file of each locale needed. You need to declare a `key` for each one of the menu items you want to translate. The translations files are located at the `resources/lang/vendor/adminlte/` folder. This is an example of the `resources/lang/vendor/adminlte/en/menu.php` lang file for the previous sample of configuration:
 
 ```php
 return [
-    'account_settings_trans'  => 'ACCOUNT SETTINGS',
-    'profile_trans'           => 'Profile',
+    'account_settings_trans_key'  => 'ACCOUNT SETTINGS',
+    'profile_trans_key'           => 'Profile',
 ];
 ```
 
-## 8. Customize Views
 
-If you need full control over the provided views, you can publish them:
+## 11. Customize Views
+
+If you need full control or customization over the package provided views, you can publish them:
 
 ```sh
 php artisan adminlte:install --only=main_views
 ```
 
-Now, you can edit the views in the `resources/views/vendor/adminlte` folder.
+Now, you can edit the views in the `resources/views/vendor/adminlte` folder to make any customization you want.
+
+> **Important:** If you publish the package views, it is a recommendation to follow the update procedure explained on section [Updating](#3-updating) if a new version of this package include changes on these views.
 
 
-## 9. Issues, Questions and Pull Requests
+## 12. Issues, Questions and Pull Requests
 
-You can report issues and ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please start your issue with `ISSUE: ` and your question with `QUESTION: `
+You can report issues or ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please, start your issue with `ISSUE: ` and your question with `QUESTION: ` in the subject.
 
-If you have a question, check the closed issues first.
+If you have a question, it is recommended to search and check the closed issues first.
 
-To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more info.
+To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more info. When submitting a Pull Request take the next notes into consideration:
+
+- Check that the Pull Request don't introduce a high downgrade on the code quality.
+- If the Pull Request introduce new features, consider adding an explanation of this feature on the README file documentation, if needed.
