@@ -92,14 +92,14 @@
         <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif
 
-	@if(config('adminlte.livewire'))
-	    {{-- Livewire Script --}}
-	    @if(app()->version() >= 7)
-	        @livewireScripts
-	    @else
-	        <livewire:scripts />
-	    @endif
-	@endif
+    @if(config('adminlte.livewire'))
+        {{-- Livewire Script --}}
+        @if(app()->version() >= 7)
+            @livewireScripts
+        @else
+            <livewire:scripts />
+        @endif
+    @endif
 
     {{-- Custom Scripts --}}
     @yield('adminlte_js')
