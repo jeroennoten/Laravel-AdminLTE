@@ -1190,7 +1190,6 @@ You can change the Pace plugin theme modifying the `css` file location when usin
 ### 9.2 Laravel Mix
 
 If you want to use Laravel Mix instead of publishing the assets in your `/public/vendor` folder, start by installing the following `NPM` packages:
->>>>>>> f4c6c29f6e8bb14d8d87eeed6df8fa455cb4ac50
 
 ```sh
 npm i @fortawesome/fontawesome-free
