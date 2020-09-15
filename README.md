@@ -1241,7 +1241,7 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 
 This option provides support to the [Livewire](https://laravel-livewire.com/) package. Before enabling livewire support, you must install the livewire package using composer:
 
-```php
+```sh
 composer require livewire/livewire
 ```
 
