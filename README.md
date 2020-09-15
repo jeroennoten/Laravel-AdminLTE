@@ -828,7 +828,7 @@ Attribute      | Description
 `header`       | Text representing the name of a header (only for headers).
 `icon`         | A font awesome icon for the item.
 `ìcon_color`   | An AdminLTE color for the icon (info, primary, etc).
-`key`          | A unique identifier key for reference the item.
+`key`          | An unique identifier key for reference the item.
 `label`        | Text for a badge associated with the item.
 `label_color`  | An AdminLTE color for the badge (info, primary, etc).
 `route`        | A route name, usually used on link items.
@@ -839,7 +839,7 @@ Attribute      | Description
 `topnav_user`  | Bool to place the item in the user menu.
 `url`          | An URL path, usually used on link items.
 
-Now, we going to give detailed explanations for some of the previous attributes:
+Now, we going to review all of these attributes with more detail:
 
 #### The __`active`__ Attribute:
 
@@ -957,7 +957,7 @@ The `label` attribute provides a way to setup a right aligned [badge](https://ge
 
 #### The __`route`__ Attribute:
 
-You can use this attribute to assign a Laravel route name to a link item, for example:
+You can use this attribute to assign a Laravel route name to a link item, if you choose to use this attribute, then don't combine it with the `url` attribute, for example:
 
 ```php
 [
@@ -1010,7 +1010,7 @@ It's possible to add menu items to the top navigation while the sidebar is enabl
 
 #### The __`url`__ Attribute:
 
-The value of this attribute should be the URL for a link item. You can use a full URL with the domain part or without it. Examples:
+The value of this attribute should be the URL for a link item. You can use a full URL with the domain part or without it. Don't combine this attribute with the `route` attribute. Examples:
 
 ```php
 [
