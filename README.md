@@ -1239,25 +1239,29 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 
 ### 9.3 Livewire
 
-Before enable the livewire in the theme you must installed the laravel livewire.
+This option provides support to the [Livewire](https://laravel-livewire.com/) package. Before enabling livewire support, you must install the livewire package using composer:
 
-```php
+```sh
 composer require livewire/livewire
 ```
-After that just enable the livewire in config.php
+
+After that, just enable livewire support in the configuration file:
 
 ```php
 /*
-    |--------------------------------------------------------------------------
-    | Livewire configuration
-    |--------------------------------------------------------------------------
-    |
-    | Here we can modify the livewire configuration.
-    |
-    */
+|--------------------------------------------------------------------------
+| Livewire configuration
+|--------------------------------------------------------------------------
+|
+| Here we can modify the livewire configuration.
+|
+*/
 
-    'livewire' => true,
+'livewire' => true,
 ```
+
+This will setup the `@livewireStyles` and the `@livewireScripts` directives correctly on the `master.blade.php` blade file of this package, as explained on the [Livewire Documentation](https://laravel-livewire.com/docs/quickstart).
+
 
 ## 10. Translations
 

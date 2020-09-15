@@ -36,8 +36,8 @@
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
     @endif
 
+    {{-- Livewire Styles --}}
     @if(config('adminlte.livewire'))
-        {{-- Livewire Style --}}
         @if(app()->version() >= 7)
             @livewireStyles
         @else
@@ -92,8 +92,8 @@
         <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
     @endif
 
+    {{-- Livewire Script --}}
     @if(config('adminlte.livewire'))
-        {{-- Livewire Script --}}
         @if(app()->version() >= 7)
             @livewireScripts
         @else

@@ -424,11 +424,13 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Livewire configuration
+    | Livewire
     |--------------------------------------------------------------------------
     |
-    | Here we can modify the livewire configuration.
+    | Here we can enable the Livewire support.
     |
+    | For more detailed instructions you can look here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/#93-livewire
     */
 
     'livewire' => false,
