@@ -256,7 +256,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
 #### 5.2.1 Command Options
 
  - `operation`: The type of the operation: **list** (default), **install** or **remove**.
- - `--plugin=`: Use this option to apply the operation only over the specified plugins, the value of the option should be a plugin key.
+ - `--plugin=*`: Use this option to apply the operation only over the specified plugins, the value of the option should be a plugin key. The option can be used multiple times.
  - `--force`: Use this option to force the overwrite of existing files.
  - `--interactive`: Use this option to enable be guided through the operation process and choose what you want to do on each step.
 
@@ -288,9 +288,9 @@ The table also shows a column which tells what resources are required for the pa
 
 > **Note:** this is only available for Laravel 5.2 or higher versions.
 
-> **Note:** from Laravel 7 and higher versions, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
+> **Note:** from Laravel 7, the authentication views are part of the `laravel/ui` package. So it is recommended to read [Laravel Authentication Documentation](https://laravel.com/docs/7.x/authentication) before proceeding.
 
-This package provides the following command to replace the Laravel defaults authentication views with AdminLTE styled views.
+This package provides the following command to replace the Laravel default authentication views (those inside the folder `resources/views/auth`) with a set of AdminLTE styled views.
 
 ```sh
 php artisan adminlte:install --only=auth_views
@@ -453,7 +453,7 @@ class User extends Authenticatable
 
 ### 6.5 URLs
 
-The next configuration options provides a way to setup the urls for the login/register and other links. Register here your dashboard, logout, login and register URLs.
+The next configuration options provides a way to setup the urls for the login, register and other links of the admin panel. You can change your dashboard, logout, login and register URLs.
 
 - __`use_route_url`__
 
@@ -781,7 +781,7 @@ The next set of configuration options gives you the ability to configure the men
 
 ### 8.1 Menu
 
-You can specify the set of menu items to display in the left sidebar and/or the top navbar. A menu item representing a link should have a `text` attribute and an `url` (or `route`) attribute. Also, and optionally, you can specify an icon from [Font Awesome](https://fontawesome.com) for every menu item using the `icon` attribute. A single string instead of an array represents a header in the sidebar, a header is used to group items under a label. However, a header may also be represented by an array containing the `header` attribute. There is also a `can` attribute that can be used as a filter with the Laravel's built in [Gate](https://laravel.com/docs/authorization#gates) functionality.
+You can specify the set of menu items to display in the left sidebar and/or the top navbar. A menu item representing a link should have a `text` attribute and an `url` (or `route`) attribute. Also, and optionally, you can specify an icon from [Font Awesome](https://fontawesome.com) for every menu item, using the `icon` attribute. A single string instead of an array represents a header in the sidebar, a header is used to group items under a label. However, a header may also be represented by an array containing the `header` attribute. There is also a `can` attribute that can be used as a filter with the Laravel's built in [Gate](https://laravel.com/docs/authorization#gates) functionality.
 
 Here is a basic example of a menu configuration:
 
@@ -818,129 +818,212 @@ Here is a basic example of a menu configuration:
 ],
 ```
 
-On the next table, we give a summary of the available attributes for the menu items. Take in consideration that most of these attributes are optional. Some of these attributes will be explained later with more details.
+On the next table, we give a summary of the available attributes for the menu items. Take in consideration that most of these attributes are optional. All of these attributes will be explained later with more details.
 
 Attribute      | Description
 ---------------|------------
-`text`         | Text representing the name of the item.
-`url`          | An URL path, usually used on link items.
-`route`        | A route name, usually used on link items.
+`active`       | To define when the item should have the active style.
+`can`          | Permissions of the item for use with Laravel's Gate.
+`data`         | Array with `data-*` attributes for the item.
+`header`       | Text representing the name of a header (only for headers).
 `icon`         | A font awesome icon for the item.
 `ìcon_color`   | An AdminLTE color for the icon (info, primary, etc).
-`header`       | Text representing the name of a header (only for headers).
+`key`          | An unique identifier key for reference the item.
 `label`        | Text for a badge associated with the item.
 `label_color`  | An AdminLTE color for the badge (info, primary, etc).
-`topnav`       | Bool to place the item on the top navbar.
-`topnav_user`  | Bool to place the item in the user menu.
-`topnav_right` | Bool to place the item in the right section of top navbar.
+`route`        | A route name, usually used on link items.
 `submenu`      | Array with child items that enables nested menus.
-`can`          | Filters related to the item for use with Laravel's Gate.
-`key`          | A unique identifier key for reference the item.
-`data`         | Array with `data-*` attributes for the item.
-`active`       | To define when the item should have the active style.
+`text`         | Text representing the name of the item.
+`topnav`       | Bool to place the item on the top navbar.
+`topnav_right` | Bool to place the item in the right section of top navbar.
+`topnav_user`  | Bool to place the item in the user menu.
+`url`          | An URL path, usually used on link items.
 
-Now, we going to give detailed explanations for some of the previous attributes:
+Now, we going to review all of these attributes with more detail:
 
-- The __`route`__ attribute:
+#### The __`active`__ Attribute:
 
-  You can use this attribute to assign a Laravel route name to a link item, for example:
+By default, a menu item is considered active if any of the following conditions holds:
 
-  ```php
-  [
-      'text'  => 'Profile',
-      'route' => 'admin.profile',
-      'icon'  => 'fas fa-fw fa-user',
-  ]
-  ```
+- The current path exactly matches the `url` attribute.
+- The current path without the query parameters matches the `url` attribute.
+- If it has a submenu containing an active menu item.
 
-  Even more, you can pass parameters to your route using an array where the first value is the route name and the second value an array with the parameters, as shown next:
+To override this default behavior, you can specify an `active` attribute containing an array with one or multiple URLs that will be used to search for a match. Even more, you can use asterisks and regular expressions on these URLs definitions in order to support some particular cases. To utilize a regex, you need to prefix your pattern with the `regex:` token and it will get evaluated automatically. The regex pattern will attempt to match the path of the URL returned by `request()->path()`, which returns the current URL without the domain name. At next, we can see an example that uses multiple URL definitions for the active state:
 
-  ```php
-  [
-      'text'  => 'Profile',
-      'route' => ['admin.profile', ['userID' => '673']],
-      'icon'  => 'fas fa-fw fa-user',
-  ]
-  ```
+```php
+[
+    'text'   => 'Pages',
+    'url'    => 'pages',
+    'active' => ['pages', 'content', 'content*', 'regex:@^content/[0-9]+$@']
+]
+```
 
-- The __`icon`__ attribute:
+In the previous case, the menu item will be considered active for all the next URLs:
 
-  This attribute is optional, and you will get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out. The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons). Just specify the name of the icon and it will appear in front of your menu item.
+- `http://my.domain.com/pages`
+- `http://my.domain.com/content`
+- `http://my.domain.com/content-user` (because `content*`)
+- `http://my.domain.com/content/1234` (because `regex:@^content/[0-9]+$@`)
 
-- The __`topnav`__, __`topnav_right`__ and __`topnav_user`__ attributes:
+#### The __`can`__ Attribute:
 
-  It's possible to add menu items to the top navigation while the sidebar is enabled, you need to set the `topnav` attribute to `true` for this feature. Also, you can set the `topnav_right` attribute for put the item on the right side of the topnav or set the `topnav_user` attribute to place the menu item in the user menu (above the user-body).
+You may use the `can` attribute if you want to conditionally show a menu item. This integrates with the [Laravel's Gate](https://laravel.com/docs/authorization#gates) functionality. If you need to conditionally show a header item, you need to wrap it in an array using the `header` attribute. You can also use multiple conditions entries with an array, check the next example for details:
 
-  > **Note:** when the top navigation layout is enabled, all menu items will appear in the top navigation.
+```php
+[
+    [
+        'header' => 'BLOG',
+        'can'    => 'manage-blog',
+    ],
+    [
+        'text' => 'Add new post',
+        'url'  => 'admin/blog/new',
+        'can'  => ['add-blog-post', 'other-right'],
+    ],
+]
+```
 
-- The __`key`__ attribute:
+So, for the previous example the header will show only if the user has the `manage-blog` permission, and the link will show if the user has the `add-blog-post` or `other-right` permissions.
 
-  In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier. You can use this identifier later to add new items before or after the item represented by this `key` identifier. For more details, checkout section [Menu Configuration at Runtime](#84-menu-configuration-at-runtime)
+#### The __`data`__ Attribute:
 
-- The __`data`__ attribute:
+In order to add `data-*` attributes to your menu items, you can simply add an associative array called `data` to the item. Here is a basic example:
 
-  In order to add `data-*` attributes to your menu items, you can simply add an associative array called `data` to the item. Here is a basic example:
+```php
+[
+    'text' => 'New post',
+    'url'  => 'admin/blog/new',
+    'data' => [
+        'test-one' => 'content-one',
+        'test-two' => 'content-two',
+    ],
+]
+```
 
-  ```php
-  [
-      'text' => 'New post',
-      'url'  => 'admin/blog/new',
-      'data' => [
-          'test-one' => 'content-one',
-          'test-two' => 'content-two',
-      ],
-  ]
-  ```
+Then, the previous menu item will be rendered as this:
 
-  Then, the previous menu item will be rendered as this:
+```html
+<a class="nav-link" href="http://<domain>/admin/blog/new"
+   data-test-one="content-one"
+   data-test-two="content-two">
+    <i class="far fa-fw fa-circle"></i>
+    <p>New post</p>
+</a>
+```
 
-  ```html
-  <a class="nav-link" href="http://<domain>/admin/blog/new"
-     data-test-one="content-one"
-     data-test-two="content-two">
-      <i class="far fa-fw fa-circle"></i>
-      <p>New post</p>
-  </a>
-  ```
+#### The __`header`__ Attribute:
 
-- The __`can`__ attribute:
+This attribute is exclusive for header items, and the value is just his descriptive text. Headers are only available for the left sidebar and they provide a way to group items under a label. Example:
 
-  You may use the `can` attribute if you want to conditionally show a menu item. This integrates with the [Laravel's Gate](https://laravel.com/docs/authorization#gates) functionality. If you need to conditionally show a header item, you need to wrap it in an array using the `header` attribute. You can also use multiple conditions entries with an array as value, check the next example for details:
+```php
+[
+    'header'  => 'REPORTS',
+]
+```
 
-  ```php
-  [
-      [
-          'header' => 'BLOG',
-          'url'    => 'admin/blog',
-          'can'    => 'manage-blog',
-      ],
-      [
-          'text' => 'Add new post',
-          'url'  => 'admin/blog/new',
-          'can'  => ['add-blog-post', 'other-right'],
-      ],
-  ]
-  ```
+A header item can also be represented with a single string, for example `"REPORTS"`, but the array format provides a way to combine it with other attributes, like the `can` one. The `header` attribute supports translations, as explained on the [Translations](#10-translations) section.
 
-  So, in the previous example the header will show only if the user has the `manage-blog` right, and the link will show if the user has `add-blog-post` or `other-right` rights.
+#### The __`icon`__ and `icon_color` Attributes:
 
-- The __`active`__ attribute:
+This attribute is optional, and you will get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out. The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons). Just specify the name of the icon and it will appear in front of your menu item. The `ìcon_color` attribute provides a way to setup an [AdminLTE color](https://adminlte.io/themes/v3/pages/UI/general.html) for the icon. Example:
 
-  By default, a menu item is considered active if any of the following conditions holds:
+```php
+[
+    'text'       => 'profile',
+    'url'        => 'user/profile',
+    'icon'       => 'fas fa-fw fa-user',
+    'icon_color' => 'primary',
+]
+```
 
-  - The current path matches the `url` attribute.
-  - The current path is a sub-path of the `url` attribute.
-  - If it has a submenu containing an active menu item.
+#### The __`key`__ Attribute:
 
-  To override this behavior, you can specify an `active` attribute with an array of URLs to be matched. Even more, asterisks and regular expressions are supported on this attribute to be more flexible with particular cases. To utilize a regex, simply prefix your pattern with `regex:` and it will get evaluated automatically. The pattern will attempt to match the path of the URL returned by `request()->path()`, which returns the current URL without the domain name. At next, we can see an example that uses multiple definitions for the active state:
+In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier for the item. Then, you can use this identifier later to add new items before or after the item represented by this `key` identifier. For more details, checkout the section [Menu Configuration at Runtime](#84-menu-configuration-at-runtime).
 
-  ```php
-  [
-      'text'   => 'Pages',
-      'url'    => 'pages',
-      'active' => ['pages', 'content', 'content/*', 'regex:@^content/[0-9]+$@']
-  ]
-  ```
+#### The __`label`__ and `label_color` Attributes:
+
+The `label` attribute provides a way to setup a right aligned [badge](https://getbootstrap.com/docs/4.0/components/badge/) for the menu item. The `label_color` is used to configure the badge color, example:
+
+```php
+[
+    'text'        => 'pages',
+    'url'         => 'admin/pages',
+    'icon'        => 'far fa-fw fa-file',
+    'label'       => 4,
+    'label_color' => 'success',
+],
+```
+
+#### The __`route`__ Attribute:
+
+You can use this attribute to assign a Laravel route name to a link item, if you choose to use this attribute, then don't combine it with the `url` attribute, for example:
+
+```php
+[
+    'text'  => 'Profile',
+    'route' => 'admin.profile',
+    'icon'  => 'fas fa-fw fa-user',
+]
+```
+
+Even more, you can define a route with parameters using an array where the first value is the route name and the second value an array with the parameters, as shown next:
+
+```php
+[
+    'text'  => 'Profile',
+    'route' => ['admin.profile', ['userID' => '673']],
+    'icon'  => 'fas fa-fw fa-user',
+]
+```
+
+#### The __`submenu`__ Attribute:
+
+This attribute provides a way to create a menu item containing child items. With this feature you can create nested menus. You can create a menu with items in the sidebar and/or the top navbar. Example:
+
+```php
+[
+    'text'    => 'menu',
+    'icon'    => 'fas fa-fw fa-share',
+    'submenu' => [
+        [
+            'text' => 'child 1',
+            'url'  => 'menu/child1',
+        ],
+        [
+            'text' => 'child 2',
+            'url'  => 'menu/child2',
+        ],
+    ],
+]
+```
+
+#### The __`text`__ Attribute:
+
+The value of this attribute is just the descriptive text for a menu item (except for headers). The `text` attribute supports translations, as explained on the [Translations](#10-translations) section.
+
+#### The __`topnav`__, __`topnav_right`__ and __`topnav_user`__ Attributes:
+
+It's possible to add menu items to the top navigation while the sidebar is enabled, you need to set the `topnav` attribute to `true` for this feature. Also, you can set the `topnav_right` attribute for put the item on the right side of the topnav or set the `topnav_user` attribute to place the menu item in the user menu (above the user-body).
+
+> **Note:** when the top navigation layout is enabled, all menu items will appear in the top navigation.
+
+#### The __`url`__ Attribute:
+
+The value of this attribute should be the URL for a link item. You can use a full URL with the domain part or without it. Don't combine this attribute with the `route` attribute. Examples:
+
+```php
+[
+    'text' => 'profile',
+    'url'  => 'http://my.domain.com/user/profile',
+    'icon' => 'fas fa-fw fa-user',
+],
+[
+    'text' => 'change_password',
+    'url'  => 'admin/settings',
+    'icon' => 'fas fa-fw fa-lock',
+],
+```
 
 ### 8.2 Adding a Search Input
 
