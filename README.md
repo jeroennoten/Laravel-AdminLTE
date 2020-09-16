@@ -824,6 +824,7 @@ Attribute      | Description
 ---------------|------------
 `active`       | To define when the item should have the active style.
 `can`          | Permissions of the item for use with Laravel's Gate.
+`classes`      | To add custom classes to a menu item.
 `data`         | Array with `data-*` attributes for the item.
 `header`       | Text representing the name of a header (only for headers).
 `icon`         | A font awesome icon for the item.
@@ -885,6 +886,28 @@ You may use the `can` attribute if you want to conditionally show a menu item. T
 ```
 
 So, for the previous example the header will show only if the user has the `manage-blog` permission, and the link will show if the user has the `add-blog-post` or `other-right` permissions.
+
+#### The __`classes`__ Attribute:
+
+This attribute provides a way to add custom classes to a particular menu item. The value should be a string with one or multiple class names, similar to the HTML `class` attribute. For example, you can make a colorful `HEADER` item centered on the left sidebar with the next definition:
+
+```php
+[
+    'header'   => 'account_settings',
+    'classes'  => 'text-yellow text-bold text-center',
+]
+```
+
+Or you can highlight an important link item with something like this:
+
+```php
+[
+    'text'     => 'Important Link',
+    'url'      => 'important/link',
+    'icon'     => 'fas fa-fw fa-exclamation-triangle',
+    'classes'  => 'text-danger text-uppercase',
+]
+```
 
 #### The __`data`__ Attribute:
 
