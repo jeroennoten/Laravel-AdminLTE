@@ -14,9 +14,7 @@ class ClassesFilter implements FilterInterface
      */
     public function transform($item)
     {
-        if (! MenuItemHelper::isHeader($item)) {
-            $item['class'] = implode(' ', $this->makeClasses($item));
-        }
+        $item['class'] = implode(' ', $this->makeClasses($item));
 
         if (MenuItemHelper::isSubmenu($item)) {
             $item['submenu_class'] = implode(' ', $this->makeSubmenuClasses($item));
@@ -35,9 +33,15 @@ class ClassesFilter implements FilterInterface
     {
         $classes = [];
 
+        // Add custom classes (from menu item configuration).
+
+        if (! empty($item['classes'])) {
+            $classes[] = $item['classes'];
+        }
+
         // Add the active class when the item is active.
 
-        if ($item['active']) {
+        if (! empty($item['active'])) {
             $classes[] = 'active';
         }
 
