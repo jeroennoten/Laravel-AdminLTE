@@ -829,7 +829,7 @@ class BuilderTest extends TestCase
 
         $builder->add([
             'text' => 'About',
-            'classes' => 'foo-class'
+            'classes' => 'foo-class',
         ]);
 
         $this->assertStringContainsString('foo-class', $builder->menu[0]['class']);
@@ -842,7 +842,7 @@ class BuilderTest extends TestCase
         $builder->add([
             'text' => 'About',
             'url' => 'about',
-            'classes' => 'foo-class bar-class'
+            'classes' => 'foo-class bar-class',
         ]);
 
         $this->assertStringContainsString('active', $builder->menu[0]['class']);
