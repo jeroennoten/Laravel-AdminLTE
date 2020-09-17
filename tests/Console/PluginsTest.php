@@ -118,6 +118,12 @@ class PluginsTest extends CommandTestCase
             return;
         }
 
+        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
         // Uninstall the plugin.
 
         $plugins->uninstall($pluginKey);
@@ -163,6 +169,12 @@ class PluginsTest extends CommandTestCase
         // We can't do these test on old laravel versions.
 
         if (! class_exists('Illuminate\Testing\PendingCommand')) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
             $this->assertTrue(true);
 
             return;
