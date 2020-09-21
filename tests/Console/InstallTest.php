@@ -67,6 +67,12 @@ class InstallTest extends CommandTestCase
             return;
         }
 
+        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
         // Test installation of the resources when using --interactive.
 
         foreach ($this->getResources() as $name => $res) {
@@ -108,6 +114,12 @@ class InstallTest extends CommandTestCase
         // We can't do these test on old laravel versions.
 
         if (! class_exists('Illuminate\Testing\PendingCommand')) {
+            $this->assertTrue(true);
+
+            return;
+        }
+
+        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
             $this->assertTrue(true);
 
             return;
