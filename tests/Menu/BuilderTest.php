@@ -822,4 +822,31 @@ class BuilderTest extends TestCase
         $this->assertEquals('q', $builder->menu[0]['input_name']);
         $this->assertEquals('foo', $builder->menu[1]['input_name']);
     }
+
+    public function testClassesAttribute()
+    {
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add([
+            'text' => 'About',
+            'classes' => 'foo-class',
+        ]);
+
+        $this->assertStringContainsString('foo-class', $builder->menu[0]['class']);
+    }
+
+    public function testClassesAttributeWithActiveClass()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/about');
+
+        $builder->add([
+            'text' => 'About',
+            'url' => 'about',
+            'classes' => 'foo-class bar-class',
+        ]);
+
+        $this->assertStringContainsString('active', $builder->menu[0]['class']);
+        $this->assertStringContainsString('foo-class', $builder->menu[0]['class']);
+        $this->assertStringContainsString('bar-class', $builder->menu[0]['class']);
+    }
 }

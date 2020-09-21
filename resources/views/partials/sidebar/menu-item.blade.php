@@ -3,9 +3,7 @@
 @if ($menuItemHelper->isHeader($item))
 
     {{-- Header --}}
-    <li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-header">
-        {{ is_string($item) ? $item : $item['header'] }}
-    </li>
+    @include('adminlte::partials.sidebar.menu-item-header')
 
 @elseif ($menuItemHelper->isSearchBar($item))
 
