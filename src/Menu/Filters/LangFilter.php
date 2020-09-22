@@ -44,9 +44,8 @@ class LangFilter implements FilterInterface
         foreach ($this->itemProperties as $prop) {
             if (isset($item[$prop])) {
                 if (is_array($item[$prop])) {
-                    $key = $item[$prop][0];
-                    $params = isset($item[$prop][1]) ? (is_array($item[$prop][1]) ? $item[$prop][1] : []) : [];
-                    $item[$prop] = $this->getTranslation($key, $params);
+                    $params = (isset($item[$prop][1]) && is_array($item[$prop][1])) ? $item[$prop][1] : [];
+                    $item[$prop] = $this->getTranslation($item[$prop][0], $params);
                 } elseif (is_string($item[$prop])) {
                     $item[$prop] = $this->getTranslation($item[$prop]);
                 }
