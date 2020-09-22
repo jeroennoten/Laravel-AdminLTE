@@ -784,6 +784,17 @@ class BuilderTest extends TestCase
         $this->assertEquals('TEST', $builder->menu[3]['header']);
     }
 
+    public function testLangTranslateWithExtraParams()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder->add(['header' => ['account_settings_with_params', ['social' => 'Google']]]);
+        $builder->add(['text' => ['profile_with_params', ['name' => 'User']], 'url' => '/profile', 'label' => ['labels_with_params', ['type' => 'Blank']]]);
+        $this->assertCount(2, $builder->menu);
+        $this->assertEquals('Google ACCOUNT SETTINGS', $builder->menu[0]['header']);
+        $this->assertEquals('Profile User', $builder->menu[1]['text']);
+        $this->assertEquals('Blank LABELS', $builder->menu[1]['label']);
+    }
+
     public function testDataAttributes()
     {
         $builder = $this->makeMenuBuilder();

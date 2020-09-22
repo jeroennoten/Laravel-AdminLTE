@@ -16,4 +16,8 @@ return [
     'important'                     => 'Important',
     'warning'                       => 'Warning',
     'information'                   => 'Information',
+    //
+    'account_settings_with_params'  => ':social ACCOUNT SETTINGS',
+    'profile_with_params'           => 'Profile :name',
+    'labels_with_params'            => ':type LABELS',
 ];
