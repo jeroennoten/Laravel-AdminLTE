@@ -142,6 +142,6 @@ class ActiveChecker
             $request = $this->request->fullUrl();
         }
 
-        return Str::is($pattern, $request);
+        return Str::is(trim($pattern), trim($request));
     }
 }
