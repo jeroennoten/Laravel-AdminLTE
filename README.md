@@ -1409,6 +1409,26 @@ return [
 ];
 ```
 
+Even more, you can define a translation string with parameters using an array where the first value is the translation key and the second value is an array with the translation parameters, as shown next:
+
+```php
+[
+    'header' => ['account_settings_trans_key_with_params', ['social' => 'Google']],
+],
+[
+    'text' => ['profile_trans_key_with_params', ['name' => 'User']],
+    'url'  => 'admin/settings',
+    'icon' => 'user',
+],
+```
+where
+
+```php
+return [
+    'account_settings_trans_key_with_params'  => ':social ACCOUNT SETTINGS',
+    'profile_trans_key_with_params'           => 'Profile :name',
+];
+```
 
 ## 11. Customize Views
 
