@@ -47,8 +47,9 @@ class LangFilter implements FilterInterface
                     $key = $item[$prop][0];
                     $params = isset($item[$prop][1]) ? (is_array($item[$prop][1]) ? $item[$prop][1] : []) : [];
                     $item[$prop] = $this->getTranslation($key, $params);
-                } else if (is_string($item[$prop]))
+                } elseif (is_string($item[$prop])) {
                     $item[$prop] = $this->getTranslation($item[$prop]);
+                }
             }
         }
 
@@ -66,10 +67,10 @@ class LangFilter implements FilterInterface
     {
         // Check for a translation.
 
-        if ($this->translator->has('menu.' . $key)) {
-            return $this->translator->get('menu.' . $key, $params);
-        } elseif ($this->translator->has('adminlte::menu.' . $key)) {
-            return $this->translator->get('adminlte::menu.' . $key, $params);
+        if ($this->translator->has('menu.'.$key)) {
+            return $this->translator->get('menu.'.$key, $params);
+        } elseif ($this->translator->has('adminlte::menu.'.$key)) {
+            return $this->translator->get('adminlte::menu.'.$key, $params);
         }
 
         // When no translation available, return the original key.
