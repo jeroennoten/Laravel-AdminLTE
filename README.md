@@ -1,7 +1,6 @@
 # Easy AdminLTE integration with Laravel
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
-[![Build Status](https://travis-ci.org/jeroennoten/Laravel-AdminLTE.svg?branch=master)](https://travis-ci.org/jeroennoten/Laravel-AdminLTE)
 [![Quality Score](https://img.shields.io/scrutinizer/g/jeroennoten/Laravel-AdminLTE.svg?style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
 [![Code Coverage](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE/?branch=master)
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
