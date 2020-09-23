@@ -801,7 +801,7 @@ class BuilderTest extends TestCase
             [
                 'header' => [
                     'header_with_params',
-                    ['cat' => 'CAT', 'subcat' => "SUBCAT"],
+                    ['cat' => 'CAT', 'subcat' => 'SUBCAT'],
                 ],
             ],
             [
