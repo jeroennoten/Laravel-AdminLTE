@@ -789,8 +789,9 @@ class BuilderTest extends TestCase
         $builder = $this->makeMenuBuilder('http://example.com', null, 'es');
 
         $lines = [
-            'menu.header_with_params' => 'MENU :label',
+            'menu.header_with_params' => 'MENU :cat / :subcat',
             'menu.profile_with_params' => 'Perfil de :name',
+            'menu.label_with_params' => 'Etiqueta :type',
         ];
 
         $translator = $this->getTranslator();
@@ -798,11 +799,19 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'header' => ['header_with_params', ['label' => 'SECUNDARIO']],
+                'header' => [
+                    'header_with_params',
+                    ['cat' => 'CAT', 'subcat' => "SUBCAT"],
+                ],
             ],
             [
                 'text' => ['profile_with_params', ['name' => 'Diego']],
                 'url' => '/profile',
+                'label' => ['label_with_params', ['type' => 'Tipo']],
+            ],
+            [
+                // Test case with partial parameters.
+                'header' => ['header_with_params', ['subcat' => 'SUBCAT']],
             ],
             [
                 // Test case with empty parameters.
@@ -810,15 +819,17 @@ class BuilderTest extends TestCase
             ],
             [
                 // Test case with non-array parameters.
-                'header' => ['header_with_params', 'param'],
+                'header' => ['header_with_params', 'non-array-value'],
             ],
         );
 
-        $this->assertCount(4, $builder->menu);
-        $this->assertEquals('MENU SECUNDARIO', $builder->menu[0]['header']);
+        $this->assertCount(5, $builder->menu);
+        $this->assertEquals('MENU CAT / SUBCAT', $builder->menu[0]['header']);
         $this->assertEquals('Perfil de Diego', $builder->menu[1]['text']);
-        $this->assertEquals('MENU :label', $builder->menu[2]['header']);
-        $this->assertEquals('MENU :label', $builder->menu[3]['header']);
+        $this->assertEquals('Etiqueta Tipo', $builder->menu[1]['label']);
+        $this->assertEquals('MENU :cat / SUBCAT', $builder->menu[2]['header']);
+        $this->assertEquals('MENU :cat / :subcat', $builder->menu[3]['header']);
+        $this->assertEquals('MENU :cat / :subcat', $builder->menu[4]['header']);
     }
 
     public function testDataAttributes()
