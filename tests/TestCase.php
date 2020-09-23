@@ -26,6 +26,8 @@ class TestCase extends BaseTestCase
 
     private $routeCollection;
 
+    private $translator;
+
     protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null, $locale = 'en')
     {
         return new Builder([
@@ -43,10 +45,10 @@ class TestCase extends BaseTestCase
     {
         $translationLoader = new Illuminate\Translation\FileLoader(new Illuminate\Filesystem\Filesystem, 'resources/lang/');
 
-        $translator = new Illuminate\Translation\Translator($translationLoader, $locale);
-        $translator->addNamespace('adminlte', 'resources/lang/');
+        $this->translator = new Illuminate\Translation\Translator($translationLoader, $locale);
+        $this->translator->addNamespace('adminlte', 'resources/lang/');
 
-        return $translator;
+        return $this->translator;
     }
 
     protected function makeActiveChecker($uri = 'http://example.com', $scheme = null)
@@ -113,5 +115,10 @@ class TestCase extends BaseTestCase
         }
 
         return $this->routeCollection;
+    }
+
+    protected function getTranslator()
+    {
+        return $this->translator;
     }
 }

@@ -786,13 +786,39 @@ class BuilderTest extends TestCase
 
     public function testLangTranslateWithExtraParams()
     {
-        $builder = $this->makeMenuBuilder('http://example.com');
-        $builder->add(['header' => ['account_settings_with_params', ['social' => 'Google']]]);
-        $builder->add(['text' => ['profile_with_params', ['name' => 'User']], 'url' => '/profile', 'label' => ['labels_with_params', ['type' => 'Blank']]]);
-        $this->assertCount(2, $builder->menu);
-        $this->assertEquals('Google ACCOUNT SETTINGS', $builder->menu[0]['header']);
-        $this->assertEquals('Profile User', $builder->menu[1]['text']);
-        $this->assertEquals('Blank LABELS', $builder->menu[1]['label']);
+        $builder = $this->makeMenuBuilder('http://example.com', null, 'es');
+
+        $lines = [
+            'menu.header_with_params' => 'MENU :label',
+            'menu.profile_with_params' => 'Perfil de :name',
+        ];
+
+        $translator = $this->getTranslator();
+        $translator->addLines($lines, 'es', 'adminlte');
+
+        $builder->add(
+            [
+                'header' => ['header_with_params', ['label' => 'SECUNDARIO']],
+            ],
+            [
+                'text' => ['profile_with_params', ['name' => 'Diego']],
+                'url' => '/profile',
+            ],
+            [
+                // Test case with empty parameters.
+                'header' => ['header_with_params'],
+            ],
+            [
+                // Test case with non-array parameters.
+                'header' => ['header_with_params', 'param'],
+            ],
+        );
+
+        $this->assertCount(4, $builder->menu);
+        $this->assertEquals('MENU SECUNDARIO', $builder->menu[0]['header']);
+        $this->assertEquals('Perfil de Diego', $builder->menu[1]['text']);
+        $this->assertEquals('MENU :label', $builder->menu[2]['header']);
+        $this->assertEquals('MENU :label', $builder->menu[3]['header']);
     }
 
     public function testDataAttributes()
