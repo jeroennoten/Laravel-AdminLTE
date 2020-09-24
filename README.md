@@ -1370,28 +1370,32 @@ This will setup the `@livewireStyles` and the `@livewireScripts` directives corr
 
 ## 10. Translations
 
-At the moment, English, German, French, Dutch, Portuguese, Spanish and Turkish translations are available out of the box. Just specify the `locale` configuration option in `config/app.php` file of your Laravel project. If you need to modify the texts or add other languages, you can publish the language files:
+At the moment, English, German, French, Dutch, Portuguese, Spanish, Turkish among other translations are available out of the box. Just specify the `locale` configuration option in `config/app.php` file of your Laravel project. If you need to modify the texts or add support for other languages, you can publish the language files with the next command:
 
 ```sh
 php artisan adminlte:install --only=translations
 ```
 
-Now, you are able to edit translations or add languages in the `resources/lang/vendor/adminlte` folder.
+Now, you are able to edit translations or add new languages in the `resources/lang/vendor/adminlte` folder.
 
 ### 10.1 Menu Translations
 
 The menu translations are enabled by default and allows you to use `lang` files for menu items translation.
 
-#### Configure Menu Item for Translation:
+#### Configure Menu Item for Translation
 
-You need to configure the menu items to support translations. For this, you need to add translation `keys` to the `text` and/or `header` attributes. These are the currently supported menu attributes for translations. This is an example of the configuration you need:
+You need to configure the menu items to support translations. For this, you need to add translation `keys` to the `text`, `header` or `label` attributes. Currently, these are the only menu attributes supported for translations.
+
+Translation strings with parameters are supported using an array on the menu attribute, where the first value is the translation `key` and the second value is an array with the translation `parameters`. At next, we show an example of the menu configuration for both cases:
 
 ```php
 [
+    // Example using a translation key.
     'header' => 'account_settings_trans_key',
 ],
 [
-    'text' => 'profile_trans_key',
+    // Example using translation key with parameters.
+    'text' => ['profile_trans_key', ['name' => 'User']],
     'url'  => 'admin/settings',
     'icon' => 'user',
 ],
@@ -1399,35 +1403,15 @@ You need to configure the menu items to support translations. For this, you need
 
 #### Lang Files
 
-All the translation strings keys configured must be added in the `menu.php` file of each locale needed. You need to declare a `key` for each one of the menu items you want to translate. The translations files are located at the `resources/lang/vendor/adminlte/` folder. This is an example of the `resources/lang/vendor/adminlte/en/menu.php` lang file for the previous sample of configuration:
+All the translation strings keys configured on the menu items must be added in the `menu.php` file of each locale needed. You need to declare a `key` for each one of the menu items you want to translate. The translations files are located at the `resources/lang/vendor/adminlte/` folder. At next, we show an example of the `resources/lang/vendor/adminlte/en/menu.php` language file for the previous sample of configuration:
 
 ```php
 return [
     'account_settings_trans_key'  => 'ACCOUNT SETTINGS',
-    'profile_trans_key'           => 'Profile',
+    'profile_trans_key'           => ':name Profile',
 ];
 ```
 
-Even more, you can define a translation string with parameters using an array where the first value is the translation key and the second value is an array with the translation parameters, as shown next:
-
-```php
-[
-    'header' => ['account_settings_trans_key_with_params', ['social' => 'Google']],
-],
-[
-    'text' => ['profile_trans_key_with_params', ['name' => 'User']],
-    'url'  => 'admin/settings',
-    'icon' => 'user',
-],
-```
-where
-
-```php
-return [
-    'account_settings_trans_key_with_params'  => ':social ACCOUNT SETTINGS',
-    'profile_trans_key_with_params'           => 'Profile :name',
-];
-```
 
 ## 11. Customize Views
 
