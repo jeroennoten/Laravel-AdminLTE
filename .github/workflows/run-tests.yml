@@ -45,4 +45,14 @@ jobs:
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
             -   name: Execute tests
-                run: vendor/bin/phpunit
+                run: vendor/bin/phpunit --coverage-clover=coverage.clover
+
+    upload-coverage:
+        name: Upload Coverage
+        need: tests
+
+        steps:
+            -   name: Upload coverage to scrutinizer
+            -   run: |
+                    wget https://scrutinizer-ci.com/ocular.phar
+                    php ocular.phar code-coverage:upload --format=php-clover coverage.clover                  
