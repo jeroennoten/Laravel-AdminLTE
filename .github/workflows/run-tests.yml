@@ -52,7 +52,7 @@ jobs:
 
         name: Upload Coverage
 
-        need: tests
+        needs: tests
 
         steps:
             -   name: Upload coverage to scrutinizer
