@@ -48,7 +48,10 @@ jobs:
                 run: vendor/bin/phpunit --coverage-clover=coverage.clover
 
     upload-coverage:
+        runs-on: ubuntu-latest
+
         name: Upload Coverage
+
         need: tests
 
         steps:
