@@ -47,15 +47,9 @@ jobs:
             -   name: Execute tests
                 run: vendor/bin/phpunit --coverage-clover=coverage.clover
 
-    upload-coverage:
-        runs-on: ubuntu-latest
-
-        name: Upload Coverage
-
-        needs: tests
-
-        steps:
-            -   name: Upload coverage to scrutinizer
+                # Upload coverage only for latest versions.
+            -   name: Upload coverage to scrutinizer-ci
+                if: matix.php == '7.4' && matrix.laravel == '8.*' && matrix.dependency-version == 'prefer-stable'
                 run: |
                     wget https://scrutinizer-ci.com/ocular.phar
                     php ocular.phar code-coverage:upload --format=php-clover coverage.clover
