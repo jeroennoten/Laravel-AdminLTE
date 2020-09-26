@@ -25,11 +25,8 @@ jobs:
         steps:
             -   name: Checkout code
                 uses: actions/checkout@v2
-
-            -   name: Install SQLite 3
-                run: |
-                    sudo apt-get update
-                    sudo apt-get install sqlite3
+                with:
+                    ref: ${{ github.event.pull_request.head.sha }}
 
             -   name: Cache dependencies
                 uses: actions/cache@v2
@@ -42,7 +39,7 @@ jobs:
                 with:
                     php-version: ${{ matrix.php }}
                     extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
-                    coverage: none
+                    coverage: xdebug
 
             -   name: Install dependencies
                 run: |
@@ -51,3 +48,11 @@ jobs:
 
             -   name: Execute tests
                 run: vendor/bin/phpunit
+
+                # Upload coverage only for latest versions.
+            -   name: Upload coverage to scrutinizer-ci
+                if: matrix.php == '7.4' && matrix.laravel == '8.*' && matrix.dependency-version == 'prefer-stable'
+                run: |
+                    vendor/bin/phpunit --coverage-clover=coverage.clover
+                    wget https://scrutinizer-ci.com/ocular.phar
+                    php ocular.phar code-coverage:upload --format=php-clover coverage.clover
