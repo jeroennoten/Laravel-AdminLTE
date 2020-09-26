@@ -183,7 +183,6 @@ class Builder
             // continue applying the filters.
 
             if (! MenuItemHelper::isAllowed($item)) {
-
                 return $item;
             }
 
