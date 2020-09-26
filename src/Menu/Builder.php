@@ -175,16 +175,24 @@ class Builder
             return $item;
         }
 
-        // If the item is a submenu, transform all submenu items first.
-
-        if (MenuItemHelper::isSubmenu($item)) {
-            $item['submenu'] = $this->transformItems($item['submenu']);
-        }
-
         // Now, apply all the filters on the item.
 
         foreach ($this->filters as $filter) {
+
+            // If the item is not allowed to be shown, there is no sense to
+            // continue applying the filters.
+
+            if (! MenuItemHelper::isAllowed($item)) {
+                return $item;
+            }
+
             $item = $filter->transform($item);
+        }
+
+        // If the item is a submenu, transform all submenu items too.
+
+        if (MenuItemHelper::isSubmenu($item)) {
+            $item['submenu'] = $this->transformItems($item['submenu']);
         }
 
         return $item;
