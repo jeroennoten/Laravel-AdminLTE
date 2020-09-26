@@ -31,11 +31,11 @@ class TestCase extends BaseTestCase
     protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null, $locale = 'en')
     {
         return new Builder([
+            new GateFilter($gate ?: $this->makeGate()),
             new HrefFilter($this->makeUrlGenerator($uri)),
             new ActiveFilter($this->makeActiveChecker($uri)),
             new ClassesFilter(),
             new DataFilter(),
-            new GateFilter($gate ?: $this->makeGate()),
             new LangFilter($this->makeTranslator($locale)),
             new SearchFilter(),
         ]);
