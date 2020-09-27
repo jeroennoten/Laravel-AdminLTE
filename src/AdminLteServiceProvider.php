@@ -139,18 +139,17 @@ class AdminLteServiceProvider extends BaseServiceProvider
             }
         );
     }
-    
+
     /**
-     * Load the Components
+     * Load the Components.
      *
      * @return void
      */
     private function loadComponents()
     {
         /**
-         * FORM COMPONENTS
+         * FORM COMPONENTS.
          */
-
         Blade::component('adminlte-input', Components\Input::class);
         Blade::component('adminlte-input-file', Components\InputFile::class);
         Blade::component('adminlte-input-color', Components\InputColor::class);
@@ -168,9 +167,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
         Blade::component('adminlte-input-slider', Components\InputSlider::class);
 
         /**
-         * WIDGETS
+         * WIDGETS.
          */
-
         Blade::component('adminlte-card', Components\Card::class);
         Blade::component('adminlte-info-box', Components\InfoBox::class);
         Blade::component('adminlte-small-box', Components\SmallBox::class);

@@ -6,7 +6,8 @@ use Illuminate\View\Component;
 
 class Callout extends Component
 {
-    public $type, $title;
+    public $type;
+    public $title;
 
     public function __construct($type = 'info', $title = null)
     {

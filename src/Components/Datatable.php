@@ -6,17 +6,20 @@ use Illuminate\View\Component;
 
 class Datatable extends Component
 {
-    public $beautify, $buttons;
+    public $beautify;
+    public $buttons;
     public $id;
-    public $bordered, $hoverable, $condensed;
-    public $heads, $footer;
+    public $bordered;
+    public $hoverable;
+    public $condensed;
+    public $heads;
+    public $footer;
 
     public function __construct(
         $beautify = true, $id,
         $bordered = true, $hoverable = true, $condensed = false,
         $heads, $footer = false, $buttons = false
-        )
-    {
+        ) {
         $this->id = $id;
         $this->beautify = $beautify;
         $this->bordered = $bordered;
