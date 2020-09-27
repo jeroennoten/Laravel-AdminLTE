@@ -6,8 +6,15 @@ use Illuminate\View\Component;
 
 class InfoBox extends Component
 {
-    public $bg, $icon, $title, $text, $full, $grad;
-    public $id, $progress, $comment;
+    public $bg;
+    public $icon;
+    public $title;
+    public $text;
+    public $full;
+    public $grad;
+    public $id;
+    public $progress;
+    public $comment;
 
     public function __construct(
         $bg = 'info', $icon = 'fas fa-star', $id = null,
@@ -27,12 +34,12 @@ class InfoBox extends Component
 
     public function background()
     {
-        return $this->full ?  ($this->grad ? 'bg-gradient-' : 'bg-').$this->bg : '';
+        return $this->full ? ($this->grad ? 'bg-gradient-' : 'bg-').$this->bg : '';
     }
 
     public function foreground()
     {
-        return !$this->full ?  ($this->grad ? 'bg-gradient-' : 'bg-').$this->bg : '';
+        return ! $this->full ? ($this->grad ? 'bg-gradient-' : 'bg-').$this->bg : '';
     }
 
     public function render()

@@ -6,7 +6,10 @@ use Illuminate\View\Component;
 
 class ProfileFlatItem extends Component
 {
-    public $badge, $title, $text, $url;
+    public $badge;
+    public $title;
+    public $text;
+    public $url;
 
     public function __construct($badge = 'info', $title, $text, $url = '#')
     {

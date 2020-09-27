@@ -6,8 +6,11 @@ use Illuminate\View\Component;
 
 class Submit extends Component
 {
-    public $type, $label, $icon;
-    public $topclass, $inputclass;
+    public $type;
+    public $label;
+    public $icon;
+    public $topclass;
+    public $inputclass;
 
     public function __construct(
         $type = 'primary', $label = 'Submit', $icon = 'fas fa-save',

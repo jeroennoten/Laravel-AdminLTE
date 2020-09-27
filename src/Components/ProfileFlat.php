@@ -6,7 +6,10 @@ use Illuminate\View\Component;
 
 class ProfileFlat extends Component
 {
-    public $bg, $img, $name, $desc;
+    public $bg;
+    public $img;
+    public $name;
+    public $desc;
 
     public function __construct($bg = 'info', $img, $name, $desc)
     {

@@ -6,17 +6,21 @@ use Illuminate\View\Component;
 
 class SelectIcon extends Component
 {
-    public $id, $name, $label;
-    public $topclass, $inputclass;
-    public $disabled, $required, $multiple;
+    public $id;
+    public $name;
+    public $label;
+    public $topclass;
+    public $inputclass;
+    public $disabled;
+    public $required;
+    public $multiple;
 
     public function __construct(
             $id, $name = null,
             $label = 'Input Label',
             $topclass = null, $inputclass = null,
             $disabled = false, $required = false, $multiple = false
-        )
-    {
+        ) {
         $this->id = $id;
         $this->name = $name;
         $this->label = $label;

@@ -6,17 +6,21 @@ use Illuminate\View\Component;
 
 class InputSwitch extends Component
 {
-    public $id, $name, $label;
-    public $topclass, $inputclass;
-    public $checked, $disabled, $required;
+    public $id;
+    public $name;
+    public $label;
+    public $topclass;
+    public $inputclass;
+    public $checked;
+    public $disabled;
+    public $required;
 
     public function __construct(
             $id = 'checkbox', $name = null,
             $label = 'Input Label',
             $topclass = null, $inputclass = null,
             $checked = false, $disabled = false, $required = false
-        )
-    {
+        ) {
         $this->id = $id;
         $this->name = $name;
         $this->label = $label;

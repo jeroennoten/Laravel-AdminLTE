@@ -6,10 +6,17 @@ use Illuminate\View\Component;
 
 class TextEditor extends Component
 {
-    public $id, $name, $label, $placeholder;
-    public $topclass, $inputclass;
-    public $body, $disabled, $required;
-    public $height, $fonts;
+    public $id;
+    public $name;
+    public $label;
+    public $placeholder;
+    public $topclass;
+    public $inputclass;
+    public $body;
+    public $disabled;
+    public $required;
+    public $height;
+    public $fonts;
     public $def_fonts = ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Impact', 'Montserrat',  'Open Sans', 'Ubuntu', 'Rajdhani'];
 
     public function __construct(
@@ -18,8 +25,7 @@ class TextEditor extends Component
             $topclass = null, $inputclass = null,
             $body = null, $disabled = false, $required = false,
             $height = 500, $fonts = null
-        )
-    {
+        ) {
         $this->id = $id;
         $this->name = $name;
         $this->label = $label;

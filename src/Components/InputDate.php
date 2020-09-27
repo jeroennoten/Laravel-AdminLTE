@@ -6,9 +6,15 @@ use Illuminate\View\Component;
 
 class InputDate extends Component
 {
-    public $id, $name, $label, $placeholder;
-    public $topclass, $inputclass;
-    public $value, $disabled, $required;
+    public $id;
+    public $name;
+    public $label;
+    public $placeholder;
+    public $topclass;
+    public $inputclass;
+    public $value;
+    public $disabled;
+    public $required;
     public $format;
 
     public function __construct(
@@ -17,8 +23,7 @@ class InputDate extends Component
             $topclass = null, $inputclass = null,
             $value = null, $disabled = false, $required = false,
             $format = 'YYYY-MM-DD'
-        )
-    {
+        ) {
         $this->id = $id;
         $this->name = $name;
         $this->label = $label;

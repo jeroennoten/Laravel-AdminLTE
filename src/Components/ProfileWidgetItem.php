@@ -6,7 +6,9 @@ use Illuminate\View\Component;
 
 class ProfileWidgetItem extends Component
 {
-    public $col, $title, $text;
+    public $col;
+    public $title;
+    public $text;
 
     public function __construct($col = '4', $title, $text)
     {

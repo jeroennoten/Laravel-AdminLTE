@@ -6,7 +6,10 @@ use Illuminate\View\Component;
 
 class ProfileWidget extends Component
 {
-    public $bg, $img, $name, $desc;
+    public $bg;
+    public $img;
+    public $name;
+    public $desc;
     public $cover;
 
     public function __construct($bg = 'info', $img, $name, $desc, $cover = null)
