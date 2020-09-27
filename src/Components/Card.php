@@ -8,12 +8,16 @@ class Card extends Component
 {
     public $bg;
     public $title;
-    public $collapsed, $removable, $maximizable, $disabled;
-    public $outline, $full;
+    public $collapsed;
+    public $removable;
+    public $maximizable;
+    public $disabled;
+    public $outline;
+    public $full;
 
     public function __construct(
-        $bg = 'info', $title, 
-        $collapsed = false, $removable = false, 
+        $bg = 'info', $title,
+        $collapsed = false, $removable = false,
         $maximizable = false, $disabled = false,
         $outline = false, $full = false)
     {

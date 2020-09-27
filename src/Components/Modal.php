@@ -6,11 +6,14 @@ use Illuminate\View\Component;
 
 class Modal extends Component
 {
-    public $id, $title, $size, $centered;
+    public $id;
+    public $title;
+    public $size;
+    public $centered;
     public $index;
 
     public function __construct(
-        $title, $size = null, $id, 
+        $title, $size = null, $id,
         $centered = true, $index = 1)
     {
         $this->id = $id;
@@ -22,7 +25,7 @@ class Modal extends Component
 
     public function modalsize()
     {
-        return !is_null($this->size) ? 'modal-'.$this->size : '';
+        return ! is_null($this->size) ? 'modal-'.$this->size : '';
     }
 
     public function zindex()

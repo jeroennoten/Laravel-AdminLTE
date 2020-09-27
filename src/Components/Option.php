@@ -6,8 +6,11 @@ use Illuminate\View\Component;
 
 class Option extends Component
 {
-    public $value, $icon, $content;
-    public $selected, $disabled;
+    public $value;
+    public $icon;
+    public $content;
+    public $selected;
+    public $disabled;
 
     public function __construct(
         $value = null, $icon = false, $content = null,
