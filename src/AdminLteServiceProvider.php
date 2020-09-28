@@ -173,8 +173,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\InputSlider::class,
         ]);
 
-        Blade::component('adminlte-input', Components\Input::class);
-
         // Widgets components.
 
         $this->loadViewComponentsAs('adminlte', [
