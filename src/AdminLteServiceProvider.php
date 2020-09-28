@@ -170,7 +170,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\Submit::class,
             Components\TextEditor::class,
             Components\DateRange::class,
-            Components\InputSlider::class
+            Components\InputSlider::class,
         ]);
 
         Blade::component('adminlte-input', Components\Input::class);
@@ -189,7 +189,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\Callout::class,
             Components\Progress::class,
             Components\Modal::class,
-            Components\Datatable::class
+            Components\Datatable::class,
         ]);
     }
 }
