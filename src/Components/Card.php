@@ -33,6 +33,6 @@ class Card extends Component
 
     public function render()
     {
-        return view('adminlte::card');
+        return view('adminlte::components.card');
     }
 }

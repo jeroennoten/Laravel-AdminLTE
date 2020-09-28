@@ -26,6 +26,6 @@ class ProfileFlat extends Component
 
     public function render()
     {
-        return view('adminlte::profile-flat');
+        return view('adminlte::components.profile-flat');
     }
 }

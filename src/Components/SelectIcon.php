@@ -33,6 +33,6 @@ class SelectIcon extends Component
 
     public function render()
     {
-        return view('adminlte::select-icon');
+        return view('adminlte::components.select-icon');
     }
 }

@@ -52,6 +52,6 @@ class InputSlider extends Component
 
     public function render()
     {
-        return view('adminlte::input-slider');
+        return view('adminlte::components.input-slider');
     }
 }

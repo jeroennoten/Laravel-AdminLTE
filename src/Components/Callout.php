@@ -17,6 +17,6 @@ class Callout extends Component
 
     public function render()
     {
-        return view('adminlte::callout');
+        return view('adminlte::components.callout');
     }
 }

@@ -33,6 +33,6 @@ class Select2 extends Component
 
     public function render()
     {
-        return view('adminlte::select2');
+        return view('adminlte::components.select2');
     }
 }

@@ -35,6 +35,6 @@ class InputColor extends Component
 
     public function render()
     {
-        return view('adminlte::input-color');
+        return view('adminlte::components.input-color');
     }
 }

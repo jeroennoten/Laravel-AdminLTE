@@ -25,6 +25,6 @@ class Submit extends Component
 
     public function render()
     {
-        return view('adminlte::submit');
+        return view('adminlte::components.submit');
     }
 }

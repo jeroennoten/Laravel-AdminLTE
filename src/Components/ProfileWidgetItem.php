@@ -19,6 +19,6 @@ class ProfileWidgetItem extends Component
 
     public function render()
     {
-        return view('adminlte::profile-widget-item');
+        return view('adminlte::components.profile-widget-item');
     }
 }

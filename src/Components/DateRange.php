@@ -43,6 +43,6 @@ class DateRange extends Component
 
     public function render()
     {
-        return view('adminlte::date-range');
+        return view('adminlte::components.date-range');
     }
 }
