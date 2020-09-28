@@ -142,45 +142,54 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Load the Components.
+     * Load the blade view components.
      *
      * @return void
      */
     private function loadComponents()
     {
-        /**
-         * FORM COMPONENTS.
-         */
-        Blade::component('adminlte-input', Components\Input::class);
-        Blade::component('adminlte-input-file', Components\InputFile::class);
-        Blade::component('adminlte-input-color', Components\InputColor::class);
-        Blade::component('adminlte-input-date', Components\InputDate::class);
-        Blade::component('adminlte-textarea', Components\Textarea::class);
-        Blade::component('adminlte-select', Components\Select::class);
-        Blade::component('adminlte-select2', Components\Select2::class);
-        Blade::component('adminlte-select-icon', Components\SelectIcon::class);
-        Blade::component('adminlte-option', Components\Option::class);
-        Blade::component('adminlte-input-switch', Components\InputSwitch::class);
-        Blade::component('adminlte-input-tag', Components\InputTag::class);
-        Blade::component('adminlte-submit', Components\Submit::class);
-        Blade::component('adminlte-text-editor', Components\TextEditor::class);
-        Blade::component('adminlte-date-range', Components\DateRange::class);
-        Blade::component('adminlte-input-slider', Components\InputSlider::class);
+        // Support of x-components is only available for Laravel >= 7.x
+        // versions. So, we check if we can load components.
 
-        /**
-         * WIDGETS.
-         */
-        Blade::component('adminlte-card', Components\Card::class);
-        Blade::component('adminlte-info-box', Components\InfoBox::class);
-        Blade::component('adminlte-small-box', Components\SmallBox::class);
-        Blade::component('adminlte-profile-flat', Components\ProfileFlat::class);
-        Blade::component('adminlte-profile-flat-item', Components\ProfileFlatItem::class);
-        Blade::component('adminlte-profile-widget', Components\ProfileWidget::class);
-        Blade::component('adminlte-profile-widget-item', Components\ProfileWidgetItem::class);
-        Blade::component('adminlte-alert', Components\Alert::class);
-        Blade::component('adminlte-callout', Components\Callout::class);
-        Blade::component('adminlte-progress', Components\Progress::class);
-        Blade::component('adminlte-modal', Components\Modal::class);
-        Blade::component('adminlte-datatable', Components\Datatable::class);
+        if (! method_exists('Illuminate\Support\ServiceProvider', 'loadViewComponentsAs')) {
+            return;
+        }
+
+        // Form components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\Input::class,
+            Components\InputColor::class,
+            Components\InputDate::class,
+            Components\Textarea::class,
+            Components\Select::class,
+            Components\SelectIcon::class,
+            Components\Option::class,
+            Components\InputSwitch::class,
+            Components\InputTag::class,
+            Components\Submit::class,
+            Components\TextEditor::class,
+            Components\DateRange::class,
+            Components\InputSlider::class
+        ]);
+
+        Blade::component('adminlte-input', Components\Input::class);
+
+        // Widgets components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\Card::class,
+            Components\InfoBox::class,
+            Components\SmallBox::class,
+            Components\ProfileFlat::class,
+            Components\ProfileFlatItem::class,
+            Components\ProfileWidget::class,
+            Components\ProfileWidgetItem::class,
+            Components\Alert::class,
+            Components\Callout::class,
+            Components\Progress::class,
+            Components\Modal::class,
+            Components\Datatable::class
+        ]);
     }
 }
