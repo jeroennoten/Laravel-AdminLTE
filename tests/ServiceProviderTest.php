@@ -91,7 +91,7 @@ class ServiceProviderTest extends TestCase
         $this->assertEquals('search', $menu[0]['text']);
     }
 
-    public function testBootLoadComponets()
+    public function testBootLoadComponents()
     {
         // Check that some of the blade component views are loaded.
 
