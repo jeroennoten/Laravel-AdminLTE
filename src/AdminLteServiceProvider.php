@@ -162,36 +162,36 @@ class AdminLteServiceProvider extends BaseServiceProvider
         // Form components.
 
         $this->loadViewComponentsAs('adminlte', [
+            Components\DateRange::class,
             Components\Input::class,
             Components\InputColor::class,
             Components\InputDate::class,
-            Components\Textarea::class,
-            Components\Select::class,
-            Components\SelectIcon::class,
-            Components\Option::class,
+            Components\InputSlider::class,
             Components\InputSwitch::class,
             Components\InputTag::class,
+            Components\Option::class,
+            Components\Select::class,
+            Components\SelectIcon::class,
             Components\Submit::class,
+            Components\Textarea::class,
             Components\TextEditor::class,
-            Components\DateRange::class,
-            Components\InputSlider::class,
         ]);
 
         // Widgets components.
 
         $this->loadViewComponentsAs('adminlte', [
+            Components\Alert::class,
+            Components\Callout::class,
             Components\Card::class,
+            Components\Datatable::class,
             Components\InfoBox::class,
-            Components\SmallBox::class,
+            Components\Modal::class,
             Components\ProfileFlat::class,
             Components\ProfileFlatItem::class,
             Components\ProfileWidget::class,
-            Components\ProfileWidgetItem::class,
-            Components\Alert::class,
-            Components\Callout::class,
+            Components\ProfileWidgetItem::class,                        
             Components\Progress::class,
-            Components\Modal::class,
-            Components\Datatable::class,
+            Components\SmallBox::class,
         ]);
     }
 }
