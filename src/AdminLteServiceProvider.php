@@ -189,7 +189,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\ProfileFlat::class,
             Components\ProfileFlatItem::class,
             Components\ProfileWidget::class,
-            Components\ProfileWidgetItem::class,                        
+            Components\ProfileWidgetItem::class,
             Components\Progress::class,
             Components\SmallBox::class,
         ]);
