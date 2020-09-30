@@ -1,3 +1,5 @@
+@inject('menuItemHelper', \JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper)
+
 <nav class="main-header navbar
     {{ config('adminlte.classes_topnav_nav', 'navbar-expand') }}
     {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
@@ -13,6 +15,16 @@
         {{-- Custom left links --}}
         @yield('content_top_nav_left')
     </ul>
+    
+    {{-- Search form top --}}
+    @foreach($adminlte->menu('navbar-left') as $item)
+        @if ($menuItemHelper->isSearchBar($item) && $item['topnav'])
+
+            {{-- Search form --}}
+            @include('adminlte::partials.navbar.menu-item-search-form')
+
+        @endif
+    @endforeach
 
     {{-- Navbar right links --}}
     <ul class="navbar-nav ml-auto">
