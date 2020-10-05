@@ -19,10 +19,4 @@ return [
     'password_reset_message'      => 'ລະຫັດລີເຊັດຂໍ້ຄວາມ',
     'reset_password'              => 'ລີເຊັດຂໍ້ຄວາມ',
     'send_password_reset_link'    => 'ສົ່ງລິ້ງລີເຊັດລະຫັດຜ່ານ',
-    'verify_message'              => 'ບັນຊີຂອງທ່ານຕ້ອງໄດ້ຮັບການຢືນຢັນ',
-    'verify_email_sent'           => 'Link ການຢືນຢັນບັນຊີຖືກສົ່ງເຂົ້າອີເມວຂອງທ່ານແລ້ວ',
-    'verify_check_your_email'     => 'ກ່ອນດຳເນີນການ, ທ່ານກະລຸນາກວດສອບອີເມວເພື່ອຢືນຢັນກ່ອນ',
-    'verify_if_not_recieved'      => 'ຂ້າພະເຈົ້າບໍ່ໄດ້ຮັບ ອີເມວ',
-    'verify_request_another'      => 'ກົດທີ່ນີ້ເພື່ອຮັບອີເມວອີກເທື່ອ',
-    'confirm_password_message'    => 'ກະລຸນາຢືນຢັນລະຫັດທ່ານເພື່ອທຳການຢືນຢັນ',
 ];
