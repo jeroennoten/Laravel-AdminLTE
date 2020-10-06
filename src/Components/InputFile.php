@@ -35,6 +35,6 @@ class InputFile extends Component
 
     public function render()
     {
-        return view('adminlte::input-file');
+        return view('adminlte::components.input-file');
     }
 }

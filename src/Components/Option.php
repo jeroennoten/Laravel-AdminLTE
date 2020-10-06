@@ -25,6 +25,6 @@ class Option extends Component
 
     public function render()
     {
-        return view('adminlte::option');
+        return view('adminlte::components.option');
     }
 }

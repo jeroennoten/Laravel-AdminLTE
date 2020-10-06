@@ -46,6 +46,6 @@ class TextEditor extends Component
 
     public function render()
     {
-        return view('adminlte::text-editor');
+        return view('adminlte::components.text-editor');
     }
 }

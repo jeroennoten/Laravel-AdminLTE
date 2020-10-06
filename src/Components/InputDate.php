@@ -38,6 +38,6 @@ class InputDate extends Component
 
     public function render()
     {
-        return view('adminlte::input-date');
+        return view('adminlte::components.input-date');
     }
 }

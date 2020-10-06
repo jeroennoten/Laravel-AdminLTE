@@ -36,6 +36,6 @@ class Textarea extends Component
 
     public function render()
     {
-        return view('adminlte::textarea');
+        return view('adminlte::components.textarea');
     }
 }

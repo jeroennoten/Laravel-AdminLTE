@@ -6,7 +6,6 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteInstallCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLtePluginCommand;
@@ -142,45 +141,59 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Load the Components.
+     * Load the blade view components.
      *
      * @return void
      */
     private function loadComponents()
     {
-        /**
-         * FORM COMPONENTS.
-         */
-        Blade::component('adminlte-input', Components\Input::class);
-        Blade::component('adminlte-input-file', Components\InputFile::class);
-        Blade::component('adminlte-input-color', Components\InputColor::class);
-        Blade::component('adminlte-input-date', Components\InputDate::class);
-        Blade::component('adminlte-textarea', Components\Textarea::class);
-        Blade::component('adminlte-select', Components\Select::class);
-        Blade::component('adminlte-select2', Components\Select2::class);
-        Blade::component('adminlte-select-icon', Components\SelectIcon::class);
-        Blade::component('adminlte-option', Components\Option::class);
-        Blade::component('adminlte-input-switch', Components\InputSwitch::class);
-        Blade::component('adminlte-input-tag', Components\InputTag::class);
-        Blade::component('adminlte-submit', Components\Submit::class);
-        Blade::component('adminlte-text-editor', Components\TextEditor::class);
-        Blade::component('adminlte-date-range', Components\DateRange::class);
-        Blade::component('adminlte-input-slider', Components\InputSlider::class);
+        // Support of x-components is only available for Laravel >= 7.x
+        // versions. So, we check if we can load components.
 
-        /**
-         * WIDGETS.
-         */
-        Blade::component('adminlte-card', Components\Card::class);
-        Blade::component('adminlte-info-box', Components\InfoBox::class);
-        Blade::component('adminlte-small-box', Components\SmallBox::class);
-        Blade::component('adminlte-profile-flat', Components\ProfileFlat::class);
-        Blade::component('adminlte-profile-flat-item', Components\ProfileFlatItem::class);
-        Blade::component('adminlte-profile-widget', Components\ProfileWidget::class);
-        Blade::component('adminlte-profile-widget-item', Components\ProfileWidgetItem::class);
-        Blade::component('adminlte-alert', Components\Alert::class);
-        Blade::component('adminlte-callout', Components\Callout::class);
-        Blade::component('adminlte-progress', Components\Progress::class);
-        Blade::component('adminlte-modal', Components\Modal::class);
-        Blade::component('adminlte-datatable', Components\Datatable::class);
+        $canLoadComponents = method_exists(
+            'Illuminate\Support\ServiceProvider',
+            'loadViewComponentsAs'
+        );
+
+        if (! $canLoadComponents) {
+            return;
+        }
+
+        // Form components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\DateRange::class,
+            Components\Input::class,
+            Components\InputColor::class,
+            Components\InputDate::class,
+            Components\InputFile::class,
+            Components\InputSlider::class,
+            Components\InputSwitch::class,
+            Components\InputTag::class,
+            Components\Option::class,
+            Components\Select::class,
+            Components\Select2::class,
+            Components\SelectIcon::class,
+            Components\Submit::class,
+            Components\Textarea::class,
+            Components\TextEditor::class,
+        ]);
+
+        // Widgets components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\Alert::class,
+            Components\Callout::class,
+            Components\Card::class,
+            Components\Datatable::class,
+            Components\InfoBox::class,
+            Components\Modal::class,
+            Components\ProfileFlat::class,
+            Components\ProfileFlatItem::class,
+            Components\ProfileWidget::class,
+            Components\ProfileWidgetItem::class,
+            Components\Progress::class,
+            Components\SmallBox::class,
+        ]);
     }
 }

@@ -46,6 +46,6 @@ class Input extends Component
 
     public function render()
     {
-        return view('adminlte::input');
+        return view('adminlte::components.input');
     }
 }

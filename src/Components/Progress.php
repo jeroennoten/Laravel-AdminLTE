@@ -30,6 +30,6 @@ class Progress extends Component
 
     public function render()
     {
-        return view('adminlte::progress');
+        return view('adminlte::components.progress');
     }
 }

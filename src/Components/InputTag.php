@@ -33,6 +33,6 @@ class InputTag extends Component
 
     public function render()
     {
-        return view('adminlte::input-tag');
+        return view('adminlte::components.input-tag');
     }
 }

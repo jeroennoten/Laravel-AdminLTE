@@ -47,6 +47,6 @@ class Datatable extends Component
 
     public function render()
     {
-        return view('adminlte::datatable');
+        return view('adminlte::components.datatable');
     }
 }

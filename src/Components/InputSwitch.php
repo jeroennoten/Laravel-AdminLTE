@@ -33,6 +33,6 @@ class InputSwitch extends Component
 
     public function render()
     {
-        return view('adminlte::input-switch');
+        return view('adminlte::components.input-switch');
     }
 }

@@ -44,6 +44,6 @@ class InfoBox extends Component
 
     public function render()
     {
-        return view('adminlte::info-box');
+        return view('adminlte::components.info-box');
     }
 }

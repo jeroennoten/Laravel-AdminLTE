@@ -37,6 +37,6 @@ class SmallBox extends Component
 
     public function render()
     {
-        return view('adminlte::small-box');
+        return view('adminlte::components.small-box');
     }
 }

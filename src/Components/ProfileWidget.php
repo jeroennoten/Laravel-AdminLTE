@@ -28,6 +28,6 @@ class ProfileWidget extends Component
 
     public function render()
     {
-        return view('adminlte::profile-widget');
+        return view('adminlte::components.profile-widget');
     }
 }

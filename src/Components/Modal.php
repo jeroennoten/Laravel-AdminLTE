@@ -35,6 +35,6 @@ class Modal extends Component
 
     public function render()
     {
-        return view('adminlte::modal');
+        return view('adminlte::components.modal');
     }
 }

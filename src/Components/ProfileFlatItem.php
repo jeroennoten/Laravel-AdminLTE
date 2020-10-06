@@ -21,6 +21,6 @@ class ProfileFlatItem extends Component
 
     public function render()
     {
-        return view('adminlte::profile-flat-item');
+        return view('adminlte::components.profile-flat-item');
     }
 }
