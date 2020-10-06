@@ -46,13 +46,20 @@ jobs:
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
-            -   name: Execute tests
-                run: vendor/bin/phpunit
+                # Test suite for Laravel 6.x versions.
+            -   name: Execute Laravel 6.x tests
+                if: matrix.laravel == '6.*'
+                run: vendor/bin/phpunit --testsuite Laravel6
+
+                # Test suite for Laravel 7+ versions.
+            -   name: Execute Laravel 7+ tests
+                if: matrix.laravel == '7.*' || matrix.laravel == '8.*'
+                run: vendor/bin/phpunit --testsuite Laravel7+
 
                 # Upload coverage only for latest versions.
             -   name: Upload coverage to scrutinizer-ci
                 if: matrix.php == '7.4' && matrix.laravel == '8.*' && matrix.dependency-version == 'prefer-stable'
                 run: |
-                    vendor/bin/phpunit --coverage-clover=coverage.clover
+                    vendor/bin/phpunit --testsuite Laravel7+ --coverage-clover=coverage.clover
                     wget https://scrutinizer-ci.com/ocular.phar
                     php ocular.phar code-coverage:upload --format=php-clover coverage.clover
