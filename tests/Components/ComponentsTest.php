@@ -30,7 +30,7 @@ class ComponentsTest extends TestCase
             // Form components.
 
             "{$base}.date-range"   => new Components\DateRange('id'),
-            "{$base}.input"        => new Components\Input(),
+            "{$base}.input"        => new Components\Input('name'),
             "{$base}.input-color"  => new Components\InputColor('id'),
             "{$base}.input-date"   => new Components\InputDate('id'),
             "{$base}.input-file"   => new Components\InputFile(),
