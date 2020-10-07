@@ -2,8 +2,6 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use JeroenNoten\LaravelAdminLte\Components\InputGroupComponent;
-
 class Input extends InputGroupComponent
 {
     /**
@@ -14,8 +12,7 @@ class Input extends InputGroupComponent
     public function __construct(
         $name, $label = null, $size = null,
         $labelClass = null, $topClass = null, $disableFeedback = null
-    )
-    {
+    ) {
         parent::__construct(
             $name, $label, $size, $labelClass, $topClass, $disableFeedback
         );

@@ -59,8 +59,7 @@ class InputGroupComponent extends Component
     public function __construct(
         $name, $label = null, $size = null,
         $labelClass = null, $topClass = null, $disableFeedback = null
-    )
-    {
+    ) {
         $this->name = $name;
         $this->label = $label;
         $this->size = $size;
