@@ -23,6 +23,10 @@ class ComponentsTest extends TestCase
 
         return [
 
+            // Base components.
+
+            "{$base}.input-group-component"  => new Components\InputGroupComponent('name'),
+
             // Form components.
 
             "{$base}.date-range"   => new Components\DateRange('id'),
@@ -64,12 +68,30 @@ class ComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testComponentsRender()
+    public function testAllComponentsRender()
     {
         foreach ($this->getComponents() as $viewName => $component) {
             $view = $component->render();
             $this->assertEquals($view->getName(), $viewName);
         }
+    }
+
+    public function testInputGroupComponent()
+    {
+        $component = new Components\InputGroupComponent(
+            'name', null, 'lg', null, 'top-class'
+        );
+
+        $iGroupClass = $component->makeInputGroupClass();
+        $fGroupClass = $component->makeFormGroupClass();
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('form-group', $fGroupClass);
+        $this->assertStringContainsString('top-class', $fGroupClass);
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
     }
 
     /*
