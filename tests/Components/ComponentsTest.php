@@ -42,7 +42,7 @@ class ComponentsTest extends TestCase
             "{$base}.select2"      => new Components\Select2('id'),
             "{$base}.select-icon"  => new Components\SelectIcon('id'),
             "{$base}.submit"       => new Components\Submit(),
-            "{$base}.textarea"     => new Components\Textarea(),
+            "{$base}.textarea"     => new Components\Textarea('name'),
             "{$base}.text-editor"  => new Components\TextEditor('id'),
 
             // Widget components.

@@ -2,38 +2,27 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use Illuminate\View\Component;
-
-class Textarea extends Component
+class Textarea extends InputGroupComponent
 {
-    public $id;
-    public $name;
-    public $label;
-    public $placeholder;
-    public $topclass;
-    public $inputclass;
-    public $disabled;
-    public $required;
-    public $rows;
-
+    /**
+     * Create a new component instance.
+     *
+     * @return void
+     */
     public function __construct(
-            $id = null, $name = null,
-            $label = 'Input Label', $placeholder = null,
-            $topclass = null, $inputclass = null,
-            $disabled = false, $required = false,
-            $rows = '10'
-        ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->label = $label;
-        $this->placeholder = $placeholder;
-        $this->topclass = $topclass;
-        $this->inputclass = $inputclass;
-        $this->required = $required;
-        $this->disabled = $disabled;
-        $this->rows = $rows;
+        $name, $label = null, $size = null,
+        $labelClass = null, $topClass = null, $disableFeedback = null
+    ) {
+        parent::__construct(
+            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+        );
     }
 
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
     public function render()
     {
         return view('adminlte::components.textarea');
