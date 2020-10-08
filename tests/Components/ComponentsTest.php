@@ -38,7 +38,7 @@ class ComponentsTest extends TestCase
             "{$base}.input-switch" => new Components\InputSwitch(),
             "{$base}.input-tag"    => new Components\InputTag(),
             "{$base}.option"       => new Components\Option(),
-            "{$base}.select"       => new Components\Select('id'),
+            "{$base}.select"       => new Components\Select('name'),
             "{$base}.select2"      => new Components\Select2('id'),
             "{$base}.select-icon"  => new Components\SelectIcon('id'),
             "{$base}.submit"       => new Components\Submit(),
