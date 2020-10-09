@@ -16,13 +16,25 @@
     @endif>
 
     {{-- Small brand logo --}}
-    <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
-         alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
-         class="{{ config('adminlte.logo_img_class', 'brand-image-xl') }} logo-xs">
+    @if(config('adminlte.tenancy'))
+        <img src="{{ global_asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
+            alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
+            class="{{ config('adminlte.logo_img_class', 'brand-image-xl') }} logo-xs">
 
-    {{-- Large brand logo --}}
-    <img src="{{ asset(config('adminlte.logo_img_xl')) }}"
-         alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
-         class="{{ config('adminlte.logo_img_xl_class', 'brand-image-xs') }} logo-xl">
+        {{-- Large brand logo --}}
+        <img src="{{ global_asset(config('adminlte.logo_img_xl')) }}"
+            alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
+            class="{{ config('adminlte.logo_img_xl_class', 'brand-image-xs') }} logo-xl">
+    @else
+        <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
+            alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
+            class="{{ config('adminlte.logo_img_class', 'brand-image-xl') }} logo-xs">
+
+        {{-- Large brand logo --}}
+        <img src="{{ asset(config('adminlte.logo_img_xl')) }}"
+            alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
+            class="{{ config('adminlte.logo_img_xl_class', 'brand-image-xs') }} logo-xl">
+    @endif
+    
 
 </a>

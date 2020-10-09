@@ -427,4 +427,17 @@ return [
     */
 
     'livewire' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Tenancy
+    |--------------------------------------------------------------------------
+    |
+    | Here we can enable Tenancy for Laravel support.
+    |
+    | For detailed instructions you can look to the documentation here:
+    | https://tenancyforlaravel.com/
+    */
+
+    'tenancy' => false,
 ];
