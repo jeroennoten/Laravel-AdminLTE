@@ -162,6 +162,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
         // Form components.
 
         $this->loadViewComponentsAs('adminlte', [
+            Components\Button::class,
             Components\DateRange::class,
             Components\Input::class,
             Components\InputColor::class,
@@ -174,7 +175,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\Select::class,
             Components\Select2::class,
             Components\SelectIcon::class,
-            Components\Submit::class,
             Components\Textarea::class,
             Components\TextEditor::class,
         ]);
