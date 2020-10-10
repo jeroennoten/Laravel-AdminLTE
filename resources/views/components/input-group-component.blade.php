@@ -23,15 +23,15 @@
             <div class="input-group-append">{{ $appendSlot }}</div>
         @endisset
 
-        {{-- Error feedback --}}
-        @if(! isset($disableFeedback))
-            @error($name)
-                <span class="invalid-feedback" role="alert">
-                    <strong>{{ $message }}</strong>
-                </span>
-            @enderror
-        @endif
-
     </div>
+
+    {{-- Error feedback --}}
+    @if(! isset($disableFeedback))
+        @error($name)
+            <span class="invalid-feedback d-block" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+    @endif
 
 </div>
