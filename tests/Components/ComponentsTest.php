@@ -34,7 +34,7 @@ class ComponentsTest extends TestCase
             "{$base}.input"        => new Components\Input('name'),
             "{$base}.input-color"  => new Components\InputColor('id'),
             "{$base}.input-date"   => new Components\InputDate('id'),
-            "{$base}.input-file"   => new Components\InputFile(),
+            "{$base}.input-file"   => new Components\InputFile('name'),
             "{$base}.input-slider" => new Components\InputSlider('id'),
             "{$base}.input-switch" => new Components\InputSwitch(),
             "{$base}.input-tag"    => new Components\InputTag(),
@@ -106,6 +106,18 @@ class ComponentsTest extends TestCase
             $component = new Components\DateRange('id', null, null, null, $i);
             $this->assertIsString($component->initiator());
         }
+    }
+
+    public function testInputFileComponent()
+    {
+        $component = new Components\InputFile('name', null, 'sm');
+        $iClass = $component->makeItemClass(true);
+        $cflClass = $component->makeCustomFileLabelClass();
+
+        $this->assertStringContainsString('custom-file-input', $iClass);        
+        $this->assertStringContainsString('is-invalid', $iClass);
+        $this->assertStringContainsString('custom-file-label', $cflClass);
+        $this->assertStringContainsString('col-form-label-sm', $cflClass);
     }
 
     public function testSelectComponent()
