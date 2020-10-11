@@ -23,22 +23,26 @@ class ComponentsTest extends TestCase
 
         return [
 
+            // Base components.
+
+            "{$base}.input-group-component"  => new Components\InputGroupComponent('name'),
+
             // Form components.
 
+            "{$base}.button"       => new Components\Button(),
             "{$base}.date-range"   => new Components\DateRange('id'),
-            "{$base}.input"        => new Components\Input(),
+            "{$base}.input"        => new Components\Input('name'),
             "{$base}.input-color"  => new Components\InputColor('id'),
             "{$base}.input-date"   => new Components\InputDate('id'),
-            "{$base}.input-file"   => new Components\InputFile(),
+            "{$base}.input-file"   => new Components\InputFile('name'),
             "{$base}.input-slider" => new Components\InputSlider('id'),
             "{$base}.input-switch" => new Components\InputSwitch(),
             "{$base}.input-tag"    => new Components\InputTag(),
             "{$base}.option"       => new Components\Option(),
-            "{$base}.select"       => new Components\Select('id'),
+            "{$base}.select"       => new Components\Select('name'),
             "{$base}.select2"      => new Components\Select2('id'),
             "{$base}.select-icon"  => new Components\SelectIcon('id'),
-            "{$base}.submit"       => new Components\Submit(),
-            "{$base}.textarea"     => new Components\Textarea(),
+            "{$base}.textarea"     => new Components\Textarea('name'),
             "{$base}.text-editor"  => new Components\TextEditor('id'),
 
             // Widget components.
@@ -64,12 +68,30 @@ class ComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testComponentsRender()
+    public function testAllComponentsRender()
     {
         foreach ($this->getComponents() as $viewName => $component) {
             $view = $component->render();
             $this->assertEquals($view->getName(), $viewName);
         }
+    }
+
+    public function testInputGroupComponent()
+    {
+        $component = new Components\InputGroupComponent(
+            'name', null, 'lg', null, 'top-class'
+        );
+
+        $iGroupClass = $component->makeInputGroupClass();
+        $fGroupClass = $component->makeFormGroupClass();
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('form-group', $fGroupClass);
+        $this->assertStringContainsString('top-class', $fGroupClass);
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
     }
 
     /*
@@ -84,6 +106,28 @@ class ComponentsTest extends TestCase
             $component = new Components\DateRange('id', null, null, null, $i);
             $this->assertIsString($component->initiator());
         }
+    }
+
+    public function testInputFileComponent()
+    {
+        $component = new Components\InputFile('name', null, 'sm');
+        $iClass = $component->makeItemClass(true);
+        $cflClass = $component->makeCustomFileLabelClass();
+
+        $this->assertStringContainsString('custom-file-input', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+        $this->assertStringContainsString('custom-file-label', $cflClass);
+        $this->assertStringContainsString('col-form-label-sm', $cflClass);
+    }
+
+    public function testSelectComponent()
+    {
+        $component = new Components\Select('name');
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('w-100', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
     }
 
     public function testTextEditorComponent()

@@ -2,37 +2,78 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use Illuminate\View\Component;
-
-class InputFile extends Component
+class InputFile extends InputGroupComponent
 {
-    public $id;
-    public $name;
-    public $label;
+    /**
+     * The placeholder for the input file box.
+     *
+     * @var string
+     */
     public $placeholder;
-    public $topclass;
-    public $inputclass;
-    public $disabled;
-    public $required;
-    public $multiple;
 
+    /**
+     * A legend for replace the default 'Browse' text.
+     *
+     * @var string
+     */
+    public $legend;
+
+    /**
+     * Create a new component instance.
+     * Note this component requires the 'bs-custom-input-file' plugin.
+     *
+     * @return void
+     */
     public function __construct(
-            $id = null, $name = null,
-            $label = 'Input Label', $placeholder = null,
-            $topclass = null, $inputclass = null,
-            $disabled = false, $required = false, $multiple = false
-        ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->label = $label;
+        $name, $label = null, $size = null, $labelClass = null, $topClass = null,
+        $disableFeedback = null, $placeholder = '', $legend = null
+    ) {
+        parent::__construct(
+            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+        );
+
+        $this->legend = $legend;
         $this->placeholder = $placeholder;
-        $this->topclass = $topclass;
-        $this->inputclass = $inputclass;
-        $this->required = $required;
-        $this->disabled = $disabled;
-        $this->multiple = $multiple;
     }
 
+    /**
+     * Make the class attribute for the input group item.
+     *
+     * @param string $invalid
+     * @return string
+     */
+    public function makeItemClass($invalid)
+    {
+        $classes = ['custom-file-input'];
+
+        if (! empty($invalid) && ! isset($this->disableFeedback)) {
+            $classes[] = 'is-invalid';
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for the custom file label item.
+     *
+     * @return string
+     */
+    public function makeCustomFileLabelClass()
+    {
+        $classes = ['custom-file-label', 'text-truncate'];
+
+        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
+            $classes[] = "col-form-label-{$this->size}";
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
     public function render()
     {
         return view('adminlte::components.input-file');

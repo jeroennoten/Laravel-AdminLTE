@@ -2,48 +2,27 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use Illuminate\View\Component;
-
-class Input extends Component
+class Input extends InputGroupComponent
 {
-    public $type;
-    public $id;
-    public $name;
-    public $label;
-    public $placeholder;
-    public $topclass;
-    public $inputclass;
-    public $value;
-    public $disabled;
-    public $required;
-    public $step;
-    public $max;
-    public $maxlength;
-    public $pattern;
-
+    /**
+     * Create a new component instance.
+     *
+     * @return void
+     */
     public function __construct(
-            $type = 'text', $id = null, $name = null,
-            $label = 'Input Label', $placeholder = null,
-            $topclass = null, $inputclass = null,
-            $value = null, $disabled = false, $required = false,
-            $step = null, $max = null, $maxlength = null, $pattern = null
-        ) {
-        $this->type = $type;
-        $this->id = $id;
-        $this->name = $name;
-        $this->label = $label;
-        $this->placeholder = $placeholder;
-        $this->topclass = $topclass;
-        $this->inputclass = $inputclass;
-        $this->value = $value;
-        $this->required = $required;
-        $this->disabled = $disabled;
-        $this->step = $step;
-        $this->max = $max;
-        $this->maxlength = $maxlength;
-        $this->pattern = $pattern;
+        $name, $label = null, $size = null,
+        $labelClass = null, $topClass = null, $disableFeedback = null
+    ) {
+        parent::__construct(
+            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+        );
     }
 
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
     public function render()
     {
         return view('adminlte::components.input');
