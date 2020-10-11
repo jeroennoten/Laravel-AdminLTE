@@ -114,7 +114,7 @@ class ComponentsTest extends TestCase
         $iClass = $component->makeItemClass(true);
         $cflClass = $component->makeCustomFileLabelClass();
 
-        $this->assertStringContainsString('custom-file-input', $iClass);        
+        $this->assertStringContainsString('custom-file-input', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
         $this->assertStringContainsString('custom-file-label', $cflClass);
         $this->assertStringContainsString('col-form-label-sm', $cflClass);
