@@ -127,6 +127,16 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testSelect2Component()
+    {
+        $component = new Components\Select2('name');
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('w-100', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
     public function testTextEditorComponent()
     {
         $component = new Components\TextEditor(
