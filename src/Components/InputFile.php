@@ -54,22 +54,6 @@ class InputFile extends InputGroupComponent
     }
 
     /**
-     * Make the class attribute for the custom file label item.
-     *
-     * @return string
-     */
-    public function makeCustomFileLabelClass()
-    {
-        $classes = ['custom-file-label', 'text-truncate'];
-
-        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
-            $classes[] = "col-form-label-{$this->size}";
-        }
-
-        return implode(' ', $classes);
-    }
-
-    /**
      * Get the view / contents that represent the component.
      *
      * @return \Illuminate\View\View|string

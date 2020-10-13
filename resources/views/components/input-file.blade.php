@@ -9,7 +9,7 @@
             {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
 
         {{-- Custom file label --}}
-        <label class="{{ $makeCustomFileLabelClass() }}" for="{{ $name }}"
+        <label class="custom-file-label text-truncate" for="{{ $name }}"
             @isset($legend) data-browse="{{ $legend }}" @endisset>
             {{ $placeholder }}
         </label>
@@ -28,29 +28,37 @@
 @endpush
 @endonce
 
-{{-- Fix the height of the custom-file-label for input-group-[sm,lg] --}}
-{{-- NOTE: this may not be needed with newer Bootstrap versions (>= 4.5) --}}
+{{-- Setup the height and font size of the plugin when using sm/lg sizes --}}
+{{-- NOTE: this may change with newer plugin or Bootstrap versions --}}
 
 @once
 @push('css')
     <style type="text/css">
+        {{-- SM size setup --}}
         .input-group-sm .custom-file-label:after {
             height: 1.8125rem;
-        }
-        .input-group-lg .custom-file-label:after {
-            height: 2.875rem;
+            line-height: 1.25;
         }
         .input-group-sm .custom-file-label {
             height: calc(1.8125rem + 2px);
-        }
-        .input-group-lg .custom-file-label {
-            height: calc(2.875rem + 2px);
+            line-height: 1.25;
         }
         .input-group-sm .custom-file {
             height: calc(1.8125rem + 2px);
+            font-size: .875rem;
+        }
+        {{-- LG size setup --}}
+        .input-group-lg .custom-file-label:after {
+            height: 2.875rem;
+            line-height: 1.6;
+        }
+        .input-group-lg .custom-file-label {
+            height: calc(2.875rem + 2px);
+            line-height: 1.6;
         }
         .input-group-lg .custom-file {
             height: calc(2.875rem + 2px);
+            font-size: 1.25rem;
         }
     </style>
 @endpush
