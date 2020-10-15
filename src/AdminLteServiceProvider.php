@@ -171,7 +171,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\InputSlider::class,
             Components\InputSwitch::class,
             Components\InputTag::class,
-            Components\Option::class,
             Components\Select::class,
             Components\Select2::class,
             Components\SelectBs::class,
