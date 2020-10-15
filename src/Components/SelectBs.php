@@ -2,12 +2,12 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-class Select2 extends InputGroupComponent
+class SelectBs extends inputGroupComponent
 {
     /**
-     * The select2 plugin configuration parameters. Array with key => value
-     * pairs, where the key should be an existing configuration property of
-     * the select2 plugin.
+     * The bootstrap-select plugin configuration parameters. Array with
+     * key => value pairs, where the key should be an existing configuration
+     * property of the bootstrap-select plugin.
      *
      * @var array
      */
@@ -15,8 +15,7 @@ class Select2 extends InputGroupComponent
 
     /**
      * Create a new component instance.
-     * Note this component requires the 'select2' plugin and the 'bootstrap4'
-     * css theme.
+     * Note this component requires the 'bootstrap-select' plugin.
      *
      * @return void
      */
@@ -29,7 +28,6 @@ class Select2 extends InputGroupComponent
         );
 
         $this->config = is_array($config) ? $config : [];
-        $this->config['theme'] = 'bootstrap4';
     }
 
     /**
@@ -40,10 +38,18 @@ class Select2 extends InputGroupComponent
      */
     public function makeItemClass($invalid)
     {
-        $classes = ['form-control', 'w-100'];
+        $classes = ['form-control'];
 
         if (! empty($invalid) && ! isset($this->disableFeedback)) {
             $classes[] = 'is-invalid';
+        }
+
+        // The next workaround setups the plugin when using sm/lg sizes.
+        // Note: this may change with newer plugin versions.
+
+        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
+            $classes[] = "form-control-{$this->size}";
+            $classes[] = 'p-0';
         }
 
         return implode(' ', $classes);
@@ -56,6 +62,6 @@ class Select2 extends InputGroupComponent
      */
     public function render()
     {
-        return view('adminlte::components.select2');
+        return view('adminlte::components.select-bs');
     }
 }

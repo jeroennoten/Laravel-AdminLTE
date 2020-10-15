@@ -38,10 +38,9 @@ class ComponentsTest extends TestCase
             "{$base}.input-slider" => new Components\InputSlider('id'),
             "{$base}.input-switch" => new Components\InputSwitch(),
             "{$base}.input-tag"    => new Components\InputTag(),
-            "{$base}.option"       => new Components\Option(),
             "{$base}.select"       => new Components\Select('name'),
             "{$base}.select2"      => new Components\Select2('id'),
-            "{$base}.select-icon"  => new Components\SelectIcon('id'),
+            "{$base}.select-bs"  => new Components\SelectBs('name'),
             "{$base}.textarea"     => new Components\Textarea('name'),
             "{$base}.text-editor"  => new Components\TextEditor('id'),
 
@@ -112,12 +111,9 @@ class ComponentsTest extends TestCase
     {
         $component = new Components\InputFile('name', null, 'sm');
         $iClass = $component->makeItemClass(true);
-        $cflClass = $component->makeCustomFileLabelClass();
 
         $this->assertStringContainsString('custom-file-input', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
-        $this->assertStringContainsString('custom-file-label', $cflClass);
-        $this->assertStringContainsString('col-form-label-sm', $cflClass);
     }
 
     public function testSelectComponent()
@@ -127,6 +123,26 @@ class ComponentsTest extends TestCase
 
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('w-100', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testSelect2Component()
+    {
+        $component = new Components\Select2('name');
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('w-100', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testSelectBsComponent()
+    {
+        $component = new Components\SelectBs('name', null, 'lg');
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('form-control-lg', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
