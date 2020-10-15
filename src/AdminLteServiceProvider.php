@@ -174,7 +174,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\Option::class,
             Components\Select::class,
             Components\Select2::class,
-            Components\SelectIcon::class,
+            Components\SelectBs::class,
             Components\Textarea::class,
             Components\TextEditor::class,
         ]);

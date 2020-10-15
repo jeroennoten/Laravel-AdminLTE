@@ -41,7 +41,7 @@ class ComponentsTest extends TestCase
             "{$base}.option"       => new Components\Option(),
             "{$base}.select"       => new Components\Select('name'),
             "{$base}.select2"      => new Components\Select2('id'),
-            "{$base}.select-icon"  => new Components\SelectIcon('id'),
+            "{$base}.select-bs"  => new Components\SelectBs('name'),
             "{$base}.textarea"     => new Components\Textarea('name'),
             "{$base}.text-editor"  => new Components\TextEditor('id'),
 
@@ -134,6 +134,16 @@ class ComponentsTest extends TestCase
 
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('w-100', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testSelectBsComponent()
+    {
+        $component = new Components\SelectBs('name', null, 'lg');
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('form-control-lg', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
