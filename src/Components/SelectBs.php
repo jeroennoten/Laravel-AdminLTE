@@ -49,7 +49,7 @@ class SelectBs extends inputGroupComponent
 
         if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
             $classes[] = "form-control-{$this->size}";
-            $classes[] = "p-0";
+            $classes[] = 'p-0';
         }
 
         return implode(' ', $classes);
