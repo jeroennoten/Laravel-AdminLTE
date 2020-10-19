@@ -13,9 +13,11 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-    <script>
-        $(() => {
-            $('#{{ $name }}').selectpicker( @json($config) );
-        })
-    </script>
+<script>
+
+    $(() => {
+        $('#{{ $name }}').selectpicker( @json($config) );
+    })
+
+</script>
 @endpush
