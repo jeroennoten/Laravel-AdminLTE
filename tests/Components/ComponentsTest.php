@@ -99,14 +99,6 @@ class ComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testDateRangeComponent()
-    {
-        for ($i = 0; $i <= 5; $i++) {
-            $component = new Components\DateRange('id', null, null, null, $i);
-            $this->assertIsString($component->initiator());
-        }
-    }
-
     public function testInputFileComponent()
     {
         $component = new Components\InputFile('name', null, 'sm');

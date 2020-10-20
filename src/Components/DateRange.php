@@ -2,45 +2,50 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use Illuminate\View\Component;
-
-class DateRange extends Component
+class DateRange extends InputGroupComponent
 {
-    public $topclass;
-    public $inputclass;
-    public $title;
-    public $icon;
-    public $id;
-    public $init;
-    public $callback;
+    /**
+     * The DateRangePicker plugin configuration parameters. Array with
+     * key => value pairs, where the key should be an existing configuration
+     * property of the plugin.
+     *
+     * @var array
+     */
+    public $config;
 
+    /**
+     * Enables a default set of ranges option. The string value, if any, will
+     * be used as the initial date range. The available values are: 'Today',
+     * 'Yesterday', 'Last 7 Days', 'Last 30 Days', 'This Month' or 'Last Month'.
+     *
+     * @var bool|string
+     */
+    public $enableDefaultRanges;
+
+    /**
+     * Create a new component instance.
+     * Note this component requires the 'DateRangePicker' and 'Moment' plugins.
+     *
+     * @return void
+     */
     public function __construct(
-        $id, $topclass = null, $title = 'Filter Range', $icon = 'far fa-calendar-alt',
-        $init = 2, $callback = null, $inputclass = null
-        ) {
-        $this->id = $id;
-        $this->topclass = $topclass;
-        $this->inputclass = $inputclass;
-        $this->title = $title;
-        $this->icon = $icon;
-        $this->init = $init;
-        $this->callback = $callback;
+        $name, $label = null, $size = null, $labelClass = null,
+        $topClass = null, $disableFeedback = null, $config = [],
+        $enableDefaultRanges = null
+    ) {
+        parent::__construct(
+            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+        );
+
+        $this->config = is_array($config) ? $config : [];
+        $this->enableDefaultRanges = $enableDefaultRanges;
     }
 
-    public function initiator()
-    {
-        switch ($this->init) {
-            case 0: $s = 'startDate: moment(), endDate: moment()'; break;
-            case 1: $s = "startDate: moment().subtract(1, 'days'), endDate: moment().subtract(1, 'days')"; break;
-            case 2: $s = "startDate: moment().subtract(6, 'days'), endDate: moment()"; break;
-            case 3: $s = "startDate: moment().subtract(29, 'days'), endDate: moment()"; break;
-            case 4: $s = "startDate: moment().startOf('month'), endDate: moment().endOf('month')"; break;
-            case 5: $s = "startDate: moment().subtract(1, 'month').startOf('month'), endDate: moment().subtract(1, 'month').endOf('month')"; break;
-        }
-
-        return $s;
-    }
-
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
     public function render()
     {
         return view('adminlte::components.date-range');

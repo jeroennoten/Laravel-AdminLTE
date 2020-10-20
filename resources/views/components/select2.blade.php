@@ -13,11 +13,13 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-    <script>
-        $(() => {
-            $('#{{ $name }}').select2( @json($config) );
-        })
-    </script>
+<script>
+
+    $(() => {
+        $('#{{ $name }}').select2( @json($config) );
+    })
+
+</script>
 @endpush
 
 {{-- Setup the height and font size of the plugin when using sm/lg sizes --}}
@@ -25,39 +27,42 @@
 
 @once
 @push('css')
-    <style type="text/css">
-        {{-- SM size setup --}}
-        .input-group-sm .select2-selection--single {
-            height: calc(1.8125rem + 2px) !important
-        }
-        .input-group-sm .select2-selection--single .select2-selection__rendered,
-        .input-group-sm .select2-selection--single .select2-selection__placeholder {
-            font-size: .875rem !important;
-            line-height: 2.125;
-        }
-        .input-group-sm .select2-selection--multiple {
-            min-height: calc(1.8125rem + 2px) !important
-        }
-        .input-group-sm .select2-selection--multiple .select2-selection__rendered {
-            font-size: .875rem !important;
-            line-height: normal;
-        }
-        {{-- LG size setup --}}
-        .input-group-lg .select2-selection--single {
-            height: calc(2.875rem + 2px) !important;
-        }
-        .input-group-lg .select2-selection--single .select2-selection__rendered,
-        .input-group-lg .select2-selection--single .select2-selection__placeholder {
-            font-size: 1.25rem !important;
-            line-height: 2.25;
-        }
-        .input-group-lg .select2-selection--multiple {
-            min-height: calc(2.875rem + 2px) !important
-        }
-        .input-group-lg .select2-selection--multiple .select2-selection__rendered {
-            font-size: 1.25rem !important;
-            line-height: 1.7;
-        }
-    </style>
+<style type="text/css">
+
+    {{-- SM size setup --}}
+    .input-group-sm .select2-selection--single {
+        height: calc(1.8125rem + 2px) !important
+    }
+    .input-group-sm .select2-selection--single .select2-selection__rendered,
+    .input-group-sm .select2-selection--single .select2-selection__placeholder {
+        font-size: .875rem !important;
+        line-height: 2.125;
+    }
+    .input-group-sm .select2-selection--multiple {
+        min-height: calc(1.8125rem + 2px) !important
+    }
+    .input-group-sm .select2-selection--multiple .select2-selection__rendered {
+        font-size: .875rem !important;
+        line-height: normal;
+    }
+
+    {{-- LG size setup --}}
+    .input-group-lg .select2-selection--single {
+        height: calc(2.875rem + 2px) !important;
+    }
+    .input-group-lg .select2-selection--single .select2-selection__rendered,
+    .input-group-lg .select2-selection--single .select2-selection__placeholder {
+        font-size: 1.25rem !important;
+        line-height: 2.25;
+    }
+    .input-group-lg .select2-selection--multiple {
+        min-height: calc(2.875rem + 2px) !important
+    }
+    .input-group-lg .select2-selection--multiple .select2-selection__rendered {
+        font-size: 1.25rem !important;
+        line-height: 1.7;
+    }
+
+</style>
 @endpush
 @endonce
