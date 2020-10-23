@@ -1,29 +1,40 @@
-<div class="form-group {{$topclass}}">
-    <label for="{{$id}}">{{$label}}</label>
-    <div class="input-group" id="{{$id}}-picker">
-        <input type="text" class="{{$inputclass}} form-control @error($name) is-invalid @enderror" 
-        name="{{$name}}" id="{{$id}}" value="{{$value}}" placeholder="{{$placeholder}}"
-        {{($required) ? 'required' : '' }}
-        {{($disabled) ? 'disabled' : '' }}>
+@extends('adminlte::components.input-group-component')
 
-        <div class="input-group-append">
-            <span class="input-group-text"><i class="fas fa-square"></i></span>
-        </div>
-    </div>
-    @error($name)
-        <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
-    @enderror
-</div>
+@section('input_group_item')
 
-@section('js')
-    @parent
-    <script>
-        $('#{{$id}}-picker').colorpicker();
-        $('#{{$id}}-picker .fa-square').css('color', $('#{{$id}}').val());
-        $('#{{$id}}-picker').on('colorpickerChange', function(event) {
-            $('#{{$id}}-picker .fa-square').css('color', event.color.toString());
-        });
-    </script>
-@endsection
+    {{-- Input Color --}}
+    <input id="{{ $name }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+
+@overwrite
+
+{{-- Add plugin initialization and configuration code --}}
+
+@push('js')
+<script>
+
+    $(() => {
+
+        // Create a method to set the addon color.
+
+        let setAddonColor = function()
+        {
+            let color = $('#{{ $name }}').data('colorpicker').getValue();
+
+            $('#{{ $name }}').closest('.input-group')
+                .find('.input-group-text > i')
+                .css('color', color);
+        }
+
+        // Init the plugin and register the change event listener.
+
+        $('#{{ $name }}').colorpicker( @json($config) )
+            .on('change', setAddonColor);
+
+        // Set the initial color for the addon.
+
+        setAddonColor();
+    })
+
+</script>
+@endpush
