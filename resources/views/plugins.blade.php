@@ -6,7 +6,7 @@
             @if($file['type'] == $type && $type == 'css')
                 <link rel="stylesheet" href="{{ $file['asset'] ? asset($file['location']) : $file['location'] }}">
             @elseif($file['type'] == $type && $type == 'js')
-                <script src="{{ $file['asset'] ? asset($file['location']) : $file['location'] }}"></script>
+                <script src="{{ $file['asset'] ? asset($file['location']) : $file['location'] }}" {{ ! empty($file['defer']) ? 'defer' : '' }} ></script>
             @endif
 
         @endforeach
