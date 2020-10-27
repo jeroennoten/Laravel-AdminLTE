@@ -30,19 +30,19 @@ class ComponentsTest extends TestCase
             // Form components.
 
             "{$base}.button"       => new Components\Button(),
-            "{$base}.date-range"   => new Components\DateRange('id'),
+            "{$base}.date-range"   => new Components\DateRange('name'),
             "{$base}.input"        => new Components\Input('name'),
-            "{$base}.input-color"  => new Components\InputColor('id'),
+            "{$base}.input-color"  => new Components\InputColor('name'),
             "{$base}.input-date"   => new Components\InputDate('id'),
             "{$base}.input-file"   => new Components\InputFile('name'),
             "{$base}.input-slider" => new Components\InputSlider('id'),
             "{$base}.input-switch" => new Components\InputSwitch(),
             "{$base}.input-tag"    => new Components\InputTag(),
             "{$base}.select"       => new Components\Select('name'),
-            "{$base}.select2"      => new Components\Select2('id'),
+            "{$base}.select2"      => new Components\Select2('name'),
             "{$base}.select-bs"  => new Components\SelectBs('name'),
             "{$base}.textarea"     => new Components\Textarea('name'),
-            "{$base}.text-editor"  => new Components\TextEditor('id'),
+            "{$base}.text-editor"  => new Components\TextEditor('name'),
 
             // Widget components.
 
@@ -136,19 +136,6 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('form-control-lg', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
-    }
-
-    public function testTextEditorComponent()
-    {
-        $component = new Components\TextEditor(
-            'id', null, null, null, null, null, null, null,
-            null, null, ['Foo Font', 'Bar Font']
-        );
-
-        $fonts = $component->fontarray();
-        $this->assertIsArray($fonts);
-        $this->assertContains('Foo Font', $fonts);
-        $this->assertContains('Bar Font', $fonts);
     }
 
     /*
