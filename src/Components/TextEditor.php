@@ -2,48 +2,44 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use Illuminate\View\Component;
-
-class TextEditor extends Component
+class TextEditor extends InputGroupComponent
 {
-    public $id;
-    public $name;
-    public $label;
-    public $placeholder;
-    public $topclass;
-    public $inputclass;
-    public $body;
-    public $disabled;
-    public $required;
-    public $height;
-    public $fonts;
-    public $def_fonts = ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Impact', 'Montserrat',  'Open Sans', 'Ubuntu', 'Rajdhani'];
+    /**
+     * The Summernote plugin configuration parameters. Array with key => value
+     * pairs, where the key should be an existing configuration property of
+     * the plugin.
+     *
+     * @var array
+     */
+    public $config;
 
+    /**
+     * Create a new component instance.
+     * Note this component requires the 'Summernote' plugin.
+     * TODO: the append/prepend addon slots are not supported.
+     *
+     * @return void
+     */
     public function __construct(
-            $id, $name = null,
-            $label = 'Input Label', $placeholder = null,
-            $topclass = null, $inputclass = null,
-            $body = null, $disabled = false, $required = false,
-            $height = 500, $fonts = null
-        ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->label = $label;
-        $this->placeholder = $placeholder;
-        $this->topclass = $topclass;
-        $this->inputclass = $inputclass;
-        $this->body = $body;
-        $this->required = $required;
-        $this->disabled = $disabled;
-        $this->height = $height;
-        $this->fonts = $fonts;
+        $name, $label = null, $size = null, $labelClass = null,
+        $topClass = null, $disableFeedback = null, $config = []
+    ) {
+        parent::__construct(
+            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+        );
+
+        $this->config = is_array($config) ? $config : [];
+
+        // Setup the default plugin width option.
+
+        $this->config['width'] = $this->config['width'] ?? 'inherit';
     }
 
-    public function fontarray()
-    {
-        return $this->fonts == null ? json_encode($this->def_fonts) : $this->fonts;
-    }
-
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
     public function render()
     {
         return view('adminlte::components.text-editor');

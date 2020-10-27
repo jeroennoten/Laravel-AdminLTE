@@ -1,25 +1,61 @@
-<div class="form-group {{$topclass}}">
-    <label for="{{$id}}">{{$label}}</label>
-    <textarea class="{{$inputclass}}" name="{{$name}}" id="{{$id}}"
-    {{($required) ? 'required' : '' }}
-    {{($disabled) ? 'disabled' : '' }}
-    ></textarea>
-</div>
+@extends('adminlte::components.input-group-component')
 
-@section('js')
-@parent
+@section('input_group_item')
+
+    {{-- Summernote Textarea --}}
+    <textarea id="{{ $name }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}
+    >{{ $slot }}</textarea>
+
+@overwrite
+
+{{-- Add plugin initialization and configuration code --}}
+
+@push('js')
 <script>
-    $(function(){
-        $('#{{$id}}').summernote({
-            placeholder: '{{$placeholder}}',
-            height: {{$height}},
-			dialogsInBody: true,
-			dialogsFade: false,
-            fontNames: {!!$fontarray!!}
-        });
-        @if(!is_null($body))
-        $('#{{$id}}').summernote('code',`{!!$body!!}`);
-        @endif
+
+    $(() => {
+        let usrCfg = @json($config);
+
+        // Check for placeholder attribute.
+
+        @isset($attributes['placeholder'])
+            usrCfg['placeholder'] = "{{ $attributes['placeholder'] }}";
+        @endisset
+
+        // Initialize the plugin.
+
+        $('#{{ $name }}').summernote(usrCfg);
+
+        // Check for disabled attribute.
+
+        @isset($attributes['disabled'])
+            $('#{{ $name }}').summernote('disable');
+        @endisset
     })
+
 </script>
-@endsection
+@endpush
+
+{{-- Setup the font size of the plugin when using sm/lg sizes --}}
+{{-- NOTE: this may change with newer plugin versions --}}
+
+@once
+@push('css')
+<style type="text/css">
+
+    {{-- SM size setup --}}
+    .input-group-sm .note-editor {
+        font-size: .875rem;
+        line-height: 1;
+    }
+
+    {{-- LG size setup --}}
+    .input-group-lg .note-editor {
+        font-size: 1.25rem;
+        line-height: 1.5;
+    }
+
+</style>
+@endpush
+@endonce
