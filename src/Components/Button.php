@@ -42,7 +42,7 @@ class Button extends Component
      * @return void
      */
     public function __construct(
-        $label = 'Button', $type = 'button', $theme = 'default', $icon = null
+        $label = null, $type = 'button', $theme = 'default', $icon = null
     ) {
         $this->label = $label;
         $this->type = $type;
