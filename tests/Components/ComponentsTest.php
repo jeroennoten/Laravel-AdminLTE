@@ -35,7 +35,7 @@ class ComponentsTest extends TestCase
             "{$base}.input-color"  => new Components\InputColor('name'),
             "{$base}.input-date"   => new Components\InputDate('id'),
             "{$base}.input-file"   => new Components\InputFile('name'),
-            "{$base}.input-slider" => new Components\InputSlider('id'),
+            "{$base}.input-slider" => new Components\InputSlider('name'),
             "{$base}.input-switch" => new Components\InputSwitch(),
             "{$base}.input-tag"    => new Components\InputTag(),
             "{$base}.select"       => new Components\Select('name'),

@@ -2,54 +2,51 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use Illuminate\View\Component;
-
-class InputSlider extends Component
+class InputSlider extends InputGroupComponent
 {
-    public $id;
-    public $name;
-    public $label;
-    public $topclass;
-    public $inputclass;
-    public $value;
-    public $disabled;
-    public $required;
-    public $min;
-    public $max;
-    public $step;
-    public $vertical;
-    public $tick;
-    public $ticks;
-    public $tickLabels;
+    /**
+     * The bootstrap-slider plugin configuration parameters. Array with
+     * key => value pairs, where the key should be an existing configuration
+     * property of the plugin.
+     *
+     * @var array
+     */
+    public $config;
+
+    /**
+     * The slider color. One of the available html colors.
+     *
+     * @var string
+     */
     public $color;
 
+    /**
+     * Create a new component instance.
+     * Note this component requires the 'bootstrap-slider' plugin.
+     *
+     * @return void
+     */
     public function __construct(
-            $id, $name = null,
-            $label = 'Input Label',
-            $topclass = null, $inputclass = null,
-            $value = null, $disabled = false, $required = false,
-            $min = 0, $max = 100, $step = 1, $vertical = false,
-            $tick = false, $ticks = null, $tickLabels = null,
-            $color = 'blue'
-        ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->label = $label;
-        $this->topclass = $topclass;
-        $this->inputclass = $inputclass;
-        $this->required = $required;
-        $this->disabled = $disabled;
-        $this->value = $value;
-        $this->min = $min;
-        $this->max = $max;
-        $this->step = $step;
-        $this->vertical = $vertical;
-        $this->tick = $tick;
-        $this->ticks = $ticks;
-        $this->tickLabels = $tickLabels;
+        $name, $label = null, $size = null, $labelClass = null,
+        $topClass = null, $disableFeedback = null, $config = [], $color = null
+    ) {
+        parent::__construct(
+            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+        );
+
+        $this->config = is_array($config) ? $config : [];
         $this->color = $color;
+
+        // Set a default plugin 'id' option.
+
+        $this->config['id'] = $this->config['id'] ?? "{$name}-slider";
     }
 
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
     public function render()
     {
         return view('adminlte::components.input-slider');
