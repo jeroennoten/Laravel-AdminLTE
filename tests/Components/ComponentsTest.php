@@ -36,7 +36,7 @@ class ComponentsTest extends TestCase
             "{$base}.input-date"   => new Components\InputDate('id'),
             "{$base}.input-file"   => new Components\InputFile('name'),
             "{$base}.input-slider" => new Components\InputSlider('name'),
-            "{$base}.input-switch" => new Components\InputSwitch(),
+            "{$base}.input-switch" => new Components\InputSwitch('name'),
             "{$base}.input-tag"    => new Components\InputTag(),
             "{$base}.select"       => new Components\Select('name'),
             "{$base}.select2"      => new Components\Select2('name'),
@@ -105,6 +105,14 @@ class ComponentsTest extends TestCase
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('custom-file-input', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testInputSwitchComponent()
+    {
+        $component = new Components\InputSwitch('name');
+        $iClass = $component->makeItemClass(true);
+
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
