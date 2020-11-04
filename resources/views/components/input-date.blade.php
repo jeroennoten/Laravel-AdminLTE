@@ -1,25 +1,57 @@
-<div class="form-group {{$topclass}}">
-    <label for="{{$id}}">{{$label}}</label>
-    <input type="text" class="{{$inputclass}} form-control datetimepicker-input @error($name) is-invalid @enderror" 
-    name="{{$name}}" id="{{$id}}" 
-    data-toggle="datetimepicker" data-target="#{{$id}}" 
-    placeholder="{{$placeholder}}" value="{{$value}}" 
-    {{($required) ? 'required' : '' }}
-    {{($disabled) ? 'disabled' : '' }}/>
-    
-    @error($name)
-        <span class="invalid-feedback" role="alert">
-            <strong>{{ $message }}</strong>
-        </span>
-    @enderror
-</div>
+@extends('adminlte::components.input-group-component')
 
-@section('js')
-    @parent
-    <script>
-    $(()=>{
-        $.fn.datetimepicker.Constructor.Default = $.extend({}, $.fn.datetimepicker.Constructor.Default, { icons: { time: 'fas fa-clock', date: 'fas fa-calendar', up: 'fas fa-arrow-up', down: 'fas fa-arrow-down', previous: 'fas fa-caret-left', next: 'fas fa-caret-right', today: 'far fa-calendar-check-o', clear: 'far fa-trash', close: 'far fa-times' } });
-        $('#{{$id}}').datetimepicker({format: '{{$format}}'});
+@section('input_group_item')
+
+    {{-- Input Date --}}
+    <input id="{{ $name }}" name="{{ $name }}" data-target="#{{ $name }}" data-toggle="datetimepicker"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+
+@overwrite
+
+{{-- Add plugin initialization and configuration code --}}
+
+@push('js')
+<script>
+
+    $(() => {
+        let usrCfg = _adminlte_idUtils.parseCfg( @json($config) );
+        $('#{{ $name }}').datetimepicker(usrCfg);
     })
-    </script>
-@endsection
+
+</script>
+@endpush
+
+{{-- Add utility methods for the plugin --}}
+
+@once
+@push('js')
+<script>
+
+    function ID_Utils() {
+
+        /**
+         * Parse the php plugin configuration to eval javascript code.
+         */
+        this.parseCfg = function(cfg)
+        {
+            for (const prop in cfg) {
+                let v = cfg[prop];
+
+                if (typeof v === 'string' && v.startsWith('js:')) {
+                    cfg[prop] = eval(v.slice(3));
+                } else if (typeof v === 'object') {
+                    cfg[prop] = this.parseCfg(v);
+                }
+            }
+
+            return cfg;
+        }
+    }
+
+    // Create the plugin utililities object.
+
+    var _adminlte_idUtils = new ID_Utils();
+
+</script>
+@endpush
+@endonce
