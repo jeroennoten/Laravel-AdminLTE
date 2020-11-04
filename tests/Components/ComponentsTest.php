@@ -33,7 +33,7 @@ class ComponentsTest extends TestCase
             "{$base}.date-range"   => new Components\DateRange('name'),
             "{$base}.input"        => new Components\Input('name'),
             "{$base}.input-color"  => new Components\InputColor('name'),
-            "{$base}.input-date"   => new Components\InputDate('id'),
+            "{$base}.input-date"   => new Components\InputDate('name'),
             "{$base}.input-file"   => new Components\InputFile('name'),
             "{$base}.input-slider" => new Components\InputSlider('name'),
             "{$base}.input-switch" => new Components\InputSwitch('name'),
@@ -98,6 +98,15 @@ class ComponentsTest extends TestCase
     | Individual form components tests.
     |--------------------------------------------------------------------------
     */
+
+    public function testInputDateComponent()
+    {
+        $component = new Components\InputDate('name');
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('datetimepicker', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
 
     public function testInputFileComponent()
     {

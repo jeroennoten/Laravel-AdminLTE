@@ -2,40 +2,86 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components;
 
-use Illuminate\View\Component;
-
-class InputDate extends Component
+class InputDate extends InputGroupComponent
 {
-    public $id;
-    public $name;
-    public $label;
-    public $placeholder;
-    public $topclass;
-    public $inputclass;
-    public $value;
-    public $disabled;
-    public $required;
-    public $format;
+    /**
+     * The default set of icons for the Tempus Dominus plugin configuration.
+     */
+    protected $icons = [
+        'time'     => 'fas fa-clock',
+        'date'     => 'fas fa-calendar-alt',
+        'up'       => 'fas fa-arrow-up',
+        'down'     => 'fas fa-arrow-down',
+        'previous' => 'fas fa-chevron-left',
+        'next'     => 'fas fa-chevron-right',
+        'today'    => 'fas fa-calendar-check-o',
+        'clear'    => 'fas fa-trash',
+        'close'    => 'fas fa-times',
+    ];
 
+    /**
+     * The default set of buttons for the Tempus Dominus plugin configuration.
+     */
+    protected $buttons = [
+        'showClose' => true,
+    ];
+
+    /**
+     * The Tempus Dominus plugin configuration parameters. Array with
+     * key => value pairs, where the key should be an existing configuration
+     * property of the plugin.
+     *
+     * @var array
+     */
+    public $config;
+
+    /**
+     * Create a new component instance.
+     * Note this component requires the 'Tempus Dominus' plugin.
+     *
+     * @return void
+     */
     public function __construct(
-            $id, $name = null,
-            $label = 'Input Label', $placeholder = null,
-            $topclass = null, $inputclass = null,
-            $value = null, $disabled = false, $required = false,
-            $format = 'YYYY-MM-DD'
-        ) {
-        $this->id = $id;
-        $this->name = $name;
-        $this->label = $label;
-        $this->placeholder = $placeholder;
-        $this->topclass = $topclass;
-        $this->inputclass = $inputclass;
-        $this->value = $value;
-        $this->required = $required;
-        $this->disabled = $disabled;
-        $this->format = $format;
+        $name, $label = null, $size = null, $labelClass = null,
+        $topClass = null, $disableFeedback = null, $config = []
+    ) {
+        parent::__construct(
+            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+        );
+
+        $this->config = is_array($config) ? $config : [];
+
+        // Setup the default plugin icons option.
+
+        $this->config['icons'] = $this->config['icons'] ?? $this->icons;
+
+        // Setup the default plugin buttons option.
+
+        $this->config['buttons'] = $this->config['buttons'] ?? $this->buttons;
     }
 
+    /**
+     * Make the class attribute for the input group item.
+     *
+     * @param string $invalid
+     * @return string
+     */
+    public function makeItemClass($invalid)
+    {
+        $classes = ['form-control', 'datetimepicker'];
+
+        if (! empty($invalid) && ! isset($this->disableFeedback)) {
+            $classes[] = 'is-invalid';
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Get the view / contents that represent the component.
+     *
+     * @return \Illuminate\View\View|string
+     */
     public function render()
     {
         return view('adminlte::components.input-date');
