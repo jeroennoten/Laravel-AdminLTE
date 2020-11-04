@@ -195,7 +195,10 @@ class PluginsResource extends PackageResource
         ],
         'tempusdominusBootstrap4' => [
             'name' => 'Tempus Dominus for Bootstrap 4',
-            'source' => 'tempusdominus-bootstrap-4',
+            'resources' => [
+                ['source' => 'tempusdominus-bootstrap-4'],
+                ['source' => 'moment'],
+            ],
         ],
         'toastr' => [
             'name' => 'Toastr',
