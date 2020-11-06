@@ -6,6 +6,8 @@ class InputDate extends InputGroupComponent
 {
     /**
      * The default set of icons for the Tempus Dominus plugin configuration.
+     *
+     * @var array
      */
     protected $icons = [
         'time'     => 'fas fa-clock',
@@ -21,6 +23,8 @@ class InputDate extends InputGroupComponent
 
     /**
      * The default set of buttons for the Tempus Dominus plugin configuration.
+     *
+     * @var array
      */
     protected $buttons = [
         'showClose' => true,
