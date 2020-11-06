@@ -1,8 +1,16 @@
-<div class="alert alert-{{$type}} {{($dismissable) ? 'alert-dismissible' : ''}}">
-    @if($dismissable)
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-    @endif
+<div {{ $attributes->merge(['class' => $makeAlertClass()]) }}>
 
-    <h5><i class="icon fas fa-{{$icon}}"></i> {{$title}}</h5>
-    {{$slot}}
+    {{-- Dismiss button --}}
+    @isset($dismissable)
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+            &times;
+        </button>
+    @endisset
+
+    {{-- Alert title --}}
+    <h5><i class="icon {{ $icon }}"></i> {{ $title }}</h5>
+
+    {{-- Alert content --}}
+    {{ $slot }}
+
 </div>

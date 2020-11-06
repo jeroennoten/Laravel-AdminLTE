@@ -163,12 +163,13 @@ class ComponentsTest extends TestCase
 
     public function testAlertComponent()
     {
-        $types = ['info', 'warning', 'success', 'danger', 'unknown'];
+        $component = new Components\Alert('danger', null, null, true);
 
-        foreach ($types as $type) {
-            $component = new Components\Alert($type);
-            $this->assertIsString($component->icon());
-        }
+        $aClass = $component->makeAlertClass();
+
+        $this->assertStringContainsString('alert', $aClass);
+        $this->assertStringContainsString('alert-danger', $aClass);
+        $this->assertStringContainsString('alert-dismissable', $aClass);
     }
 
     public function testDatatableComponent()
