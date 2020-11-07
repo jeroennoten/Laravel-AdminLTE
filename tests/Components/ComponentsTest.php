@@ -37,7 +37,6 @@ class ComponentsTest extends TestCase
             "{$base}.input-file"   => new Components\InputFile('name'),
             "{$base}.input-slider" => new Components\InputSlider('name'),
             "{$base}.input-switch" => new Components\InputSwitch('name'),
-            "{$base}.input-tag"    => new Components\InputTag(),
             "{$base}.select"       => new Components\Select('name'),
             "{$base}.select2"      => new Components\Select2('name'),
             "{$base}.select-bs"  => new Components\SelectBs('name'),
