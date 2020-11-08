@@ -1,6 +1,14 @@
-<div class="callout callout-{{$type}}">
-    @if(!is_null($title))
-    <h5>{{$title}}</h5>
+<div {{ $attributes->merge(['class' => $makeCalloutClass()]) }}>
+
+    {{-- Callout title --}}
+    @if(! empty($title) || ! empty($icon))
+        <h5 @isset($titleClass) class="{{ $titleClass }}" @endisset>
+            @isset($icon) <i class="{{ $icon }}"></i> @endisset
+            @isset($title) {{ $title }} @endisset
+        </h5>
     @endif
-    <p>{{$slot}}</p>
+
+    {{-- Callout content --}}
+    {{ $slot }}
+
 </div>
