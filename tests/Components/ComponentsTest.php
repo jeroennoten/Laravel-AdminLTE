@@ -171,6 +171,16 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('alert-dismissable', $aClass);
     }
 
+    public function testCalloutComponent()
+    {
+        $component = new Components\Callout('danger');
+
+        $cClass = $component->makeCalloutClass();
+
+        $this->assertStringContainsString('callout', $cClass);
+        $this->assertStringContainsString('callout-danger', $cClass);
+    }
+
     public function testDatatableComponent()
     {
         $component = new Components\Datatable(
