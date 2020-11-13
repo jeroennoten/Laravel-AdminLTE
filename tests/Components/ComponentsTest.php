@@ -55,7 +55,7 @@ class ComponentsTest extends TestCase
             "{$base}.profile-flat-item"   => new Components\ProfileFlatItem(null, 'title', 'text'),
             "{$base}.profile-widget"      => new Components\ProfileWidget(null, 'img', 'name', 'desc'),
             "{$base}.profile-widget-item" => new Components\ProfileWidgetItem(null, 'title', 'text'),
-            "{$base}.progress"            => new Components\Progress(null, null, 50),
+            "{$base}.progress"            => new Components\Progress(),
             "{$base}.small-box"           => new Components\SmallBox(null, null, 'title', null, 'text'),
         ];
     }
@@ -233,9 +233,40 @@ class ComponentsTest extends TestCase
 
     public function testProgressComponent()
     {
-        $component = new Components\Progress('sm', null, 50);
+        // Test basic component.
 
-        $this->assertIsString($component->barsize());
+        $component = new Components\Progress();
+
+        $pClass = $component->makeProgressClass();
+        $this->assertStringContainsString('progress', $pClass);
+
+        $pbClass = $component->makeProgressBarClass();
+        $this->assertStringContainsString('progress-bar', $pbClass);
+        $this->assertStringContainsString('bg-info', $pbClass);
+
+        $pbStyle = $component->makeProgressBarStyle();
+        $this->assertStringContainsString('width:0%', $pbStyle);
+
+        // Test with all constructor arguments:
+        // $value, $theme, $size, $striped, $vertical, $animated, $withLabel.
+
+        $component = new Components\Progress(
+            75, 'danger', 'sm', true, true, true, true
+        );
+
+        $pClass = $component->makeProgressClass();
+        $this->assertStringContainsString('progress', $pClass);
+        $this->assertStringContainsString('progress-sm', $pClass);
+        $this->assertStringContainsString('vertical', $pClass);
+
+        $pbClass = $component->makeProgressBarClass();
+        $this->assertStringContainsString('progress-bar', $pbClass);
+        $this->assertStringContainsString('bg-danger', $pbClass);
+        $this->assertStringContainsString('progress-bar-striped', $pbClass);
+        $this->assertStringContainsString('progress-bar-animated', $pbClass);
+
+        $pbStyle = $component->makeProgressBarStyle();
+        $this->assertStringContainsString('height:75%', $pbStyle);
     }
 
     public function testSmallBoxComponent()
