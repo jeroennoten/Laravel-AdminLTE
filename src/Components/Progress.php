@@ -119,7 +119,7 @@ class Progress extends Component
             $classes[] = "bg-{$this->theme}";
         }
 
-        if (isset($this->striped)) {
+        if (isset($this->striped) || isset($this->animated)) {
             $classes[] = 'progress-bar-striped';
         }
 
