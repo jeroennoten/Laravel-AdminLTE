@@ -50,7 +50,7 @@ class ComponentsTest extends TestCase
             "{$base}.card"                => new Components\Card(null, 'title'),
             "{$base}.datatable"           => new Components\Datatable(null, 'id', null, null, null, '[]'),
             "{$base}.info-box"            => new Components\InfoBox(null, null, null, 'title', 'text'),
-            "{$base}.modal"               => new Components\Modal('title', null, 'id'),
+            "{$base}.modal"               => new Components\Modal('id'),
             "{$base}.profile-flat"        => new Components\ProfileFlat(null, 'img', 'name', 'desc'),
             "{$base}.profile-flat-item"   => new Components\ProfileFlatItem(null, 'title', 'text'),
             "{$base}.profile-widget"      => new Components\ProfileWidget(null, 'img', 'name', 'desc'),
@@ -211,10 +211,44 @@ class ComponentsTest extends TestCase
 
     public function testModalComponent()
     {
-        $component = new Components\Modal('title', null, 'id');
+        // Test basic component.
 
-        $this->assertIsString($component->modalsize());
-        $this->assertIsNumeric($component->zindex());
+        $component = new Components\Modal('id');
+
+        $mClass = $component->makeModalClass();
+        $this->assertStringContainsString('modal', $mClass);
+        $this->assertStringContainsString('fade', $mClass);
+
+        $mdClass = $component->makeModalDialogClass();
+        $this->assertStringContainsString('modal-dialog', $mdClass);
+
+        $mhClass = $component->makeModalHeaderClass();
+        $this->assertStringContainsString('modal-header', $mhClass);
+
+        $cbClass = $component->makeCloseButtonClass();
+        $this->assertStringContainsString('bg-secondary', $cbClass);
+
+        // Test with all constructor arguments:
+        // $id, $title, $icon, $size, $theme, $vCentered, $scrollable,
+        // $staticBackdrop, $disableAnimations.
+
+        $component = new Components\Modal(
+            'id', 'title', null, 'lg', 'info', true, true, true, true
+        );
+
+        $mClass = $component->makeModalClass();
+        $this->assertStringNotContainsString('fade', $mClass);
+
+        $mdClass = $component->makeModalDialogClass();
+        $this->assertStringContainsString('modal-dialog-centered', $mdClass);
+        $this->assertStringContainsString('modal-dialog-scrollable', $mdClass);
+        $this->assertStringContainsString('modal-lg', $mdClass);
+
+        $mhClass = $component->makeModalHeaderClass();
+        $this->assertStringContainsString('bg-info', $mhClass);
+
+        $cbClass = $component->makeCloseButtonClass();
+        $this->assertStringContainsString('bg-info', $cbClass);
     }
 
     public function testProfileFlatComponent()

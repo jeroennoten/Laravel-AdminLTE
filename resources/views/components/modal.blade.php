@@ -1,18 +1,36 @@
-<div class="modal fade" id="{{$id}}" style="z-index:{{$zindex}}">
-    <div class="modal-dialog {{$centered ? 'modal-dialog-centered' : ''}} {{$modalsize}}">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">{{$title}}</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {{$slot}}
-            </div>
-            <div class="modal-footer justify-content-between">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
+<div {{ $attributes->merge(['class' => $makeModalClass(), 'id' => $id]) }}
+     @isset($staticBackdrop) data-backdrop="static" data-keyboard="false" @endisset>
+
+    <div class="{{ $makeModalDialogClass() }}">
+    <div class="modal-content">
+
+        {{--Modal header --}}
+        <div class="{{ $makeModalHeaderClass() }}">
+            <h4 class="modal-title">
+                @isset($icon)<i class="{{ $icon }}"></i>@endisset
+                @isset($title){{ $title }}@endisset
+            </h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
+
+        {{-- Modal body --}}
+        @if(! $slot->isEmpty())
+            <div class="modal-body">{{ $slot }}</div>
+        @endif
+
+        {{-- Modal footer --}}
+        <div class="modal-footer">
+            @isset($footerSlot)
+                {{ $footerSlot }}
+            @else
+                <x-adminlte-button class="{{ $makeCloseButtonClass }}"
+                    data-dismiss="modal" label="Close"/>
+            @endisset
+        </div>
+
     </div>
+    </div>
+
 </div>
