@@ -66,7 +66,7 @@ class Modal extends Component
 
     /**
      * Indicates if the backdrop is static. When enabled, the modal will not
-     * close when clicking outside it
+     * close when clicking outside it.
      *
      * @var bool|mixed
      */
