@@ -1,43 +1,41 @@
-<div class="card card-{{$bg}} 
-        {{$outline ? 'card-outline' : ''}} 
-        {{$collapsed ? 'collapsed-card' : ''}}
-        {{$full ? 'bg-'.$bg : ''}} ">
-    <div class="card-header" data-card-widget="collapse">
-        <h3 class="card-title">{{$title}}</h3>
+<div {{ $attributes->merge(['class' => $makeCardClass()]) }}>
+
+    {{-- Card header --}}
+    <div class="card-header">
+
+        {{-- Title --}}
+        <h3 class="{{ $makeCardTitleClass() }}">
+            @isset($icon)<i class="{{ $icon }}"></i>@endisset
+            @isset($title){{ $title }}@endisset
+        </h3>
+
+        {{-- Tools --}}
         <div class="card-tools">
-            @if($collapsed)
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-plus"></i>
-                </button>
-                @if($removable)
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                    </button>
-                @endif
-                @if($maximizable)
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
-                    </button>
-                @endif
-            @else
-                <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                </button>
-                @if($removable)
-                    <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
-                    </button>
-                @endif
-                @if($maximizable)
-                    <button type="button" class="btn btn-tool" data-card-widget="maximize"><i class="fas fa-expand"></i>
-                    </button>
-                @endif
+            @isset($maximizable)
+                <x-adminlte-button theme="tool" data-card-widget="maximize" icon="fas fa-lg fa-expand"/>
+            @endisset
+
+            @if($collapsible === 'collapsed')
+                <x-adminlte-button theme="tool" data-card-widget="collapse" icon="fas fa-lg fa-plus"/>
+            @elseif (isset($collapsible))
+                <x-adminlte-button theme="tool" data-card-widget="collapse" icon="fas fa-lg fa-minus"/>
             @endif
+
+            @isset($removable)
+                <x-adminlte-button theme="tool" data-card-widget="remove" icon="fas fa-lg fa-times"/>
+            @endisset
         </div>
+
     </div>
 
-    <div class="card-body">
-        {{$slot}}
-    </div>
+    {{-- Card body --}}
+    <div class="card-body">{{ $slot }}</div>
 
+    {{-- Card overlay --}}
     @if($disabled)
-    <div class="overlay dark">
-        <i class="fas fa-2x fa-ban"></i>
-    </div>
+        <div class="overlay">
+            <i class="fas fa-2x fa-ban text-gray"></i>
+        </div>
     @endif
+
 </div>

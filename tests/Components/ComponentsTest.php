@@ -47,7 +47,7 @@ class ComponentsTest extends TestCase
 
             "{$base}.alert"               => new Components\Alert(),
             "{$base}.callout"             => new Components\Callout(),
-            "{$base}.card"                => new Components\Card(null, 'title'),
+            "{$base}.card"                => new Components\Card(),
             "{$base}.datatable"           => new Components\Datatable(null, 'id', null, null, null, '[]'),
             "{$base}.info-box"            => new Components\InfoBox(null, null, null, 'title', 'text'),
             "{$base}.modal"               => new Components\Modal('id'),
@@ -179,6 +179,45 @@ class ComponentsTest extends TestCase
 
         $this->assertStringContainsString('callout', $cClass);
         $this->assertStringContainsString('callout-danger', $cClass);
+    }
+
+    public function testCardComponent()
+    {
+        // Test basic component.
+
+        $component = new Components\Card('title', null, 'info');
+
+        $cClass = $component->makeCardClass();
+        $this->assertStringContainsString('card', $cClass);
+        $this->assertStringContainsString('card-info', $cClass);
+
+        $ctClass = $component->makeCardTitleClass();
+        $this->assertStringContainsString('card-title', $ctClass);
+
+        // Test collapsed with full theme:
+        // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
+        // $removable, $maximizable.
+
+        $component = new Components\Card(
+            'title', null, 'success', 'full', null, 'collapsed'
+        );
+
+        $cClass = $component->makeCardClass();
+        $this->assertStringContainsString('bg-gradient-success', $cClass);
+        $this->assertStringContainsString('collapsed-card', $cClass);
+
+        // Test outline theme:
+        // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
+        // $removable, $maximizable.
+
+        $component = new Components\Card('title', null, 'teal', 'outline');
+
+        $cClass = $component->makeCardClass();
+        $this->assertStringContainsString('card-teal', $cClass);
+        $this->assertStringContainsString('card-outline', $cClass);
+
+        $ctClass = $component->makeCardTitleClass();
+        $this->assertStringContainsString('text-teal', $ctClass);
     }
 
     public function testDatatableComponent()
