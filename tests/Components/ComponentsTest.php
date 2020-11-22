@@ -53,8 +53,8 @@ class ComponentsTest extends TestCase
             "{$base}.modal"               => new Components\Modal('id'),
             "{$base}.profile-flat"        => new Components\ProfileFlat(null, 'img', 'name', 'desc'),
             "{$base}.profile-flat-item"   => new Components\ProfileFlatItem(null, 'title', 'text'),
-            "{$base}.profile-widget"      => new Components\ProfileWidget(null, 'img', 'name', 'desc'),
-            "{$base}.profile-widget-item" => new Components\ProfileWidgetItem(null, 'title', 'text'),
+            "{$base}.profile-widget"      => new Components\ProfileWidget(),
+            "{$base}.profile-widget-item" => new Components\ProfileWidgetItem(),
             "{$base}.progress"            => new Components\Progress(),
             "{$base}.small-box"           => new Components\SmallBox(null, null, 'title', null, 'text'),
         ];
@@ -299,9 +299,35 @@ class ComponentsTest extends TestCase
 
     public function testProfileWidgetComponent()
     {
-        $component = new Components\ProfileWidget(null, 'img', 'name', 'desc');
+        // Test without cover.
 
-        $this->assertIsString($component->background());
+        $component = new Components\ProfileWidget(
+            'name', 'description', null, 'danger', null, 'h-class', 'f-class'
+        );
+
+        $hClass = $component->makeHeaderClass();
+        $this->assertStringContainsString('widget-user-header', $hClass);
+        $this->assertStringContainsString('bg-gradient-danger', $hClass);
+        $this->assertStringContainsString('h-class', $hClass);
+
+        $fClass = $component->makeFooterClass();
+        $this->assertStringContainsString('card-footer', $fClass);
+        $this->assertStringContainsString('f-class', $fClass);
+
+        $hStyle = $component->makeHeaderStyle();
+        $this->assertTrue(empty($hStyle));
+
+        // Test with cover.
+
+        $component = new Components\ProfileWidget(
+            'name', 'description', null, 'danger', 'img.png'
+        );
+
+        $hClass = $component->makeHeaderClass();
+        $this->assertStringNotContainsString('bg-gradient-danger', $hClass);
+
+        $hStyle = $component->makeHeaderStyle();
+        $this->assertStringContainsString("background: url('img.png')", $hStyle);
     }
 
     public function testProgressComponent()

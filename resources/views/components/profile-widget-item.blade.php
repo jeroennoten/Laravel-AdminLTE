@@ -1,6 +1,22 @@
-<div class="col-sm-{{$col}} border-right">
+<div {{ $attributes->merge(['class' => "adminlte-widget-item col-sm-{$size}"]) }}>
+
     <div class="description-block">
-        <h5 class="description-header">{{$text}}</h5>
-        <span class="description-text">{{$title}}</span>
+
+        {{-- Icon --}}
+        @isset($icon)
+            <i class="{{ $icon }}"></i>
+        @endisset
+
+        {{-- Header --}}
+        @isset($title)
+            <h5 class="description-header">{{ $title }}</h5>
+        @endisset
+
+        {{-- Text --}}
+        @isset($text)
+            <p class="description-text">{{ $text }}</p>
+        @endisset
+
     </div>
+
 </div>
