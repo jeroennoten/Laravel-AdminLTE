@@ -39,24 +39,23 @@ class ComponentsTest extends TestCase
             "{$base}.input-switch" => new Components\InputSwitch('name'),
             "{$base}.select"       => new Components\Select('name'),
             "{$base}.select2"      => new Components\Select2('name'),
-            "{$base}.select-bs"  => new Components\SelectBs('name'),
+            "{$base}.select-bs"    => new Components\SelectBs('name'),
             "{$base}.textarea"     => new Components\Textarea('name'),
             "{$base}.text-editor"  => new Components\TextEditor('name'),
 
             // Widget components.
 
-            "{$base}.alert"               => new Components\Alert(),
-            "{$base}.callout"             => new Components\Callout(),
-            "{$base}.card"                => new Components\Card(),
-            "{$base}.datatable"           => new Components\Datatable(null, 'id', null, null, null, '[]'),
-            "{$base}.info-box"            => new Components\InfoBox(null, null, null, 'title', 'text'),
-            "{$base}.modal"               => new Components\Modal('id'),
-            "{$base}.profile-flat"        => new Components\ProfileFlat(null, 'img', 'name', 'desc'),
-            "{$base}.profile-flat-item"   => new Components\ProfileFlatItem(null, 'title', 'text'),
-            "{$base}.profile-widget"      => new Components\ProfileWidget(),
-            "{$base}.profile-widget-item" => new Components\ProfileWidgetItem(),
-            "{$base}.progress"            => new Components\Progress(),
-            "{$base}.small-box"           => new Components\SmallBox(null, null, 'title', null, 'text'),
+            "{$base}.alert"            => new Components\Alert(),
+            "{$base}.callout"          => new Components\Callout(),
+            "{$base}.card"             => new Components\Card(),
+            "{$base}.datatable"        => new Components\Datatable(null, 'id', null, null, null, '[]'),
+            "{$base}.info-box"         => new Components\InfoBox(null, null, null, 'title', 'text'),
+            "{$base}.modal"            => new Components\Modal('id'),
+            "{$base}.profile-col-item" => new Components\ProfileColItem(),
+            "{$base}.profile-row-item" => new Components\ProfileRowItem(),
+            "{$base}.profile-widget"   => new Components\ProfileWidget(),
+            "{$base}.progress"         => new Components\Progress(),
+            "{$base}.small-box"        => new Components\SmallBox(null, null, 'title', null, 'text'),
         ];
     }
 
@@ -290,11 +289,26 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('bg-info', $cbClass);
     }
 
-    public function testProfileFlatComponent()
+    public function testProfileColItemComponent()
     {
-        $component = new Components\ProfileFlat(null, 'img', 'name', 'desc');
+        $component = new Components\ProfileColItem(
+            'title', 'text', null, null, 'b-theme'
+        );
 
-        $this->assertIsString($component->background());
+        $twClass = $component->makeTextWrapperClass();
+        $this->assertStringContainsString('badge', $twClass);
+        $this->assertStringContainsString('bg-b-theme', $twClass);
+    }
+
+    public function testProfileRowItemComponent()
+    {
+        $component = new Components\ProfileRowItem(
+            'title', 'text', null, null, 'b-theme'
+        );
+
+        $twClass = $component->makeTextWrapperClass();
+        $this->assertStringContainsString('badge', $twClass);
+        $this->assertStringContainsString('bg-b-theme', $twClass);
     }
 
     public function testProfileWidgetComponent()
@@ -302,8 +316,16 @@ class ComponentsTest extends TestCase
         // Test without cover.
 
         $component = new Components\ProfileWidget(
-            'name', 'description', null, 'danger', null, 'h-class', 'f-class'
+            'name', 'description', null, 'danger', null, 'h-class', 'f-class',
+            'layout-foo'
         );
+
+        $this->assertEquals('modern', $component->layoutType);
+
+        $cClass = $component->makeCardClass();
+        $this->assertStringContainsString('card', $cClass);
+        $this->assertStringContainsString('card-widget', $cClass);
+        $this->assertStringContainsString('widget-user', $cClass);
 
         $hClass = $component->makeHeaderClass();
         $this->assertStringContainsString('widget-user-header', $hClass);
@@ -317,11 +339,15 @@ class ComponentsTest extends TestCase
         $hStyle = $component->makeHeaderStyle();
         $this->assertTrue(empty($hStyle));
 
-        // Test with cover.
+        // Test with cover and classic layout.
 
         $component = new Components\ProfileWidget(
-            'name', 'description', null, 'danger', 'img.png'
+            'name', 'description', null, 'danger', 'img.png', null, null,
+            'classic'
         );
+
+        $cClass = $component->makeCardClass();
+        $this->assertStringContainsString('widget-user-2', $cClass);
 
         $hClass = $component->makeHeaderClass();
         $this->assertStringNotContainsString('bg-gradient-danger', $hClass);
