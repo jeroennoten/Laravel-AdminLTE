@@ -1,11 +1,26 @@
-<div {{ $attributes->merge(['class' => 'card card-widget widget-user']) }}>
+<div {{ $attributes->merge(['class' => $makeCardClass()]) }}>
 
-    {{-- Header --}}
+    {{-- Profile header --}}
     <div class="{{ $makeHeaderClass() }}" style="{{ $makeHeaderStyle() }}">
+
+        {{-- User image --}}
+        <div class="widget-user-image">
+            @if(isset($img))
+                <img class="img-circle elevation-2" src="{{ $img }}" alt="User avatar: {{ $name }}">
+            @elseif($layoutType === 'modern')
+                <div class="img-circle elevation-2 d-flex bg-dark" style="width:90px;height:90px;">
+                    <i class="fas fa-3x fa-user text-silver m-auto"></i>
+                </div>
+            @elseif($layoutType === 'classic')
+                <div class="img-circle elevation-2 float-left d-flex bg-dark" style="width:65px;height:65px;">
+                    <i class="fas fa-2x fa-user text-silver m-auto"></i>
+                </div>
+            @endisset
+        </div>
 
         {{-- User name --}}
         @isset($name)
-            <h3 class="widget-user-username">{{ $name }}</h3>
+            <h3 class="widget-user-username mb-0">{{ $name }}</h3>
         @endisset
 
         {{-- User description --}}
@@ -15,38 +30,11 @@
 
     </div>
 
-    {{-- User image --}}
-    <div class="widget-user-image">
-        @isset($img)
-            <img class="img-circle elevation-2" src="{{ $img }}" alt="User avatar: {{ $name }}">
-        @else
-            <div class="img-circle elevation-2 d-flex bg-dark" style="width:90px;height:90px;">
-                <i class="fas fa-3x fa-user text-silver m-auto"></i>
-            </div>
-        @endisset
-    </div>
-
-    {{-- Footer / Profile Items --}}
-    <div class="{{ $makeFooterClass() }}">
-        <div class="row">{{ $slot }}</div>
-    </div>
+    {{-- Profile footer / Profile Items --}}
+    @if(! $slot->isEmpty())
+        <div class="{{ $makeFooterClass() }}">
+            <div class="row">{{ $slot }}</div>
+        </div>
+    @endif
 
 </div>
-
-{{-- CSS Styles Section --}}
-
-@once
-@push('css')
-<style type="text/css">
-
-    {{-- Remove the profile item borders on extra small devices --}}
-
-    @media (max-width: 575.98px) {
-        .card.card-widget.widget-user .adminlte-widget-item {
-            border: none !important;
-        }
-    }
-
-</style>
-@endpush
-@endonce

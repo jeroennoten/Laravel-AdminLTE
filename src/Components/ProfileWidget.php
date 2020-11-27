@@ -59,13 +59,20 @@ class ProfileWidget extends Component
     public $footerClass;
 
     /**
+     * The profile header layout type (modern or classic).
+     *
+     * @var string
+     */
+    public $layoutType;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
     public function __construct(
         $name = null, $desc = null, $img = null, $theme = null, $cover = null,
-        $headerClass = null, $footerClass = null
+        $headerClass = null, $footerClass = null, $layoutType = 'modern'
     ) {
         $this->name = $name;
         $this->desc = $desc;
@@ -74,6 +81,32 @@ class ProfileWidget extends Component
         $this->cover = $cover;
         $this->headerClass = $headerClass;
         $this->footerClass = $footerClass;
+
+        // Setup the header layout type.
+
+        $this->layoutType = $layoutType;
+
+        if (! in_array($this->layoutType, ['classic', 'modern'])) {
+            $this->layoutType = 'modern';
+        }
+    }
+
+    /**
+     * Make the profile card class.
+     *
+     * @return string
+     */
+    public function makeCardClass()
+    {
+        $classes = ['card', 'card-widget'];
+
+        if ($this->layoutType === 'modern') {
+            $classes[] = 'widget-user';
+        } elseif ($this->layoutType === 'classic') {
+            $classes[] = 'widget-user-2';
+        }
+
+        return implode(' ', $classes);
     }
 
     /**
