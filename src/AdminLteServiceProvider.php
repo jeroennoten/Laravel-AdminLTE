@@ -186,10 +186,9 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\Datatable::class,
             Components\InfoBox::class,
             Components\Modal::class,
-            Components\ProfileFlat::class,
-            Components\ProfileFlatItem::class,
+            Components\ProfileColItem::class,
+            Components\ProfileRowItem::class,
             Components\ProfileWidget::class,
-            Components\ProfileWidgetItem::class,
             Components\Progress::class,
             Components\SmallBox::class,
         ]);
