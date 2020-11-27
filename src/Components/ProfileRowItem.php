@@ -30,7 +30,7 @@ class ProfileRowItem extends Component
     /**
      * The item size. Used to wrap the item inside a col-size div.
      *
-     * @var integer
+     * @var int
      */
     public $size;
 
