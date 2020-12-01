@@ -55,7 +55,7 @@ class ComponentsTest extends TestCase
             "{$base}.profile-row-item" => new Components\ProfileRowItem(),
             "{$base}.profile-widget"   => new Components\ProfileWidget(),
             "{$base}.progress"         => new Components\Progress(),
-            "{$base}.small-box"        => new Components\SmallBox(null, null, 'title', null, 'text'),
+            "{$base}.small-box"        => new Components\SmallBox(),
         ];
     }
 
@@ -396,8 +396,14 @@ class ComponentsTest extends TestCase
 
     public function testSmallBoxComponent()
     {
-        $component = new Components\SmallBox(null, null, 'title', null, 'text');
+        $component = new Components\SmallBox('title', 'text', null, 'danger');
 
-        $this->assertIsString($component->urlTextLine());
+        $bClass = $component->makeBoxClass();
+        $this->assertStringContainsString('small-box', $bClass);
+        $this->assertStringContainsString('bg-danger', $bClass);
+
+        $oClass = $component->makeOverlayClass();
+        $this->assertStringContainsString('overlay', $oClass);
+        $this->assertStringContainsString('d-none', $oClass);
     }
 }
