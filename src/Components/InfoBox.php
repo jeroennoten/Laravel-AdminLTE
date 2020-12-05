@@ -55,7 +55,7 @@ class InfoBox extends Component
      * indicating the percentage of the progress bar.
      *
      * @var int
-     */    
+     */
     public $progress;
 
     /**
