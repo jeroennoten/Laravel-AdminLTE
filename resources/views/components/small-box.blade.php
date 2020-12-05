@@ -96,7 +96,7 @@
         }
     }
 
-    // Create the plugin utililities object.
+    // Create the plugin utilities object.
 
     var _adminlte_sbUtils = new SB_Utils();
 

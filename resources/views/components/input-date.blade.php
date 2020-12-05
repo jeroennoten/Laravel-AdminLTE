@@ -48,7 +48,7 @@
         }
     }
 
-    // Create the plugin utililities object.
+    // Create the plugin utilities object.
 
     var _adminlte_idUtils = new ID_Utils();
 

@@ -95,7 +95,7 @@
         }
     }
 
-    // Create the plugin utililities object.
+    // Create the plugin utilities object.
 
     var _adminlte_drUtils = new DR_Utils();
 
