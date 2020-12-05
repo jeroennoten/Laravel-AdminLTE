@@ -49,7 +49,7 @@ class ComponentsTest extends TestCase
             "{$base}.callout"          => new Components\Callout(),
             "{$base}.card"             => new Components\Card(),
             "{$base}.datatable"        => new Components\Datatable(null, 'id', null, null, null, '[]'),
-            "{$base}.info-box"         => new Components\InfoBox(null, null, null, 'title', 'text'),
+            "{$base}.info-box"         => new Components\InfoBox(),
             "{$base}.modal"            => new Components\Modal('id'),
             "{$base}.profile-col-item" => new Components\ProfileColItem(),
             "{$base}.profile-row-item" => new Components\ProfileRowItem(),
@@ -233,18 +233,16 @@ class ComponentsTest extends TestCase
     public function testInfoBoxComponent()
     {
         $component = new Components\InfoBox(
-            null, null, null, 'title', 'text'
+            'title', 'text', null, null, 'danger', 'primary'
         );
 
-        $this->assertIsString($component->background());
-        $this->assertIsString($component->foreground());
+        $bClass = $component->makeBoxClass();
+        $this->assertStringContainsString('info-box', $bClass);
+        $this->assertStringContainsString('bg-danger', $bClass);
 
-        $component = new Components\InfoBox(
-            null, null, null, 'title', 'text', true, true
-        );
-
-        $this->assertIsString($component->background());
-        $this->assertIsString($component->foreground());
+        $iClass = $component->makeIconClass();
+        $this->assertStringContainsString('info-box-icon', $iClass);
+        $this->assertStringContainsString('bg-primary', $iClass);
     }
 
     public function testModalComponent()
