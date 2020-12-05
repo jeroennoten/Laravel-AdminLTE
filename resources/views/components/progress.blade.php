@@ -62,7 +62,7 @@
             t.find('.progress-bar').css('width', value + '%')
                 .attr('aria-valuenow', value);
 
-            if (t.find('span.sr-only').lenght >= 0) {
+            if (t.find('span.sr-only').length >= 0) {
                 t.find('span.sr-only').text(value + '% Progress');
             } else {
                 t.find('.progress-bar').text(value + '%');
@@ -70,7 +70,7 @@
         }
     }
 
-    // Create the plugin utililities object.
+    // Create the plugin utilities object.
 
     var _adminlte_pbUtils = new PB_Utils();
 
