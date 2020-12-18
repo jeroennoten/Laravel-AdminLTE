@@ -43,14 +43,17 @@ class ComponentsTest extends TestCase
             "{$base}.textarea"     => new Components\Textarea('name'),
             "{$base}.text-editor"  => new Components\TextEditor('name'),
 
+            // Tool components.
+
+            "{$base}.datatable"    => new Components\Datatable('id', []),
+            "{$base}.modal"        => new Components\Modal('id'),
+
             // Widget components.
 
             "{$base}.alert"            => new Components\Alert(),
             "{$base}.callout"          => new Components\Callout(),
             "{$base}.card"             => new Components\Card(),
-            "{$base}.datatable"        => new Components\Datatable(null, 'id', null, null, null, '[]'),
             "{$base}.info-box"         => new Components\InfoBox(),
-            "{$base}.modal"            => new Components\Modal('id'),
             "{$base}.profile-col-item" => new Components\ProfileColItem(),
             "{$base}.profile-row-item" => new Components\ProfileRowItem(),
             "{$base}.profile-widget"   => new Components\ProfileWidget(),
@@ -155,6 +158,79 @@ class ComponentsTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
+    | Individual tool components tests.
+    |--------------------------------------------------------------------------
+    */
+
+    public function testDatatableComponent()
+    {
+        // Test basic component.
+        $component = new Components\Datatable('id', []);
+
+        $tClass = $component->makeTableClass();
+        $this->assertStringContainsString('table', $tClass);
+
+        // Test advanced component.
+        // $id, $heads, $theme, $headTheme, $bordered, $hoverable, $striped,
+        // $compressed, $withFooter, $footerTheme, $beautify, $withButtons,
+        // $config
+        $component = new Components\Datatable(
+            'id', [], 'primary', null, true, true, true, true, null, null,
+            null, true, null
+        );
+
+        $tClass = $component->makeTableClass();
+        $this->assertStringContainsString('table-bordered', $tClass);
+        $this->assertStringContainsString('table-hover', $tClass);
+        $this->assertStringContainsString('table-striped', $tClass);
+        $this->assertStringContainsString('table-sm', $tClass);
+        $this->assertStringContainsString('table-primary', $tClass);
+    }
+
+    public function testModalComponent()
+    {
+        // Test basic component.
+
+        $component = new Components\Modal('id');
+
+        $mClass = $component->makeModalClass();
+        $this->assertStringContainsString('modal', $mClass);
+        $this->assertStringContainsString('fade', $mClass);
+
+        $mdClass = $component->makeModalDialogClass();
+        $this->assertStringContainsString('modal-dialog', $mdClass);
+
+        $mhClass = $component->makeModalHeaderClass();
+        $this->assertStringContainsString('modal-header', $mhClass);
+
+        $cbClass = $component->makeCloseButtonClass();
+        $this->assertStringContainsString('bg-secondary', $cbClass);
+
+        // Test with all constructor arguments:
+        // $id, $title, $icon, $size, $theme, $vCentered, $scrollable,
+        // $staticBackdrop, $disableAnimations.
+
+        $component = new Components\Modal(
+            'id', 'title', null, 'lg', 'info', true, true, true, true
+        );
+
+        $mClass = $component->makeModalClass();
+        $this->assertStringNotContainsString('fade', $mClass);
+
+        $mdClass = $component->makeModalDialogClass();
+        $this->assertStringContainsString('modal-dialog-centered', $mdClass);
+        $this->assertStringContainsString('modal-dialog-scrollable', $mdClass);
+        $this->assertStringContainsString('modal-lg', $mdClass);
+
+        $mhClass = $component->makeModalHeaderClass();
+        $this->assertStringContainsString('bg-info', $mhClass);
+
+        $cbClass = $component->makeCloseButtonClass();
+        $this->assertStringContainsString('bg-info', $cbClass);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
     | Individual widget components tests.
     |--------------------------------------------------------------------------
     */
@@ -219,17 +295,6 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('text-teal', $ctClass);
     }
 
-    public function testDatatableComponent()
-    {
-        $component = new Components\Datatable(
-            null, 'id', true, true, true, '[]'
-        );
-
-        $this->assertIsString($component->border());
-        $this->assertIsString($component->hover());
-        $this->assertIsString($component->condense());
-    }
-
     public function testInfoBoxComponent()
     {
         $component = new Components\InfoBox(
@@ -243,48 +308,6 @@ class ComponentsTest extends TestCase
         $iClass = $component->makeIconClass();
         $this->assertStringContainsString('info-box-icon', $iClass);
         $this->assertStringContainsString('bg-primary', $iClass);
-    }
-
-    public function testModalComponent()
-    {
-        // Test basic component.
-
-        $component = new Components\Modal('id');
-
-        $mClass = $component->makeModalClass();
-        $this->assertStringContainsString('modal', $mClass);
-        $this->assertStringContainsString('fade', $mClass);
-
-        $mdClass = $component->makeModalDialogClass();
-        $this->assertStringContainsString('modal-dialog', $mdClass);
-
-        $mhClass = $component->makeModalHeaderClass();
-        $this->assertStringContainsString('modal-header', $mhClass);
-
-        $cbClass = $component->makeCloseButtonClass();
-        $this->assertStringContainsString('bg-secondary', $cbClass);
-
-        // Test with all constructor arguments:
-        // $id, $title, $icon, $size, $theme, $vCentered, $scrollable,
-        // $staticBackdrop, $disableAnimations.
-
-        $component = new Components\Modal(
-            'id', 'title', null, 'lg', 'info', true, true, true, true
-        );
-
-        $mClass = $component->makeModalClass();
-        $this->assertStringNotContainsString('fade', $mClass);
-
-        $mdClass = $component->makeModalDialogClass();
-        $this->assertStringContainsString('modal-dialog-centered', $mdClass);
-        $this->assertStringContainsString('modal-dialog-scrollable', $mdClass);
-        $this->assertStringContainsString('modal-lg', $mdClass);
-
-        $mhClass = $component->makeModalHeaderClass();
-        $this->assertStringContainsString('bg-info', $mhClass);
-
-        $cbClass = $component->makeCloseButtonClass();
-        $this->assertStringContainsString('bg-info', $cbClass);
     }
 
     public function testProfileColItemComponent()

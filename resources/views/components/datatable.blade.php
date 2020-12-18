@@ -1,44 +1,60 @@
-@if($buttons)
-    @section('css')
-    @parent 
-    <link rel="stylesheet" href="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.css" />
-    <style>.printer table{counter-reset: rowNumber}.printer tr{counter-increment: rowNumber}.printer tr td:first-child::before{content: counter(rowNumber);min-width: 1em;margin-right: 0.5em} div.dt-buttons.btn-group.flex-wrap {float:right}</style>
-    @endsection
+{{-- Table --}}
 
-    @section('js')
-    @parent 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/pdfmake.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.36/vfs_fonts.js"></script>
-    <script src="https://cdn.datatables.net/v/bs4/jszip-2.5.0/dt-1.10.20/b-1.6.1/b-html5-1.6.1/b-print-1.6.1/datatables.min.js"></script>
-    @endsection
-@endif
+<div class="table-responsive">
 
-@if($beautify)
-<style>#{{$id}} tbody tr td { vertical-align: middle; text-align: center; }</style>
-@endif  
-<table id="{{$id}}" class="table {{$border}} {{$hover}}">
-    <thead>
+<table id="{{ $id }}" style="width:100%" {{ $attributes->merge(['class' => $makeTableClass()]) }}>
+
+    {{-- Table head --}}
+    <thead @isset($headTheme) class="thead-{{ $headTheme }}" @endisset>
         <tr>
             @foreach($heads as $th)
-            @if(isset($th->name))
-            <td style="width:{{$th->width}}%">{{$th->name}}</td>
-            @else
-            <td>{{$th}}</td>
-            @endif
+                <th @isset($th['width']) style="width:{{ $th['width'] }}%" @endisset
+                    @isset($th['no-export']) dt-no-export @endisset>
+                    {{ is_array($th) ? ($th['label'] ?? '') : $th }}
+                </th>
             @endforeach
         </tr>
     </thead>
-    <tbody>
 
-    </tbody>
+    {{-- Table body --}}
+    <tbody>{{ $slot }}</tbody>
 
-    @if($footer)
-    <tfoot>
-        <tr>
-            @foreach($heads as $foot)
-            <th></th>
-            @endforeach
-        </tr>
-    </tfoot>
-    @endif
+    {{-- Table footer --}}
+    @isset($withFooter)
+        <tfoot @isset($footerTheme) class="thead-{{ $footerTheme }}" @endisset>
+            <tr>
+                @foreach($heads as $th)
+                    <th>{{ is_array($th) ? ($th['label'] ?? '') : $th }}</th>
+                @endforeach
+            </tr>
+        </tfoot>
+    @endisset
+
 </table>
+
+</div>
+
+{{-- Add plugin initialization and configuration code --}}
+
+@push('js')
+<script>
+
+    $(() => {
+        $('#{{ $id }}').DataTable( @json($config) );
+    })
+
+</script>
+@endpush
+
+{{-- Add CSS styling --}}
+
+@isset($beautify)
+    @push('css')
+    <style type="text/css">
+        #{{ $id }} tr td,  #{{ $id }} tr th {
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+    @endpush
+@endisset
