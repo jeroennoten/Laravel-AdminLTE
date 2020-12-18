@@ -92,7 +92,7 @@ class Datatable extends Component
     public $compressed;
 
     /**
-     * When enabled, the table cells with be vertically and horizontally
+     * When enabled, the table cells will be vertically and horizontally
      * centered.
      *
      * @var mixed
