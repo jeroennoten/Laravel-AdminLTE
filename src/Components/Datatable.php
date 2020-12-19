@@ -49,7 +49,7 @@ class Datatable extends Component
 
     /**
      * Enables a footer with header cells. The footer can be fully customized
-     * using the 'footerCallback' option.
+     * using the 'footerCallback' option of the plugin.
      *
      * @var mixed
      */
@@ -63,7 +63,7 @@ class Datatable extends Component
     public $footerTheme;
 
     /**
-     * When enabled, borders will be used around the table.
+     * When enabled, borders will be displayed around the table.
      *
      * @var mixed
      */
@@ -101,7 +101,7 @@ class Datatable extends Component
 
     /**
      * When enabled, a set of tool buttons for export the table will be
-     * available.
+     * displayed.
      *
      * @var mixed
      */
@@ -210,7 +210,7 @@ class Datatable extends Component
     protected function makeButtonsCfg()
     {
         // Configure the export columns selector. We are not going to export
-        // columns that explicity have the 'dt-no-export' attribute.
+        // columns that explicitly have the 'dt-no-export' attribute.
 
         $colSelector = ':not([dt-no-export])';
 
