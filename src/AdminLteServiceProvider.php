@@ -177,15 +177,20 @@ class AdminLteServiceProvider extends BaseServiceProvider
             Components\TextEditor::class,
         ]);
 
+        // Tool components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\Datatable::class,
+            Components\Modal::class,
+        ]);
+
         // Widgets components.
 
         $this->loadViewComponentsAs('adminlte', [
             Components\Alert::class,
             Components\Callout::class,
             Components\Card::class,
-            Components\Datatable::class,
             Components\InfoBox::class,
-            Components\Modal::class,
             Components\ProfileColItem::class,
             Components\ProfileRowItem::class,
             Components\ProfileWidget::class,
