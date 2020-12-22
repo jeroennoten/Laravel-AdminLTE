@@ -48,6 +48,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
         $this->registerCommands();
         $this->registerViewComposers($view);
         $this->registerMenu($events, $config);
+        $this->loadComponents();
     }
 
     /**
@@ -137,5 +138,64 @@ class AdminLteServiceProvider extends BaseServiceProvider
                 $event->menu->add(...$menu);
             }
         );
+    }
+
+    /**
+     * Load the blade view components.
+     *
+     * @return void
+     */
+    private function loadComponents()
+    {
+        // Support of x-components is only available for Laravel >= 7.x
+        // versions. So, we check if we can load components.
+
+        $canLoadComponents = method_exists(
+            'Illuminate\Support\ServiceProvider',
+            'loadViewComponentsAs'
+        );
+
+        if (! $canLoadComponents) {
+            return;
+        }
+
+        // Form components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\Button::class,
+            Components\DateRange::class,
+            Components\Input::class,
+            Components\InputColor::class,
+            Components\InputDate::class,
+            Components\InputFile::class,
+            Components\InputSlider::class,
+            Components\InputSwitch::class,
+            Components\Select::class,
+            Components\Select2::class,
+            Components\SelectBs::class,
+            Components\Textarea::class,
+            Components\TextEditor::class,
+        ]);
+
+        // Tool components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\Datatable::class,
+            Components\Modal::class,
+        ]);
+
+        // Widgets components.
+
+        $this->loadViewComponentsAs('adminlte', [
+            Components\Alert::class,
+            Components\Callout::class,
+            Components\Card::class,
+            Components\InfoBox::class,
+            Components\ProfileColItem::class,
+            Components\ProfileRowItem::class,
+            Components\ProfileWidget::class,
+            Components\Progress::class,
+            Components\SmallBox::class,
+        ]);
     }
 }

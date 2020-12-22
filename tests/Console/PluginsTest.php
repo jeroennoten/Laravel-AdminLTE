@@ -44,7 +44,7 @@ class PluginsTest extends CommandTestCase
 
         // Test install all the plugins.
 
-        $this->artisan('adminlte:plugins install');
+        $this->artisan('adminlte:plugins install --force');
 
         // Check that all the plugins are installed.
 
