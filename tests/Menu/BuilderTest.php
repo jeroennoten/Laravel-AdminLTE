@@ -536,6 +536,47 @@ class BuilderTest extends TestCase
         $this->assertStringNotContainsString('active', $builder->menu[1]['class']);
     }
 
+    public function testActiveClassWithSubmenuAndUrl()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/about');
+
+        $builder->add(
+            [
+                'text'    => 'Menu',
+                'submenu' => [
+                    [
+                        'text'  => 'About',
+                        'url'   => '/about',
+                    ],
+                ],
+            ]
+        );
+
+        $this->assertStringContainsString('active', $builder->menu[0]['class']);
+        $this->assertStringContainsString('active', $builder->menu[0]['submenu'][0]['class']);
+    }
+
+    public function testActiveClassWithSubmenuAndRoute()
+    {
+        $builder = $this->makeMenuBuilder('http://example.com/about');
+        $this->getRouteCollection()->add(new Route('GET', 'about', ['as' => 'pages.about']));
+
+        $builder->add(
+            [
+                'text'    => 'Menu',
+                'submenu' => [
+                    [
+                        'text'    => 'About',
+                        'route'   => 'pages.about',
+                    ],
+                ],
+            ]
+        );
+
+        $this->assertStringContainsString('active', $builder->menu[0]['class']);
+        $this->assertStringContainsString('active', $builder->menu[0]['submenu'][0]['class']);
+    }
+
     public function testSubmenuActiveWithHash()
     {
         $builder = $this->makeMenuBuilder('http://example.com/home');

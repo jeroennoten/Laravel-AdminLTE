@@ -175,6 +175,14 @@ class Builder
             return $item;
         }
 
+        // If the item is a submenu, transform all the submenu items first.
+        // These items need to be transformed first because some of the submenu
+        // filters (like the ActiveFilter) depends on these results.
+
+        if (MenuItemHelper::isSubmenu($item)) {
+            $item['submenu'] = $this->transformItems($item['submenu']);
+        }
+
         // Now, apply all the filters on the item.
 
         foreach ($this->filters as $filter) {
@@ -187,12 +195,6 @@ class Builder
             }
 
             $item = $filter->transform($item);
-        }
-
-        // If the item is a submenu, transform all submenu items too.
-
-        if (MenuItemHelper::isSubmenu($item)) {
-            $item['submenu'] = $this->transformItems($item['submenu']);
         }
 
         return $item;
