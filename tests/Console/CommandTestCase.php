@@ -127,6 +127,13 @@ class CommandTestCase extends TestCase
             return;
         }
 
+        // Check if vendor folder exists on the laravel testing project. If
+        // vendor folder do not exists, create it.
+
+        if (! is_dir(base_path('vendor'))) {
+            mkdir(base_path('vendor'));
+        }
+
         // Create a symbolic link to the required vendor assets.
 
         symlink($resource, $target);
