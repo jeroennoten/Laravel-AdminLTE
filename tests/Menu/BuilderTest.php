@@ -861,7 +861,7 @@ class BuilderTest extends TestCase
             [
                 // Test case with non-array parameters.
                 'header' => ['header_with_params', 'non-array-value'],
-            ],
+            ]
         );
 
         $this->assertCount(5, $builder->menu);
