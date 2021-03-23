@@ -30,7 +30,7 @@
   "require": {
     "laravel/framework": ">=6.0",
     "php": ">=7.2.0",
-    "almasaeed2010/adminlte": "3.0.*"
+    "almasaeed2010/adminlte": "3.1.*"
   },
   "require-dev": {
     "phpunit/phpunit": "^8.3",
