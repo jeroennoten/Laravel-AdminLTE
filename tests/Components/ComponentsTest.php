@@ -132,7 +132,6 @@ class ComponentsTest extends TestCase
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('form-control', $iClass);
-        $this->assertStringContainsString('w-100', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 

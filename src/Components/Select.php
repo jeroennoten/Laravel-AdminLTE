@@ -26,7 +26,7 @@ class Select extends InputGroupComponent
      */
     public function makeItemClass($invalid)
     {
-        $classes = ['form-control', 'w-100'];
+        $classes = ['form-control'];
 
         if (! empty($invalid) && ! isset($this->disableFeedback)) {
             $classes[] = 'is-invalid';
