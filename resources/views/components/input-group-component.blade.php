@@ -8,7 +8,7 @@
     @endisset
 
     {{-- Input group --}}
-    <div class="{{ $makeInputGroupClass() }}">
+    <div class="{{ $makeInputGroupClass($errors->first($name)) }}">
 
         {{-- Input prepend slot --}}
         @isset($prependSlot)
@@ -35,3 +35,27 @@
     @endif
 
 </div>
+
+{{-- Extra style customization for invalid input groups --}}
+
+@once
+@push('css')
+<style type="text/css">
+
+    {{-- Highlight invalid input groups with a box-shadow --}}
+
+    .adminlte-invalid-igroup {
+        box-shadow: 0 .25rem 0.5rem rgba(0,0,0,.1);
+    }
+
+    {{-- Setup a red border on elements inside prepend/append add-ons --}}
+
+    .adminlte-invalid-igroup > .input-group-prepend > *,
+    .adminlte-invalid-igroup > .input-group-append > * {
+        border-color: #dc3545 !important;
+    }
+
+</style>
+@endpush
+@endonce
+

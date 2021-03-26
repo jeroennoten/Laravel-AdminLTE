@@ -36,7 +36,7 @@ class SelectBs extends inputGroupComponent
      * @param string $invalid
      * @return string
      */
-    public function makeItemClass($invalid)
+    public function makeItemClass($invalid = null)
     {
         $classes = ['form-control'];
 
