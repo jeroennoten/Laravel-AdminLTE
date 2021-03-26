@@ -82,12 +82,13 @@ class ComponentsTest extends TestCase
             'name', null, 'lg', null, 'top-class'
         );
 
-        $iGroupClass = $component->makeInputGroupClass();
+        $iGroupClass = $component->makeInputGroupClass(true);
         $fGroupClass = $component->makeFormGroupClass();
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('input-group', $iGroupClass);
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('adminlte-invalid-igroup', $iGroupClass);
         $this->assertStringContainsString('form-group', $fGroupClass);
         $this->assertStringContainsString('top-class', $fGroupClass);
         $this->assertStringContainsString('form-control', $iClass);

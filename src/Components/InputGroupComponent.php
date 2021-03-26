@@ -69,22 +69,6 @@ class InputGroupComponent extends Component
     }
 
     /**
-     * Make the class attribute for the "input-group" element.
-     *
-     * @return string
-     */
-    public function makeInputGroupClass()
-    {
-        $classes = ['input-group'];
-
-        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
-            $classes[] = "input-group-{$this->size}";
-        }
-
-        return implode(' ', $classes);
-    }
-
-    /**
      * Make the class attribute for the "form-group" element.
      *
      * @return string
@@ -101,12 +85,33 @@ class InputGroupComponent extends Component
     }
 
     /**
+     * Make the class attribute for the "input-group" element.
+     *
+     * @param string $invalid
+     * @return string
+     */
+    public function makeInputGroupClass($invalid = null)
+    {
+        $classes = ['input-group'];
+
+        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
+            $classes[] = "input-group-{$this->size}";
+        }
+
+        if (! empty($invalid) && ! isset($this->disableFeedback)) {
+            $classes[] = 'adminlte-invalid-igroup';
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
      * Make the class attribute for the input group item.
      *
      * @param string $invalid
      * @return string
      */
-    public function makeItemClass($invalid)
+    public function makeItemClass($invalid = null)
     {
         $classes = ['form-control'];
 
