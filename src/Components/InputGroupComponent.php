@@ -52,6 +52,13 @@ class InputGroupComponent extends Component
     public $disableFeedback;
 
     /**
+     * Additional classes for input group element
+     *
+     * @var string
+     */
+    public $inputGroupClasses;
+
+    /**
      * Create a new component instance.
      *
      * @return void
@@ -96,6 +103,10 @@ class InputGroupComponent extends Component
 
         if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
             $classes[] = "input-group-{$this->size}";
+        }
+
+        if (isset($this->inputGroupClasses)) {
+            $classes[] = $this->inputGroupClasses;
         }
 
         if (! empty($invalid) && ! isset($this->disableFeedback)) {
