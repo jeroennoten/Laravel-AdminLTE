@@ -79,7 +79,7 @@ class ComponentsTest extends TestCase
     public function testInputGroupComponent()
     {
         $component = new Components\InputGroupComponent(
-            'name', null, 'lg', null, 'top-class'
+            'name', null, 'lg', null, 'top-class', 'igroup-custom-class'
         );
 
         $iGroupClass = $component->makeInputGroupClass(true);
@@ -88,6 +88,7 @@ class ComponentsTest extends TestCase
 
         $this->assertStringContainsString('input-group', $iGroupClass);
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('igroup-custom-class', $iGroupClass);
         $this->assertStringContainsString('adminlte-invalid-igroup', $iGroupClass);
         $this->assertStringContainsString('form-group', $fGroupClass);
         $this->assertStringContainsString('top-class', $fGroupClass);
