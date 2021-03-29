@@ -52,7 +52,7 @@ class InputGroupComponent extends Component
     public $disableFeedback;
 
     /**
-     * Additional classes for input group element
+     * Additional classes for input group element.
      *
      * @var string
      */
