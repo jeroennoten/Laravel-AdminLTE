@@ -52,19 +52,28 @@ class InputGroupComponent extends Component
     public $disableFeedback;
 
     /**
+     * Additional classes for "input-group" element. This provides a way to
+     * customize the input group container style.
+     *
+     * @var string
+     */
+    public $inputGroupClass;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
     public function __construct(
-        $name, $label = null, $size = null,
-        $labelClass = null, $topClass = null, $disableFeedback = null
+        $name, $label = null, $size = null, $labelClass = null,
+        $topClass = null, $inputGroupClass = null, $disableFeedback = null
     ) {
         $this->name = $name;
         $this->label = $label;
         $this->size = $size;
         $this->topClass = $topClass;
         $this->labelClass = $labelClass;
+        $this->inputGroupClass = $inputGroupClass;
         $this->disableFeedback = $disableFeedback;
     }
 
@@ -100,6 +109,10 @@ class InputGroupComponent extends Component
 
         if (! empty($invalid) && ! isset($this->disableFeedback)) {
             $classes[] = 'adminlte-invalid-igroup';
+        }
+
+        if (isset($this->inputGroupClass)) {
+            $classes[] = $this->inputGroupClass;
         }
 
         return implode(' ', $classes);
