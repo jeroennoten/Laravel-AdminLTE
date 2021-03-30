@@ -10,11 +10,12 @@ class Input extends InputGroupComponent
      * @return void
      */
     public function __construct(
-        $name, $label = null, $size = null,
-        $labelClass = null, $topClass = null, $disableFeedback = null
+        $name, $label = null, $size = null, $labelClass = null,
+        $topClass = null, $inputGroupClass = null, $disableFeedback = null
     ) {
         parent::__construct(
-            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+            $name, $label, $size, $labelClass, $topClass,
+            $inputGroupClass, $disableFeedback
         );
     }
 

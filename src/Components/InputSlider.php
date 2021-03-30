@@ -28,10 +28,12 @@ class InputSlider extends InputGroupComponent
      */
     public function __construct(
         $name, $label = null, $size = null, $labelClass = null,
-        $topClass = null, $disableFeedback = null, $config = [], $color = null
+        $topClass = null, $inputGroupClass = null, $disableFeedback = null,
+        $config = [], $color = null
     ) {
         parent::__construct(
-            $name, $label, $size, $labelClass, $topClass, $disableFeedback
+            $name, $label, $size, $labelClass, $topClass,
+            $inputGroupClass, $disableFeedback
         );
 
         $this->config = is_array($config) ? $config : [];
