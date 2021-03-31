@@ -180,6 +180,20 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testTextEditorComponent()
+    {
+        $component = new Components\TextEditor(
+            'name', null, 'lg', null, null, 'igroup-custom-class'
+        );
+
+        $iGroupClass = $component->makeInputGroupClass(true);
+
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('igroup-custom-class', $iGroupClass);
+        $this->assertStringContainsString('adminlte-invalid-itegroup', $iGroupClass);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Individual tool components tests.
