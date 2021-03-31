@@ -33,6 +33,32 @@ class InputSwitch extends InputGroupComponent
     }
 
     /**
+     * Make the class attribute for the "input-group" element. Note we overwrite
+     * the method of the parent class.
+     *
+     * @param string $invalid
+     * @return string
+     */
+    public function makeInputGroupClass($invalid = null)
+    {
+        $classes = ['input-group'];
+
+        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
+            $classes[] = "input-group-{$this->size}";
+        }
+
+        if (! empty($invalid) && ! isset($this->disableFeedback)) {
+            $classes[] = 'adminlte-invalid-iswgroup';
+        }
+
+        if (isset($this->inputGroupClass)) {
+            $classes[] = $this->inputGroupClass;
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
      * Make the class attribute for the input group item.
      *
      * @param string $invalid

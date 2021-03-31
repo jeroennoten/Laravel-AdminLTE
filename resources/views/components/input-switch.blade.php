@@ -47,6 +47,14 @@
         font-size: .875rem !important;
     }
 
+    {{-- Custom invalid style setup --}}
+
+    .adminlte-invalid-iswgroup > .bootstrap-switch-wrapper,
+    .adminlte-invalid-iswgroup > .input-group-prepend > *,
+    .adminlte-invalid-iswgroup > .input-group-append > * {
+        box-shadow: 0 .25rem 0.5rem rgba(255,0,0,.25);
+    }
+
 </style>
 @endpush
 @endonce
