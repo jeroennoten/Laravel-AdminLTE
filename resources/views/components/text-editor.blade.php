@@ -56,6 +56,13 @@
         line-height: 1.5;
     }
 
+    {{-- Setup custom invalid style  --}}
+
+    .adminlte-invalid-itegroup .note-editor {
+        box-shadow: 0 .25rem 0.5rem rgba(0,0,0,.25);
+        border-color: #dc3545 !important;
+    }
+
 </style>
 @endpush
 @endonce

@@ -99,3 +99,24 @@
 
 </style>
 @endpush
+
+{{-- Setup custom invalid style  --}}
+{{-- NOTE: this may change with newer plugin versions --}}
+
+@once
+@push('css')
+<style type="text/css">
+
+    .adminlte-invalid-islgroup .slider-track,
+    .adminlte-invalid-islgroup > .input-group-prepend > *,
+    .adminlte-invalid-islgroup > .input-group-append > * {
+        box-shadow: 0 .25rem 0.5rem rgba(255,0,0,.25);
+    }
+
+    .adminlte-invalid-islgroup .slider-vertical {
+        margin-bottom: 1rem;
+    }
+
+</style>
+@endpush
+@endonce

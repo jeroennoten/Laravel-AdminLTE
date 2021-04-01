@@ -120,11 +120,35 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
-    public function testInputSwitchComponent()
+    public function testInputSliderComponent()
     {
-        $component = new Components\InputSwitch('name');
+        $component = new Components\InputSlider(
+            'name', null, 'lg', null, null, 'igroup-custom-class'
+        );
+
+        $iGroupClass = $component->makeInputGroupClass(true);
         $iClass = $component->makeItemClass(true);
 
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('igroup-custom-class', $iGroupClass);
+        $this->assertStringContainsString('adminlte-invalid-islgroup', $iGroupClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testInputSwitchComponent()
+    {
+        $component = new Components\InputSwitch(
+            'name', null, 'lg', null, null, 'igroup-custom-class'
+        );
+
+        $iGroupClass = $component->makeInputGroupClass(true);
+        $iClass = $component->makeItemClass(true);
+
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('igroup-custom-class', $iGroupClass);
+        $this->assertStringContainsString('adminlte-invalid-iswgroup', $iGroupClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
@@ -154,6 +178,20 @@ class ComponentsTest extends TestCase
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('form-control-lg', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testTextEditorComponent()
+    {
+        $component = new Components\TextEditor(
+            'name', null, 'lg', null, null, 'igroup-custom-class'
+        );
+
+        $iGroupClass = $component->makeInputGroupClass(true);
+
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-lg', $iGroupClass);
+        $this->assertStringContainsString('igroup-custom-class', $iGroupClass);
+        $this->assertStringContainsString('adminlte-invalid-itegroup', $iGroupClass);
     }
 
     /*
