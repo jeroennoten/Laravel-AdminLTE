@@ -105,16 +105,6 @@ class PluginsResource extends PackageResource
             'source' => 'fullcalendar',
             'ignore' => ['*.d.ts', '*.json', '*.md'],
         ],
-        'fullcalendarPlugins' => [
-            'name' => 'Fullcalendar Plugins',
-            'resources' => [
-                ['source' => 'fullcalendar-bootstrap', 'target' => 'fullcalendar-plugins/bootstrap'],
-                ['source' => 'fullcalendar-daygrid', 'target' => 'fullcalendar-plugins/daygrid'],
-                ['source' => 'fullcalendar-interaction', 'target' => 'fullcalendar-plugins/interaction'],
-                ['source' => 'fullcalendar-timegrid', 'target' => 'fullcalendar-plugins/timegrid'],
-            ],
-            'ignore' => ['*.d.ts', '*.json', '*.md'],
-        ],
         'icheckBootstrap' => [
             'name' => 'iCheck Bootstrap',
             'source' => 'icheck-bootstrap',
@@ -195,7 +185,10 @@ class PluginsResource extends PackageResource
         ],
         'tempusdominusBootstrap4' => [
             'name' => 'Tempus Dominus for Bootstrap 4',
-            'source' => 'tempusdominus-bootstrap-4',
+            'resources' => [
+                ['source' => 'tempusdominus-bootstrap-4'],
+                ['source' => 'moment'],
+            ],
         ],
         'toastr' => [
             'name' => 'Toastr',
