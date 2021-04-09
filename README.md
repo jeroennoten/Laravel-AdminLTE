@@ -7,14 +7,13 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/jeroennoten/Laravel-AdminLTE.svg?logo=scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 
-This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io/themes/v3/) with Laravel 6 or higher. It has no requirements and dependencies besides Laravel, so you can start building your admin panel immediately. The package provides a Blade template that you can extend and advanced menu configuration possibilities. A replacement for the `make:auth` Artisan command that uses AdminLTE styled authentication views instead of the default Laravel ones is also included.
+This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io/themes/v3/) with [Laravel](https://laravel.com/) (6 or higher). It has no requirements and dependencies besides **Laravel**, so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/8.x/blade) that you can extend and advanced menu configuration possibilities. Also, and optionally, the package includes a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
 
-If you want to use an older Laravel or AdminLTE version, review the following package versions:
-- Version **1.x**:
-  These versions supports Laravel 5 and include AdminLTE v2
-- Version **2.x** or branch **laravel6-adminlte2**:
-  These versions supports Laravel 6 or higher and include AdminLTE v2
-
+If you want to use an older **Laravel** or **AdminLTE** version, review the following package releases:
+- **Releases 1.x**:
+  These releases supports Laravel 5 and include AdminLTE v2
+- **Releases 2.x**:
+  These releases supports Laravel 6 or higher and include AdminLTE v2
 
 ## Documentation
 
