@@ -908,7 +908,7 @@ class BuilderTest extends TestCase
         $builder->add(['text' => 'search', 'search' => true]);
         $builder->add(['text' => 'Search', 'search' => true, 'input_name' => 'foo']);
 
-        $this->assertEquals('q', $builder->menu[0]['input_name']);
+        $this->assertEquals('adminlteSearch', $builder->menu[0]['input_name']);
         $this->assertEquals('foo', $builder->menu[1]['input_name']);
     }
 
