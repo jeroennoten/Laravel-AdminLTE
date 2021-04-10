@@ -60,7 +60,7 @@ class Alert extends Component
         $theme = 'info', $icon = null, $title = null, $dismissable = null
     ) {
         $this->theme = $theme;
-        $this->icon = $icon ?? $this->icons[$theme];
+        $this->icon = $icon ?? $this->icons[$theme] ?? null;
         $this->title = $title;
         $this->dismissable = $dismissable;
     }

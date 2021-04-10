@@ -8,7 +8,9 @@
     @endisset
 
     {{-- Alert title --}}
-    <h5><i class="icon {{ $icon }}"></i> {{ $title }}</h5>
+    @if(!is_null($title))
+        <h5>@if($icon)<i class="icon {{ $icon }}"></i>@endif {{ $title }}</h5>
+    @endif
 
     {{-- Alert content --}}
     {{ $slot }}
