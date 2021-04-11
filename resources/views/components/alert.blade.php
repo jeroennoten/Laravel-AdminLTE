@@ -7,9 +7,16 @@
         </button>
     @endisset
 
-    {{-- Alert title --}}
-    @if(!is_null($title))
-        <h5>@if($icon)<i class="icon {{ $icon }}"></i>@endif {{ $title }}</h5>
+    @if(! empty($title) || ! empty($icon))
+        <h5>
+            @if(! empty($icon))
+                <i class="icon {{ $icon }}"></i>
+            @endif
+
+            @if(! empty($title))
+                {{ $title }}
+            @endif
+        </h5>
     @endif
 
     {{-- Alert content --}}

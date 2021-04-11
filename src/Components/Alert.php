@@ -57,12 +57,18 @@ class Alert extends Component
      * @return void
      */
     public function __construct(
-        $theme = 'info', $icon = null, $title = null, $dismissable = null
+        $theme = null, $icon = null, $title = null, $dismissable = null
     ) {
         $this->theme = $theme;
-        $this->icon = $icon ?? $this->icons[$theme] ?? null;
+        $this->icon = $icon;
         $this->title = $title;
         $this->dismissable = $dismissable;
+
+        // When a theme is provided, use the theme icon if no icon provided.
+
+        if (empty($icon) && ! empty($theme)) {
+            $this->icon = $this->icons[$theme];
+        }
     }
 
     /**
@@ -72,7 +78,13 @@ class Alert extends Component
      */
     public function makeAlertClass()
     {
-        $classes = ['alert', "alert-{$this->theme}"];
+        $classes = ['alert'];
+
+        if (! empty($this->theme)) {
+            $classes[] = "alert-{$this->theme}";
+        } else {
+            $classes[] = "border";
+        }
 
         if (! empty($this->dismissable)) {
             $classes[] = 'alert-dismissable';
