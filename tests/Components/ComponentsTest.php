@@ -275,6 +275,17 @@ class ComponentsTest extends TestCase
 
     public function testAlertComponent()
     {
+        // Test without theme.
+
+        $component = new Components\Alert(null, null, null);
+
+        $aClass = $component->makeAlertClass();
+
+        $this->assertStringContainsString('alert', $aClass);
+        $this->assertStringContainsString('border', $aClass);
+
+        // Test with theme.
+
         $component = new Components\Alert('danger', null, null, true);
 
         $aClass = $component->makeAlertClass();

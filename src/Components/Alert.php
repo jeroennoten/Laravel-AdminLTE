@@ -83,7 +83,7 @@ class Alert extends Component
         if (! empty($this->theme)) {
             $classes[] = "alert-{$this->theme}";
         } else {
-            $classes[] = "border";
+            $classes[] = 'border';
         }
 
         if (! empty($this->dismissable)) {
