@@ -7,6 +7,7 @@
         </button>
     @endisset
 
+    {{-- Alert header --}}
     @if(! empty($title) || ! empty($icon))
         <h5>
             @if(! empty($icon))
