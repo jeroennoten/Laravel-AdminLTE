@@ -64,9 +64,10 @@ class Alert extends Component
         $this->title = $title;
         $this->dismissable = $dismissable;
 
-        // When a theme is provided, use the theme icon if no icon provided.
+        // When a theme is provided, use the default theme icon if no other
+        // icon is provided.
 
-        if (empty($icon) && ! empty($theme)) {
+        if (! isset($icon) && ! empty($theme)) {
             $this->icon = $this->icons[$theme];
         }
     }
