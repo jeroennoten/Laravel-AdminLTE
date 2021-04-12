@@ -2,6 +2,11 @@
 
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
+/**
+ * TODO: On the future, all menu items should have a type property. We can use
+ * the type property to easy distinguish the item type and avoid guessing it by
+ * they properties.
+ */
 class MenuItemHelper
 {
     /**
@@ -28,16 +33,27 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a search bar.
+     * Check if a menu item is a sidebar search.
      *
      * @param mixed $item
      * @return bool
      */
-    public static function isSearchBar($item)
+    public static function isSidebarSearch($item)
     {
         return isset($item['text']) &&
                isset($item['search']) &&
                $item['search'];
+    }
+
+    /**
+     * Check if a menu item is a navbar search.
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isNavbarSearch($item)
+    {
+        return isset($item['type']) && $item['type'] === 'navbar-search';
     }
 
     /**
@@ -67,6 +83,18 @@ class MenuItemHelper
     }
 
     /**
+     * Check if a menu item is a search item (for sidebar or navbar).
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isSearchItem($item)
+    {
+        return self::isSidebarSearch($item) ||
+               self::isNavbarSearch($item);
+    }
+
+    /**
      * Check if a menu item is valid for the sidebar section.
      *
      * @param mixed $item
@@ -75,7 +103,7 @@ class MenuItemHelper
     public static function isValidSidebarItem($item)
     {
         return self::isHeader($item) ||
-               self::isSearchBar($item) ||
+               self::isSidebarSearch($item) ||
                self::isSubmenu($item) ||
                self::isLink($item);
     }
@@ -88,7 +116,9 @@ class MenuItemHelper
      */
     public static function isValidNavbarItem($item)
     {
-        return self::isValidSidebarItem($item) && ! self::isHeader($item);
+        return self::isNavbarSearch($item) ||
+               self::isSubmenu($item) ||
+               self::isLink($item);
     }
 
     /**
