@@ -7,6 +7,13 @@ use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 class SearchFilter implements FilterInterface
 {
     /**
+     * The default name attribute to be used on the search input.
+     *
+     * @var string
+     */
+    protected $defInputName = 'adminlteSearch';
+
+    /**
      * Transforms a menu item. Makes the proper search bar configuration.
      *
      * @param array $item A menu item
@@ -29,7 +36,7 @@ class SearchFilter implements FilterInterface
         // Configure search bar input name.
 
         if (! isset($item['input_name'])) {
-            $item['input_name'] = 'q';
+            $item['input_name'] = $this->defInputName;
         }
 
         return $item;
