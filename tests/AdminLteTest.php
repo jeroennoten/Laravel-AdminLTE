@@ -120,12 +120,11 @@ class AdminLteTest extends TestCase
         config(['adminlte.layout_topnav' => true]);
         $menu = $this->makeAdminLte()->menu('navbar-left');
 
-        $this->assertCount(7, $menu);
+        $this->assertCount(8, $menu);
         $this->assertArrayNotHasKey(0, $menu);
         $this->assertArrayNotHasKey(6, $menu);
         $this->assertArrayNotHasKey(7, $menu);
         $this->assertArrayNotHasKey(10, $menu);
-        $this->assertArrayNotHasKey(11, $menu);
         $this->assertEquals('sidebar', $menu[1]['text']);
         $this->assertEquals('topnavLF', $menu[2]['text']);
         $this->assertEquals('topnavRF', $menu[3]['text']);
@@ -133,6 +132,7 @@ class AdminLteTest extends TestCase
         $this->assertEquals('topnavLT', $menu[5]['text']);
         $this->assertEquals('searchLT', $menu[8]['text']);
         $this->assertEquals('submenu', $menu[9]['text']);
+        $this->assertEquals('search', $menu[11]['text']);
     }
 
     public function testMenuNavbarRightFilter()
