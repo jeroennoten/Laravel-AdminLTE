@@ -7,8 +7,18 @@
         </button>
     @endisset
 
-    {{-- Alert title --}}
-    <h5><i class="icon {{ $icon }}"></i> {{ $title }}</h5>
+    {{-- Alert header --}}
+    @if(! empty($title) || ! empty($icon))
+        <h5>
+            @if(! empty($icon))
+                <i class="icon {{ $icon }}"></i>
+            @endif
+
+            @if(! empty($title))
+                {{ $title }}
+            @endif
+        </h5>
+    @endif
 
     {{-- Alert content --}}
     {{ $slot }}
