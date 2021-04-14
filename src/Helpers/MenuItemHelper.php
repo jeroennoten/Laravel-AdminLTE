@@ -46,12 +46,12 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a new navbar search bar.
+     * Check if a menu item is a navbar custom search bar.
      *
      * @param mixed $item
      * @return bool
      */
-    public static function isNewNavbarSearch($item)
+    public static function isNavbarCustomSearch($item)
     {
         return isset($item['type']) && $item['type'] === 'navbar-search';
     }
@@ -64,7 +64,8 @@ class MenuItemHelper
      */
     public static function isNavbarSearch($item)
     {
-        return self::isLegacySearch($item) || self::isNewNavbarSearch($item);
+        return self::isLegacySearch($item) ||
+               self::isNavbarCustomSearch($item);
     }
 
     /**
