@@ -53,7 +53,9 @@ class MenuItemHelper
      */
     public static function isNavbarCustomSearch($item)
     {
-        return isset($item['type']) && $item['type'] === 'navbar-search';
+        return isset($item['text']) &&
+               isset($item['type']) &&
+               $item['type'] === 'navbar-search';
     }
 
     /**
