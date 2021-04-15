@@ -7,7 +7,7 @@
         {{--Modal header --}}
         <div class="{{ $makeModalHeaderClass() }}">
             <h4 class="modal-title">
-                @isset($icon)<i class="{{ $icon }}"></i>@endisset
+                @isset($icon)<i class="{{ $icon }} mr-2"></i>@endisset
                 @isset($title){{ $title }}@endisset
             </h4>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
