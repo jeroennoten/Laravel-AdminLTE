@@ -41,7 +41,7 @@ class AdminLteTest extends TestCase
 
         // Add (1) search bar to the navbar menu.
 
-        $event->menu->add(['text' => 'searchLT', 'search' => true, 'topnav' => true]);
+        $event->menu->add(['text' => 'searchLT', 'type' => 'navbar-search', 'topnav' => true]);
 
         // Add (1) submenu to the sidebar menu.
 
@@ -50,12 +50,17 @@ class AdminLteTest extends TestCase
         // Add (1) invalid item.
 
         $event->menu->add(['text' => 'invalid']);
+
+        // Add (1) search bar to the sidebar menu.
+
+        $event->menu->add(['text' => 'search', 'search' => true]);
     }
 
     public function testMenuWithoutFilters()
     {
         $menu = $this->makeAdminLte()->menu();
-        $this->assertCount(11, $menu);
+
+        $this->assertCount(12, $menu);
         $this->assertEquals('header', $menu[0]['header']);
         $this->assertEquals('sidebar', $menu[1]['text']);
         $this->assertEquals('topnavLF', $menu[2]['text']);
@@ -67,12 +72,14 @@ class AdminLteTest extends TestCase
         $this->assertEquals('searchLT', $menu[8]['text']);
         $this->assertEquals('submenu', $menu[9]['text']);
         $this->assertEquals('invalid', $menu[10]['text']);
+        $this->assertEquals('search', $menu[11]['text']);
     }
 
     public function testMenuSidebarFilter()
     {
         $menu = $this->makeAdminLte()->menu('sidebar');
-        $this->assertCount(6, $menu);
+
+        $this->assertCount(7, $menu);
         $this->assertArrayNotHasKey(5, $menu);
         $this->assertArrayNotHasKey(6, $menu);
         $this->assertArrayNotHasKey(7, $menu);
@@ -84,6 +91,7 @@ class AdminLteTest extends TestCase
         $this->assertEquals('topnavRF', $menu[3]['text']);
         $this->assertEquals('topnavUF', $menu[4]['text']);
         $this->assertEquals('submenu', $menu[9]['text']);
+        $this->assertEquals('search', $menu[11]['text']);
     }
 
     public function testMenuNavbarLeftFilter()
@@ -91,8 +99,8 @@ class AdminLteTest extends TestCase
         // Test with config 'adminlte.layout_topnav' => null.
 
         config(['adminlte.layout_topnav' => null]);
-
         $menu = $this->makeAdminLte()->menu('navbar-left');
+
         $this->assertCount(2, $menu);
         $this->assertArrayNotHasKey(0, $menu);
         $this->assertArrayNotHasKey(1, $menu);
@@ -103,15 +111,16 @@ class AdminLteTest extends TestCase
         $this->assertArrayNotHasKey(7, $menu);
         $this->assertArrayNotHasKey(9, $menu);
         $this->assertArrayNotHasKey(10, $menu);
+        $this->assertArrayNotHasKey(11, $menu);
         $this->assertEquals('topnavLT', $menu[5]['text']);
         $this->assertEquals('searchLT', $menu[8]['text']);
 
-        // Set with config 'adminlte.layout_topnav' => true.
+        // Test with config 'adminlte.layout_topnav' => true.
 
         config(['adminlte.layout_topnav' => true]);
-
         $menu = $this->makeAdminLte()->menu('navbar-left');
-        $this->assertCount(7, $menu);
+
+        $this->assertCount(8, $menu);
         $this->assertArrayNotHasKey(0, $menu);
         $this->assertArrayNotHasKey(6, $menu);
         $this->assertArrayNotHasKey(7, $menu);
@@ -123,11 +132,13 @@ class AdminLteTest extends TestCase
         $this->assertEquals('topnavLT', $menu[5]['text']);
         $this->assertEquals('searchLT', $menu[8]['text']);
         $this->assertEquals('submenu', $menu[9]['text']);
+        $this->assertEquals('search', $menu[11]['text']);
     }
 
     public function testMenuNavbarRightFilter()
     {
         $menu = $this->makeAdminLte()->menu('navbar-right');
+
         $this->assertCount(1, $menu);
         $this->assertArrayNotHasKey(0, $menu);
         $this->assertArrayNotHasKey(1, $menu);
@@ -139,12 +150,14 @@ class AdminLteTest extends TestCase
         $this->assertArrayNotHasKey(8, $menu);
         $this->assertArrayNotHasKey(9, $menu);
         $this->assertArrayNotHasKey(10, $menu);
+        $this->assertArrayNotHasKey(11, $menu);
         $this->assertEquals('topnavRT', $menu[6]['text']);
     }
 
     public function testMenuNavbarUserFilter()
     {
         $menu = $this->makeAdminLte()->menu('navbar-user');
+
         $this->assertCount(1, $menu);
         $this->assertArrayNotHasKey(0, $menu);
         $this->assertArrayNotHasKey(1, $menu);
@@ -156,6 +169,7 @@ class AdminLteTest extends TestCase
         $this->assertArrayNotHasKey(8, $menu);
         $this->assertArrayNotHasKey(9, $menu);
         $this->assertArrayNotHasKey(10, $menu);
+        $this->assertArrayNotHasKey(11, $menu);
         $this->assertEquals('topnavUT', $menu[7]['text']);
     }
 }

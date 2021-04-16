@@ -2,6 +2,11 @@
 
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
+/**
+ * TODO: On the future, all menu items should have a type property. We can use
+ * the type property to easy distinguish the item type and avoid guessing it by
+ * they properties.
+ */
 class MenuItemHelper
 {
     /**
@@ -28,16 +33,41 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a search bar.
+     * Check if a menu item is a legacy search bar.
      *
      * @param mixed $item
      * @return bool
      */
-    public static function isSearchBar($item)
+    public static function isLegacySearch($item)
     {
         return isset($item['text']) &&
                isset($item['search']) &&
                $item['search'];
+    }
+
+    /**
+     * Check if a menu item is a navbar custom search bar.
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isNavbarCustomSearch($item)
+    {
+        return isset($item['text']) &&
+               isset($item['type']) &&
+               $item['type'] === 'navbar-search';
+    }
+
+    /**
+     * Check if a menu item is a navbar search item (legacy or new).
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isNavbarSearch($item)
+    {
+        return self::isLegacySearch($item) ||
+               self::isNavbarCustomSearch($item);
     }
 
     /**
@@ -67,6 +97,18 @@ class MenuItemHelper
     }
 
     /**
+     * Check if a menu item is a search item (for sidebar or navbar).
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isSearchItem($item)
+    {
+        return self::isLegacySearch($item) ||
+               self::isNavbarSearch($item);
+    }
+
+    /**
      * Check if a menu item is valid for the sidebar section.
      *
      * @param mixed $item
@@ -75,7 +117,7 @@ class MenuItemHelper
     public static function isValidSidebarItem($item)
     {
         return self::isHeader($item) ||
-               self::isSearchBar($item) ||
+               self::isLegacySearch($item) ||
                self::isSubmenu($item) ||
                self::isLink($item);
     }
@@ -88,7 +130,9 @@ class MenuItemHelper
      */
     public static function isValidNavbarItem($item)
     {
-        return self::isValidSidebarItem($item) && ! self::isHeader($item);
+        return self::isNavbarSearch($item) ||
+               self::isSubmenu($item) ||
+               self::isLink($item);
     }
 
     /**

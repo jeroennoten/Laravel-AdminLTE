@@ -225,8 +225,8 @@ return [
 
     'menu' => [
         [
-            'text' => 'search',
-            'search' => true,
+            'type'   => 'navbar-search',
+            'text'   => 'search',
             'topnav' => true,
         ],
         [

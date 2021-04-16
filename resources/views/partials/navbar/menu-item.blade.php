@@ -1,6 +1,6 @@
 @inject('menuItemHelper', 'JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper')
 
-@if ($menuItemHelper->isSearchBar($item))
+@if ($menuItemHelper->isNavbarSearch($item))
 
     {{-- Search form --}}
     @include('adminlte::partials.navbar.menu-item-search-form')
