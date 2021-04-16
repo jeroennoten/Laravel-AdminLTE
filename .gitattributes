@@ -5,4 +5,3 @@
 /.styleci.yml       export-ignore
 /phpunit.xml        export-ignore
 /tests              export-ignore
-/assets             export-ignore
