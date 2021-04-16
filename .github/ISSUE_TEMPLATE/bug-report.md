@@ -30,7 +30,7 @@ Complete the next environment information.
 | ------- | -------
 | Laravel | <!-- Fill with version of Laravel -->
 | Project | <!-- Fill with the package version -->
-| OS       | <!-- Fill with the operating system version -->
+| OS      | <!-- Fill with the operating system version -->
 
 ### Additional context
 Add any other context about the problem here. If you already have ideas to solve the issue, add them here or create a Pull Request (PR).
