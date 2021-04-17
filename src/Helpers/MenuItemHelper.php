@@ -123,18 +123,6 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a search item (for sidebar or navbar).
-     *
-     * @param mixed $item
-     * @return bool
-     */
-    public static function isSearchItem($item)
-    {
-        return self::isNavbarSearch($item) ||
-               self::isSidebarSearch($item);
-    }
-
-    /**
      * Check if a menu item is allowed to be shown.
      *
      * @param mixed $item
