@@ -224,7 +224,7 @@ return [
     */
 
     'menu' => [
-        // Navbar items:        
+        // Navbar items:
         [
             'type'         => 'navbar-search',
             'text'         => 'search',
