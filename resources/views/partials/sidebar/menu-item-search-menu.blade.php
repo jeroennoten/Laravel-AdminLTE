@@ -1,9 +1,7 @@
 <li>
 
-    <form class="form-inline my-2" action="{{ $item['href'] }}" method="{{ $item['method'] }}">
-        {{ csrf_field() }}
-
-        <div class="input-group">
+    <div class="form-inline my-2">
+        <div class="input-group" data-widget="sidebar-search" data-arrow-sign="&raquo;">
 
             {{-- Search input --}}
             <input class="form-control form-control-sidebar" type="search"
@@ -14,12 +12,12 @@
 
             {{-- Search button --}}
             <div class="input-group-append">
-                <button class="btn btn-sidebar" type="submit">
+                <button class="btn btn-sidebar">
                     <i class="fas fa-fw fa-search"></i>
                 </button>
             </div>
 
         </div>
-    </form>
+    </div>
 
 </li>

@@ -21,7 +21,10 @@ class SearchFilter implements FilterInterface
      */
     public function transform($item)
     {
-        if (! MenuItemHelper::isSearchItem($item)) {
+        $isSearch = MenuItemHelper::isNavbarSearch($item) ||
+                    MenuItemHelper::isSidebarSearch($item);
+
+        if (! $isSearch) {
             return $item;
         }
 

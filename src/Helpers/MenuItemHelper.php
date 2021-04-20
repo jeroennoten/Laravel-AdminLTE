@@ -33,6 +33,19 @@ class MenuItemHelper
     }
 
     /**
+     * Check if a menu item is a submenu.
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isSubmenu($item)
+    {
+        return isset($item['text']) &&
+               isset($item['submenu']) &&
+               is_array($item['submenu']);
+    }
+
+    /**
      * Check if a menu item is a legacy search bar.
      *
      * @param mixed $item
@@ -59,6 +72,32 @@ class MenuItemHelper
     }
 
     /**
+     * Check if a menu item is a sidebar custom search bar.
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isSidebarCustomSearch($item)
+    {
+        return isset($item['text']) &&
+               isset($item['type']) &&
+               $item['type'] === 'sidebar-custom-search';
+    }
+
+    /**
+     * Check if a menu item is a sidebar menu search bar.
+     *
+     * @param mixed $item
+     * @return bool
+     */
+    public static function isSidebarMenuSearch($item)
+    {
+        return isset($item['text']) &&
+               isset($item['type']) &&
+               $item['type'] === 'sidebar-menu-search';
+    }
+
+    /**
      * Check if a menu item is a navbar search item (legacy or new).
      *
      * @param mixed $item
@@ -71,16 +110,16 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a submenu.
+     * Check if a menu item is a sidebar search item (legacy or new).
      *
      * @param mixed $item
      * @return bool
      */
-    public static function isSubmenu($item)
+    public static function isSidebarSearch($item)
     {
-        return isset($item['text']) &&
-               isset($item['submenu']) &&
-               is_array($item['submenu']);
+        return self::isLegacySearch($item) ||
+               self::isSidebarMenuSearch($item) ||
+               self::isSidebarCustomSearch($item);
     }
 
     /**
@@ -97,18 +136,6 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a search item (for sidebar or navbar).
-     *
-     * @param mixed $item
-     * @return bool
-     */
-    public static function isSearchItem($item)
-    {
-        return self::isLegacySearch($item) ||
-               self::isNavbarSearch($item);
-    }
-
-    /**
      * Check if a menu item is valid for the sidebar section.
      *
      * @param mixed $item
@@ -117,7 +144,7 @@ class MenuItemHelper
     public static function isValidSidebarItem($item)
     {
         return self::isHeader($item) ||
-               self::isLegacySearch($item) ||
+               self::isSidebarSearch($item) ||
                self::isSubmenu($item) ||
                self::isLink($item);
     }
