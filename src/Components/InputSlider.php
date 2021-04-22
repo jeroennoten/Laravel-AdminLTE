@@ -27,13 +27,13 @@ class InputSlider extends InputGroupComponent
      * @return void
      */
     public function __construct(
-        $name, $label = null, $size = null, $labelClass = null,
-        $topClass = null, $inputGroupClass = null, $disableFeedback = null,
-        $config = [], $color = null
+        $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
+        $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
+        $errorKey = null, $config = [], $color = null
     ) {
         parent::__construct(
-            $name, $label, $size, $labelClass, $topClass,
-            $inputGroupClass, $disableFeedback
+            $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
+            $igroupClass, $disableFeedback, $errorKey
         );
 
         $this->config = is_array($config) ? $config : [];
@@ -41,7 +41,7 @@ class InputSlider extends InputGroupComponent
 
         // Set a default plugin 'id' option.
 
-        $this->config['id'] = $this->config['id'] ?? "{$name}-slider";
+        $this->config['id'] = $this->config['id'] ?? "{$this->id}-slider";
     }
 
     /**
@@ -63,8 +63,8 @@ class InputSlider extends InputGroupComponent
             $classes[] = 'adminlte-invalid-islgroup';
         }
 
-        if (isset($this->inputGroupClass)) {
-            $classes[] = $this->inputGroupClass;
+        if (isset($this->igroupClass)) {
+            $classes[] = $this->igroupClass;
         }
 
         return implode(' ', $classes);

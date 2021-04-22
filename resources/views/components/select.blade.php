@@ -3,8 +3,8 @@
 @section('input_group_item')
 
     {{-- Select --}}
-    <select id="{{ $name }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+    <select id="{{ $id }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
         {{ $slot }}
     </select>
 

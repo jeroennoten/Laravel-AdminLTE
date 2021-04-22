@@ -10,30 +10,14 @@ class Select extends InputGroupComponent
      * @return void
      */
     public function __construct(
-        $name, $label = null, $size = null, $labelClass = null,
-        $topClass = null, $inputGroupClass = null, $disableFeedback = null
+        $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
+        $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
+        $errorKey = null
     ) {
         parent::__construct(
-            $name, $label, $size, $labelClass, $topClass,
-            $inputGroupClass, $disableFeedback
+            $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
+            $igroupClass, $disableFeedback, $errorKey
         );
-    }
-
-    /**
-     * Make the class attribute for the input group item.
-     *
-     * @param string $invalid
-     * @return string
-     */
-    public function makeItemClass($invalid = null)
-    {
-        $classes = ['form-control'];
-
-        if (! empty($invalid) && ! isset($this->disableFeedback)) {
-            $classes[] = 'is-invalid';
-        }
-
-        return implode(' ', $classes);
     }
 
     /**

@@ -3,8 +3,8 @@
 @section('input_group_item')
 
     {{-- Input Slider --}}
-    <input id="{{ $name }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+    <input id="{{ $id }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
 
 @overwrite
 
@@ -45,7 +45,7 @@
 
         // Initialize the plugin.
 
-        let slider = $('#{{ $name }}').bootstrapSlider(usrCfg);
+        let slider = $('#{{ $id }}').bootstrapSlider(usrCfg);
 
         // Fix height conflict when orientation is vertical.
 

@@ -3,8 +3,8 @@
 @section('input_group_item')
 
     {{-- Input Color --}}
-    <input id="{{ $name }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+    <input id="{{ $id }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
 
 @overwrite
 
@@ -19,16 +19,16 @@
 
         let setAddonColor = function()
         {
-            let color = $('#{{ $name }}').data('colorpicker').getValue();
+            let color = $('#{{ $id }}').data('colorpicker').getValue();
 
-            $('#{{ $name }}').closest('.input-group')
+            $('#{{ $id }}').closest('.input-group')
                 .find('.input-group-text > i')
                 .css('color', color);
         }
 
         // Init the plugin and register the change event listener.
 
-        $('#{{ $name }}').colorpicker( @json($config) )
+        $('#{{ $id }}').colorpicker( @json($config) )
             .on('change', setAddonColor);
 
         // Set the initial color for the addon.

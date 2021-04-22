@@ -29,13 +29,13 @@ class DateRange extends InputGroupComponent
      * @return void
      */
     public function __construct(
-        $name, $label = null, $size = null, $labelClass = null,
-        $topClass = null, $inputGroupClass = null, $disableFeedback = null,
-        $config = [], $enableDefaultRanges = null
+        $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
+        $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
+        $errorKey = null, $config = [], $enableDefaultRanges = null
     ) {
         parent::__construct(
-            $name, $label, $size, $labelClass, $topClass,
-            $inputGroupClass, $disableFeedback
+            $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
+            $igroupClass, $disableFeedback, $errorKey
         );
 
         $this->config = is_array($config) ? $config : [];

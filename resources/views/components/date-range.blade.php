@@ -3,8 +3,8 @@
 @section('input_group_item')
 
     {{-- Date Range Input --}}
-    <input id="{{ $name }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+    <input id="{{ $id }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
 
 @overwrite
 
@@ -28,7 +28,7 @@
             }
         @endisset
 
-        $('#{{ $name }}').daterangepicker(usrCfg);
+        $('#{{ $id }}').daterangepicker(usrCfg);
     })
 
 </script>
