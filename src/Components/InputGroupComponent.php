@@ -163,14 +163,15 @@ class InputGroupComponent extends Component
      * Make the error key that will be used to search for validation errors.
      * The error key is generated from the 'name' property.
      * Examples:
-     * $name = 'files[]'         => $errorKey = 'files'
-     * $name = 'person[2][name]' => $errorKey = 'person.2.name'
+     * $name = 'files[]'         => $errorKey = 'files'.
+     * $name = 'person[2][name]' => $errorKey = 'person.2.name'.
      *
      * @return string
      */
     protected function makeErrorKey()
     {
         $errKey = preg_replace('@\[\]$@', '', $this->name);
+
         return preg_replace('@\[([a-zA-Z0-9_-]+)\]@', '.$1', $errKey);
     }
 
