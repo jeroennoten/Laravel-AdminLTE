@@ -5,6 +5,11 @@
     {{-- Search form --}}
     @include('adminlte::partials.navbar.menu-item-search-form')
 
+@elseif ($menuItemHelper->isFullscreen($item))
+
+    {{-- Fullscreen toggle widget --}}
+    @include('adminlte::partials.navbar.menu-item-fullscreen-widget')
+
 @elseif ($menuItemHelper->isSubmenu($item))
 
     {{-- Dropdown menu --}}
