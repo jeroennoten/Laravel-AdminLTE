@@ -172,7 +172,7 @@ class InputGroupComponent extends Component
     {
         $errKey = preg_replace('@\[\]$@', '', $this->name);
 
-        return preg_replace('@\[([a-zA-Z0-9_-]+)\]@', '.$1', $errKey);
+        return preg_replace('@\[([^]]+)\]@', '.$1', $errKey);
     }
 
     /**
