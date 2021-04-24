@@ -87,7 +87,7 @@ class ServiceProviderTest extends TestCase
         $adminlte = $this->app->make(AdminLte::class);
         $menu = $adminlte->menu();
 
-        $this->assertCount(11, $menu);
+        $this->assertCount(12, $menu);
         $this->assertEquals('search', $menu[0]['text']);
     }
 
