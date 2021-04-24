@@ -3,8 +3,8 @@
 @section('input_group_item')
 
     {{-- Summernote Textarea --}}
-    <textarea id="{{ $name }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}
+    <textarea id="{{ $id }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}
     >{{ $slot }}</textarea>
 
 @overwrite
@@ -25,12 +25,12 @@
 
         // Initialize the plugin.
 
-        $('#{{ $name }}').summernote(usrCfg);
+        $('#{{ $id }}').summernote(usrCfg);
 
         // Check for disabled attribute.
 
         @isset($attributes['disabled'])
-            $('#{{ $name }}').summernote('disable');
+            $('#{{ $id }}').summernote('disable');
         @endisset
     })
 

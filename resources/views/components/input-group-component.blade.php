@@ -2,13 +2,13 @@
 
     {{-- Input label --}}
     @isset($label)
-        <label for="{{ $name }}" @isset($labelClass) class="{{ $labelClass }}" @endisset>
+        <label for="{{ $id }}" @isset($labelClass) class="{{ $labelClass }}" @endisset>
             {{ $label }}
         </label>
     @endisset
 
     {{-- Input group --}}
-    <div class="{{ $makeInputGroupClass($errors->first($name)) }}">
+    <div class="{{ $makeInputGroupClass($errors->first($errorKey)) }}">
 
         {{-- Input prepend slot --}}
         @isset($prependSlot)
@@ -27,7 +27,7 @@
 
     {{-- Error feedback --}}
     @if(! isset($disableFeedback))
-        @error($name)
+        @error($errorKey)
             <span class="invalid-feedback d-block" role="alert">
                 <strong>{{ $message }}</strong>
             </span>
@@ -58,4 +58,3 @@
 </style>
 @endpush
 @endonce
-

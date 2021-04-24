@@ -7,8 +7,17 @@ use Illuminate\View\Component;
 class InputGroupComponent extends Component
 {
     /**
-     * The name and id attribute for the input group item. The input group item
-     * may be an "input", a "select", a "textarea", etc.
+     * The id attribute for the underlying input group item. The input group
+     * item may be an "input", a "select", a "textarea", etc.
+     *
+     * @var string
+     */
+    public $id;
+
+    /**
+     * The name attribute for the underlying input group item. This value will
+     * be used as the default id attribute when not provided. The input group
+     * item may be an "input", a "select", a "textarea", etc.
      *
      * @var string
      */
@@ -29,6 +38,14 @@ class InputGroupComponent extends Component
     public $size;
 
     /**
+     * Additional classes for "input-group" element. This provides a way to
+     * customize the input group container style.
+     *
+     * @var string
+     */
+    public $igroupClass;
+
+    /**
      * Extra classes for the label container. This provides a way to customize
      * the label style.
      *
@@ -42,7 +59,7 @@ class InputGroupComponent extends Component
      *
      * @var string
      */
-    public $topClass;
+    public $fgroupClass;
 
     /**
      * Indicates if the invalid feedback is disabled for the input group.
@@ -52,12 +69,13 @@ class InputGroupComponent extends Component
     public $disableFeedback;
 
     /**
-     * Additional classes for "input-group" element. This provides a way to
-     * customize the input group container style.
+     * The lookup key to use when searching for validation errors. The lookup
+     * key is automatically generated from the name property. This provides a
+     * way to overwrite that value.
      *
      * @var string
      */
-    public $inputGroupClass;
+    public $errorKey;
 
     /**
      * Create a new component instance.
@@ -65,16 +83,22 @@ class InputGroupComponent extends Component
      * @return void
      */
     public function __construct(
-        $name, $label = null, $size = null, $labelClass = null,
-        $topClass = null, $inputGroupClass = null, $disableFeedback = null
+        $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
+        $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
+        $errorKey = null
     ) {
+        $this->id = $id ?? $name;
         $this->name = $name;
         $this->label = $label;
-        $this->size = $size;
-        $this->topClass = $topClass;
+        $this->size = $igroupSize;
+        $this->fgroupClass = $fgroupClass;
         $this->labelClass = $labelClass;
-        $this->inputGroupClass = $inputGroupClass;
+        $this->igroupClass = $igroupClass;
         $this->disableFeedback = $disableFeedback;
+
+        // Setup the lookup key for validation errors.
+
+        $this->errorKey = $errorKey ?? $this->makeErrorKey();
     }
 
     /**
@@ -86,8 +110,8 @@ class InputGroupComponent extends Component
     {
         $classes = ['form-group'];
 
-        if (isset($this->topClass)) {
-            $classes[] = $this->topClass;
+        if (isset($this->fgroupClass)) {
+            $classes[] = $this->fgroupClass;
         }
 
         return implode(' ', $classes);
@@ -111,8 +135,8 @@ class InputGroupComponent extends Component
             $classes[] = 'adminlte-invalid-igroup';
         }
 
-        if (isset($this->inputGroupClass)) {
-            $classes[] = $this->inputGroupClass;
+        if (isset($this->igroupClass)) {
+            $classes[] = $this->igroupClass;
         }
 
         return implode(' ', $classes);
@@ -133,6 +157,22 @@ class InputGroupComponent extends Component
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the error key that will be used to search for validation errors.
+     * The error key is generated from the 'name' property.
+     * Examples:
+     * $name = 'files[]'         => $errorKey = 'files'.
+     * $name = 'person[2][name]' => $errorKey = 'person.2.name'.
+     *
+     * @return string
+     */
+    protected function makeErrorKey()
+    {
+        $errKey = preg_replace('@\[\]$@', '', $this->name);
+
+        return preg_replace('@\[([^]]+)\]@', '.$1', $errKey);
     }
 
     /**

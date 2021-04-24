@@ -3,8 +3,8 @@
 @section('input_group_item')
 
     {{-- Input Switch --}}
-    <input type="checkbox" id="{{ $name }}" name="{{ $name }}" value="true"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+    <input type="checkbox" id="{{ $id }}" name="{{ $name }}" value="true"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
 
 @overwrite
 
@@ -14,7 +14,7 @@
 <script>
 
     $(() => {
-        $('#{{ $name }}').bootstrapSwitch( @json($config) );
+        $('#{{ $id }}').bootstrapSwitch( @json($config) );
     })
 
 </script>

@@ -5,11 +5,11 @@
     <div class="custom-file">
 
         {{-- Custom file input --}}
-        <input type="file" id="{{ $name }}" name="{{ $name }}"
-            {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+        <input type="file" id="{{ $id }}" name="{{ $name }}"
+            {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
 
         {{-- Custom file label --}}
-        <label class="custom-file-label text-truncate" for="{{ $name }}"
+        <label class="custom-file-label text-truncate" for="{{ $id }}"
             @isset($legend) data-browse="{{ $legend }}" @endisset>
             {{ $placeholder }}
         </label>

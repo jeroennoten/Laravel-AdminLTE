@@ -3,7 +3,7 @@
 @section('input_group_item')
 
     {{-- Input --}}
-    <input id="{{ $name }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+    <input id="{{ $id }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
 
 @overwrite

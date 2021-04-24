@@ -3,8 +3,8 @@
 @section('input_group_item')
 
     {{-- Input Date --}}
-    <input id="{{ $name }}" name="{{ $name }}" data-target="#{{ $name }}" data-toggle="datetimepicker"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($name))]) }}>
+    <input id="{{ $id }}" name="{{ $name }}" data-target="#{{ $id }}" data-toggle="datetimepicker"
+        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
 
 @overwrite
 
@@ -15,7 +15,7 @@
 
     $(() => {
         let usrCfg = _adminlte_idUtils.parseCfg( @json($config) );
-        $('#{{ $name }}').datetimepicker(usrCfg);
+        $('#{{ $id }}').datetimepicker(usrCfg);
     })
 
 </script>
