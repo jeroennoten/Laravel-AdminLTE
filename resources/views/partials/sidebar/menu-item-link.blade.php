@@ -1,7 +1,7 @@
-<li @if(isset($item['id'])) id="{{ $item['id'] }}" @endif class="nav-item">
+<li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item">
 
-    <a class="nav-link {{ $item['class'] }} @if(isset($item['shift'])) {{ $item['shift'] }} @endif"
-       href="{{ $item['href'] }}" @if(isset($item['target'])) target="{{ $item['target'] }}" @endif
+    <a class="nav-link {{ $item['class'] }} @isset($item['shift']) {{ $item['shift'] }} @endisset"
+       href="{{ $item['href'] }}" @isset($item['target']) target="{{ $item['target'] }}" @endisset
        {!! $item['data-compiled'] ?? '' !!}>
 
         <i class="{{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
@@ -11,11 +11,11 @@
         <p>
             {{ $item['text'] }}
 
-            @if(isset($item['label']))
+            @isset($item['label'])
                 <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} right">
                     {{ $item['label'] }}
                 </span>
-            @endif
+            @endisset
         </p>
 
     </a>
