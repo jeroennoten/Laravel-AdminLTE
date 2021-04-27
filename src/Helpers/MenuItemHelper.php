@@ -40,8 +40,7 @@ class MenuItemHelper
      */
     public static function isSubmenu($item)
     {
-        return isset($item['text']) &&
-               isset($item['submenu']) &&
+        return isset($item['text'], $item['submenu']) &&
                is_array($item['submenu']);
     }
 
@@ -53,8 +52,7 @@ class MenuItemHelper
      */
     public static function isLegacySearch($item)
     {
-        return isset($item['text']) &&
-               isset($item['search']) &&
+        return isset($item['text'], $item['search']) &&
                $item['search'];
     }
 
@@ -66,8 +64,7 @@ class MenuItemHelper
      */
     public static function isNavbarCustomSearch($item)
     {
-        return isset($item['text']) &&
-               isset($item['type']) &&
+        return isset($item['text'], $item['type']) &&
                $item['type'] === 'navbar-search';
     }
 
@@ -79,8 +76,7 @@ class MenuItemHelper
      */
     public static function isSidebarCustomSearch($item)
     {
-        return isset($item['text']) &&
-               isset($item['type']) &&
+        return isset($item['text'], $item['type']) &&
                $item['type'] === 'sidebar-custom-search';
     }
 
@@ -92,8 +88,7 @@ class MenuItemHelper
      */
     public static function isSidebarMenuSearch($item)
     {
-        return isset($item['text']) &&
-               isset($item['type']) &&
+        return isset($item['text'], $item['type']) &&
                $item['type'] === 'sidebar-menu-search';
     }
 
