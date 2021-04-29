@@ -95,10 +95,10 @@ class ServiceProviderTest extends TestCase
     {
         // Check that some of the blade component views are loaded.
 
-        $this->assertTrue(View::exists('adminlte::components.input'));
-        $this->assertTrue(View::exists('adminlte::components.select2'));
-        $this->assertTrue(View::exists('adminlte::components.card'));
-        $this->assertTrue(View::exists('adminlte::components.modal'));
+        $this->assertTrue(View::exists('adminlte::components.form.input'));
+        $this->assertTrue(View::exists('adminlte::components.form.select2'));
+        $this->assertTrue(View::exists('adminlte::components.widget.card'));
+        $this->assertTrue(View::exists('adminlte::components.tool.modal'));
 
         // Support of x-components is only available for Laravel >= 7.x
         // versions. So, check if we can test for component existence first.
