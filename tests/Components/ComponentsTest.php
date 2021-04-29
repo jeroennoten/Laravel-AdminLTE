@@ -20,45 +20,48 @@ class ComponentsTest extends TestCase
     protected function getComponents()
     {
         $base = 'adminlte::components';
+        $form = "{$base}.form";
+        $tool = "{$base}.tool";
+        $widget = "{$base}.widget";
 
         return [
 
             // Base components.
 
-            "{$base}.input-group-component"  => new Components\InputGroupComponent('name'),
+            "{$form}.input-group-component" => new Components\Form\InputGroupComponent('name'),
 
             // Form components.
 
-            "{$base}.button"       => new Components\Button(),
-            "{$base}.date-range"   => new Components\DateRange('name'),
-            "{$base}.input"        => new Components\Input('name'),
-            "{$base}.input-color"  => new Components\InputColor('name'),
-            "{$base}.input-date"   => new Components\InputDate('name'),
-            "{$base}.input-file"   => new Components\InputFile('name'),
-            "{$base}.input-slider" => new Components\InputSlider('name'),
-            "{$base}.input-switch" => new Components\InputSwitch('name'),
-            "{$base}.select"       => new Components\Select('name'),
-            "{$base}.select2"      => new Components\Select2('name'),
-            "{$base}.select-bs"    => new Components\SelectBs('name'),
-            "{$base}.textarea"     => new Components\Textarea('name'),
-            "{$base}.text-editor"  => new Components\TextEditor('name'),
+            "{$form}.button"       => new Components\Form\Button(),
+            "{$form}.date-range"   => new Components\Form\DateRange('name'),
+            "{$form}.input"        => new Components\Form\Input('name'),
+            "{$form}.input-color"  => new Components\Form\InputColor('name'),
+            "{$form}.input-date"   => new Components\Form\InputDate('name'),
+            "{$form}.input-file"   => new Components\Form\InputFile('name'),
+            "{$form}.input-slider" => new Components\Form\InputSlider('name'),
+            "{$form}.input-switch" => new Components\Form\InputSwitch('name'),
+            "{$form}.select"       => new Components\Form\Select('name'),
+            "{$form}.select2"      => new Components\Form\Select2('name'),
+            "{$form}.select-bs"    => new Components\Form\SelectBs('name'),
+            "{$form}.textarea"     => new Components\Form\Textarea('name'),
+            "{$form}.text-editor"  => new Components\Form\TextEditor('name'),
 
             // Tool components.
 
-            "{$base}.datatable"    => new Components\Datatable('id', []),
-            "{$base}.modal"        => new Components\Modal('id'),
+            "{$tool}.datatable" => new Components\Tool\Datatable('id', []),
+            "{$tool}.modal"     => new Components\Tool\Modal('id'),
 
             // Widget components.
 
-            "{$base}.alert"            => new Components\Alert(),
-            "{$base}.callout"          => new Components\Callout(),
-            "{$base}.card"             => new Components\Card(),
-            "{$base}.info-box"         => new Components\InfoBox(),
-            "{$base}.profile-col-item" => new Components\ProfileColItem(),
-            "{$base}.profile-row-item" => new Components\ProfileRowItem(),
-            "{$base}.profile-widget"   => new Components\ProfileWidget(),
-            "{$base}.progress"         => new Components\Progress(),
-            "{$base}.small-box"        => new Components\SmallBox(),
+            "{$widget}.alert"            => new Components\Widget\Alert(),
+            "{$widget}.callout"          => new Components\Widget\Callout(),
+            "{$widget}.card"             => new Components\Widget\Card(),
+            "{$widget}.info-box"         => new Components\Widget\InfoBox(),
+            "{$widget}.profile-col-item" => new Components\Widget\ProfileColItem(),
+            "{$widget}.profile-row-item" => new Components\Widget\ProfileRowItem(),
+            "{$widget}.profile-widget"   => new Components\Widget\ProfileWidget(),
+            "{$widget}.progress"         => new Components\Widget\Progress(),
+            "{$widget}.small-box"        => new Components\Widget\SmallBox(),
         ];
     }
 
@@ -78,7 +81,7 @@ class ComponentsTest extends TestCase
 
     public function testInputGroupComponent()
     {
-        $component = new Components\InputGroupComponent(
+        $component = new Components\Form\InputGroupComponent(
             'name', null, null, 'lg', null, 'fgroup-class', 'igroup-class'
         );
 
@@ -104,7 +107,7 @@ class ComponentsTest extends TestCase
 
     public function testInputDateComponent()
     {
-        $component = new Components\InputDate('name');
+        $component = new Components\Form\InputDate('name');
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('datetimepicker', $iClass);
@@ -113,7 +116,7 @@ class ComponentsTest extends TestCase
 
     public function testInputFileComponent()
     {
-        $component = new Components\InputFile('name', null, null, 'sm');
+        $component = new Components\Form\InputFile('name', null, null, 'sm');
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('custom-file-input', $iClass);
@@ -122,7 +125,7 @@ class ComponentsTest extends TestCase
 
     public function testInputSliderComponent()
     {
-        $component = new Components\InputSlider(
+        $component = new Components\Form\InputSlider(
             'name', null, null, 'lg', null, null, 'igroup-class'
         );
 
@@ -138,7 +141,7 @@ class ComponentsTest extends TestCase
 
     public function testInputSwitchComponent()
     {
-        $component = new Components\InputSwitch(
+        $component = new Components\Form\InputSwitch(
             'name', null, null, 'lg', null, null, 'igroup-class'
         );
 
@@ -154,7 +157,7 @@ class ComponentsTest extends TestCase
 
     public function testSelectComponent()
     {
-        $component = new Components\Select('name');
+        $component = new Components\Form\Select('name');
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('form-control', $iClass);
@@ -163,7 +166,7 @@ class ComponentsTest extends TestCase
 
     public function testSelect2Component()
     {
-        $component = new Components\Select2('name');
+        $component = new Components\Form\Select2('name');
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('form-control', $iClass);
@@ -172,7 +175,7 @@ class ComponentsTest extends TestCase
 
     public function testSelectBsComponent()
     {
-        $component = new Components\SelectBs('name', null, null, 'lg');
+        $component = new Components\Form\SelectBs('name', null, null, 'lg');
         $iClass = $component->makeItemClass(true);
 
         $this->assertStringContainsString('form-control', $iClass);
@@ -182,7 +185,7 @@ class ComponentsTest extends TestCase
 
     public function testTextEditorComponent()
     {
-        $component = new Components\TextEditor(
+        $component = new Components\Form\TextEditor(
             'name', null, null, 'lg', null, null, 'igroup-class'
         );
 
@@ -203,7 +206,7 @@ class ComponentsTest extends TestCase
     public function testDatatableComponent()
     {
         // Test basic component.
-        $component = new Components\Datatable('id', []);
+        $component = new Components\Tool\Datatable('id', []);
 
         $tClass = $component->makeTableClass();
         $this->assertStringContainsString('table', $tClass);
@@ -212,7 +215,7 @@ class ComponentsTest extends TestCase
         // $id, $heads, $theme, $headTheme, $bordered, $hoverable, $striped,
         // $compressed, $withFooter, $footerTheme, $beautify, $withButtons,
         // $config
-        $component = new Components\Datatable(
+        $component = new Components\Tool\Datatable(
             'id', [], 'primary', null, true, true, true, true, null, null,
             null, true, null
         );
@@ -229,7 +232,7 @@ class ComponentsTest extends TestCase
     {
         // Test basic component.
 
-        $component = new Components\Modal('id');
+        $component = new Components\Tool\Modal('id');
 
         $mClass = $component->makeModalClass();
         $this->assertStringContainsString('modal', $mClass);
@@ -248,7 +251,7 @@ class ComponentsTest extends TestCase
         // $id, $title, $icon, $size, $theme, $vCentered, $scrollable,
         // $staticBackdrop, $disableAnimations.
 
-        $component = new Components\Modal(
+        $component = new Components\Tool\Modal(
             'id', 'title', null, 'lg', 'info', true, true, true, true
         );
 
@@ -277,7 +280,7 @@ class ComponentsTest extends TestCase
     {
         // Test without theme.
 
-        $component = new Components\Alert(null, null, null);
+        $component = new Components\Widget\Alert(null, null, null);
 
         $aClass = $component->makeAlertClass();
 
@@ -286,7 +289,7 @@ class ComponentsTest extends TestCase
 
         // Test with theme.
 
-        $component = new Components\Alert('danger', null, null, true);
+        $component = new Components\Widget\Alert('danger', null, null, true);
 
         $aClass = $component->makeAlertClass();
 
@@ -297,7 +300,7 @@ class ComponentsTest extends TestCase
 
     public function testCalloutComponent()
     {
-        $component = new Components\Callout('danger');
+        $component = new Components\Widget\Callout('danger');
 
         $cClass = $component->makeCalloutClass();
 
@@ -309,7 +312,7 @@ class ComponentsTest extends TestCase
     {
         // Test basic component.
 
-        $component = new Components\Card('title', null, 'info');
+        $component = new Components\Widget\Card('title', null, 'info');
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('card', $cClass);
@@ -322,7 +325,7 @@ class ComponentsTest extends TestCase
         // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
         // $removable, $maximizable.
 
-        $component = new Components\Card(
+        $component = new Components\Widget\Card(
             'title', null, 'success', 'full', null, 'collapsed'
         );
 
@@ -334,7 +337,9 @@ class ComponentsTest extends TestCase
         // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
         // $removable, $maximizable.
 
-        $component = new Components\Card('title', null, 'teal', 'outline');
+        $component = new Components\Widget\Card(
+            'title', null, 'teal', 'outline'
+        );
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('card-teal', $cClass);
@@ -346,7 +351,7 @@ class ComponentsTest extends TestCase
 
     public function testInfoBoxComponent()
     {
-        $component = new Components\InfoBox(
+        $component = new Components\Widget\InfoBox(
             'title', 'text', null, null, 'danger', 'primary'
         );
 
@@ -361,7 +366,7 @@ class ComponentsTest extends TestCase
 
     public function testProfileColItemComponent()
     {
-        $component = new Components\ProfileColItem(
+        $component = new Components\Widget\ProfileColItem(
             'title', 'text', null, null, 'b-theme'
         );
 
@@ -372,7 +377,7 @@ class ComponentsTest extends TestCase
 
     public function testProfileRowItemComponent()
     {
-        $component = new Components\ProfileRowItem(
+        $component = new Components\Widget\ProfileRowItem(
             'title', 'text', null, null, 'b-theme'
         );
 
@@ -385,7 +390,7 @@ class ComponentsTest extends TestCase
     {
         // Test without cover.
 
-        $component = new Components\ProfileWidget(
+        $component = new Components\Widget\ProfileWidget(
             'name', 'description', null, 'danger', null, 'h-class', 'f-class',
             'layout-foo'
         );
@@ -411,7 +416,7 @@ class ComponentsTest extends TestCase
 
         // Test with cover and classic layout.
 
-        $component = new Components\ProfileWidget(
+        $component = new Components\Widget\ProfileWidget(
             'name', 'description', null, 'danger', 'img.png', null, null,
             'classic'
         );
@@ -430,7 +435,7 @@ class ComponentsTest extends TestCase
     {
         // Test basic component.
 
-        $component = new Components\Progress();
+        $component = new Components\Widget\Progress();
 
         $pClass = $component->makeProgressClass();
         $this->assertStringContainsString('progress', $pClass);
@@ -445,7 +450,7 @@ class ComponentsTest extends TestCase
         // Test with all constructor arguments:
         // $value, $theme, $size, $striped, $vertical, $animated, $withLabel.
 
-        $component = new Components\Progress(
+        $component = new Components\Widget\Progress(
             75, 'danger', 'sm', true, true, true, true
         );
 
@@ -466,7 +471,9 @@ class ComponentsTest extends TestCase
 
     public function testSmallBoxComponent()
     {
-        $component = new Components\SmallBox('title', 'text', null, 'danger');
+        $component = new Components\Widget\SmallBox(
+            'title', 'text', null, 'danger'
+        );
 
         $bClass = $component->makeBoxClass();
         $this->assertStringContainsString('small-box', $bClass);

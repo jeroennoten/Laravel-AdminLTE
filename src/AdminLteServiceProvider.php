@@ -17,6 +17,54 @@ use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 class AdminLteServiceProvider extends BaseServiceProvider
 {
     /**
+     * Array with the available form components.
+     *
+     * @var array
+     */
+    protected $formComponents = [
+        Components\Form\Button::class,
+        Components\Form\DateRange::class,
+        Components\Form\Input::class,
+        Components\Form\InputColor::class,
+        Components\Form\InputDate::class,
+        Components\Form\InputFile::class,
+        Components\Form\InputSlider::class,
+        Components\Form\InputSwitch::class,
+        Components\Form\Select::class,
+        Components\Form\Select2::class,
+        Components\Form\SelectBs::class,
+        Components\Form\Textarea::class,
+        Components\Form\TextEditor::class,
+    ];
+
+    /**
+     * Array with the available tool components.
+     *
+     * @var array
+     */
+    protected $toolComponents = [
+        Components\Tool\Datatable::class,
+        Components\Tool\Modal::class,
+    ];
+
+    /**
+     * Array with the available widget components.
+     *
+     * @var array
+     */
+    protected $widgetComponents = [
+        Components\Widget\Alert::class,
+        Components\Widget\Callout::class,
+        Components\Widget\Card::class,
+        Components\Widget\InfoBox::class,
+        Components\Widget\ProfileColItem::class,
+        Components\Widget\ProfileRowItem::class,
+        Components\Widget\ProfileWidget::class,
+        Components\Widget\Progress::class,
+        Components\Widget\SmallBox::class,
+    ];
+
+    /**
      * Register the package services.
      *
      * @return void
@@ -159,43 +207,14 @@ class AdminLteServiceProvider extends BaseServiceProvider
             return;
         }
 
-        // Form components.
+        // Load all the blade-x components.
 
-        $this->loadViewComponentsAs('adminlte', [
-            Components\Button::class,
-            Components\DateRange::class,
-            Components\Input::class,
-            Components\InputColor::class,
-            Components\InputDate::class,
-            Components\InputFile::class,
-            Components\InputSlider::class,
-            Components\InputSwitch::class,
-            Components\Select::class,
-            Components\Select2::class,
-            Components\SelectBs::class,
-            Components\Textarea::class,
-            Components\TextEditor::class,
-        ]);
+        $components = array_merge(
+            $this->formComponents,
+            $this->toolComponents,
+            $this->widgetComponents
+        );
 
-        // Tool components.
-
-        $this->loadViewComponentsAs('adminlte', [
-            Components\Datatable::class,
-            Components\Modal::class,
-        ]);
-
-        // Widgets components.
-
-        $this->loadViewComponentsAs('adminlte', [
-            Components\Alert::class,
-            Components\Callout::class,
-            Components\Card::class,
-            Components\InfoBox::class,
-            Components\ProfileColItem::class,
-            Components\ProfileRowItem::class,
-            Components\ProfileWidget::class,
-            Components\Progress::class,
-            Components\SmallBox::class,
-        ]);
+        $this->loadViewComponentsAs('adminlte', $components);
     }
 }
