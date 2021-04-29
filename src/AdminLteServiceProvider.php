@@ -28,7 +28,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
         Components\Form\InputColor::class,
         Components\Form\InputDate::class,
         Components\Form\InputFile::class,
-        Components\Form\InputFileBs::class,
         Components\Form\InputSlider::class,
         Components\Form\InputSwitch::class,
         Components\Form\Select::class,
