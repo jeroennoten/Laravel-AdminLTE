@@ -14,25 +14,27 @@
 <script>
 
     $(() => {
-        let usrCfg = _adminlte_idUtils.parseCfg( @json($config) );
+        let usrCfg = _AdminLTE_InputDate.parseCfg( @json($config) );
         $('#{{ $id }}').datetimepicker(usrCfg);
     })
 
 </script>
 @endpush
 
-{{-- Add utility methods for the plugin --}}
+{{-- Register Javascript utility class for this component --}}
 
 @once
 @push('js')
 <script>
 
-    function ID_Utils() {
+    class _AdminLTE_InputDate {
 
         /**
-         * Parse the php plugin configuration to eval javascript code.
+         * Parse the php plugin configuration and eval the javascript code.
+         *
+         * cfg: A json with the php side configuration.
          */
-        this.parseCfg = function(cfg)
+        static parseCfg(cfg)
         {
             for (const prop in cfg) {
                 let v = cfg[prop];
@@ -40,17 +42,13 @@
                 if (typeof v === 'string' && v.startsWith('js:')) {
                     cfg[prop] = eval(v.slice(3));
                 } else if (typeof v === 'object') {
-                    cfg[prop] = this.parseCfg(v);
+                    cfg[prop] = _AdminLTE_InputDate.parseCfg(v);
                 }
             }
 
             return cfg;
         }
     }
-
-    // Create the plugin utilities object.
-
-    var _adminlte_idUtils = new ID_Utils();
 
 </script>
 @endpush

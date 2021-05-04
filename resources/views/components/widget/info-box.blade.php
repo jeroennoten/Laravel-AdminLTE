@@ -37,56 +37,65 @@
 
 </div>
 
-{{-- Add JS utility methods for this component --}}
+{{-- Register Javascript utility class for this component --}}
 
 @once
 @push('js')
 <script>
 
-    function IB_Utils() {
+    class _AdminLTE_InfoBox {
 
         /**
-         * Update the box data.
+         * Constructor.
+         *
+         * target: The id of the target info box.
          */
-        this.update = function(target, data)
+        constructor(target)
         {
-            // Check if target exists.
+            this.target = target;
+        }
 
-            let t = $('#' + target);
+        /**
+         * Update the info box.
+         *
+         * data: An object with the new data.
+         */
+        update(data)
+        {
+            // Check if target and data exists.
 
-            if (t.length <= 0) {
+            let t = $(`#${this.target}`);
+
+            if (t.length <= 0 || ! data) {
                 return;
             }
 
             // Update available data.
 
-            if (data && data.title) {
+            if (data.title) {
                 t.find('.info-box-text').html(data.title);
             }
 
-            if (data && data.text) {
+            if (data.text) {
                 t.find('.info-box-number').html(data.text);
             }
 
-            if (data && data.icon) {
+            if (data.icon) {
                 t.find('.info-box-icon i').attr('class', data.icon);
             }
 
-            if (data && data.description) {
+            if (data.description) {
                 t.find('.progress-description').html(data.description);
             }
 
             // Update progress bar.
 
-            if (data && data.progress) {
-                _adminlte_pbUtils.setValue('progress-' + target, data.progress);
+            if (data.progress) {
+                let pBar = new _AdminLTE_Progress(`progress-${this.target}`);
+                pBar.setValue(data.progress);
             }
         }
     }
-
-    // Create the plugin utilities object.
-
-    var _adminlte_ibUtils = new IB_Utils();
 
 </script>
 @endpush

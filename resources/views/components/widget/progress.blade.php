@@ -16,22 +16,32 @@
 
 </div>
 
-{{-- Add JS utility methods for this component --}}
+{{-- Register Javascript utility class for this component --}}
 
 @once
 @push('js')
 <script>
 
-    function PB_Utils() {
+    class _AdminLTE_Progress {
 
         /**
-         * Gets the target progress bar current value.
+         * Constructor.
+         *
+         * target: The id of the target progress bar.
          */
-        this.getValue = function(target)
+        constructor(target)
+        {
+            this.target = target;
+        }
+
+        /**
+         * Get the current progress bar value.
+         */
+        getValue()
         {
             // Check if target exists.
 
-            let t = $('#' + target);
+            let t = $(`#${this.target}`);
 
             if (t.length <= 0) {
                 return;
@@ -43,13 +53,13 @@
         }
 
         /**
-         * Update the target progress bar with a new value.
+         * Set the new progress bar value.
          */
-        this.setValue = function(target, value)
+        setValue(value)
         {
             // Check if target exists.
 
-            let t = $('#' + target);
+            let t = $(`#${this.target}`);
 
             if (t.length <= 0) {
                 return;
@@ -62,17 +72,13 @@
             t.find('.progress-bar').css('width', value + '%')
                 .attr('aria-valuenow', value);
 
-            if (t.find('span.sr-only').length >= 0) {
+            if (t.find('span.sr-only').length > 0) {
                 t.find('span.sr-only').text(value + '% Progress');
             } else {
                 t.find('.progress-bar').text(value + '%');
             }
         }
     }
-
-    // Create the plugin utilities object.
-
-    var _adminlte_pbUtils = new PB_Utils();
 
 </script>
 @endpush
