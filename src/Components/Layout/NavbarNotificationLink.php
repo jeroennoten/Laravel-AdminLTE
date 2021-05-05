@@ -51,7 +51,7 @@ class NavbarNotificationLink extends Component
     /**
      * The time interval (in seconds) for query the update url.
      *
-     * @var integer
+     * @var int
      */
     public $updateTime;
 
