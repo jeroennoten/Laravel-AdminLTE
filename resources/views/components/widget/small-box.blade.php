@@ -37,22 +37,66 @@
 
 </div>
 
-{{-- Add JS utility methods for this component --}}
+{{-- Register Javascript utility class for this component --}}
 
 @once
 @push('js')
 <script>
 
-    function SB_Utils() {
+    class _AdminLTE_SmallBox {
 
         /**
-         * Toggle the loading animation.
+         * Constructor.
+         *
+         * target: The id of the target small box.
          */
-        this.toggleLoading = function(target)
+        constructor(target)
+        {
+            this.target = target;
+        }
+
+        /**
+         * Update the small box.
+         *
+         * data: An object with the new data.
+         */
+        update(data)
+        {
+            // Check if target and data exists.
+
+            let t = $(`#${this.target}`);
+
+            if (t.length <= 0 || ! data) {
+                return;
+            }
+
+            // Update available data.
+
+            if (data.title) {
+                t.find('.inner h3').html(data.title);
+            }
+
+            if (data.text) {
+                t.find('.inner h5').html(data.text);
+            }
+
+            if (data.icon) {
+                t.find('.icon i').attr('class', data.icon);
+            }
+
+            if (data.url) {
+                t.find('.small-box-footer').attr('href', data.url);
+            }
+        }
+
+        /**
+         * Toggle the loading animation of the small box.
+         */
+        toggleLoading()
         {
             // Check if target exists.
 
-            let t = $('#' + target);
+            let t = $(`#${this.target}`);
 
             if (t.length <= 0) {
                 return;
@@ -62,43 +106,7 @@
 
             t.find('.overlay').toggleClass('d-none');
         }
-
-        /**
-         * Update the box data.
-         */
-        this.update = function(target, data)
-        {
-            // Check if target exists.
-
-            let t = $('#' + target);
-
-            if (t.length <= 0) {
-                return;
-            }
-
-            // Update available data.
-
-            if (data && data.title) {
-                t.find('.inner h3').html(data.title);
-            }
-
-            if (data && data.text) {
-                t.find('.inner h5').html(data.text);
-            }
-
-            if (data && data.icon) {
-                t.find('.icon i').attr('class', data.icon);
-            }
-
-            if (data && data.url) {
-                t.find('.small-box-footer').attr('href', data.url);
-            }
-        }
     }
-
-    // Create the plugin utilities object.
-
-    var _adminlte_sbUtils = new SB_Utils();
 
 </script>
 @endpush
