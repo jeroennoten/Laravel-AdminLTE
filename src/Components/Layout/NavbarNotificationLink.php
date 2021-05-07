@@ -42,18 +42,14 @@ class NavbarNotificationLink extends Component
     public $badgeColor;
 
     /**
-     * The url to query for new data in order to update the notification.
+     * An array with the update configuration. The valid properties are:
+     * url => string/array representing the url to fetch for new data.
+     * route => string/array representing the route to fetch for new data.
+     * period => integer representing the updating period time (in seconds).
      *
-     * @var string
+     * @var array
      */
-    public $updateUrl;
-
-    /**
-     * The time interval (in seconds) for query the update url.
-     *
-     * @var int
-     */
-    public $updateTime;
+    public $updateCfg;
 
     /**
      * Create a new component instance.
@@ -62,15 +58,14 @@ class NavbarNotificationLink extends Component
      */
     public function __construct(
         $id, $icon, $iconColor = null, $badgeLabel = null, $badgeColor = null,
-        $updateUrl = null, $updateTime = null
+        $updateCfg = []
     ) {
         $this->id = $id;
         $this->icon = $icon;
         $this->iconColor = $iconColor;
         $this->badgeLabel = $badgeLabel;
         $this->badgeColor = $badgeColor;
-        $this->updateUrl = $updateUrl;
-        $this->updateTime = isset($updateTime) ? intval($updateTime) : 0;
+        $this->updateCfg = is_array($updateCfg) ? $updateCfg : [];
     }
 
     /**
@@ -103,6 +98,49 @@ class NavbarNotificationLink extends Component
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the period time for updating the notification badge.
+     *
+     * @return int
+     */
+    public function makeUpdatePeriod()
+    {
+        if (! isset($this->updateCfg['period'])) {
+
+            return 0;
+        }
+
+        return (intval($this->updateCfg['period']) ?? 0) * 1000;
+    }
+
+    /**
+     * Make the url to use for fetch new notification data.
+     *
+     * @return string|null
+     */
+    public function makeUpdateUrl()
+    {
+        // Check if url property is available.
+
+        if (! empty($this->updateCfg['url'])) {
+            $uParams = $this->updateCfg['url'];
+
+            return is_array($uParams) ? url(...$uParams) : url($uParams);
+        }
+
+        // Check if route property is available.
+
+        if (! empty($this->updateCfg['route'])) {
+            $rParams = $this->updateCfg['route'];
+
+            return is_array($rParams) ? route(...$rParams) : route($rParams);
+        }
+
+        // Return null when no url was configured.
+
+        return null;
     }
 
     /**

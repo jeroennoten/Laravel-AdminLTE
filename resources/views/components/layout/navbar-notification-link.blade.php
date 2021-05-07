@@ -17,7 +17,7 @@
 
 {{-- If required, update the notification periodically --}}
 
-@if (isset($updateUrl, $updateTime) && $updateTime > 0)
+@if (! is_null($makeUpdateUrl()) && $makeUpdatePeriod() > 0)
 @push('js')
 <script>
 
@@ -32,7 +32,7 @@
             // 'label', 'label_color' and 'icon_color'.
 
             $.ajax({
-                url: "{{ url($updateUrl) }}"
+                url: "{{ $makeUpdateUrl() }}"
             })
             .done((data) => {
                 nLink.update(data);
@@ -49,7 +49,7 @@
 
         // Periodically update the notification.
 
-        setInterval(updateNotification, {{ $updateTime * 1000 }}, nLink);
+        setInterval(updateNotification, {{ $makeUpdatePeriod() }}, nLink);
     })
 
 </script>
