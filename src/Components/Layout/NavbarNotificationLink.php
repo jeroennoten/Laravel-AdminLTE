@@ -108,7 +108,6 @@ class NavbarNotificationLink extends Component
     public function makeUpdatePeriod()
     {
         if (! isset($this->updateCfg['period'])) {
-
             return 0;
         }
 
