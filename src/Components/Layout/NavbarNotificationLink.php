@@ -7,6 +7,12 @@ use Illuminate\View\Component;
 class NavbarNotificationLink extends Component
 {
     /**
+     * Constants to define the available url configuration types.
+     */    
+    protected const CFG_URL = 0;
+    protected const CFG_ROUTE = 1;
+
+    /**
      * The id attribute for the underlying <li> wrapper.
      *
      * @var string
@@ -115,29 +121,58 @@ class NavbarNotificationLink extends Component
     }
 
     /**
-     * Make the url to use for fetch new notification data.
+     * Create the url used for fetch new notification data.
      *
      * @return string|null
      */
     public function makeUpdateUrl()
     {
-        // Check if url property is available.
+        // Check if the url property is available.
 
         if (! empty($this->updateCfg['url'])) {
-            $uParams = $this->updateCfg['url'];
-
-            return is_array($uParams) ? url(...$uParams) : url($uParams);
+            return $this->makeUrlFromCfg($this->updateCfg['url']);
         }
 
-        // Check if route property is available.
+        // Check if the route property is available.
 
         if (! empty($this->updateCfg['route'])) {
-            $rParams = $this->updateCfg['route'];
-
-            return is_array($rParams) ? route(...$rParams) : route($rParams);
+            return $this->makeUrlFromCfg(
+                $this->updateCfg['route'],
+                self::CFG_ROUTE
+            );
         }
 
         // Return null when no url was configured.
+
+        return null;
+    }
+
+    /**
+     * Create the url from specific configuration type.
+     *
+     * @param string|array $cfg The configuration for the url.
+     * @param mixed $type The configuration type (url or route).
+     * @return string|null
+     */
+    protected function makeUrlFromCfg($cfg, $type = self::CFG_URL)
+    {
+        // When config is just a string representing the url or route name,
+        // wrap it inside an array.
+
+        $cfg = is_string($cfg) ? [$cfg] : $cfg;
+
+        // Check if config is an array with the url or route name and params.
+
+        if (is_array($cfg) && count($cfg) >= 1) {
+            $path = $cfg[0];
+            $params = is_array($cfg[1] ?? null) ? $cfg[1] : [];
+
+            return ($type === self::CFG_ROUTE) ?
+                route($path, $params) :
+                url($path, $params);
+        }
+
+        // Return null for invalid types or data.
 
         return null;
     }

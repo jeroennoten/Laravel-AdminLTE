@@ -46,7 +46,7 @@ class LayoutComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testNavbarNotificationLinkComponent()
+    public function testNavbarNotificationLinkClasses()
     {
         // Test basic component.
 
@@ -73,11 +73,16 @@ class LayoutComponentsTest extends TestCase
         $this->assertStringContainsString('text-danger', $iClass);
         $this->assertStringContainsString('badge-primary', $bClass);
         $this->assertEquals(null, $uUrl);
+    }
 
-        // Test component using basic update cfg url.
-        // $id, $icon, $iconColor, $badgeLabel, $badgeColor, $updateCfg
+    public function testNavbarNotificationLinkUrls()
+    {
+        // Register a test route.
 
         Route::any('test/url')->name('test.url');
+
+        // Test using basic update cfg url.
+        // $id, $icon, $iconColor, $badgeLabel, $badgeColor, $updateCfg
 
         $updateCfg = ['url' => 'test/url', 'period' => 10];
         $component = new Components\Layout\NavbarNotificationLink(
@@ -90,8 +95,7 @@ class LayoutComponentsTest extends TestCase
         $this->assertEquals(10000, $uPeriod);
         $this->assertStringContainsString('test/url', $uUrl);
 
-        // Test component using update url with params.
-        // $id, $icon, $iconColor, $badgeLabel, $badgeColor, $updateCfg
+        // Test using update url with params.
 
         $updateCfg = ['url' => ['test/url', ['p1', 'p2']]];
         $component = new Components\Layout\NavbarNotificationLink(
@@ -104,8 +108,7 @@ class LayoutComponentsTest extends TestCase
         $this->assertEquals(0, $uPeriod);
         $this->assertStringContainsString('test/url/p1/p2', $uUrl);
 
-        // Test component using basic update route.
-        // $id, $icon, $iconColor, $badgeLabel, $badgeColor, $updateCfg
+        // Test using basic update route.
 
         $updateCfg = ['route' => 'test.url'];
         $component = new Components\Layout\NavbarNotificationLink(
@@ -115,8 +118,7 @@ class LayoutComponentsTest extends TestCase
         $uUrl = $component->makeUpdateUrl();
         $this->assertStringContainsString('test/url', $uUrl);
 
-        // Test component using update route with params.
-        // $id, $icon, $iconColor, $badgeLabel, $badgeColor, $updateCfg
+        // Test using update route with params.
 
         $updateCfg = ['route' => ['test.url', ['param1' => 'p1']]];
         $component = new Components\Layout\NavbarNotificationLink(
@@ -125,5 +127,25 @@ class LayoutComponentsTest extends TestCase
 
         $uUrl = $component->makeUpdateUrl();
         $this->assertStringContainsString('test/url?param1=p1', $uUrl);
+
+        // Test using update route with invalid params.
+
+        $updateCfg = ['route' => ['test.url', 'invalid_param']];
+        $component = new Components\Layout\NavbarNotificationLink(
+            'id', 'icon', null, null, null, $updateCfg
+        );
+
+        $uUrl = $component->makeUpdateUrl();
+        $this->assertStringContainsString('test/url', $uUrl);
+
+        // Test using update route with invalid config.
+
+        $updateCfg = ['route' => 66];
+        $component = new Components\Layout\NavbarNotificationLink(
+            'id', 'icon', null, null, null, $updateCfg
+        );
+
+        $uUrl = $component->makeUpdateUrl();
+        $this->assertEquals(null, $uUrl);
     }
 }
