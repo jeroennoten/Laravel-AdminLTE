@@ -8,7 +8,7 @@ class NavbarNotificationLink extends Component
 {
     /**
      * Constants to define the available url configuration types.
-     */    
+     */
     protected const CFG_URL = 0;
     protected const CFG_ROUTE = 1;
 
