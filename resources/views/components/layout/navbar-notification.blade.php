@@ -35,7 +35,7 @@
 
         </div>
 
-    @endisset
+    @endif
 
 </li>
 

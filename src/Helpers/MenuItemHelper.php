@@ -105,16 +105,16 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a notification link.
+     * Check if a menu item is a navbar notification.
      *
      * @param mixed $item
      * @return bool
      */
-    public static function isNotification($item)
+    public static function isNavbarNotification($item)
     {
         return isset($item['id'], $item['icon'], $item['type']) &&
                (isset($item['url']) || isset($item['route'])) &&
-               $item['type'] === 'notification';
+               $item['type'] === 'navbar-notification';
     }
 
     /**
@@ -178,7 +178,7 @@ class MenuItemHelper
     public static function isValidNavbarItem($item)
     {
         return self::isNavbarSearch($item) ||
-               self::isNotification($item) ||
+               self::isNavbarNotification($item) ||
                self::isFullscreen($item) ||
                self::isSubmenu($item) ||
                self::isLink($item);
