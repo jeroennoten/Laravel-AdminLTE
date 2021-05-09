@@ -22,7 +22,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $layoutComponents = [
-        Components\Layout\NavbarNotificationLink::class,
+        Components\Layout\NavbarNotification::class,
     ];
 
     /**

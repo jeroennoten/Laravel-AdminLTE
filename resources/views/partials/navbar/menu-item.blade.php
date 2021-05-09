@@ -5,10 +5,10 @@
     {{-- Search form --}}
     @include('adminlte::partials.navbar.menu-item-search-form')
 
-@elseif ($menuItemHelper->isNotificationLink($item))
+@elseif ($menuItemHelper->isNotification($item))
 
     {{-- Notification link (using blade component) --}}
-    <x-adminlte-navbar-notification-link
+    <x-adminlte-navbar-notification
         :id="$item['id']"
         :href="$item['href']"
         :icon="$item['icon']"
@@ -16,6 +16,8 @@
         :badge-label="$item['label'] ?? null"
         :badge-color="$item['label_color'] ?? null"
         :update-cfg="$item['update_cfg'] ?? null"
+        :enable-dropdown-mode="$item['dropdown_mode'] ?? null"
+        :dropdown-footer-label="$item['dropdown_flabel'] ?? null"
     />
 
 @elseif ($menuItemHelper->isFullscreen($item))

@@ -110,11 +110,11 @@ class MenuItemHelper
      * @param mixed $item
      * @return bool
      */
-    public static function isNotificationLink($item)
+    public static function isNotification($item)
     {
         return isset($item['id'], $item['icon'], $item['type']) &&
                (isset($item['url']) || isset($item['route'])) &&
-               $item['type'] === 'notification-link';
+               $item['type'] === 'notification';
     }
 
     /**
@@ -178,7 +178,7 @@ class MenuItemHelper
     public static function isValidNavbarItem($item)
     {
         return self::isNavbarSearch($item) ||
-               self::isNotificationLink($item) ||
+               self::isNotification($item) ||
                self::isFullscreen($item) ||
                self::isSubmenu($item) ||
                self::isLink($item);

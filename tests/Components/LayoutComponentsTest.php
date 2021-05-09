@@ -22,7 +22,7 @@ class LayoutComponentsTest extends TestCase
         $base = 'adminlte::components.layout';
 
         return [
-            "{$base}.navbar-notification-link" => new Components\Layout\NavbarNotificationLink('id', 'icon'),
+            "{$base}.navbar-notification" => new Components\Layout\NavbarNotification('id', 'icon'),
         ];
     }
 
@@ -46,36 +46,47 @@ class LayoutComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testNavbarNotificationLinkClasses()
+    public function testNavbarNotificationClasses()
     {
         // Test basic component.
 
-        $component = new Components\Layout\NavbarNotificationLink('id', 'icon');
+        $component = new Components\Layout\NavbarNotification('id', 'icon');
 
         $iClass = $component->makeIconClass();
         $bClass = $component->makeBadgeClass();
+        $liClass = $component->makeListItemClass();
+        $aAttrs = $component->makeAnchorDefaultAttrs();
 
         $this->assertStringContainsString('icon', $iClass);
         $this->assertStringContainsString('badge', $bClass);
         $this->assertStringContainsString('navbar-badge', $bClass);
+        $this->assertStringContainsString('nav-item', $liClass);
+        $this->assertStringContainsString('nav-link', $aAttrs['class']);
 
         // Test advanced component.
-        // $id, $icon, $iconColor, $badgeLabel, $badgeColor
+        // $id, $icon, $iconColor, $badgeLabel, $badgeColor, $updateCfg,
+        // $enableDropdownMode, $dropdownFooterLabel
 
-        $component = new Components\Layout\NavbarNotificationLink(
-            'id', 'icon', 'danger', null, 'primary'
+        $component = new Components\Layout\NavbarNotification(
+            'id', 'icon', 'danger', null, 'primary', null, true, null
         );
 
         $iClass = $component->makeIconClass();
         $bClass = $component->makeBadgeClass();
+        $liClass = $component->makeListItemClass();
+        $aAttrs = $component->makeAnchorDefaultAttrs();
         $uUrl = $component->makeUpdateUrl();
 
         $this->assertStringContainsString('text-danger', $iClass);
         $this->assertStringContainsString('badge-primary', $bClass);
+        $this->assertStringContainsString('nav-item', $liClass);
+        $this->assertStringContainsString('dropdown', $liClass);
+        $this->assertStringContainsString('nav-link', $aAttrs['class']);
+        $this->assertStringContainsString('dropdown', $aAttrs['data-toggle']);
         $this->assertEquals(null, $uUrl);
     }
 
-    public function testNavbarNotificationLinkUrls()
+    public function testNavbarNotificationUrls()
     {
         // Register a test route.
 
@@ -85,7 +96,7 @@ class LayoutComponentsTest extends TestCase
         // $id, $icon, $iconColor, $badgeLabel, $badgeColor, $updateCfg
 
         $updateCfg = ['url' => 'test/url', 'period' => 10];
-        $component = new Components\Layout\NavbarNotificationLink(
+        $component = new Components\Layout\NavbarNotification(
             'id', 'icon', null, null, null, $updateCfg
         );
 
@@ -98,7 +109,7 @@ class LayoutComponentsTest extends TestCase
         // Test using update url with params.
 
         $updateCfg = ['url' => ['test/url', ['p1', 'p2']]];
-        $component = new Components\Layout\NavbarNotificationLink(
+        $component = new Components\Layout\NavbarNotification(
             'id', 'icon', null, null, null, $updateCfg
         );
 
@@ -111,7 +122,7 @@ class LayoutComponentsTest extends TestCase
         // Test using basic update route.
 
         $updateCfg = ['route' => 'test.url'];
-        $component = new Components\Layout\NavbarNotificationLink(
+        $component = new Components\Layout\NavbarNotification(
             'id', 'icon', null, null, null, $updateCfg
         );
 
@@ -121,7 +132,7 @@ class LayoutComponentsTest extends TestCase
         // Test using update route with params.
 
         $updateCfg = ['route' => ['test.url', ['param1' => 'p1']]];
-        $component = new Components\Layout\NavbarNotificationLink(
+        $component = new Components\Layout\NavbarNotification(
             'id', 'icon', null, null, null, $updateCfg
         );
 
@@ -131,7 +142,7 @@ class LayoutComponentsTest extends TestCase
         // Test using update route with invalid params.
 
         $updateCfg = ['route' => ['test.url', 'invalid_param']];
-        $component = new Components\Layout\NavbarNotificationLink(
+        $component = new Components\Layout\NavbarNotification(
             'id', 'icon', null, null, null, $updateCfg
         );
 
@@ -141,7 +152,7 @@ class LayoutComponentsTest extends TestCase
         // Test using update route with invalid config.
 
         $updateCfg = ['route' => 66];
-        $component = new Components\Layout\NavbarNotificationLink(
+        $component = new Components\Layout\NavbarNotification(
             'id', 'icon', null, null, null, $updateCfg
         );
 

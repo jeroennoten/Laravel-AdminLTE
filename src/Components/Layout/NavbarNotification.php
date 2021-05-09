@@ -4,7 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Components\Layout;
 
 use Illuminate\View\Component;
 
-class NavbarNotificationLink extends Component
+class NavbarNotification extends Component
 {
     /**
      * Constants to define the available url configuration types.
@@ -58,20 +58,68 @@ class NavbarNotificationLink extends Component
     public $updateCfg;
 
     /**
+     * Enables the dropdown mode for the notification.
+     *
+     * @var bool
+     */
+    public $enableDropdownMode;
+
+    /**
+     * The label to use for the dropdown footer link.
+     *
+     * @var string
+     */
+    public $dropdownFooterLabel;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
     public function __construct(
         $id, $icon, $iconColor = null, $badgeLabel = null, $badgeColor = null,
-        $updateCfg = []
+        $updateCfg = [], $enableDropdownMode = false, $dropdownFooterLabel = null
     ) {
         $this->id = $id;
         $this->icon = $icon;
         $this->iconColor = $iconColor;
         $this->badgeLabel = $badgeLabel;
         $this->badgeColor = $badgeColor;
+        $this->dropdownFooterLabel = $dropdownFooterLabel;
+        $this->enableDropdownMode = boolval($enableDropdownMode);
         $this->updateCfg = is_array($updateCfg) ? $updateCfg : [];
+    }
+
+    /**
+     * Make the class attribute for the list item.
+     *
+     * @return string
+     */
+    public function makeListItemClass()
+    {
+        $classes = ['nav-item'];
+
+        if ($this->enableDropdownMode) {
+            $classes[] = 'dropdown';
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Make the default attributes for the anchor tag.
+     *
+     * @return string
+     */
+    public function makeAnchorDefaultAttrs()
+    {
+        $attrs = ['class' => 'nav-link'];
+
+        if ($this->enableDropdownMode) {
+            $attrs['data-toggle'] = 'dropdown';
+        }
+
+        return $attrs;
     }
 
     /**
@@ -184,6 +232,6 @@ class NavbarNotificationLink extends Component
      */
     public function render()
     {
-        return view('adminlte::components.layout.navbar-notification-link');
+        return view('adminlte::components.layout.navbar-notification');
     }
 }

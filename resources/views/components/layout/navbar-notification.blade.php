@@ -1,9 +1,9 @@
-{{-- Navbar notification link --}}
+{{-- Navbar notification --}}
 
-<li class="nav-item" id="{{ $id }}">
+<li class="{{ $makeListItemClass() }}" id="{{ $id }}">
 
     {{-- Link --}}
-    <a {{ $attributes->merge(['class' => 'nav-link']) }}>
+    <a @if($enableDropdownMode) href="" @endif {{ $attributes->merge($makeAnchorDefaultAttrs()) }}>
 
         {{-- Icon --}}
         <i class="{{ $makeIconClass() }}"></i>
@@ -12,6 +12,30 @@
         <span class="{{ $makeBadgeClass() }}">{{ $badgeLabel }}</span>
 
     </a>
+
+    {{-- Dropdown Menu --}}
+    @if($enableDropdownMode)
+
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+
+            {{-- Custom dropdown content provided by external source --}}
+            <div class="adminlte-dropdown-content"></div>
+
+            {{-- Dropdown divider --}}
+            <div class="dropdown-divider"></div>
+
+            {{-- Dropdown footer with link --}}
+            <a href="{{ $attributes->get('href') }}" class="dropdown-item dropdown-footer">
+                @isset($dropdownFooterLabel)
+                    {{ $dropdownFooterLabel }}
+                @else
+                    <i class="fas fa-lg fa-search-plus"></i>
+                @endisset
+            </a>
+
+        </div>
+
+    @endisset
 
 </li>
 
@@ -44,7 +68,7 @@
 
         // First load of the notification data.
 
-        let nLink = new _AdminLTE_NavbarNotificationLink("{{ $id }}");
+        let nLink = new _AdminLTE_NavbarNotification("{{ $id }}");
         updateNotification(nLink);
 
         // Periodically update the notification.
@@ -62,7 +86,7 @@
 @push('js')
 <script>
 
-    class _AdminLTE_NavbarNotificationLink {
+    class _AdminLTE_NavbarNotification {
 
         /**
          * Constructor.
@@ -91,6 +115,7 @@
 
             let badge = t.find(".navbar-badge");
             let icon = t.find(".nav-link > i");
+            let dropdown = t.find(".adminlte-dropdown-content");
 
             // Update the badge label.
 
@@ -114,6 +139,12 @@
                 icon.removeClass((idx, classes) => {
                     return (classes.match(/(^|\s)text-\S+/g) || []).join(' ');
                 }).addClass(`text-${data.icon_color}`);
+            }
+
+            // Update the dropdown content.
+
+            if (data.dropdown && dropdown.length > 0) {
+                dropdown.html(data.dropdown);
             }
         }
     }
