@@ -53,7 +53,7 @@
         {
             // Make an ajax call to the configured url. The response should be
             // an object with the new data. The supported properties are:
-            // 'label', 'label_color' and 'icon_color'.
+            // 'label', 'label_color', 'icon_color' and 'dropdown'.
 
             $.ajax({
                 url: "{{ $makeUpdateUrl() }}"
