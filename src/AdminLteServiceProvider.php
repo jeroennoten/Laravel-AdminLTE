@@ -17,6 +17,15 @@ use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 class AdminLteServiceProvider extends BaseServiceProvider
 {
     /**
+     * Array with the available layout components.
+     *
+     * @var array
+     */
+    protected $layoutComponents = [
+        Components\Layout\NavbarNotification::class,
+    ];
+
+    /**
      * Array with the available form components.
      *
      * @var array
@@ -210,6 +219,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
         // Load all the blade-x components.
 
         $components = array_merge(
+            $this->layoutComponents,
             $this->formComponents,
             $this->toolComponents,
             $this->widgetComponents
