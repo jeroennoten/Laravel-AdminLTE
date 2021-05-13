@@ -324,4 +324,19 @@ class LayoutHelperTest extends TestCase
         $this->assertStringContainsString('custom-body-class-1', $data);
         $this->assertStringContainsString('custom-body-class-2', $data);
     }
+
+    public function testMakeBodyClassesWithDarkModeConfig()
+    {
+        // Test config 'layout_dark_mode' => null.
+
+        config(['adminlte.layout_dark_mode' => null]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringNotContainsString('dark-mode', $data);
+
+        // Test config 'layout_dark_mode' => true.
+
+        config(['adminlte.layout_dark_mode' => true]);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('dark-mode', $data);
+    }
 }
