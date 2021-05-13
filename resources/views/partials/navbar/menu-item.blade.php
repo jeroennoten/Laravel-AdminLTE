@@ -1,11 +1,11 @@
-@inject('menuItemHelper', 'JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper')
+@inject('navbarItemHelper', 'JeroenNoten\LaravelAdminLte\Helpers\NavbarItemHelper')
 
-@if ($menuItemHelper->isNavbarSearch($item))
+@if ($navbarItemHelper->isSearch($item))
 
     {{-- Search form --}}
     @include('adminlte::partials.navbar.menu-item-search-form')
 
-@elseif ($menuItemHelper->isNavbarNotification($item))
+@elseif ($navbarItemHelper->isNotification($item))
 
     {{-- Notification link (using blade component) --}}
     <x-adminlte-navbar-notification
@@ -20,17 +20,17 @@
         :dropdown-footer-label="$item['dropdown_flabel'] ?? null"
     />
 
-@elseif ($menuItemHelper->isFullscreen($item))
+@elseif ($navbarItemHelper->isFullscreen($item))
 
     {{-- Fullscreen toggle widget --}}
     @include('adminlte::partials.navbar.menu-item-fullscreen-widget')
 
-@elseif ($menuItemHelper->isSubmenu($item))
+@elseif ($navbarItemHelper->isSubmenu($item))
 
     {{-- Dropdown menu --}}
     @include('adminlte::partials.navbar.menu-item-dropdown-menu')
 
-@elseif ($menuItemHelper->isLink($item))
+@elseif ($navbarItemHelper->isLink($item))
 
     {{-- Link --}}
     @include('adminlte::partials.navbar.menu-item-link')

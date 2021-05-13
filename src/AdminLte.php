@@ -6,7 +6,8 @@ use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
-use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\NavbarItemHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\SidebarItemHelper;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
 
 class AdminLte
@@ -136,7 +137,7 @@ class AdminLte
      */
     private function sidebarFilter($item)
     {
-        return MenuItemHelper::isSidebarItem($item);
+        return SidebarItemHelper::isValidItem($item);
     }
 
     /**
@@ -147,11 +148,11 @@ class AdminLte
      */
     private function navbarLeftFilter($item)
     {
-        if (LayoutHelper::isLayoutTopnavEnabled() && MenuItemHelper::isSidebarItem($item)) {
-            return MenuItemHelper::isValidNavbarItem($item);
+        if (LayoutHelper::isLayoutTopnavEnabled() && SidebarItemHelper::isValidItem($item)) {
+            return NavbarItemHelper::isAcceptedItem($item);
         }
 
-        return MenuItemHelper::isNavbarLeftItem($item);
+        return NavbarItemHelper::isValidLeftItem($item);
     }
 
     /**
@@ -162,7 +163,7 @@ class AdminLte
      */
     private function navbarRightFilter($item)
     {
-        return MenuItemHelper::isNavbarRightItem($item);
+        return NavbarItemHelper::isValidRightItem($item);
     }
 
     /**
@@ -173,6 +174,6 @@ class AdminLte
      */
     private function navbarUserMenuFilter($item)
     {
-        return MenuItemHelper::isNavbarUserItem($item);
+        return NavbarItemHelper::isValidUserMenuItem($item);
     }
 }

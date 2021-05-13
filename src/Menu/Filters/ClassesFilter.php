@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\SidebarItemHelper;
 
 class ClassesFilter implements FilterInterface
 {
@@ -60,7 +61,7 @@ class ClassesFilter implements FilterInterface
 
         // Add the menu-open class when a sidebar submenu is active.
 
-        if (MenuItemHelper::isSidebarItem($item) && $item['active']) {
+        if (SidebarItemHelper::isValidItem($item) && $item['active']) {
             $classes[] = 'menu-open';
         }
 
