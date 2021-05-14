@@ -3,11 +3,12 @@
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
+use JeroenNoten\LaravelAdminLte\Helpers\SidebarItemHelper;
 
 class ClassesFilter implements FilterInterface
 {
     /**
-     * Transforms a menu item. Add classes related attributes when suitable.
+     * Transforms a menu item. Add particular classes when suitable.
      *
      * @param array $item A menu item
      * @return array The transformed menu item
@@ -58,9 +59,10 @@ class ClassesFilter implements FilterInterface
     {
         $classes = [];
 
-        // Add the menu-open class when a sidebar submenu is active.
+        // Add the menu-open class when a sidebar submenu is active. Note we
+        // need to add the class to sidebar submenu items only.
 
-        if (MenuItemHelper::isSidebarItem($item) && $item['active']) {
+        if (SidebarItemHelper::isValidItem($item) && $item['active']) {
             $classes[] = 'menu-open';
         }
 
