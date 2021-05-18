@@ -25,3 +25,5 @@ After you have cloned the forked repository locally and put some work on your ne
 4. Review the coverage results, since you may need to create new tests (or change current ones) to cover your modifications.
 
 Please, do not commit the `vendor` or `<build-folder>` in your **Pull Request**. Also, note all the package tests are grouped into the `tests` folder.
+
+To keep the dependencies up-to-date before running the tests, you can execute `composer update` from time to time.
