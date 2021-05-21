@@ -69,6 +69,7 @@ class LayoutHelperTest extends TestCase
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringNotContainsString('sidebar-mini', $data);
         $this->assertStringNotContainsString('sidebar-mini-md', $data);
+        $this->assertStringNotContainsString('sidebar-mini-xs', $data);
 
         // Test config 'sidebar_mini' => 'lg'.
 
@@ -76,12 +77,22 @@ class LayoutHelperTest extends TestCase
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini', $data);
         $this->assertStringNotContainsString('sidebar-mini-md', $data);
+        $this->assertStringNotContainsString('sidebar-mini-xs', $data);
 
         // Test config 'sidebar_mini' => 'md'.
 
         config(['adminlte.sidebar_mini' => 'md']);
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini-md', $data);
+        $this->assertStringNotContainsString('sidebar-mini-xs', $data);
+        $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
+
+        // Test config 'sidebar_mini' => 'xs'.
+
+        config(['adminlte.sidebar_mini' => 'xs']);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('sidebar-mini-xs', $data);
+        $this->assertStringNotContainsString('sidebar-mini-md', $data);
         $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
     }
 
