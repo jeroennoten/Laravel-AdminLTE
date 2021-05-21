@@ -184,7 +184,7 @@ class LayoutHelper
     }
 
     /**
-     * Make the set of classes related to the left sidebar configuration.
+     * Make the set of classes related to the main left sidebar configuration.
      *
      * @return array
      */
