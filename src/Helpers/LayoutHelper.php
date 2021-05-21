@@ -187,10 +187,10 @@ class LayoutHelper
 
         // Add classes related to the "sidebar_mini" configuration.
 
-        if (config('adminlte.sidebar_mini', true) === true) {
+        if (config('adminlte.sidebar_mini', 'lg') === 'lg') {
             $classes[] = 'sidebar-mini';
-        } elseif (config('adminlte.sidebar_mini', true) == 'md') {
-            $classes[] = 'sidebar-mini sidebar-mini-md';
+        } elseif (config('adminlte.sidebar_mini', 'lg') === 'md') {
+            $classes[] = 'sidebar-mini-md';
         }
 
         // Add classes related to the "sidebar_collapse" configuration.
