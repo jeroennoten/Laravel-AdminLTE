@@ -63,23 +63,37 @@ class LayoutHelperTest extends TestCase
 
     public function testMakeBodyClassesWithSidebarMiniConfig()
     {
-        // Test config 'sidebar_mini' => false.
+        // Test config 'sidebar_mini' => null.
 
-        config(['adminlte.sidebar_mini' => false]);
+        config(['adminlte.sidebar_mini' => null]);
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringNotContainsString('sidebar-mini', $data);
+        $this->assertStringNotContainsString('sidebar-mini-md', $data);
+        $this->assertStringNotContainsString('sidebar-mini-xs', $data);
 
-        // Test config 'sidebar_mini' => true.
+        // Test config 'sidebar_mini' => 'lg'.
 
-        config(['adminlte.sidebar_mini' => true]);
+        config(['adminlte.sidebar_mini' => 'lg']);
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini', $data);
+        $this->assertStringNotContainsString('sidebar-mini-md', $data);
+        $this->assertStringNotContainsString('sidebar-mini-xs', $data);
 
         // Test config 'sidebar_mini' => 'md'.
 
         config(['adminlte.sidebar_mini' => 'md']);
         $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringContainsString('sidebar-mini sidebar-mini-md', $data);
+        $this->assertStringContainsString('sidebar-mini-md', $data);
+        $this->assertStringNotContainsString('sidebar-mini-xs', $data);
+        $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
+
+        // Test config 'sidebar_mini' => 'xs'.
+
+        config(['adminlte.sidebar_mini' => 'xs']);
+        $data = LayoutHelper::makeBodyClasses();
+        $this->assertStringContainsString('sidebar-mini-xs', $data);
+        $this->assertStringNotContainsString('sidebar-mini-md', $data);
+        $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
     }
 
     public function testMakeBodyClassesWithSidebarCollapseConfig()
