@@ -120,10 +120,9 @@ class InputGroupComponent extends Component
     /**
      * Make the class attribute for the "input-group" element.
      *
-     * @param string $invalid
      * @return string
      */
-    public function makeInputGroupClass($invalid = null)
+    public function makeInputGroupClass()
     {
         $classes = ['input-group'];
 
@@ -131,7 +130,7 @@ class InputGroupComponent extends Component
             $classes[] = "input-group-{$this->size}";
         }
 
-        if (! empty($invalid) && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
             $classes[] = 'adminlte-invalid-igroup';
         }
 
@@ -145,14 +144,13 @@ class InputGroupComponent extends Component
     /**
      * Make the class attribute for the input group item.
      *
-     * @param string $invalid
      * @return string
      */
-    public function makeItemClass($invalid = null)
+    public function makeItemClass()
     {
         $classes = ['form-control'];
 
-        if (! empty($invalid) && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
             $classes[] = 'is-invalid';
         }
 
@@ -173,6 +171,24 @@ class InputGroupComponent extends Component
         $errKey = preg_replace('@\[\]$@', '', $this->name);
 
         return preg_replace('@\[([^]]+)\]@', '.$1', $errKey);
+    }
+
+    /**
+     * Check if there exists validation errors on the session related to the
+     * configured error key.
+     *
+     * @return bool
+     */
+    protected function isInvalid()
+    {
+        // Get the errors bag from session. The errors bag will be an instance
+        // of the Illuminate\Support\MessageBag class.
+
+        $errors = session()->get('errors');
+
+        // Check if exists any error related to the configured error key.
+
+        return ! empty($errors) && ! empty($errors->first($this->errorKey));
     }
 
     /**

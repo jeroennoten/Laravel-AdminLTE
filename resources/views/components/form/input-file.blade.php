@@ -6,7 +6,7 @@
 
         {{-- Custom file input --}}
         <input type="file" id="{{ $id }}" name="{{ $name }}"
-            {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
+            {{ $attributes->merge(['class' => $makeItemClass()]) }}>
 
         {{-- Custom file label --}}
         <label class="custom-file-label text-truncate" for="{{ $id }}"

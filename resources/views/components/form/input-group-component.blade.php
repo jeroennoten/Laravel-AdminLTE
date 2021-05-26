@@ -8,7 +8,7 @@
     @endisset
 
     {{-- Input group --}}
-    <div class="{{ $makeInputGroupClass($errors->first($errorKey)) }}">
+    <div class="{{ $makeInputGroupClass() }}">
 
         {{-- Input prepend slot --}}
         @isset($prependSlot)
