@@ -158,24 +158,6 @@ class InputGroupComponent extends Component
     }
 
     /**
-     * Check if there exists validation errors on the session related to the
-     * configured error key.
-     *
-     * @return bool
-     */
-    public function isInvalid()
-    {
-        // Get the errors bag from session. The errors bag will be an instance
-        // of the Illuminate\Support\MessageBag class.
-
-        $errors = session()->get('errors');
-
-        // Check if exists any error related to the configured error key.
-
-        return ! empty($errors) && ! empty($errors->first($this->errorKey));
-    }
-
-    /**
      * Make the error key that will be used to search for validation errors.
      * The error key is generated from the 'name' property.
      * Examples:
@@ -189,6 +171,24 @@ class InputGroupComponent extends Component
         $errKey = preg_replace('@\[\]$@', '', $this->name);
 
         return preg_replace('@\[([^]]+)\]@', '.$1', $errKey);
+    }
+
+    /**
+     * Check if there exists validation errors on the session related to the
+     * configured error key.
+     *
+     * @return bool
+     */
+    protected function isInvalid()
+    {
+        // Get the errors bag from session. The errors bag will be an instance
+        // of the Illuminate\Support\MessageBag class.
+
+        $errors = session()->get('errors');
+
+        // Check if exists any error related to the configured error key.
+
+        return ! empty($errors) && ! empty($errors->first($this->errorKey));
     }
 
     /**
