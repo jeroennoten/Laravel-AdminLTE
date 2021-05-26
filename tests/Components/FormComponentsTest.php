@@ -1,7 +1,7 @@
 <?php
 
-use JeroenNoten\LaravelAdminLte\Components;
 use Illuminate\Support\MessageBag;
+use JeroenNoten\LaravelAdminLte\Components;
 
 class FormComponentsTest extends TestCase
 {
