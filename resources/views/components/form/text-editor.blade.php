@@ -4,7 +4,7 @@
 
     {{-- Summernote Textarea --}}
     <textarea id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}
+        {{ $attributes->merge(['class' => $makeItemClass()]) }}
     >{{ $slot }}</textarea>
 
 @overwrite

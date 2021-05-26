@@ -4,7 +4,7 @@
 
     {{-- Input Switch --}}
     <input type="checkbox" id="{{ $id }}" name="{{ $name }}" value="true"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
+        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
 
 @overwrite
 
