@@ -25,6 +25,10 @@
     {{-- Fullscreen toggle widget --}}
     @include('adminlte::partials.navbar.menu-item-fullscreen-widget')
 
+@elseif ($navbarItemHelper->isDarkmode($item))
+    {{-- Darkmode toggle widget --}}
+    @include('adminlte::partials.navbar.menu-item-darkmode-widget')
+
 @elseif ($navbarItemHelper->isSubmenu($item))
 
     {{-- Dropdown menu --}}
