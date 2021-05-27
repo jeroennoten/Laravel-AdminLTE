@@ -96,8 +96,24 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card', $cClass);
         $this->assertStringContainsString('card-info', $cClass);
 
+        $hClass = $component->makeCardHeaderClass();
+        $this->assertStringContainsString('card-header', $hClass);
+        $this->assertStringNotContainsString('d-none', $hClass);
+
         $ctClass = $component->makeCardTitleClass();
         $this->assertStringContainsString('card-title', $ctClass);
+
+        // Test basic component without header.
+
+        $component = new Components\Widget\Card(null, null, 'danger');
+
+        $cClass = $component->makeCardClass();
+        $this->assertStringContainsString('card', $cClass);
+        $this->assertStringContainsString('card-danger', $cClass);
+
+        $hClass = $component->makeCardHeaderClass();
+        $this->assertStringContainsString('card-header', $hClass);
+        $this->assertStringContainsString('d-none', $hClass);
 
         // Test collapsed with full theme:
         // $title, $icon, $theme, $themeMode, $disabled, $collapsible,

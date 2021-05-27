@@ -114,6 +114,22 @@ class Card extends Component
     }
 
     /**
+     * Make the class attribute for the card header.
+     *
+     * @return string
+     */
+    public function makeCardHeaderClass()
+    {
+        $classes = ['card-header'];
+
+        if ($this->isCardHeaderEmpty()) {
+            $classes[] = 'd-none';
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
      * Make the class attribute for the card title.
      *
      * @return string
@@ -127,6 +143,20 @@ class Card extends Component
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Check if the card header is empty (no items defined for the header).
+     *
+     * @return bool
+     */
+    protected function isCardHeaderEmpty()
+    {
+        $hasTools = isset($this->collapsible) ||
+                    isset($this->maximizable) ||
+                    isset($this->removable);
+
+        return empty($this->title) && empty($this->icon) && ! $hasTools;
     }
 
     /**
