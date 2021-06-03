@@ -84,7 +84,7 @@ class NavbarDarkmodeWidget extends Component
     /**
      * Make the class attribute for the icon when darkmode is disabled.
      *
-     * @return string
+     * @return array
      */
     public function makeIconDisabledClass()
     {
@@ -102,7 +102,7 @@ class NavbarDarkmodeWidget extends Component
     /**
      * Make the class attribute for the icon when darkmode is enabled.
      *
-     * @return string
+     * @return array
      */
     public function makeIconEnabledClass()
     {
