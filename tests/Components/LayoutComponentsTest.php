@@ -23,6 +23,7 @@ class LayoutComponentsTest extends TestCase
 
         return [
             "{$base}.navbar-notification" => new Components\Layout\NavbarNotification('id', 'icon'),
+            "{$base}.navbar-darkmode-widget" => new Components\Layout\NavbarDarkmodeWidget(),
         ];
     }
 
@@ -158,5 +159,56 @@ class LayoutComponentsTest extends TestCase
 
         $uUrl = $component->makeUpdateUrl();
         $this->assertEquals(null, $uUrl);
+    }
+
+    public function testNavbarDarkmodeWidgetClasses()
+    {
+        // Test basic component with darkmode config disabled.
+
+        config(['adminlte.layout_dark_mode' => null]);
+
+        $component = new Components\Layout\NavbarDarkmodeWidget(
+            null, null, 'color-off', 'color-on'
+        );
+
+        $iClass = $component->makeIconClass();
+
+        $this->assertStringContainsString('far fa-moon', $iClass);
+        $this->assertStringContainsString('text-color-off', $iClass);
+
+        // Test advanced component with darkmode config disabled.
+
+        $component = new Components\Layout\NavbarDarkmodeWidget(
+            'icon-off', 'icon-on', 'color-off', 'color-on'
+        );
+
+        $iClass = $component->makeIconClass();
+
+        $this->assertStringContainsString('icon-off', $iClass);
+        $this->assertStringContainsString('text-color-off', $iClass);
+
+        // Test basic component with darkmode config enabled.
+
+        config(['adminlte.layout_dark_mode' => true]);
+
+        $component = new Components\Layout\NavbarDarkmodeWidget(
+            null, null, 'color-off', 'color-on'
+        );
+
+        $iClass = $component->makeIconClass();
+
+        $this->assertStringContainsString('fas fa-moon', $iClass);
+        $this->assertStringContainsString('text-color-on', $iClass);
+
+        // Test advanced component with darkmode config enabled.
+
+        $component = new Components\Layout\NavbarDarkmodeWidget(
+            'icon-off', 'icon-on', 'color-off', 'color-on'
+        );
+
+        $iClass = $component->makeIconClass();
+
+        $this->assertStringContainsString('icon-on', $iClass);
+        $this->assertStringContainsString('text-color-on', $iClass);
     }
 }
