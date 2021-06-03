@@ -22,6 +22,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $layoutComponents = [
+        Components\Layout\NavbarDarkmodeWidget::class,
         Components\Layout\NavbarNotification::class,
     ];
 
