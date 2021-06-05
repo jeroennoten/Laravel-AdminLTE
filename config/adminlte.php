@@ -125,6 +125,7 @@ return [
     'classes_brand' => '',
     'classes_brand_text' => '',
     'classes_content_wrapper' => '',
+    'classes_content_header_main' => 'content-header',
     'classes_content_header' => '',
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
