@@ -115,7 +115,7 @@ return [
         'captions' => [
             'no-tab' => 'No tab selected!',
             'loading' => 'Tab is loading',
-        ]
+        ],
     ],    
 
     /*
