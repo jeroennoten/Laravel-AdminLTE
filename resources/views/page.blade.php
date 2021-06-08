@@ -36,11 +36,13 @@
         <div class="content-wrapper {{ config('adminlte.classes_content_wrapper') ?? '' }}">
 
             {{-- Content Header --}}
-            <div class="content-header">
-                <div class="{{ config('adminlte.classes_content_header') ?: $def_container_class }}">
-                    @yield('content_header')
+            @hasSection('content_header')
+                <div class="content-header">
+                    <div class="{{ config('adminlte.classes_content_header') ?: $def_container_class }}">
+                        @yield('content_header')
+                    </div>
                 </div>
-            </div>
+            @endif
 
             {{-- Main Content --}}
             <div class="content">
