@@ -14,13 +14,6 @@ class LayoutHelper
     protected static $screenBreakpoints = ['xs', 'sm', 'md', 'lg', 'xl'];
 
     /**
-     * Set of tokens related to sidebar mini config values.
-     *
-     * @var array
-     */
-    protected static $sidebarMiniValues = ['xs', 'md', 'lg'];
-
-    /**
      * Check if layout topnav is enabled.
      *
      * @return bool
@@ -38,6 +31,16 @@ class LayoutHelper
     public static function isLayoutBoxedEnabled()
     {
         return config('adminlte.layout_boxed') || View::getSection('layout_boxed');
+    }
+
+    /**
+     * Check if layout IFrame is enabled.
+     *
+     * @return bool
+     */
+    public static function isLayoutIFrameEnabled()
+    {
+        return config('adminlte.layout_iframe.active') || View::getSection('layout_iframe.active');
     }
 
     /**
@@ -184,7 +187,7 @@ class LayoutHelper
     }
 
     /**
-     * Make the set of classes related to the main left sidebar configuration.
+     * Make the set of classes related to the left sidebar configuration.
      *
      * @return array
      */
@@ -194,11 +197,10 @@ class LayoutHelper
 
         // Add classes related to the "sidebar_mini" configuration.
 
-        $sidebarMiniCfg = config('adminlte.sidebar_mini', 'lg');
-
-        if (in_array($sidebarMiniCfg, self::$sidebarMiniValues)) {
-            $suffix = $sidebarMiniCfg === 'lg' ? '' : "-{$sidebarMiniCfg}";
-            $classes[] = "sidebar-mini${suffix}";
+        if (config('adminlte.sidebar_mini', true) === true) {
+            $classes[] = 'sidebar-mini';
+        } elseif (config('adminlte.sidebar_mini', true) == 'md') {
+            $classes[] = 'sidebar-mini sidebar-mini-md';
         }
 
         // Add classes related to the "sidebar_collapse" configuration.
