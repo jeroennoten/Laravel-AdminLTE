@@ -8,7 +8,7 @@ Contributions are always welcome, we suggest you to read next lines in order to 
 4. Use `git push origin <your-branch-name>` to push your branch into _Github_.
 5. Finally, open a **Pull Request** from your new branch using the _Github_ interface.
 
-Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more information. Also, when submitting a **Pull Request** take the next notes into consideration:
+Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for more information about **Pull Requests**, and to [this guide](https://docs.github.com/en/github/collaborating-with-pull-requests/working-with-forks) for information about **Forks**. Also, when submitting a **Pull Request** take the next notes into consideration:
 
 - Review all the automated tests that triggers when submitting your **Pull Request**.
 - Always check that the **Pull Request** don't introduce a high downgrade on the code quality. For this one, you need to check the automated **Scrutinizer CI** test
