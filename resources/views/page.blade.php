@@ -31,7 +31,7 @@
         @if(!$layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.sidebar.left-sidebar')
         @endif
-        
+
         {{-- Body of the Page --}}
         @if(!$layoutHelper->isLayoutIFrameEnabled())
             @include('adminlte::partials.common.content-base')
