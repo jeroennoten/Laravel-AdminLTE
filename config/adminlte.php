@@ -89,34 +89,6 @@ return [
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
-    'layout_iframe' => [
-        'active' => false,
-        'url-default' => [
-            'url' => '',
-            'title' => 'Dashboard',
-        ],
-        'buttons' => [
-            'close'=> [
-                'active' => true,
-                'caption' => 'Close',
-            ],
-            'close-all'=> [
-                'active' => true,
-                'caption' => 'Close All',
-            ],
-            'close-all-other'=> [
-                'active' => true,
-                'caption' => 'Close All Other',
-            ],
-            'scroll-left'=> true,
-            'scroll-right'=> true,
-            'fullscreen'=> true,
-        ],
-        'captions' => [
-            'no-tab' => 'No tab selected!',
-            'loading' => 'Tab is loading',
-        ],
-    ],
 
     /*
     |--------------------------------------------------------------------------

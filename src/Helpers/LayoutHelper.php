@@ -41,16 +41,6 @@ class LayoutHelper
     }
 
     /**
-     * Check if layout IFrame is enabled.
-     *
-     * @return bool
-     */
-    public static function isLayoutIFrameEnabled()
-    {
-        return config('adminlte.layout_iframe.active') || View::getSection('layout_iframe.active');
-    }
-
-    /**
      * Make and return the set of classes related to the body tag.
      *
      * @return string
