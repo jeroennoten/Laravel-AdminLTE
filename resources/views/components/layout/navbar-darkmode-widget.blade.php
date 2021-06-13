@@ -39,9 +39,25 @@
 
             iconClasses.forEach((c) => widgetIcon.classList.toggle(c));
 
-            // TODO: Save the new state on the configuration. We may need
-            // to define a controller for this, to catch request from
-            // client side and change the configuration value.
+            // TODO: Remove logs.
+            // Notify the server about this. The server will be in charge to
+            // persist this configuration over multiple request
+
+            const fetchCfg = {
+                headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
+                method: 'POST',
+            };
+
+            fetch(
+                "{{ route('adminlte.darkmode.toggle') }}",
+                fetchCfg
+            )
+            .then(() => {
+                console.log('Darkmode was toggled!');
+            })
+            .catch((error) => {
+                console.log('Error when toggled darkmode: ', error);
+            });
         });
     })
 

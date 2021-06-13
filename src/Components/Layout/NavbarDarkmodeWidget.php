@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Components\Layout;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 
 class NavbarDarkmodeWidget extends Component
 {
@@ -68,9 +69,9 @@ class NavbarDarkmodeWidget extends Component
      */
     public function makeIconClass()
     {
-        // Read the related configuration value and get classes for the icon.
+        // Use the dark mode controller to check if dark mode is enabled.
 
-        if (config('adminlte.layout_dark_mode', false)) {
+        if ((new DarkModeController())->isEnabled()) {
             $classes = $this->makeIconEnabledClass();
         } else {
             $classes = $this->makeIconDisabledClass();

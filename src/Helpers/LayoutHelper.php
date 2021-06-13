@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
 use Illuminate\Support\Facades\View;
+use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 
 class LayoutHelper
 {
@@ -253,9 +254,10 @@ class LayoutHelper
     private static function makeDarkModeClasses()
     {
         $classes = [];
-        $cfg = config('adminlte.layout_dark_mode', false);
 
-        if (is_bool($cfg) && $cfg) {
+        // Use the dark mode controller to check if dark mode is enabled.
+
+        if ((new DarkModeController())->isEnabled()) {
             $classes[] = 'dark-mode';
         }
 
