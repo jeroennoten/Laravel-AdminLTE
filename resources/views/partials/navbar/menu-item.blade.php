@@ -7,7 +7,7 @@
 
 @elseif ($navbarItemHelper->isNotification($item))
 
-    {{-- Notification link (using blade component) --}}
+    {{-- Notification link --}}
     <x-adminlte-navbar-notification
         :id="$item['id']"
         :href="$item['href']"
@@ -27,7 +27,7 @@
 
 @elseif ($navbarItemHelper->isDarkmode($item))
 
-    {{-- Darkmode toggle widget (using blade component) --}}
+    {{-- Darkmode toggle widget --}}
     <x-adminlte-navbar-darkmode-widget
         :icon-enabled="$item['icon_enabled'] ?? null"
         :color-enabled="$item['color_enabled'] ?? null"
