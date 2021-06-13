@@ -244,8 +244,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
             'middleware' => ['web'],
         ];
 
-        Route::group($routesCfg, function()
-        {
+        Route::group($routesCfg, function() {
             $routesPath = $this->packagePath('routes/web.php');
             $this->loadRoutesFrom($routesPath);
         });

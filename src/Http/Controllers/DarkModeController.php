@@ -30,7 +30,7 @@ class DarkModeController extends Controller
 
     /**
      * Check if the dark mode is enabled or not.
-     * 
+     *
      * @return bool
      */
     public function isEnabled()
