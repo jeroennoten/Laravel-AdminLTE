@@ -39,9 +39,8 @@
 
             iconClasses.forEach((c) => widgetIcon.classList.toggle(c));
 
-            // TODO: Remove logs.
-            // Notify the server about this. The server will be in charge to
-            // persist this configuration over multiple request
+            // Notify the server. The server will be in charge to persist
+            // the dark mode configuration over multiple request.
 
             const fetchCfg = {
                 headers: {'X-CSRF-TOKEN': '{{ csrf_token() }}'},
@@ -52,11 +51,11 @@
                 "{{ route('adminlte.darkmode.toggle') }}",
                 fetchCfg
             )
-            .then(() => {
-                console.log('Darkmode was toggled!');
-            })
             .catch((error) => {
-                console.log('Error when toggled darkmode: ', error);
+                console.log(
+                    'Failed to notify server that dark mode was toggled',
+                    error
+                );
             });
         });
     })

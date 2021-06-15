@@ -2,6 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\Http\Controllers;
 
+use JeroenNoten\LaravelAdminLte\Events\DarkModeWasToggled;
+
 class DarkModeController extends Controller
 {
     /**
@@ -23,13 +25,15 @@ class DarkModeController extends Controller
 
         session([$this->sessionKey => ! $this->isEnabled()]);
 
-        // TODO: We can trigger/dispatch an event so the end user may have a
-        // way to catch the new darkmode status and update the preference on a
-        // database, for example.
+        // Trigger an event to notify this situation. This way, an user may
+        // catch the new dark mode status and update the preference on a
+        // database or another tool to persist data.
+
+        event(new DarkModeWasToggled($this));
     }
 
     /**
-     * Check if the dark mode is enabled or not.
+     * Check if the dark mode is currently enabled or not.
      *
      * @return bool
      */
