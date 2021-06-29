@@ -89,8 +89,7 @@ return [
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
-    'layout_iframe' => [
-        'active' => false,
+    'layout_iframe' => [   
         'url-default' => [
             'url' => '',
             'title' => 'Dashboard',
