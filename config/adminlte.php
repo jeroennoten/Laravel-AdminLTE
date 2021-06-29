@@ -90,7 +90,6 @@ return [
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
     'layout_iframe' => [
-        'active' => false,
         'url-default' => [
             'url' => '',
             'title' => 'Dashboard',
