@@ -89,6 +89,8 @@ return [
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
+
+    /* TODO: IFrame configuration should be moved to specific section */
     'layout_iframe' => [
         'url-default' => [
             'url' => '',

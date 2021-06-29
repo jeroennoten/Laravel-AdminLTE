@@ -32,7 +32,7 @@
             @include('adminlte::partials.sidebar.left-sidebar')
         @endif
 
-        {{-- Body of the Page --}}
+        {{-- Content Wrapper --}}
         @include('adminlte::partials.common.content-base')
 
         {{-- Footer --}}
