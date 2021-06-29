@@ -19,7 +19,6 @@
 
 @section('body')
     <div class="wrapper">
-
         {{-- Top Navbar --}}
         @if($layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.navbar.navbar-layout-topnav')
@@ -33,11 +32,7 @@
         @endif
 
         {{-- Body of the Page --}}
-        @if(!$layoutHelper->isLayoutIFrameEnabled())
-            @include('adminlte::partials.common.content-base')
-        @else
-            @include('adminlte::partials.iframe.iframe-base')
-        @endif
+        @include('adminlte::partials.common.content-base')
 
         {{-- Footer --}}
         @hasSection('footer')
