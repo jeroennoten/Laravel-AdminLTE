@@ -173,8 +173,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @return void
      */
     private function registerViewComposers(Factory $view)
-    {
-        $view->composer('adminlte::page', AdminLteComposer::class);
+    {        
+        $view->composer(['adminlte::page', 'adminlte::iframe'], AdminLteComposer::class);
     }
 
     /**
