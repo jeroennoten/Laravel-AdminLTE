@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
 use Illuminate\Support\Facades\View;
+use JeroenNoten\LaravelAdminLte\Events\ReadingDarkModePreference;
 use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 
 class LayoutHelper
@@ -257,7 +258,17 @@ class LayoutHelper
 
         // Use the dark mode controller to check if dark mode is enabled.
 
-        if ((new DarkModeController())->isEnabled()) {
+        $darkModeCtrl = new DarkModeController();
+
+        // Dispatch an event to notify we are about to read the dark mode
+        // preference. A listener may catch this event in order to setup the
+        // dark mode initial state using the methods provided by the controller.
+
+        event(new ReadingDarkModePreference($darkModeCtrl));
+
+        // Now, check if dark mode is enabled.
+
+        if ($darkModeCtrl->isEnabled()) {
             $classes[] = 'dark-mode';
         }
 
