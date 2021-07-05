@@ -29,7 +29,7 @@ class NavbarItemHelper extends MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a navbar darkmode toggle widget.
+     * Check if a menu item is a navbar dark mode toggle widget.
      *
      * @param mixed $item
      * @return bool

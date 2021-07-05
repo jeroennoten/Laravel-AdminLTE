@@ -8,28 +8,28 @@ use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 class NavbarDarkmodeWidget extends Component
 {
     /**
-     * The Font Awesome icon to use when darkmode is disabled.
+     * The Font Awesome icon to use when dark mode is disabled.
      *
      * @var string
      */
     public $iconDisabled = 'far fa-moon';
 
     /**
-     * The Font Awesome icon to use when darkmode is enabled.
+     * The Font Awesome icon to use when dark mode is enabled.
      *
      * @var string
      */
     public $iconEnabled = 'fas fa-moon';
 
     /**
-     * The AdminLTE color to use for the icon when darkmode is disabled.
+     * The AdminLTE color to use for the icon when dark mode is disabled.
      *
      * @var string
      */
     public $colorDisabled;
 
     /**
-     * The AdminLTE color to use for the icon when darkmode is enabled.
+     * The AdminLTE color to use for the icon when dark mode is enabled.
      *
      * @var string
      */
@@ -44,13 +44,13 @@ class NavbarDarkmodeWidget extends Component
         $iconDisabled = null, $iconEnabled = null,
         $colorDisabled = null, $colorEnabled = null
     ) {
-        // Setup the icon to use when darkmode is disabled.
+        // Setup the icon to use when dark mode is disabled.
 
         if (! empty($iconDisabled)) {
             $this->iconDisabled = $iconDisabled;
         }
 
-        // Setup the icon to use when darkmode is enabled.
+        // Setup the icon to use when dark mode is enabled.
 
         if (! empty($iconEnabled)) {
             $this->iconEnabled = $iconEnabled;
@@ -63,13 +63,13 @@ class NavbarDarkmodeWidget extends Component
     }
 
     /**
-     * Make the class attribute for the darkmode widget icon.
+     * Make the class attribute for the dark mode widget icon.
      *
      * @return string
      */
     public function makeIconClass()
     {
-        // Use the dark mode controller to check if dark mode is enabled.
+        // Use the controller to check if dark mode is enabled.
 
         if ((new DarkModeController())->isEnabled()) {
             $classes = $this->makeIconEnabledClass();
@@ -83,7 +83,7 @@ class NavbarDarkmodeWidget extends Component
     }
 
     /**
-     * Make the class attribute for the icon when darkmode is disabled.
+     * Make the class attribute for the icon when dark mode is disabled.
      *
      * @return array
      */
@@ -101,7 +101,7 @@ class NavbarDarkmodeWidget extends Component
     }
 
     /**
-     * Make the class attribute for the icon when darkmode is enabled.
+     * Make the class attribute for the icon when dark mode is enabled.
      *
      * @return array
      */

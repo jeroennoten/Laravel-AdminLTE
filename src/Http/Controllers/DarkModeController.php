@@ -7,27 +7,27 @@ use JeroenNoten\LaravelAdminLte\Events\DarkModeWasToggled;
 class DarkModeController extends Controller
 {
     /**
-     * The key to use for save dark mode status on the session.
+     * The key to use for save dark mode preference on the session.
      *
      * @var string
      */
     protected $sessionKey = 'adminlte_dark_mode';
 
     /**
-     * Toggle the dark mode status.
+     * Toggle the dark mode preference.
      *
      * @return void
      */
     public function toggle()
     {
-        // Store the new darkmode status on the session. This way, we can keep
-        // the dark mode preference over multiple requests.
+        // Store the new dark mode preference on the session. This way, we can
+        // keep the dark mode preference over multiple requests.
 
         session([$this->sessionKey => ! $this->isEnabled()]);
 
-        // Trigger an event to notify this situation. This way, an user may
-        // catch the new dark mode status and update the preference on a
-        // database or another tool to persist data.
+        // Dispatch an event to notify this situation. This way, a listener may
+        // read the new dark mode preference using the controller, and update
+        // that preference on a database or another tool for persist data.
 
         event(new DarkModeWasToggled($this));
     }
@@ -39,13 +39,13 @@ class DarkModeController extends Controller
      */
     public function isEnabled()
     {
-        // First, check if dark mode status was previously saved on the session.
+        // First, check if dark mode preference is available on the session.
 
         if (! is_null(session($this->sessionKey, null))) {
             return session($this->sessionKey);
         }
 
-        // Otherwise, fallback to the default package configuration value.
+        // Otherwise, fallback to the default package configuration preference.
 
         return (bool) config('adminlte.layout_dark_mode', false);
     }
