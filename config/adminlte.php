@@ -434,38 +434,27 @@ return [
     |
     | Here we change the IFrame mode configuration. Note these changes will
     | only apply to the view that extends and enable the IFrame mode.
-    | TODO: Reorganize and review these options.
     |
     | For detailed instructions you can look the <TODO> section here:
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/...
     |
     */
 
-    'layout_iframe' => [
-        'url-default' => [
-            'url' => '',
-            'title' => 'Home',
+    'iframe' => [
+        'default_tab' => [
+            'url' => null,
+            'title' => null,
         ],
         'buttons' => [
-            'close'=> [
-                'active' => true,
-                'caption' => 'Close',
-            ],
-            'close-all'=> [
-                'active' => true,
-                'caption' => 'Close All',
-            ],
-            'close-all-other'=> [
-                'active' => true,
-                'caption' => 'Close All Other',
-            ],
-            'scroll-left'=> true,
-            'scroll-right'=> true,
-            'fullscreen'=> true,
+            'close' => true,
+            'close_all' => true,
+            'close_all_other' => true,
+            'scroll_left' => true,
+            'scroll_right' => true,
+            'fullscreen' => true,
         ],
-        'captions' => [
-            'no-tab' => 'No tab selected!',
-            'loading' => 'Tab is loading',
+        'options' => [
+            'loading_screen' => 1000,
         ],
     ],
 
