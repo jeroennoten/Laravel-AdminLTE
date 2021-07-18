@@ -2,12 +2,6 @@
 
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 
-@if($layoutHelper->isLayoutTopnavEnabled())
-    @php( $def_container_class = 'container' )
-@else
-    @php( $def_container_class = 'container-fluid' )
-@endif
-
 @section('adminlte_css')
     @stack('css')
     @yield('css')
@@ -33,7 +27,7 @@
         @endif
 
         {{-- Content Wrapper --}}
-        @empty($iframeEnabled)
+        @empty($iFrameEnabled)
             @include('adminlte::partials.cwrapper.cwrapper-default')
         @else
             @include('adminlte::partials.cwrapper.cwrapper-iframe')
