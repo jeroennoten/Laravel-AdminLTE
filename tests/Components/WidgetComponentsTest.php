@@ -96,6 +96,9 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card', $cClass);
         $this->assertStringContainsString('card-info', $cClass);
 
+        $cbClass = $component->makeCardBodyClass();
+        $this->assertStringContainsString('card-body', $cbClass);
+
         $hClass = $component->makeCardHeaderClass();
         $this->assertStringContainsString('card-header', $hClass);
         $this->assertStringNotContainsString('d-none', $hClass);
@@ -125,7 +128,7 @@ class WidgetComponentsTest extends TestCase
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('bg-gradient-success', $cClass);
-        $this->assertStringContainsString('collapsed-card', $cClass);
+        //$this->assertStringContainsString('collapsed-card', $cClass);
 
         // Test outline theme:
         // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
