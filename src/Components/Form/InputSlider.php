@@ -48,10 +48,9 @@ class InputSlider extends InputGroupComponent
      * Make the class attribute for the "input-group" element. Note we overwrite
      * the method of the parent class.
      *
-     * @param string $invalid
      * @return string
      */
-    public function makeInputGroupClass($invalid = null)
+    public function makeInputGroupClass()
     {
         $classes = ['input-group'];
 
@@ -59,7 +58,7 @@ class InputSlider extends InputGroupComponent
             $classes[] = "input-group-{$this->size}";
         }
 
-        if (! empty($invalid) && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
             $classes[] = 'adminlte-invalid-islgroup';
         }
 

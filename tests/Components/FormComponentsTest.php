@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\MessageBag;
 use JeroenNoten\LaravelAdminLte\Components;
 
 class FormComponentsTest extends TestCase
@@ -39,6 +40,16 @@ class FormComponentsTest extends TestCase
         ];
     }
 
+    /**
+     * Add an error on the session's error bag for the provided $key.
+     */
+    protected function addErrorOnSessionFor($key)
+    {
+        $msgBag = new MessageBag();
+        $msgBag->add($key, 'error');
+        session()->put('errors', $msgBag);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | General components tests.
@@ -65,9 +76,11 @@ class FormComponentsTest extends TestCase
             'name', null, null, 'lg', null, 'fgroup-class', 'igroup-class'
         );
 
-        $iGroupClass = $component->makeInputGroupClass(true);
+        $this->addErrorOnSessionFor('name');
+
+        $iGroupClass = $component->makeInputGroupClass();
         $fGroupClass = $component->makeFormGroupClass();
-        $iClass = $component->makeItemClass(true);
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('input-group', $iGroupClass);
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
@@ -82,7 +95,10 @@ class FormComponentsTest extends TestCase
     public function testInputDateComponent()
     {
         $component = new Components\Form\InputDate('name');
-        $iClass = $component->makeItemClass(true);
+
+        $this->addErrorOnSessionFor('name');
+
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('datetimepicker', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
@@ -91,7 +107,9 @@ class FormComponentsTest extends TestCase
     public function testInputFileComponent()
     {
         $component = new Components\Form\InputFile('name', null, null, 'sm');
-        $iClass = $component->makeItemClass(true);
+        $this->addErrorOnSessionFor('name');
+
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('custom-file-input', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
@@ -103,8 +121,10 @@ class FormComponentsTest extends TestCase
             'name', null, null, 'lg', null, null, 'igroup-class'
         );
 
-        $iGroupClass = $component->makeInputGroupClass(true);
-        $iClass = $component->makeItemClass(true);
+        $this->addErrorOnSessionFor('name');
+
+        $iGroupClass = $component->makeInputGroupClass();
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('input-group', $iGroupClass);
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
@@ -119,8 +139,10 @@ class FormComponentsTest extends TestCase
             'name', null, null, 'lg', null, null, 'igroup-class'
         );
 
-        $iGroupClass = $component->makeInputGroupClass(true);
-        $iClass = $component->makeItemClass(true);
+        $this->addErrorOnSessionFor('name');
+
+        $iGroupClass = $component->makeInputGroupClass();
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('input-group', $iGroupClass);
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
@@ -132,7 +154,10 @@ class FormComponentsTest extends TestCase
     public function testSelectComponent()
     {
         $component = new Components\Form\Select('name');
-        $iClass = $component->makeItemClass(true);
+
+        $this->addErrorOnSessionFor('name');
+
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
@@ -141,7 +166,10 @@ class FormComponentsTest extends TestCase
     public function testSelect2Component()
     {
         $component = new Components\Form\Select2('name');
-        $iClass = $component->makeItemClass(true);
+
+        $this->addErrorOnSessionFor('name');
+
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
@@ -150,7 +178,10 @@ class FormComponentsTest extends TestCase
     public function testSelectBsComponent()
     {
         $component = new Components\Form\SelectBs('name', null, null, 'lg');
-        $iClass = $component->makeItemClass(true);
+
+        $this->addErrorOnSessionFor('name');
+
+        $iClass = $component->makeItemClass();
 
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('form-control-lg', $iClass);
@@ -163,7 +194,9 @@ class FormComponentsTest extends TestCase
             'name', null, null, 'lg', null, null, 'igroup-class'
         );
 
-        $iGroupClass = $component->makeInputGroupClass(true);
+        $this->addErrorOnSessionFor('name');
+
+        $iGroupClass = $component->makeInputGroupClass();
 
         $this->assertStringContainsString('input-group', $iGroupClass);
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
