@@ -36,6 +36,13 @@ class Card extends Component
     public $themeMode;
 
     /**
+     * The card body class.
+     *
+     * @var string
+     */
+    public $bodyClass;
+
+    /**
      * Indicates if the card is disabled. When enabled, an overay will show
      * over the card.
      *
@@ -74,7 +81,7 @@ class Card extends Component
      * @return void
      */
     public function __construct(
-        $title = null, $icon = null, $theme = null, $themeMode = null,
+        $title = null, $icon = null, $theme = null, $themeMode = null, $bodyClass = null,
         $disabled = null, $collapsible = null, $removable = null,
         $maximizable = null
     ) {
@@ -82,6 +89,7 @@ class Card extends Component
         $this->icon = $icon;
         $this->theme = $theme;
         $this->themeMode = $themeMode;
+        $this->bodyClass = $bodyClass;
         $this->disabled = $disabled;
         $this->removable = $removable;
         $this->collapsible = $collapsible;
@@ -108,6 +116,22 @@ class Card extends Component
 
         if ($this->collapsible === 'collapsed') {
             $classes[] = 'collapsed-card';
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for the card body.
+     *
+     * @return string
+     */
+    public function makeCardBodyClass()
+    {
+        $classes = ['card-body'];
+
+        if (isset($this->bodyClass)) {
+            $classes[] = $this->bodyClass;
         }
 
         return implode(' ', $classes);
