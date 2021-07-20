@@ -8,7 +8,7 @@
     @endisset
 
     {{-- Input group --}}
-    <div class="{{ $makeInputGroupClass($errors->first($errorKey)) }}">
+    <div class="{{ $makeInputGroupClass() }}">
 
         {{-- Input prepend slot --}}
         @isset($prependSlot)
@@ -26,12 +26,10 @@
     </div>
 
     {{-- Error feedback --}}
-    @if(! isset($disableFeedback))
-        @error($errorKey)
-            <span class="invalid-feedback d-block" role="alert">
-                <strong>{{ $message }}</strong>
-            </span>
-        @enderror
+    @if($isInvalid() && ! isset($disableFeedback))
+        <span class="invalid-feedback d-block" role="alert">
+            <strong>{{ $errors->first($errorKey) }}</strong>
+        </span>
     @endif
 
 </div>

@@ -4,7 +4,7 @@
 
     {{-- Input Color --}}
     <input id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass($errors->first($errorKey))]) }}>
+        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
 
 @overwrite
 
