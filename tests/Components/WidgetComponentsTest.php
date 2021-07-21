@@ -118,21 +118,25 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card-header', $hClass);
         $this->assertStringContainsString('d-none', $hClass);
 
-        // Test collapsed with full theme:
-        // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
-        // $removable, $maximizable.
+        // Test collapsed with full theme and extra body class:
+        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
+        // $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
-            'title', null, 'success', 'full', null, 'collapsed'
+            'title', null, 'success', 'full', 'body-class', null, 'collapsed'
         );
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('bg-gradient-success', $cClass);
-        //$this->assertStringContainsString('collapsed-card', $cClass);
+        $this->assertStringContainsString('collapsed-card', $cClass);
+
+        $cbClass = $component->makeCardBodyClass();
+        $this->assertStringContainsString('card-body', $cbClass);
+        $this->assertStringContainsString('body-class', $cbClass);
 
         // Test outline theme:
-        // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
-        // $removable, $maximizable.
+        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
+        // $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
             'title', null, 'teal', 'outline'
