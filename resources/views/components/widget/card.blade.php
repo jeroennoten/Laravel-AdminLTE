@@ -30,7 +30,9 @@
 
     {{-- Card body --}}
     @if(! $slot->isEmpty())
-        <div {{ $attributes->merge(['class' => $makeCardBodyClass]) }}>{{ $slot }}</div>
+        <div {{ $attributes->merge(['class' => $makeCardBodyClass()]) }}>
+            {{ $slot }}
+        </div>
     @endif
 
     {{-- Card overlay --}}
