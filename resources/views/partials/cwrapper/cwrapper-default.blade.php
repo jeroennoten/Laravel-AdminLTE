@@ -7,7 +7,7 @@
 @endif
 
 {{-- Default Content Wrapper --}}
-<div class="content-wrapper {{ config('adminlte.classes_content_wrapper') ?? '' }}">
+<div class="content-wrapper {{ config('adminlte.classes_content_wrapper', '') }}">
 
     {{-- Content Header --}}
     @hasSection('content_header')
