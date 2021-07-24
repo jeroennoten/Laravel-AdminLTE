@@ -455,6 +455,8 @@ return [
         ],
         'options' => [
             'loading_screen' => 1000,
+            'auto_show_new_tab' => true,
+            'use_navbar_items' => true,
         ],
     ],
 
