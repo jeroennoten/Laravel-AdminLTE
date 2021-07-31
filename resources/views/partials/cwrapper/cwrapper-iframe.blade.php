@@ -53,7 +53,7 @@
         <ul class="navbar-nav" role="tablist">
 
             {{-- Default Tab --}}
-            @if(! empty(config('adminlte.iframe.default_tab.url', null)))
+            @if(! empty(config('adminlte.iframe.default_tab.url')))
                 <li class="nav-item active" role="presentation">
                     <a id="tab-default" class="nav-link active" data-toggle="row" href="#panel-default"
                        role="tab" aria-controls="panel-default" aria-selected="true">
@@ -85,9 +85,10 @@
     <div class="tab-content">
 
         {{-- Default Tab Content --}}
-        @if(! empty(config('adminlte.iframe.default_tab.url', null)))
+        @if(! empty(config('adminlte.iframe.default_tab.url')))
             <div id="panel-default" class="tab-pane fade active show" role="tabpanel" aria-labelledby="tab-default">
                 {{-- TODO: Height can't be harcoded, because it depends on user screen size --}}
+                {{-- TODO: This should be fixed on the underlying AdminLTE package --}}
                 <iframe src="{{ config('adminlte.iframe.default_tab.url') }}" style="height: 671px;"></iframe>
             </div>
         @endif
