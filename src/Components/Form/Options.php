@@ -8,21 +8,21 @@ use Illuminate\View\Component;
 class Options extends Component
 {
     /**
-     * The list of options as key value pairs
+     * The list of options as key value pairs.
      *
      * @var array
      */
     public $options;
 
     /**
-     * The list of selected option keys
+     * The list of selected option keys.
      *
      * @var array
      */
     public $selected;
 
     /**
-     * Whether to use strict comparison between key and selections
+     * Whether to use strict comparison between key and selections.
      *
      * @var bool
      */
