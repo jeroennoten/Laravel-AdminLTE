@@ -1,8 +1,6 @@
 <?php
 
 use Illuminate\Support\MessageBag;
-use Illuminate\Testing\TestView;
-use Illuminate\View\View;
 use JeroenNoten\LaravelAdminLte\Components;
 
 class FormComponentsTest extends TestCase
@@ -16,20 +14,20 @@ class FormComponentsTest extends TestCase
 
         return [
             "{$base}.input-group-component" => new Components\Form\InputGroupComponent('name'),
-            "{$base}.button" => new Components\Form\Button(),
-            "{$base}.date-range" => new Components\Form\DateRange('name'),
-            "{$base}.input" => new Components\Form\Input('name'),
-            "{$base}.input-color" => new Components\Form\InputColor('name'),
-            "{$base}.input-date" => new Components\Form\InputDate('name'),
-            "{$base}.input-file" => new Components\Form\InputFile('name'),
+            "{$base}.button"       => new Components\Form\Button(),
+            "{$base}.date-range"   => new Components\Form\DateRange('name'),
+            "{$base}.input"        => new Components\Form\Input('name'),
+            "{$base}.input-color"  => new Components\Form\InputColor('name'),
+            "{$base}.input-date"   => new Components\Form\InputDate('name'),
+            "{$base}.input-file"   => new Components\Form\InputFile('name'),
             "{$base}.input-slider" => new Components\Form\InputSlider('name'),
             "{$base}.input-switch" => new Components\Form\InputSwitch('name'),
-            "{$base}.select" => new Components\Form\Select('name'),
-            "{$base}.select2" => new Components\Form\Select2('name'),
-            "{$base}.select-bs" => new Components\Form\SelectBs('name'),
-            "{$base}.textarea" => new Components\Form\Textarea('name'),
-            "{$base}.text-editor" => new Components\Form\TextEditor('name'),
-            "{$base}.options" => new Components\Form\Options(),
+            "{$base}.select"       => new Components\Form\Select('name'),
+            "{$base}.select2"      => new Components\Form\Select2('name'),
+            "{$base}.select-bs"    => new Components\Form\SelectBs('name'),
+            "{$base}.textarea"     => new Components\Form\Textarea('name'),
+            "{$base}.text-editor"  => new Components\Form\TextEditor('name'),
+            "{$base}.options"      => new Components\Form\Options(),
         ];
     }
 
@@ -160,12 +158,11 @@ class FormComponentsTest extends TestCase
     {
         $options = ['m' => 'Male', 'f' => 'Female', 'o' => 'Other'];
         $component = new Components\Form\Options($options, 'f');
-        $view = $component->resolveView();
-        $view = $view instanceof View
-            ? new TestView($view->with($component->data()))
-            : new TestView(view($view, $component->data()));
-        $view->assertSeeInOrder(array_values($options));
-        $view->assertSeeInOrder(['value="m"', 'Male', 'value="f"', 'selected', 'Female', 'value="o"', 'Other'], false);
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%A>%AOther%A</option>%A';
+        $this->assertStringMatchesFormat($format, $html);
     }
 
     public function testSelect2Component()
