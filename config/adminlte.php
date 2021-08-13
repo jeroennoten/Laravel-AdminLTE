@@ -435,8 +435,8 @@ return [
     | Here we change the IFrame mode configuration. Note these changes will
     | only apply to the view that extends and enable the IFrame mode.
     |
-    | For detailed instructions you can look the <TODO> section here:
-    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/...
+    | For detailed instructions you can look the iframe mode section here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/IFrame-Mode-Configuration
     |
     */
 
