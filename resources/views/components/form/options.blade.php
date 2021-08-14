@@ -1,3 +1,9 @@
 @foreach($options as $key => $value)
-    <option value="{{ $key }}" @if(in_array($key, $selected, $strict)) selected @endif>{{ $value }}</option>
+
+    <option value="{{ $key }}"
+        @if($isSelected($key)) selected @endif
+        @if($isDisabled($key)) disabled @endif>
+        {{ $value }}
+    </option>
+
 @endforeach
