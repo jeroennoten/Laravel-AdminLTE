@@ -36,15 +36,26 @@ class Options extends Component
     public $strict;
 
     /**
+     * Whether to add an empty option to the list of options. If the value is
+     * a string, it will be used as the option label, otherwise no label will
+     * be available for the empty option.
+     *
+     * @var bool|string
+     */
+    public $emptyOption;
+
+    /**
      * Create a new component instance.
      */
     public function __construct(
-        $options, $selected = null, $disabled = null, $strict = null
+        $options, $selected = null, $disabled = null,
+        $strict = null, $emptyOption = null
     ) {
         $this->options = Arr::wrap($options);
         $this->selected = Arr::wrap($selected);
         $this->disabled = Arr::wrap($disabled);
         $this->strict = isset($strict);
+        $this->emptyOption = $emptyOption;
     }
 
     /**

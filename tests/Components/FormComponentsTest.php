@@ -162,6 +162,30 @@ class FormComponentsTest extends TestCase
         $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
 
         $this->assertStringMatchesFormat($format, $html);
+
+        // Test rendered HTML with empty option (no label).
+
+        $component = new Components\Form\Options($options, 'f', 'o', null, true);
+
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%Aclass="d-none"%A>%A</option>%A';
+        $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
+
+        $this->assertStringMatchesFormat($format, $html);
+
+        // Test rendered HTML with empty option (and label).
+
+        $component = new Components\Form\Options($options, 'f', 'o', null, 'Label');
+
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%Aclass="d-none"%A>%ALabel%A</option>%A';
+        $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
+
+        $this->assertStringMatchesFormat($format, $html);
     }
 
     public function testSelectComponent()
