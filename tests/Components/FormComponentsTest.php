@@ -168,7 +168,7 @@ class FormComponentsTest extends TestCase
         $component = new Components\Form\Options($options, 'f', 'o', null, true);
 
         $html = $component->resolveView()->with($component->data());
-        $format = '%A<option%Aclass="d-none"%A>%A</option>%A';
+        $format = '%A<option%Avalue%A>%A</option>%A';
         $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
         $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
         $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
@@ -180,7 +180,19 @@ class FormComponentsTest extends TestCase
         $component = new Components\Form\Options($options, 'f', 'o', null, 'Label');
 
         $html = $component->resolveView()->with($component->data());
-        $format = '%A<option%Aclass="d-none"%A>%ALabel%A</option>%A';
+        $format = '%A<option%Avalue%A>%ALabel%A</option>%A';
+        $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
+
+        $this->assertStringMatchesFormat($format, $html);
+
+        // Test rendered HTML with placeholder.
+
+        $component = new Components\Form\Options($options, 'f', 'o', null, null, 'Placeholder');
+
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%Aclass="d-none"%Avalue%A>%APlaceholder%A</option>%A';
         $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
         $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
         $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';

@@ -29,33 +29,44 @@ class Options extends Component
     public $disabled;
 
     /**
-     * Whether to use strict comparison between key and selections.
+     * Whether to use strict comparison between the option keys and the keys of
+     * the selected/disabled options.
      *
      * @var bool
      */
     public $strict;
 
     /**
-     * Whether to add an empty option to the list of options. If the value is
-     * a string, it will be used as the option label, otherwise no label will
-     * be available for the empty option.
+     * Whether to add a selectable empty option to the list of options. If the
+     * value is a string, it will be used as the option label, otherwise no
+     * label will be available for the empty option.
      *
      * @var bool|string
      */
     public $emptyOption;
 
     /**
+     * Whether to add a placeholder (non-selectable option) to the list of
+     * options. If the value is a string, it will be used as the placeholder
+     * label, otherwise no label will be available for the placeholder.
+     *
+     * @var bool|string
+     */
+    public $placeholder;
+
+    /**
      * Create a new component instance.
      */
     public function __construct(
         $options, $selected = null, $disabled = null,
-        $strict = null, $emptyOption = null
+        $strict = null, $emptyOption = null, $placeholder = null
     ) {
         $this->options = Arr::wrap($options);
         $this->selected = Arr::wrap($selected);
         $this->disabled = Arr::wrap($disabled);
         $this->strict = isset($strict);
         $this->emptyOption = $emptyOption;
+        $this->placeholder = $placeholder;
     }
 
     /**

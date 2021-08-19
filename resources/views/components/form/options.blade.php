@@ -1,11 +1,18 @@
 {{-- Empty option --}}
-@isset($emptyOption)
+@if(isset($emptyOption))
 
-    <option class="d-none">
+    <option value>
         {{ is_string($emptyOption) ? $emptyOption : '' }}
     </option>
 
-@endisset
+{{-- Placeholder option --}}
+@elseif(isset($placeholder))
+
+    <option class="d-none" value>
+        {{ is_string($placeholder) ? $placeholder : '' }}
+    </option>
+
+@endif
 
 {{-- Other options --}}
 @foreach($options as $key => $value)
