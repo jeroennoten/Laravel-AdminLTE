@@ -28,7 +28,7 @@ class Builder
     /**
      * Constructor.
      *
-     * @param array $filters
+     * @param  array  $filters
      */
     public function __construct(array $filters = [])
     {
@@ -38,7 +38,7 @@ class Builder
     /**
      * Add new items at the end of the menu.
      *
-     * @param mixed $newItems Items to be added
+     * @param  mixed  $newItems  Items to be added
      */
     public function add(...$newItems)
     {
@@ -52,8 +52,8 @@ class Builder
     /**
      * Add new items after a specific menu item.
      *
-     * @param mixed $itemKey The key that represents the specific menu item
-     * @param mixed $newItems Items to be added
+     * @param  mixed  $itemKey  The key that represents the specific menu item
+     * @param  mixed  $newItems  Items to be added
      */
     public function addAfter($itemKey, ...$newItems)
     {
@@ -63,8 +63,8 @@ class Builder
     /**
      * Add new items before a specific menu item.
      *
-     * @param mixed $itemKey The key that represents the specific menu item
-     * @param mixed $newItems Items to be added
+     * @param  mixed  $itemKey  The key that represents the specific menu item
+     * @param  mixed  $newItems  Items to be added
      */
     public function addBefore($itemKey, ...$newItems)
     {
@@ -74,8 +74,8 @@ class Builder
     /**
      * Add new submenu items inside a specific menu item.
      *
-     * @param mixed $itemKey The key that represents the specific menu item
-     * @param mixed $newItems Items to be added
+     * @param  mixed  $itemKey  The key that represents the specific menu item
+     * @param  mixed  $newItems  Items to be added
      */
     public function addIn($itemKey, ...$newItems)
     {
@@ -85,7 +85,7 @@ class Builder
     /**
      * Remove a specific menu item.
      *
-     * @param mixed $itemKey The key of the menu item to remove
+     * @param  mixed  $itemKey  The key of the menu item to remove
      */
     public function remove($itemKey)
     {
@@ -109,7 +109,7 @@ class Builder
     /**
      * Check if exists a menu item with the specified key.
      *
-     * @param mixed $itemKey The key of the menu item to check for
+     * @param  mixed  $itemKey  The key of the menu item to check for
      * @return bool
      */
     public function itemKeyExists($itemKey)
@@ -120,7 +120,7 @@ class Builder
     /**
      * Transform the items by applying the filters.
      *
-     * @param array $items An array with items to be transformed
+     * @param  array  $items  An array with items to be transformed
      * @return array Array with the new transformed items
      */
     protected function transformItems($items)
@@ -134,8 +134,8 @@ class Builder
     /**
      * Find a menu item by the item key and return the path to it.
      *
-     * @param mixed $itemKey The key of the item to find
-     * @param array $items The array to look up for the item
+     * @param  mixed  $itemKey  The key of the item to find
+     * @param  array  $items  The array to look up for the item
      * @return mixed Array with the path sequence, or empty array if not found
      */
     protected function findItem($itemKey, $items)
@@ -164,7 +164,7 @@ class Builder
     /**
      * Apply all the available filters to a menu item.
      *
-     * @param mixed $item A menu item
+     * @param  mixed  $item  A menu item
      * @return mixed A new item with all the filters applied
      */
     protected function applyFilters($item)
@@ -204,9 +204,9 @@ class Builder
      * Add new items to the menu in a particular place, relative to a
      * specific menu item.
      *
-     * @param mixed $itemKey The key that represents the specific menu item
-     * @param int $where Where to add the new items
-     * @param mixed $items Items to be added
+     * @param  mixed  $itemKey  The key that represents the specific menu item
+     * @param  int  $where  Where to add the new items
+     * @param  mixed  $items  Items to be added
      */
     protected function addItem($itemKey, $where, ...$items)
     {

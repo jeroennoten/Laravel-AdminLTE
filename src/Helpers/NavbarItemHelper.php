@@ -7,7 +7,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a navbar custom search bar.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isCustomSearch($item)
@@ -19,7 +19,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a navbar fullscreen toggle widget.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isFullscreen($item)
@@ -31,7 +31,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a navbar dark mode toggle widget.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isDarkmode($item)
@@ -43,7 +43,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a navbar notification.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isNotification($item)
@@ -56,7 +56,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a navbar search item (legacy or new).
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isSearch($item)
@@ -68,7 +68,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is accepted for the navbar section.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isAcceptedItem($item)
@@ -84,7 +84,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is valid for the left section of the navbar.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isValidLeftItem($item)
@@ -97,7 +97,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item belongs to the right section of the navbar.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isValidRightItem($item)
@@ -110,7 +110,7 @@ class NavbarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item belongs to the user menu section of the navbar.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isValidUserMenuItem($item)

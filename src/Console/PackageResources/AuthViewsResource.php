@@ -119,8 +119,8 @@ class AuthViewsResource extends PackageResource
     /**
      * Check if an authentication view is correctly installed.
      *
-     * @param string $path Absolute path of the authentication view
-     * @param string $content The expected content of the view
+     * @param  string  $path  Absolute path of the authentication view
+     * @param  string  $content  The expected content of the view
      * @return bool
      */
     protected function authViewInstalled($path, $content)

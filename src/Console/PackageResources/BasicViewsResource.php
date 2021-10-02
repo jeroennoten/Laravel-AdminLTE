@@ -115,8 +115,8 @@ class BasicViewsResource extends PackageResource
     /**
      * Check if a basic view is correctly installed.
      *
-     * @param string $path Absolute path of the view
-     * @param string $content The expected content of the view
+     * @param  string  $path  Absolute path of the view
+     * @param  string  $content  The expected content of the view
      * @return bool
      */
     protected function basicViewInstalled($path, $content)

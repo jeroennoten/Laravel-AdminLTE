@@ -74,7 +74,7 @@ abstract class PackageResource
     /**
      * Get an installation message.
      *
-     * @param string $key The message keyword
+     * @param  string  $key  The message keyword
      * @return string
      */
     public function getInstallMessage($key)

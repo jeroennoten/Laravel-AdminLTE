@@ -228,7 +228,7 @@ class PluginsResource extends PackageResource
     /**
      * Gets the plugins source data.
      *
-     * @param string $pluginKey A plugin string key
+     * @param  string  $pluginKey  A plugin string key
      * @return array
      */
     public function getSourceData($pluginKey = null)
@@ -247,7 +247,7 @@ class PluginsResource extends PackageResource
     /**
      * Install/Export a plugin.
      *
-     * @param string $pluginKey A plugin string key
+     * @param  string  $pluginKey  A plugin string key
      * @return void
      */
     public function install($pluginKey = null)
@@ -261,7 +261,7 @@ class PluginsResource extends PackageResource
     /**
      * Uninstall/Remove a plugin.
      *
-     * @param string $pluginKey A plugin string key
+     * @param  string  $pluginKey  A plugin string key
      * @return void
      */
     public function uninstall($pluginKey = null)
@@ -275,7 +275,7 @@ class PluginsResource extends PackageResource
     /**
      * Check if a plugin already exists on the target destination.
      *
-     * @param string $pluginKey A plugin string key
+     * @param  string  $pluginKey  A plugin string key
      * @return bool
      */
     public function exists($pluginKey = null)
@@ -292,7 +292,7 @@ class PluginsResource extends PackageResource
     /**
      * Check if a plugin is correctly installed.
      *
-     * @param string $pluginKey A plugin string key
+     * @param  string  $pluginKey  A plugin string key
      * @return bool
      */
     public function installed($pluginKey = null)
@@ -309,7 +309,7 @@ class PluginsResource extends PackageResource
     /**
      * Prepare a plugin with some sort of normalizations.
      *
-     * @param array $plugin An array with the plugin data
+     * @param  array  $plugin  An array with the plugin data
      * @return array An array with normalized plugin data
      */
     protected function preparePlugin($plugin)
@@ -348,7 +348,7 @@ class PluginsResource extends PackageResource
     /**
      * Install the specified AdminLTE plugin.
      *
-     * @param array $plugin An array with the plugin data
+     * @param  array  $plugin  An array with the plugin data
      * @return void
      */
     protected function installPlugin($plugin)
@@ -371,7 +371,7 @@ class PluginsResource extends PackageResource
     /**
      * Exports the specified resource (usually a folder).
      *
-     * @param array $res An array with the resource data
+     * @param  array  $res  An array with the resource data
      * @return void
      */
     protected function exportResource($res)
@@ -392,7 +392,7 @@ class PluginsResource extends PackageResource
     /**
      * Check if the specified plugin already exists on the target destination.
      *
-     * @param array $plugin An array with the plugin data
+     * @param  array  $plugin  An array with the plugin data
      * @return bool
      */
     protected function pluginExists($plugin)
@@ -417,7 +417,7 @@ class PluginsResource extends PackageResource
     /**
      * Check if the specified plugin is correctly installed.
      *
-     * @param array $plugin An array with the plugin data
+     * @param  array  $plugin  An array with the plugin data
      * @return bool
      */
     protected function pluginInstalled($plugin)
@@ -442,7 +442,7 @@ class PluginsResource extends PackageResource
     /**
      * Check if the specified resource is correctly installed.
      *
-     * @param array $res An array with the resource data
+     * @param  array  $res  An array with the resource data
      * @return bool
      */
     protected function resourceInstalled($res)
@@ -464,7 +464,7 @@ class PluginsResource extends PackageResource
     /**
      * Uninstall or remove the specified plugin.
      *
-     * @param array $plugin An array with the plugin data
+     * @param  array  $plugin  An array with the plugin data
      * @return void
      */
     protected function uninstallPlugin($plugin)
@@ -487,7 +487,7 @@ class PluginsResource extends PackageResource
     /**
      * Removes the specified resource (usually a folder).
      *
-     * @param array $res An array with the resource data
+     * @param  array  $res  An array with the resource data
      * @return void
      */
     protected function uninstallResource($res)
