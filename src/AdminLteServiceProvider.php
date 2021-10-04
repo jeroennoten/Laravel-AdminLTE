@@ -148,7 +148,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     /**
      * Get the absolute path to some package resource.
      *
-     * @param string $path The relative path to the resource
+     * @param  string  $path  The relative path to the resource
      * @return string
      */
     private function packagePath($path)

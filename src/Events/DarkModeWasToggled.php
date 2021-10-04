@@ -16,7 +16,7 @@ class DarkModeWasToggled
     /**
      * Create a new event instance.
      *
-     * @param DarkModeController $ctrl
+     * @param  DarkModeController  $ctrl
      */
     public function __construct(DarkModeController $ctrl)
     {

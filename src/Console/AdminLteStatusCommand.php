@@ -173,7 +173,7 @@ class AdminLteStatusCommand extends Command
     /**
      * Get the installation status of a package resource.
      *
-     * @param PackageResource $resource The package resource to check
+     * @param  PackageResource  $resource  The package resource to check
      * @return string The resource status
      */
     protected function getResourceStatus($resource)
@@ -224,8 +224,8 @@ class AdminLteStatusCommand extends Command
     /**
      * Give output style to some text.
      *
-     * @param string $text The text to be styled
-     * @param string $color The output color for the text
+     * @param  string  $text  The text to be styled
+     * @param  string  $color  The output color for the text
      * @return string The styled text
      */
     protected function styleOutput($text, $color)

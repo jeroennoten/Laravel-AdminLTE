@@ -52,9 +52,9 @@ class AdminLte
     /**
      * Constructor.
      *
-     * @param array $filters
-     * @param Dispatcher $events
-     * @param Container $container
+     * @param  array  $filters
+     * @param  Dispatcher  $events
+     * @param  Container  $container
      */
     public function __construct(array $filters, Dispatcher $events, Container $container)
     {
@@ -75,7 +75,7 @@ class AdminLte
     /**
      * Get all the menu items, or a specific set of these.
      *
-     * @param string $filterToken Token representing a subset of the menu items
+     * @param  string  $filterToken  Token representing a subset of the menu items
      * @return array A set of menu items
      */
     public function menu($filterToken = null)
@@ -132,7 +132,7 @@ class AdminLte
     /**
      * Filter method used to get the sidebar menu items.
      *
-     * @param mixed $item A menu item
+     * @param  mixed  $item  A menu item
      * @return bool
      */
     private function sidebarFilter($item)
@@ -143,7 +143,7 @@ class AdminLte
     /**
      * Filter method used to get the top navbar left menu items.
      *
-     * @param mixed $item A menu item
+     * @param  mixed  $item  A menu item
      * @return bool
      */
     private function navbarLeftFilter($item)
@@ -158,7 +158,7 @@ class AdminLte
     /**
      * Filter method used to get the top navbar right menu items.
      *
-     * @param mixed $item A menu item
+     * @param  mixed  $item  A menu item
      * @return bool
      */
     private function navbarRightFilter($item)
@@ -169,7 +169,7 @@ class AdminLte
     /**
      * Filter method used to get the navbar user menu items.
      *
-     * @param mixed $item A menu item
+     * @param  mixed  $item  A menu item
      * @return bool
      */
     private function navbarUserMenuFilter($item)

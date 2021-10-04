@@ -22,7 +22,7 @@ class CommandTestCase extends TestCase
     /**
      * Get the array of resources.
      *
-     * @param string $name Name of the resource.
+     * @param  string  $name  Name of the resource.
      * @return array
      */
     protected function getResources($name = null)
@@ -45,8 +45,8 @@ class CommandTestCase extends TestCase
     /**
      * Create dummy files for a particular resource.
      *
-     * @param string $resName
-     * @param PackageResource $res
+     * @param  string  $resName
+     * @param  PackageResource  $res
      * @return void
      */
     protected function createDummyResource($resName, $res)
@@ -87,8 +87,8 @@ class CommandTestCase extends TestCase
     /**
      * Create a dummy file with some content.
      *
-     * @param string $filePath
-     * @param string $content
+     * @param  string  $filePath
+     * @param  string  $content
      * @return void
      */
     protected function createDummyFile($filePath, $content = null)

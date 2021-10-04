@@ -198,8 +198,8 @@ class NavbarNotification extends Component
     /**
      * Create the url from specific configuration type.
      *
-     * @param string|array $cfg The configuration for the url.
-     * @param mixed $type The configuration type (url or route).
+     * @param  string|array  $cfg  The configuration for the url.
+     * @param  mixed  $type  The configuration type (url or route).
      * @return string|null
      */
     protected function makeUrlFromCfg($cfg, $type = self::CFG_URL)

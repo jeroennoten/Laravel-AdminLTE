@@ -17,7 +17,7 @@ class HrefFilter implements FilterInterface
     /**
      * Constructor.
      *
-     * @param UrlGenerator $urlGenerator
+     * @param  UrlGenerator  $urlGenerator
      */
     public function __construct(UrlGenerator $urlGenerator)
     {
@@ -27,7 +27,7 @@ class HrefFilter implements FilterInterface
     /**
      * Transforms a menu item. Make the href attribute when situable.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return array The transformed menu item
      */
     public function transform($item)
@@ -42,7 +42,7 @@ class HrefFilter implements FilterInterface
     /**
      * Make the href attribute for a menu item.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return string The href attribute
      */
     protected function makeHref($item)

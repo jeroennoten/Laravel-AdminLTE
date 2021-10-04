@@ -16,7 +16,7 @@ class GateFilter implements FilterInterface
     /**
      * Constructor.
      *
-     * @param Gate $gate
+     * @param  Gate  $gate
      */
     public function __construct(Gate $gate)
     {
@@ -27,7 +27,7 @@ class GateFilter implements FilterInterface
      * Transforms a menu item. Add the restricted property to a menu item
      * when situable.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return array The transformed menu item
      */
     public function transform($item)
@@ -45,7 +45,7 @@ class GateFilter implements FilterInterface
     /**
      * Check if a menu item is allowed for the current user.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return bool
      */
     protected function isAllowed($item)

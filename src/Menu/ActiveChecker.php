@@ -32,7 +32,7 @@ class ActiveChecker
     /**
      * Constructor.
      *
-     * @param UrlGenerator $url
+     * @param  UrlGenerator  $url
      */
     public function __construct(UrlGenerator $url)
     {
@@ -54,7 +54,7 @@ class ActiveChecker
      * Checks if a menu item is currently active. Active items will be
      * highlighted.
      *
-     * @param mixed $item The menu item to check
+     * @param  mixed  $item  The menu item to check
      * @return bool
      */
     public function isActive($item)
@@ -75,7 +75,7 @@ class ActiveChecker
     /**
      * Checks if an array of items contains an active item.
      *
-     * @param array $items The items to check
+     * @param  array  $items  The items to check
      * @return bool
      */
     protected function containsActive($items)
@@ -92,7 +92,7 @@ class ActiveChecker
     /**
      * Checks if an item is active by explicit definition of 'active' state.
      *
-     * @param bool|array $activeDef
+     * @param  bool|array  $activeDef
      * @return bool
      */
     protected function isExplicitActive($activeDef)
@@ -118,7 +118,7 @@ class ActiveChecker
     /**
      * Checks if an url pattern matches the requested url.
      *
-     * @param string $pattern
+     * @param  string  $pattern
      * @return bool
      */
     protected function checkPattern($pattern)

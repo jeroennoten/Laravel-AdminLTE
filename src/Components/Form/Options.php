@@ -72,7 +72,7 @@ class Options extends Component
     /**
      * Determines if an option's key is on selected state.
      *
-     * @param string $key The option's key.
+     * @param  string  $key  The option's key.
      * @return bool
      */
     public function isSelected($key)
@@ -83,7 +83,7 @@ class Options extends Component
     /**
      * Determines if an option's key is on disabled state.
      *
-     * @param string $key The option's key.
+     * @param  string  $key  The option's key.
      * @return bool
      */
     public function isDisabled($key)

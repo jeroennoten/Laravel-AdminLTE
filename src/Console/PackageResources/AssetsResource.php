@@ -148,7 +148,7 @@ class AssetsResource extends PackageResource
     /**
      * Install the specified AdminLTE asset.
      *
-     * @param array $asset An array with the asset data
+     * @param  array  $asset  An array with the asset data
      * @return void
      */
     protected function installAsset($asset)
@@ -174,7 +174,7 @@ class AssetsResource extends PackageResource
     /**
      * Exports the specified resource (usually a file or folder).
      *
-     * @param array $res An array with the resource data
+     * @param  array  $res  An array with the resource data
      * @return void
      */
     protected function exportResource($res)
@@ -198,7 +198,7 @@ class AssetsResource extends PackageResource
     /**
      * Check if the specified asset already exists on the target destination.
      *
-     * @param array $asset An array with the asset data
+     * @param  array  $asset  An array with the asset data
      * @return bool
      */
     protected function assetExists($asset)
@@ -209,7 +209,7 @@ class AssetsResource extends PackageResource
     /**
      * Check if the specified asset is correctly installed.
      *
-     * @param array $asset An array with the asset data
+     * @param  array  $asset  An array with the asset data
      * @return bool
      */
     protected function assetInstalled($asset)
@@ -236,7 +236,7 @@ class AssetsResource extends PackageResource
     /**
      * Check if the specified resource is correctly installed.
      *
-     * @param array $res An array with the resource data
+     * @param  array  $res  An array with the resource data
      * @return bool
      */
     protected function resourceInstalled($res)
@@ -263,7 +263,7 @@ class AssetsResource extends PackageResource
     /**
      * Uninstall or remove the specified asset.
      *
-     * @param array $asset An array with the asset data
+     * @param  array  $asset  An array with the asset data
      * @return void
      */
     protected function uninstallAsset($asset)

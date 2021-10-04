@@ -17,7 +17,7 @@ class ActiveFilter implements FilterInterface
     /**
      * Constructor.
      *
-     * @param ActiveChecker $activeChecker
+     * @param  ActiveChecker  $activeChecker
      */
     public function __construct(ActiveChecker $activeChecker)
     {
@@ -27,7 +27,7 @@ class ActiveFilter implements FilterInterface
     /**
      * Transforms a menu item. Adds the active attribute when suitable.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return array The transformed menu item
      */
     public function transform($item)

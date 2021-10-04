@@ -7,7 +7,7 @@ class SidebarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a sidebar custom search bar.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isCustomSearch($item)
@@ -19,7 +19,7 @@ class SidebarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a sidebar menu search bar.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isMenuSearch($item)
@@ -31,7 +31,7 @@ class SidebarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is a sidebar search item (legacy or new).
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isSearch($item)
@@ -44,7 +44,7 @@ class SidebarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is accepted for the sidebar section.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isAcceptedItem($item)
@@ -58,7 +58,7 @@ class SidebarItemHelper extends MenuItemHelper
     /**
      * Check if a menu item is valid for the sidebar.
      *
-     * @param mixed $item
+     * @param  mixed  $item
      * @return bool
      */
     public static function isValidItem($item)

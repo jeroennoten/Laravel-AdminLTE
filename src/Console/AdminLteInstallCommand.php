@@ -161,9 +161,9 @@ class AdminLteInstallCommand extends Command
     /**
      * Handle multiple option values.
      *
-     * @param array $values An array with the option values
-     * @param array $resources An array with the resources of each option
-     * @param string $opt Descriptive name of the handled option
+     * @param  array  $values  An array with the option values
+     * @param  array  $resources  An array with the resources of each option
+     * @param  string  $opt  Descriptive name of the handled option
      * @return void
      */
     protected function handleOptions($values, $resources, $opt)
@@ -176,9 +176,9 @@ class AdminLteInstallCommand extends Command
     /**
      * Handle an option value.
      *
-     * @param string $value A string with the option value
-     * @param array $resources An array with the resources of each option
-     * @param string $opt Descriptive name of the handled option
+     * @param  string  $value  A string with the option value
+     * @param  array  $resources  An array with the resources of each option
+     * @param  string  $opt  Descriptive name of the handled option
      * @return void
      */
     protected function handleOption($value, $resources, $opt)
@@ -197,7 +197,7 @@ class AdminLteInstallCommand extends Command
     /**
      * Install multiple packages resources.
      *
-     * @param string $resources The resources to install
+     * @param  string  $resources  The resources to install
      * @return void
      */
     protected function exportPackageResources(...$resources)
@@ -220,7 +220,7 @@ class AdminLteInstallCommand extends Command
     /**
      * Install a package resource.
      *
-     * @param string $resource The keyword of the resource to install
+     * @param  string  $resource  The keyword of the resource to install
      * @return void
      */
     protected function exportPackageResource($resource)

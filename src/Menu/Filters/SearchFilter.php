@@ -24,7 +24,7 @@ class SearchFilter implements FilterInterface
     /**
      * Transforms a menu item. Makes the proper search bar configuration.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return array The transformed menu item
      */
     public function transform($item)
