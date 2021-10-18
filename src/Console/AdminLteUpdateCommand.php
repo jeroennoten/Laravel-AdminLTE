@@ -5,7 +5,6 @@ namespace JeroenNoten\LaravelAdminLte\Console;
 use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
 
-
 class AdminLteUpdateCommand extends Command
 {
     /**
@@ -28,7 +27,7 @@ class AdminLteUpdateCommand extends Command
      *
      * @var string
      */
-    protected $mainViewsWarn = "<fg=yellow>Outdated main views at %s</>
+    protected $mainViewsWarn = '<fg=yellow>Outdated main views at %s</>
     <fg=cyan>
     We detected that the package main views were previously published and they
     differs from the ones currently available. Note this package may not work
@@ -36,7 +35,7 @@ class AdminLteUpdateCommand extends Command
     latest changes. In the particular case you have recently changed those views
     to include own customizations, then you can ignore this warning. Please,
     refer to next link for more instructions on how to update the views:
-    https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Updating</>";
+    https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Updating</>';
 
     /**
      * Execute the console command.
@@ -55,8 +54,7 @@ class AdminLteUpdateCommand extends Command
 
         $mainViewsRes = new MainViewsResource();
 
-        if ($mainViewsRes->exists() && ! $mainViewsRes->installed())
-        {
+        if ($mainViewsRes->exists() && ! $mainViewsRes->installed()) {
             $this->info(sprintf($this->mainViewsWarn, $mainViewsRes->target));
         }
     }
