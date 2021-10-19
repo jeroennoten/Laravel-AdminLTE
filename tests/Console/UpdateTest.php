@@ -47,4 +47,32 @@ class UpdateTest extends CommandTestCase
         $res->uninstall();
         $this->assertFalse($res->installed());
     }
+
+    public function testUpdateShowsMainViewsWarning()
+    {
+        // Ensure the main views resources already exists.
+
+        $res = $this->getResources('main_views');
+        $this->createDummyResource('main_views', $res);
+
+        // Update the package using the artisan command and check there is a
+        // warning on the output.
+
+        Artisan::call('adminlte:update');
+
+        $this->assertStringContainsString(
+            'Outdated main views',
+            Artisan::output()
+        );
+
+        // Clear installed resources.
+
+        $res->uninstall();
+        $this->assertFalse($res->installed());
+
+        $res = $this->getResources('assets');
+
+        $res->uninstall();
+        $this->assertFalse($res->installed());
+    }
 }
