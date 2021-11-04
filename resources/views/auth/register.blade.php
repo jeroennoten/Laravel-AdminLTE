@@ -20,8 +20,7 @@
         {{-- Name field --}}
         <div class="input-group mb-3">
             <input type="text" name="name" class="form-control @error('name') is-invalid @enderror"
-                   value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}"
-                   autocomplete="name" autofocus>
+                   value="{{ old('name') }}" placeholder="{{ __('adminlte::adminlte.full_name') }}" autofocus>
 
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -39,8 +38,7 @@
         {{-- Email field --}}
         <div class="input-group mb-3">
             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                   value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}"
-                   autocomplete="email">
+                   value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}">
 
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -58,7 +56,7 @@
         {{-- Password field --}}
         <div class="input-group mb-3">
             <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
-                   placeholder="{{ __('adminlte::adminlte.password') }}" autocomplete="new-password">
+                   placeholder="{{ __('adminlte::adminlte.password') }}">
 
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -77,7 +75,7 @@
         <div class="input-group mb-3">
             <input type="password" name="password_confirmation"
                    class="form-control @error('password_confirmation') is-invalid @enderror"
-                   placeholder="{{ __('adminlte::adminlte.retype_password') }}" autocomplete="new-password">
+                   placeholder="{{ __('adminlte::adminlte.retype_password') }}">
 
             <div class="input-group-append">
                 <div class="input-group-text">
