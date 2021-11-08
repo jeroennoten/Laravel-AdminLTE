@@ -15,7 +15,7 @@ trait OldValueSupportTrait
 
     /**
      * Make the value attribute for an input item.
-     * 
+     *
      * @param  string  $errKey  The key name to lookup for validation errors
      * @param  mixed  $value  The current value of the item
      * @return mixed
