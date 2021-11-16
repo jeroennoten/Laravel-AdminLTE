@@ -4,6 +4,8 @@ namespace JeroenNoten\LaravelAdminLte\Components\Form;
 
 class Select extends InputGroupComponent
 {
+    use Traits\OldValueSupportTrait;
+
     /**
      * Create a new component instance.
      *
@@ -12,12 +14,14 @@ class Select extends InputGroupComponent
     public function __construct(
         $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
         $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
-        $errorKey = null
+        $errorKey = null, $enableOldSupport = null
     ) {
         parent::__construct(
             $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
             $igroupClass, $disableFeedback, $errorKey
         );
+
+        $this->enableOldSupport = isset($enableOldSupport);
     }
 
     /**
