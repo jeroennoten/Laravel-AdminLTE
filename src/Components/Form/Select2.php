@@ -4,6 +4,8 @@ namespace JeroenNoten\LaravelAdminLte\Components\Form;
 
 class Select2 extends InputGroupComponent
 {
+    use Traits\OldValueSupportTrait;
+
     /**
      * The select2 plugin configuration parameters. Array with key => value
      * pairs, where the key should be an existing configuration property of
@@ -23,7 +25,7 @@ class Select2 extends InputGroupComponent
     public function __construct(
         $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
         $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
-        $errorKey = null, $config = []
+        $errorKey = null, $config = [], $enableOldSupport = null
     ) {
         parent::__construct(
             $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
@@ -32,6 +34,7 @@ class Select2 extends InputGroupComponent
 
         $this->config = is_array($config) ? $config : [];
         $this->config['theme'] = 'bootstrap4';
+        $this->enableOldSupport = isset($enableOldSupport);
     }
 
     /**
