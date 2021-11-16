@@ -4,7 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Components\Form;
 
 class Textarea extends InputGroupComponent
 {
-    use OldValueSupportTrait;
+    use Traits\OldValueSupportTrait;
 
     /**
      * Create a new component instance.
