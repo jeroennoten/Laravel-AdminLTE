@@ -41,6 +41,18 @@ class FormComponentsTest extends TestCase
         session()->put('errors', $msgBag);
     }
 
+    /**
+     * Flash an input with value into the current laravel request.
+     *
+     * @param  string  $key  The input key
+     * @param  mixed  $val  The input value
+     */
+    protected function addInputOnCurrentRequest($key, $val)
+    {
+        session()->flashInput([$key => $val]);
+        request()->setLaravelsession(session());
+    }
+
     /*
     |--------------------------------------------------------------------------
     | General components tests.
@@ -212,6 +224,27 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testSelectComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\Select('name');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('default', $iVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\Select(
+            'name', null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('foo', $iVal);
+    }
+
     public function testSelect2Component()
     {
         $component = new Components\Form\Select2('name');
@@ -222,6 +255,27 @@ class FormComponentsTest extends TestCase
 
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testSelect2ComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\Select2('name');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('default', $iVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\Select2(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('foo', $iVal);
     }
 
     public function testSelectBsComponent()
