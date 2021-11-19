@@ -196,9 +196,9 @@ class Datatable extends Component
         // r - Processing display element.
         // B - buttons extension.
 
-        return '<"row" <"col-sm-6" B> <"col-sm-6" f> >
+        return '<"row" <"col-md-8" B> <"col-md-4" f> >
                 <"row" <"col-12" tr> >
-                <"row" <"col-sm-5" i> <"col-sm-7" p> >';
+                <"row" <"col-md-5" i> <"col-md-7" p> >';
     }
 
     /**
