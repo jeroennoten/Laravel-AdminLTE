@@ -271,7 +271,7 @@ class Datatable extends Component
             $buttons = Arr::prepend($buttons, $lengthBtn);
         }
 
-        // Return the set of configured buttons.        
+        // Return the set of configured buttons.
 
         return [
             'dom' => ['button' => ['className' => 'btn']],
@@ -290,7 +290,7 @@ class Datatable extends Component
             return true;
         }
 
-        return (bool)$this->config['lengthChange'];
+        return (bool) $this->config['lengthChange'];
     }
 
     /**
