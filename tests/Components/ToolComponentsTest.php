@@ -40,6 +40,7 @@ class ToolComponentsTest extends TestCase
     public function testDatatableComponent()
     {
         // Test basic component.
+
         $component = new Components\Tool\Datatable('id', []);
 
         $tClass = $component->makeTableClass();
@@ -49,6 +50,7 @@ class ToolComponentsTest extends TestCase
         // $id, $heads, $theme, $headTheme, $bordered, $hoverable, $striped,
         // $compressed, $withFooter, $footerTheme, $beautify, $withButtons,
         // $config
+
         $component = new Components\Tool\Datatable(
             'id', [], 'primary', null, true, true, true, true, null, null,
             null, true, null
@@ -60,6 +62,26 @@ class ToolComponentsTest extends TestCase
         $this->assertStringContainsString('table-striped', $tClass);
         $this->assertStringContainsString('table-sm', $tClass);
         $this->assertStringContainsString('table-primary', $tClass);
+
+        $this->assertContains(
+            ['extend' => 'pageLength', 'className' => 'btn-default'],
+            $component->config['buttons']['buttons']
+        );
+
+        // Test advanced component with length change button disabled.
+        // $id, $heads, $theme, $headTheme, $bordered, $hoverable, $striped,
+        // $compressed, $withFooter, $footerTheme, $beautify, $withButtons,
+        // $config
+
+        $component = new Components\Tool\Datatable(
+            'id', [], 'primary', null, true, true, true, true, null, null,
+            null, true, ['lengthChange' => false]
+        );
+
+        $this->assertNotContains(
+            ['extend' => 'pageLength', 'className' => 'btn-default'],
+            $component->config['buttons']['buttons']
+        );
     }
 
     public function testModalComponent()

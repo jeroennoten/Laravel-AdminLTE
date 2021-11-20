@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Components\Tool;
 
+use Illuminate\Support\Arr;
 use Illuminate\View\Component;
 
 class Datatable extends Component
@@ -261,12 +262,35 @@ class Datatable extends Component
             'exportOptions' => ['columns' => $colSelector],
         ];
 
-        // Return the set of configured buttons.
+        // The length change button should not be added if the configuration of
+        // datatables explicitly disable it.
+
+        $buttons = [$printBtn, $csvBtn, $excelBtn, $pdfBtn];
+
+        if ($this->isLengthButtonEnabled()) {
+            $buttons = Arr::prepend($buttons, $lengthBtn);
+        }
+
+        // Return the set of configured buttons.        
 
         return [
             'dom' => ['button' => ['className' => 'btn']],
-            'buttons' => [$lengthBtn, $printBtn, $csvBtn, $excelBtn, $pdfBtn],
+            'buttons' => $buttons,
         ];
+    }
+
+    /**
+     * Check if length button should be available on the set of tool buttons.
+     *
+     * @return bool
+     */
+    protected function isLengthButtonEnabled()
+    {
+        if (! isset($this->config['lengthChange'])) {
+            return true;
+        }
+
+        return (bool)$this->config['lengthChange'];
     }
 
     /**
