@@ -14,13 +14,20 @@ use JeroenNoten\LaravelAdminLte\Console\AdminLteStatusCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteUpdateCommand;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
-use JeroenNoten\LaravelAdminLte\View\Components\Layout;
 use JeroenNoten\LaravelAdminLte\View\Components\Form;
+use JeroenNoten\LaravelAdminLte\View\Components\Layout;
 use JeroenNoten\LaravelAdminLte\View\Components\Tool;
 use JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 class AdminLteServiceProvider extends BaseServiceProvider
 {
+    /**
+     * The prefix to use for register/load the package resources.
+     *
+     * @var string
+     */
+    protected $pkgPrefix = 'adminlte';
+
     /**
      * Array with the available layout components.
      *
@@ -125,7 +132,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function loadViews()
     {
         $viewsPath = $this->packagePath('resources/views');
-        $this->loadViewsFrom($viewsPath, 'adminlte');
+        $this->loadViewsFrom($viewsPath, $this->pkgPrefix);
     }
 
     /**
@@ -136,7 +143,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function loadTranslations()
     {
         $translationsPath = $this->packagePath('resources/lang');
-        $this->loadTranslationsFrom($translationsPath, 'adminlte');
+        $this->loadTranslationsFrom($translationsPath, $this->pkgPrefix);
     }
 
     /**
@@ -147,7 +154,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function loadConfig()
     {
         $configPath = $this->packagePath('config/adminlte.php');
-        $this->mergeConfigFrom($configPath, 'adminlte');
+        $this->mergeConfigFrom($configPath, $this->pkgPrefix);
     }
 
     /**
@@ -234,7 +241,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
             $this->widgetComponents
         );
 
-        $this->loadViewComponentsAs('adminlte', $components);
+        $this->loadViewComponentsAs($this->pkgPrefix, $components);
     }
 
     /**
@@ -245,8 +252,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function loadRoutes()
     {
         $routesCfg = [
-            'as' => 'adminlte.',
-            'prefix' => 'adminlte',
+            'as' => "{$this->pkgPrefix}.",
+            'prefix' => $this->pkgPrefix,
             'middleware' => ['web'],
         ];
 
