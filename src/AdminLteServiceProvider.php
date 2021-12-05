@@ -14,6 +14,10 @@ use JeroenNoten\LaravelAdminLte\Console\AdminLteStatusCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteUpdateCommand;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
+use JeroenNoten\LaravelAdminLte\View\Components\Layout;
+use JeroenNoten\LaravelAdminLte\View\Components\Form;
+use JeroenNoten\LaravelAdminLte\View\Components\Tool;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 class AdminLteServiceProvider extends BaseServiceProvider
 {
@@ -23,8 +27,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $layoutComponents = [
-        Components\Layout\NavbarDarkmodeWidget::class,
-        Components\Layout\NavbarNotification::class,
+        'navbar-darkmode-widget' => Layout\NavbarDarkmodeWidget::class,
+        'navbar-notification' => Layout\NavbarNotification::class,
     ];
 
     /**
@@ -33,20 +37,21 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $formComponents = [
-        Components\Form\Button::class,
-        Components\Form\DateRange::class,
-        Components\Form\Input::class,
-        Components\Form\InputColor::class,
-        Components\Form\InputDate::class,
-        Components\Form\InputFile::class,
-        Components\Form\InputSlider::class,
-        Components\Form\InputSwitch::class,
-        Components\Form\Options::class,
-        Components\Form\Select::class,
-        Components\Form\Select2::class,
-        Components\Form\SelectBs::class,
-        Components\Form\Textarea::class,
-        Components\Form\TextEditor::class,
+        'button' => Form\Button::class,
+        'date-range' => Form\DateRange::class,
+        'input' => Form\Input::class,
+        'input-color' => Form\InputColor::class,
+        'input-date' => Form\InputDate::class,
+        'input-file' => Form\InputFile::class,
+        'input-file-bs' => Form\InputFileBs::class,
+        'input-slider' => Form\InputSlider::class,
+        'input-switch' => Form\InputSwitch::class,
+        'options' => Form\Options::class,
+        'select' => Form\Select::class,
+        'select2' => Form\Select2::class,
+        'select-bs' => Form\SelectBs::class,
+        'textarea' => Form\Textarea::class,
+        'text-editor' => Form\TextEditor::class,
     ];
 
     /**
@@ -55,8 +60,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $toolComponents = [
-        Components\Tool\Datatable::class,
-        Components\Tool\Modal::class,
+        'datatable' => Tool\Datatable::class,
+        'modal' => Tool\Modal::class,
     ];
 
     /**
@@ -65,15 +70,15 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $widgetComponents = [
-        Components\Widget\Alert::class,
-        Components\Widget\Callout::class,
-        Components\Widget\Card::class,
-        Components\Widget\InfoBox::class,
-        Components\Widget\ProfileColItem::class,
-        Components\Widget\ProfileRowItem::class,
-        Components\Widget\ProfileWidget::class,
-        Components\Widget\Progress::class,
-        Components\Widget\SmallBox::class,
+        'alert' => Widget\Alert::class,
+        'callout' => Widget\Callout::class,
+        'card' => Widget\Card::class,
+        'info-box' => Widget\InfoBox::class,
+        'profile-col-item' => Widget\ProfileColItem::class,
+        'profile-row-item' => Widget\ProfileRowItem::class,
+        'profile-widget' => Widget\ProfileWidget::class,
+        'progress' => Widget\Progress::class,
+        'small-box' => Widget\SmallBox::class,
     ];
 
     /**
