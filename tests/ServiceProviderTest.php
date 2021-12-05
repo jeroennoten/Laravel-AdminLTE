@@ -111,4 +111,11 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(isset($aliases['adminlte-card']));
         $this->assertTrue(isset($aliases['adminlte-modal']));
     }
+
+    public function testBootLoadRoutes()
+    {
+        // Assert the package routes names are registered.
+
+        $this->assertTrue(Route::has('adminlte.darkmode.toggle'));
+    }
 }
