@@ -50,7 +50,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
         'input-color' => Form\InputColor::class,
         'input-date' => Form\InputDate::class,
         'input-file' => Form\InputFile::class,
-        'input-file-bs' => Form\InputFileBs::class,
         'input-slider' => Form\InputSlider::class,
         'input-switch' => Form\InputSwitch::class,
         'options' => Form\Options::class,
