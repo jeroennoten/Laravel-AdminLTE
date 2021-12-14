@@ -1,6 +1,6 @@
 <?php
 
-use JeroenNoten\LaravelAdminLte\Components;
+use JeroenNoten\LaravelAdminLte\View\Components;
 
 class ToolComponentsTest extends TestCase
 {
