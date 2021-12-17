@@ -107,6 +107,27 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testInputDateComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\InputDate('name');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('default', $iVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\InputDate(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('foo', $iVal);
+    }
+
     public function testInputFileComponent()
     {
         $component = new Components\Form\InputFile('name', null, null, 'sm');
