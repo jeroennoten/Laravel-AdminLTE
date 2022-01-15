@@ -4,6 +4,8 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
 class InputDate extends InputGroupComponent
 {
+    use Traits\OldValueSupportTrait;
+
     /**
      * The default set of icons for the Tempus Dominus plugin configuration.
      *
@@ -48,13 +50,14 @@ class InputDate extends InputGroupComponent
     public function __construct(
         $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
         $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
-        $errorKey = null, $config = []
+        $errorKey = null, $config = [], $enableOldSupport = null
     ) {
         parent::__construct(
             $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
             $igroupClass, $disableFeedback, $errorKey
         );
 
+        $this->enableOldSupport = isset($enableOldSupport);
         $this->config = is_array($config) ? $config : [];
 
         // Setup the default plugin icons option.
