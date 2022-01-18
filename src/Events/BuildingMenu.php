@@ -16,7 +16,7 @@ class BuildingMenu
     /**
      * Create a new event instance.
      *
-     * @param Builder $menu
+     * @param  Builder  $menu
      */
     public function __construct(Builder $menu)
     {

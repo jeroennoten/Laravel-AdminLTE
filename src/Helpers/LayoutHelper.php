@@ -3,6 +3,8 @@
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
 use Illuminate\Support\Facades\View;
+use JeroenNoten\LaravelAdminLte\Events\ReadingDarkModePreference;
+use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 
 class LayoutHelper
 {
@@ -128,7 +130,7 @@ class LayoutHelper
     /**
      * Make the set of classes related to a fixed responsive configuration.
      *
-     * @param string $section The layout section (navbar or footer)
+     * @param  string  $section  The layout section (navbar or footer)
      * @return array
      */
     private static function makeFixedResponsiveClasses($section)
@@ -163,9 +165,9 @@ class LayoutHelper
      * Make a responsive class for the navbar/footer fixed mode on a particular
      * breakpoint token.
      *
-     * @param string $section The layout section (navbar or footer)
-     * @param string $bp The screen breakpoint (xs, sm, md, lg, xl)
-     * @param bool $enabled Whether to enable fixed mode (true, false)
+     * @param  string  $section  The layout section (navbar or footer)
+     * @param  string  $bp  The screen breakpoint (xs, sm, md, lg, xl)
+     * @param  bool  $enabled  Whether to enable fixed mode (true, false)
      * @return string
      */
     private static function makeFixedResponsiveClass($section, $bp, $enabled)
@@ -253,9 +255,20 @@ class LayoutHelper
     private static function makeDarkModeClasses()
     {
         $classes = [];
-        $cfg = config('adminlte.layout_dark_mode', false);
 
-        if (is_bool($cfg) && $cfg) {
+        // Use the dark mode controller to check if dark mode is enabled.
+
+        $darkModeCtrl = new DarkModeController();
+
+        // Dispatch an event to notify we are about to read the dark mode
+        // preference. A listener may catch this event in order to setup the
+        // dark mode initial state using the methods provided by the controller.
+
+        event(new ReadingDarkModePreference($darkModeCtrl));
+
+        // Now, check if dark mode is enabled.
+
+        if ($darkModeCtrl->isEnabled()) {
             $classes[] = 'dark-mode';
         }
 

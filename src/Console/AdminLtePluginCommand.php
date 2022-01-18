@@ -148,7 +148,7 @@ class AdminLtePluginCommand extends Command
     /**
      * Display the plugins status.
      *
-     * @param array $pluginsKeys Array with the plugins keys to evaluate
+     * @param  array  $pluginsKeys  Array with the plugins keys to evaluate
      * @return void
      */
     protected function showPluginsStatus($pluginsKeys)
@@ -208,7 +208,7 @@ class AdminLtePluginCommand extends Command
     /**
      * Get the installation status of a plugin.
      *
-     * @param string $pluginKey The plugin key
+     * @param  string  $pluginKey  The plugin key
      * @return string The plugin status
      */
     protected function getPluginStatus($pluginKey)
@@ -259,8 +259,8 @@ class AdminLtePluginCommand extends Command
     /**
      * Give output style to some text.
      *
-     * @param string $text The text to be styled
-     * @param string $color The output color for the text
+     * @param  string  $text  The text to be styled
+     * @param  string  $color  The output color for the text
      * @return string The styled text
      */
     protected function styleOutput($text, $color)
@@ -320,7 +320,7 @@ class AdminLtePluginCommand extends Command
     /**
      * Install the specified plugin.
      *
-     * @param string $pluginKey The plugin string key
+     * @param  string  $pluginKey  The plugin string key
      * @return bool Whether the plugin was succesfully installed
      */
     protected function installPlugin($pluginKey)
@@ -416,7 +416,7 @@ class AdminLtePluginCommand extends Command
     /**
      * Remove/Uninstall the specified plugin.
      *
-     * @param string $pluginKey The plugin string key
+     * @param  string  $pluginKey  The plugin string key
      * @return bool Whether the plugin was succesfully removed
      */
     protected function removePlugin($pluginKey)
@@ -451,7 +451,7 @@ class AdminLtePluginCommand extends Command
     /**
      * Show the summary table for some operation.
      *
-     * @param array $rows The table rows.
+     * @param  array  $rows  The table rows.
      * @return void
      */
     protected function showSummaryTable($rows)

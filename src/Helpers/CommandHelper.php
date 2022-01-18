@@ -24,9 +24,9 @@ class CommandHelper
     /**
      * Ensure a directory exists by creating it when needed.
      *
-     * @param string $dir The path of the directory
-     * @param int $mode The directory access mode
-     * @param bool $recursive Allow creating nested directories present in path
+     * @param  string  $dir  The path of the directory
+     * @param  int  $mode  The directory access mode
+     * @param  bool  $recursive  Allow creating nested directories present in path
      * @return void
      */
     public static function ensureDirectoryExists($dir, $mode = 0755, $recursive = true)
@@ -39,11 +39,11 @@ class CommandHelper
     /**
      * Copy an entire directory to a destination.
      *
-     * @param string $dir The path of the source folder
-     * @param string $dest The path of the destination folder
-     * @param bool $force Whether to force the overwrite of existing files
-     * @param bool $recursive Whether to copy subfolders recursively
-     * @param array $ignores Array of files to be ignored
+     * @param  string  $dir  The path of the source folder
+     * @param  string  $dest  The path of the destination folder
+     * @param  bool  $force  Whether to force the overwrite of existing files
+     * @param  bool  $recursive  Whether to copy subfolders recursively
+     * @param  array  $ignores  Array of files to be ignored
      * @return void
      */
     public static function copyDirectory($dir, $dest, $force = false, $recursive = false, $ignores = [])
@@ -91,10 +91,10 @@ class CommandHelper
     /**
      * Compare two directories file by file.
      *
-     * @param string $dir1 The path of the first folder
-     * @param string $dir2 The path of the second folder
-     * @param bool $recursive Whether to compare subfolders recursively
-     * @param array $ignores Array of files to be ignored
+     * @param  string  $dir1  The path of the first folder
+     * @param  string  $dir2  The path of the second folder
+     * @param  bool  $recursive  Whether to compare subfolders recursively
+     * @param  array  $ignores  Array of files to be ignored
      * @return bool|null Result of comparison or null if a folder not exists
      */
     public static function compareDirectories($dir1, $dir2, $recursive = false, $ignores = [])
@@ -157,8 +157,8 @@ class CommandHelper
     /**
      * Check if two files are equals by comparing sha1 hash values.
      *
-     * @param string $file1 The first file
-     * @param string $file2 The second file
+     * @param  string  $file1  The first file
+     * @param  string  $file2  The second file
      * @return bool
      */
     public static function compareFiles($file1, $file2)
@@ -173,7 +173,7 @@ class CommandHelper
     /**
      * Recursively delete a directory.
      *
-     * @param string $dir The directory to remove
+     * @param  string  $dir  The directory to remove
      * @return bool
      */
     public static function removeDirectory($dir)
@@ -184,7 +184,7 @@ class CommandHelper
     /**
      * Get the fully qualified path to some package resource.
      *
-     * @param string $path Relative path to the resource
+     * @param  string  $path  Relative path to the resource
      * @return string Fully qualified path to the resource
      */
     public static function getPackagePath($path = null)
@@ -199,7 +199,7 @@ class CommandHelper
     /**
      * Get the fully qualified path to some package stub resource.
      *
-     * @param string $path Relative path to the stub resource
+     * @param  string  $path  Relative path to the stub resource
      * @return string Fully qualified path to the stub resource
      */
     public static function getStubPath($path = null)
@@ -214,7 +214,7 @@ class CommandHelper
     /**
      * Get the fully qualified path relative to the configured view path.
      *
-     * @param string $path Relative path to some view
+     * @param  string  $path  Relative path to some view
      * @return string Fully qualified path to the view
      */
     public static function getViewPath($path = null)
@@ -231,8 +231,8 @@ class CommandHelper
     /**
      * Check if a file is included in a set of ignored file patterns.
      *
-     * @param string $file The file to check
-     * @param array $ignores Array of file patterns to be ignored
+     * @param  string  $file  The file to check
+     * @param  array  $ignores  Array of file patterns to be ignored
      * @return bool
      */
     protected static function isIgnoredFile($file, $ignores)

@@ -4,6 +4,7 @@
 
     {{-- Input Date --}}
     <input id="{{ $id }}" name="{{ $name }}" data-target="#{{ $id }}" data-toggle="datetimepicker"
+        value="{{ $makeItemValue($errorKey, $attributes->get('value')) }}"
         {{ $attributes->merge(['class' => $makeItemClass()]) }}>
 
 @overwrite

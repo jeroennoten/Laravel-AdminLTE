@@ -6,6 +6,7 @@ use Illuminate\Contracts\Config\Repository;
 use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Contracts\View\Factory;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteInstallCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLtePluginCommand;
@@ -13,16 +14,28 @@ use JeroenNoten\LaravelAdminLte\Console\AdminLteStatusCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteUpdateCommand;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
+use JeroenNoten\LaravelAdminLte\View\Components\Form;
+use JeroenNoten\LaravelAdminLte\View\Components\Layout;
+use JeroenNoten\LaravelAdminLte\View\Components\Tool;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 class AdminLteServiceProvider extends BaseServiceProvider
 {
+    /**
+     * The prefix to use for register/load the package resources.
+     *
+     * @var string
+     */
+    protected $pkgPrefix = 'adminlte';
+
     /**
      * Array with the available layout components.
      *
      * @var array
      */
     protected $layoutComponents = [
-        Components\Layout\NavbarNotification::class,
+        'navbar-darkmode-widget' => Layout\NavbarDarkmodeWidget::class,
+        'navbar-notification' => Layout\NavbarNotification::class,
     ];
 
     /**
@@ -31,19 +44,20 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $formComponents = [
-        Components\Form\Button::class,
-        Components\Form\DateRange::class,
-        Components\Form\Input::class,
-        Components\Form\InputColor::class,
-        Components\Form\InputDate::class,
-        Components\Form\InputFile::class,
-        Components\Form\InputSlider::class,
-        Components\Form\InputSwitch::class,
-        Components\Form\Select::class,
-        Components\Form\Select2::class,
-        Components\Form\SelectBs::class,
-        Components\Form\Textarea::class,
-        Components\Form\TextEditor::class,
+        'button' => Form\Button::class,
+        'date-range' => Form\DateRange::class,
+        'input' => Form\Input::class,
+        'input-color' => Form\InputColor::class,
+        'input-date' => Form\InputDate::class,
+        'input-file' => Form\InputFile::class,
+        'input-slider' => Form\InputSlider::class,
+        'input-switch' => Form\InputSwitch::class,
+        'options' => Form\Options::class,
+        'select' => Form\Select::class,
+        'select2' => Form\Select2::class,
+        'select-bs' => Form\SelectBs::class,
+        'textarea' => Form\Textarea::class,
+        'text-editor' => Form\TextEditor::class,
     ];
 
     /**
@@ -52,8 +66,8 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $toolComponents = [
-        Components\Tool\Datatable::class,
-        Components\Tool\Modal::class,
+        'datatable' => Tool\Datatable::class,
+        'modal' => Tool\Modal::class,
     ];
 
     /**
@@ -62,15 +76,15 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $widgetComponents = [
-        Components\Widget\Alert::class,
-        Components\Widget\Callout::class,
-        Components\Widget\Card::class,
-        Components\Widget\InfoBox::class,
-        Components\Widget\ProfileColItem::class,
-        Components\Widget\ProfileRowItem::class,
-        Components\Widget\ProfileWidget::class,
-        Components\Widget\Progress::class,
-        Components\Widget\SmallBox::class,
+        'alert' => Widget\Alert::class,
+        'callout' => Widget\Callout::class,
+        'card' => Widget\Card::class,
+        'info-box' => Widget\InfoBox::class,
+        'profile-col-item' => Widget\ProfileColItem::class,
+        'profile-row-item' => Widget\ProfileRowItem::class,
+        'profile-widget' => Widget\ProfileWidget::class,
+        'progress' => Widget\Progress::class,
+        'small-box' => Widget\SmallBox::class,
     ];
 
     /**
@@ -106,6 +120,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
         $this->registerViewComposers($view);
         $this->registerMenu($events, $config);
         $this->loadComponents();
+        $this->loadRoutes();
     }
 
     /**
@@ -116,7 +131,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function loadViews()
     {
         $viewsPath = $this->packagePath('resources/views');
-        $this->loadViewsFrom($viewsPath, 'adminlte');
+        $this->loadViewsFrom($viewsPath, $this->pkgPrefix);
     }
 
     /**
@@ -127,7 +142,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function loadTranslations()
     {
         $translationsPath = $this->packagePath('resources/lang');
-        $this->loadTranslationsFrom($translationsPath, 'adminlte');
+        $this->loadTranslationsFrom($translationsPath, $this->pkgPrefix);
     }
 
     /**
@@ -138,13 +153,13 @@ class AdminLteServiceProvider extends BaseServiceProvider
     private function loadConfig()
     {
         $configPath = $this->packagePath('config/adminlte.php');
-        $this->mergeConfigFrom($configPath, 'adminlte');
+        $this->mergeConfigFrom($configPath, $this->pkgPrefix);
     }
 
     /**
      * Get the absolute path to some package resource.
      *
-     * @param string $path The relative path to the resource
+     * @param  string  $path  The relative path to the resource
      * @return string
      */
     private function packagePath($path)
@@ -225,6 +240,25 @@ class AdminLteServiceProvider extends BaseServiceProvider
             $this->widgetComponents
         );
 
-        $this->loadViewComponentsAs('adminlte', $components);
+        $this->loadViewComponentsAs($this->pkgPrefix, $components);
+    }
+
+    /**
+     * Load the package web routes.
+     *
+     * @return void
+     */
+    private function loadRoutes()
+    {
+        $routesCfg = [
+            'as' => "{$this->pkgPrefix}.",
+            'prefix' => $this->pkgPrefix,
+            'middleware' => ['web'],
+        ];
+
+        Route::group($routesCfg, function () {
+            $routesPath = $this->packagePath('routes/web.php');
+            $this->loadRoutesFrom($routesPath);
+        });
     }
 }

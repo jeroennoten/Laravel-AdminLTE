@@ -1,19 +1,9 @@
 <?php
 
-use JeroenNoten\LaravelAdminLte\Components;
+use JeroenNoten\LaravelAdminLte\View\Components;
 
 class WidgetComponentsTest extends TestCase
 {
-    /**
-     * Get package providers.
-     */
-    protected function getPackageProviders($app)
-    {
-        // Register our service provider into the Laravel's application.
-
-        return ['JeroenNoten\LaravelAdminLte\AdminLteServiceProvider'];
-    }
-
     /**
      * Return array with the available blade components.
      */
@@ -96,6 +86,9 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card', $cClass);
         $this->assertStringContainsString('card-info', $cClass);
 
+        $cbClass = $component->makeCardBodyClass();
+        $this->assertStringContainsString('card-body', $cbClass);
+
         $hClass = $component->makeCardHeaderClass();
         $this->assertStringContainsString('card-header', $hClass);
         $this->assertStringNotContainsString('d-none', $hClass);
@@ -115,21 +108,25 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card-header', $hClass);
         $this->assertStringContainsString('d-none', $hClass);
 
-        // Test collapsed with full theme:
-        // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
-        // $removable, $maximizable.
+        // Test collapsed with full theme and extra body class:
+        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
+        // $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
-            'title', null, 'success', 'full', null, 'collapsed'
+            'title', null, 'success', 'full', 'body-class', null, 'collapsed'
         );
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('bg-gradient-success', $cClass);
         $this->assertStringContainsString('collapsed-card', $cClass);
 
+        $cbClass = $component->makeCardBodyClass();
+        $this->assertStringContainsString('card-body', $cbClass);
+        $this->assertStringContainsString('body-class', $cbClass);
+
         // Test outline theme:
-        // $title, $icon, $theme, $themeMode, $disabled, $collapsible,
-        // $removable, $maximizable.
+        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
+        // $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
             'title', null, 'teal', 'outline'

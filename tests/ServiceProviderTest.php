@@ -4,16 +4,6 @@ use JeroenNoten\LaravelAdminLte\AdminLte;
 
 class ServiceProviderTest extends TestCase
 {
-    /**
-     * Get package providers.
-     */
-    protected function getPackageProviders($app)
-    {
-        // Register our service provider into the Laravel's application.
-
-        return ['JeroenNoten\LaravelAdminLte\AdminLteServiceProvider'];
-    }
-
     public function testRegisterSingletonInstance()
     {
         // Check the instance of AdminLte resolver.
@@ -120,5 +110,12 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(isset($aliases['adminlte-select2']));
         $this->assertTrue(isset($aliases['adminlte-card']));
         $this->assertTrue(isset($aliases['adminlte-modal']));
+    }
+
+    public function testBootLoadRoutes()
+    {
+        // Assert the package routes names are registered.
+
+        $this->assertTrue(Route::has('adminlte.darkmode.toggle'));
     }
 }

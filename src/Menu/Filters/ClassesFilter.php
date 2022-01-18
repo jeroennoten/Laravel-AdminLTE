@@ -10,7 +10,7 @@ class ClassesFilter implements FilterInterface
     /**
      * Transforms a menu item. Add particular classes when suitable.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return array The transformed menu item
      */
     public function transform($item)
@@ -27,7 +27,7 @@ class ClassesFilter implements FilterInterface
     /**
      * Make classes related to the components of a menu item.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return array The array of classes
      */
     protected function makeClasses($item)
@@ -52,7 +52,7 @@ class ClassesFilter implements FilterInterface
     /**
      * Make classes related to the components of a submenu item.
      *
-     * @param array $item A menu item
+     * @param  array  $item  A menu item
      * @return array The array of classes
      */
     protected function makeSubmenuClasses($item)

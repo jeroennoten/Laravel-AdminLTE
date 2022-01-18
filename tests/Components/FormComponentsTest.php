@@ -1,20 +1,10 @@
 <?php
 
 use Illuminate\Support\MessageBag;
-use JeroenNoten\LaravelAdminLte\Components;
+use JeroenNoten\LaravelAdminLte\View\Components;
 
 class FormComponentsTest extends TestCase
 {
-    /**
-     * Get package providers.
-     */
-    protected function getPackageProviders($app)
-    {
-        // Register our service provider into the Laravel's application.
-
-        return ['JeroenNoten\LaravelAdminLte\AdminLteServiceProvider'];
-    }
-
     /**
      * Return array with the available blade components.
      */
@@ -37,6 +27,7 @@ class FormComponentsTest extends TestCase
             "{$base}.select-bs"    => new Components\Form\SelectBs('name'),
             "{$base}.textarea"     => new Components\Form\Textarea('name'),
             "{$base}.text-editor"  => new Components\Form\TextEditor('name'),
+            "{$base}.options"      => new Components\Form\Options(['o1, o2']),
         ];
     }
 
@@ -48,6 +39,18 @@ class FormComponentsTest extends TestCase
         $msgBag = new MessageBag();
         $msgBag->add($key, 'error');
         session()->put('errors', $msgBag);
+    }
+
+    /**
+     * Flash an input with value into the current laravel request.
+     *
+     * @param  string  $key  The input key
+     * @param  mixed  $val  The input value
+     */
+    protected function addInputOnCurrentRequest($key, $val)
+    {
+        session()->flashInput([$key => $val]);
+        request()->setLaravelsession(session());
     }
 
     /*
@@ -104,6 +107,27 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testInputDateComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\InputDate('name');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('default', $iVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\InputDate(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('foo', $iVal);
+    }
+
     public function testInputFileComponent()
     {
         $component = new Components\Form\InputFile('name', null, null, 'sm');
@@ -151,6 +175,64 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testOptionsComponent()
+    {
+        $options = ['m' => 'Male', 'f' => 'Female', 'o' => 'Other'];
+        $component = new Components\Form\Options($options, 'f', 'o');
+
+        // Test selected / disabled options.
+
+        $this->assertFalse($component->isSelected('m'));
+        $this->assertTrue($component->isSelected('f'));
+        $this->assertFalse($component->isDisabled('m'));
+        $this->assertTrue($component->isDisabled('o'));
+
+        // Test rendered HTML.
+
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
+
+        $this->assertStringMatchesFormat($format, $html);
+
+        // Test rendered HTML with empty option (no label).
+
+        $component = new Components\Form\Options($options, 'f', 'o', null, true);
+
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%Avalue%A>%A</option>%A';
+        $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
+
+        $this->assertStringMatchesFormat($format, $html);
+
+        // Test rendered HTML with empty option (and label).
+
+        $component = new Components\Form\Options($options, 'f', 'o', null, 'Label');
+
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%Avalue%A>%ALabel%A</option>%A';
+        $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
+
+        $this->assertStringMatchesFormat($format, $html);
+
+        // Test rendered HTML with placeholder.
+
+        $component = new Components\Form\Options($options, 'f', 'o', null, null, 'Placeholder');
+
+        $html = $component->resolveView()->with($component->data());
+        $format = '%A<option%Aclass="d-none"%Avalue%A>%APlaceholder%A</option>%A';
+        $format .= '%A<option%avalue="m"%A>%AMale%A</option>%A';
+        $format .= '<option%avalue="f"%Aselected%A>%AFemale%A</option>%A';
+        $format .= '<option%avalue="o"%Adisabled%A>%AOther%A</option>%A';
+
+        $this->assertStringMatchesFormat($format, $html);
+    }
+
     public function testSelectComponent()
     {
         $component = new Components\Form\Select('name');
@@ -163,6 +245,27 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testSelectComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\Select('name');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('default', $iVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\Select(
+            'name', null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('foo', $iVal);
+    }
+
     public function testSelect2Component()
     {
         $component = new Components\Form\Select2('name');
@@ -173,6 +276,27 @@ class FormComponentsTest extends TestCase
 
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testSelect2ComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\Select2('name');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('default', $iVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\Select2(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $iVal = $component->makeItemValue('name', 'default');
+
+        $this->assertEquals('foo', $iVal);
     }
 
     public function testSelectBsComponent()
