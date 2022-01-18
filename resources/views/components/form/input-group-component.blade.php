@@ -32,6 +32,11 @@
         </span>
     @endif
 
+    {{-- Info slot --}}
+    @isset($infoSlot)
+        {{ $infoSlot }}
+    @endisset
+
 </div>
 
 {{-- Extra style customization for invalid input groups --}}
