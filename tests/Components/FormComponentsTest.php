@@ -112,9 +112,9 @@ class FormComponentsTest extends TestCase
         // Test component with old support disabled.
 
         $component = new Components\Form\InputDate('name');
-        $iVal = $component->makeItemValue('name', 'default');
+        $oVal = $component->getOldValue('name', 'default');
 
-        $this->assertEquals('default', $iVal);
+        $this->assertEquals('default', $oVal);
 
         // Test component with old support enabled.
 
@@ -123,9 +123,9 @@ class FormComponentsTest extends TestCase
         );
 
         $this->addInputOnCurrentRequest('name', 'foo');
-        $iVal = $component->makeItemValue('name', 'default');
+        $oVal = $component->getOldValue('name', 'default');
 
-        $this->assertEquals('foo', $iVal);
+        $this->assertEquals('foo', $oVal);
     }
 
     public function testInputFileComponent()
@@ -250,9 +250,9 @@ class FormComponentsTest extends TestCase
         // Test component with old support disabled.
 
         $component = new Components\Form\Select('name');
-        $iVal = $component->makeItemValue('name', 'default');
+        $oVal = $component->getOldValue('name', 'default');
 
-        $this->assertEquals('default', $iVal);
+        $this->assertEquals('default', $oVal);
 
         // Test component with old support enabled.
 
@@ -261,9 +261,9 @@ class FormComponentsTest extends TestCase
         );
 
         $this->addInputOnCurrentRequest('name', 'foo');
-        $iVal = $component->makeItemValue('name', 'default');
+        $oVal = $component->getOldValue('name', 'default');
 
-        $this->assertEquals('foo', $iVal);
+        $this->assertEquals('foo', $oVal);
     }
 
     public function testSelect2Component()
@@ -283,9 +283,9 @@ class FormComponentsTest extends TestCase
         // Test component with old support disabled.
 
         $component = new Components\Form\Select2('name');
-        $iVal = $component->makeItemValue('name', 'default');
+        $oVal = $component->getOldValue('name', 'default');
 
-        $this->assertEquals('default', $iVal);
+        $this->assertEquals('default', $oVal);
 
         // Test component with old support enabled.
 
@@ -294,9 +294,9 @@ class FormComponentsTest extends TestCase
         );
 
         $this->addInputOnCurrentRequest('name', 'foo');
-        $iVal = $component->makeItemValue('name', 'default');
+        $oVal = $component->getOldValue('name', 'default');
 
-        $this->assertEquals('foo', $iVal);
+        $this->assertEquals('foo', $oVal);
     }
 
     public function testSelectBsComponent()
