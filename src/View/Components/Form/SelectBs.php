@@ -4,6 +4,8 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
 class SelectBs extends InputGroupComponent
 {
+    use Traits\OldValueSupportTrait;
+
     /**
      * The bootstrap-select plugin configuration parameters. Array with
      * key => value pairs, where the key should be an existing configuration
@@ -22,7 +24,7 @@ class SelectBs extends InputGroupComponent
     public function __construct(
         $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
         $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
-        $errorKey = null, $config = []
+        $errorKey = null, $config = [], $enableOldSupport = null
     ) {
         parent::__construct(
             $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
@@ -30,6 +32,7 @@ class SelectBs extends InputGroupComponent
         );
 
         $this->config = is_array($config) ? $config : [];
+        $this->enableOldSupport = isset($enableOldSupport);
     }
 
     /**

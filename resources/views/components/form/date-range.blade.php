@@ -28,6 +28,15 @@
             }
         @endisset
 
+        {{-- Add support to auto select the previous submitted value --}}
+
+        @if($errors->any() && $enableOldSupport)
+            let oldRange = @json($getOldValue($errorKey));
+            oldRange = oldRange.split(" - ");
+            usrCfg.startDate = oldRange.length > 0 ? oldRange[0] : null;
+            usrCfg.endDate = oldRange.length > 1 ? oldRange[1] : null;
+        @endif
+
         $('#{{ $id }}').daterangepicker(usrCfg);
     })
 
