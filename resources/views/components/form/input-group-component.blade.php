@@ -33,8 +33,8 @@
     @endif
 
     {{-- Info slot --}}
-    @isset($infoSlot)
-        {{ $infoSlot }}
+    @isset($bottomSlot)
+        {{ $bottomSlot }}
     @endisset
 
 </div>
