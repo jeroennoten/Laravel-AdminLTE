@@ -128,6 +128,7 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('adminlte-invalid-igroup', $iGroupClass);
         $this->assertStringContainsString('form-group', $fGroupClass);
         $this->assertStringContainsString('fgroup-class', $fGroupClass);
+    }
 
     /*
     |--------------------------------------------------------------------------
