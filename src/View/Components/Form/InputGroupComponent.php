@@ -7,6 +7,14 @@ use Illuminate\View\Component;
 class InputGroupComponent extends Component
 {
     /**
+     * Holds an instance of the Laravel errors bag. This will be mainly used to
+     * detect when the input group has associated errors.
+     *
+     * @var \Illuminate\Support\MessageBag;
+     */
+    protected $errorsBag;
+
+    /**
      * The id attribute for the underlying input group item. The input group
      * item may be an "input", a "select", a "textarea", etc.
      *
@@ -99,6 +107,10 @@ class InputGroupComponent extends Component
         // Setup the lookup key for validation errors.
 
         $this->errorKey = $errorKey ?? $this->makeErrorKey();
+
+        // Initialize the internal errors bag holder variable.
+
+        $this->errorsBag = null;
     }
 
     /**
@@ -166,13 +178,26 @@ class InputGroupComponent extends Component
     public function isInvalid()
     {
         // Get the errors bag from session. The errors bag will be an instance
-        // of the Illuminate\Support\MessageBag class.
+        // of the Illuminate\Support\MessageBag class. First we will check if
+        // the errors bag is available within this instance, otherwise we will
+        // try to get it from the session.
 
-        $errors = session()->get('errors');
+        $errors = $this->errorsBag ?? session()->get('errors');
 
         // Check if exists any error related to the configured error key.
 
-        return ! empty($errors) && ! empty($errors->first($this->errorKey));
+        return ! empty($errors) && $errors->has($this->errorKey);
+    }
+
+    /**
+     * Setup the internal errors bag.
+     *
+     * @param  \Illuminate\Support\MessageBag  $errorsBag
+     * @return void
+     */
+    public function setErrorsBag($errorsBag)
+    {
+        $this->errorsBag = $errorsBag;
     }
 
     /**

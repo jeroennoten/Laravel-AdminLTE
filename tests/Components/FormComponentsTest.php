@@ -79,7 +79,7 @@ class FormComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testInputGroupComponent()
+    public function testInvalidInputGroupComponentBySessionErrorsBag()
     {
         $component = new Components\Form\InputGroupComponent(
             'name', null, null, 'lg', null, 'fgroup-class', 'igroup-class'
@@ -99,6 +99,35 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('fgroup-class', $fGroupClass);
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testInvalidInputGroupComponentByErrorsBagSetup()
+    {
+        // Note we configure a specific error key called 'nameErrorKey'.
+
+        $component = new Components\Form\InputGroupComponent(
+            'name', null, null, 'sm', null, 'fgroup-class',
+            'igroup-class', null, 'nameErrorKey'
+        );
+
+        // Setup an internal errors bag for the component.
+
+        $msgBag = new MessageBag();
+        $msgBag->add('nameErrorKey', 'error');
+        $component->setErrorsBag($msgBag);
+
+        // Test the component.
+
+        $iGroupClass = $component->makeInputGroupClass();
+        $fGroupClass = $component->makeFormGroupClass();
+        $iClass = $component->makeItemClass();
+
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-sm', $iGroupClass);
+        $this->assertStringContainsString('igroup-class', $iGroupClass);
+        $this->assertStringContainsString('adminlte-invalid-igroup', $iGroupClass);
+        $this->assertStringContainsString('form-group', $fGroupClass);
+        $this->assertStringContainsString('fgroup-class', $fGroupClass);
     }
 
     /*
