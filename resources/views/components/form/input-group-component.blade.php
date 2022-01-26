@@ -40,6 +40,11 @@
         </span>
     @endif
 
+    {{-- Bottom slot --}}
+    @isset($bottomSlot)
+        {{ $bottomSlot }}
+    @endisset
+
 </div>
 
 {{-- Extra style customization for invalid input groups --}}
