@@ -32,7 +32,7 @@
         </span>
     @endif
 
-    {{-- Info slot --}}
+    {{-- Bottom slot --}}
     @isset($bottomSlot)
         {{ $bottomSlot }}
     @endisset
