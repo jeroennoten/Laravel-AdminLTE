@@ -17,10 +17,11 @@
         let usrCfg = _AdminLTE_InputDate.parseCfg( @json($config) );
         $('#{{ $id }}').datetimepicker(usrCfg);
 
-        {{-- Add support to auto display the old submitted value or values --}}
+        // Add support to auto display the old submitted value or values in case
+        // of validation errors.
 
-        let value = "{{ $getOldValue($errorKey, $attributes->get('value')) }}";
-        $('#{{ $id }}').val(value);
+        let value = @json($getOldValue($errorKey, $attributes->get('value')));
+        $('#{{ $id }}').val(value || "");
     })
 
 </script>

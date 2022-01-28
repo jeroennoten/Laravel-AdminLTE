@@ -18,7 +18,8 @@
     $(() => {
         $('#{{ $id }}').select2( @json($config) );
 
-        {{-- Add support to auto select old submitted values --}}
+        // Add support to auto select old submitted values in case of
+        // validation errors.
 
         @if($errors->any() && $enableOldSupport)
 
