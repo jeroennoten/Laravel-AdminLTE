@@ -41,9 +41,14 @@
         // Also, add support to auto select the previous submitted value.
 
         @if($attributes->has('value') || ($errors->any() && $enableOldSupport))
+
             let value = @json($getOldValue($errorKey, $attributes['value']));
-            value = value.split(",").map(Number);
-            usrCfg.value = value.length > 1 ? value : value[0];
+
+            if (value) {
+                value = value.split(",").map(Number);
+                usrCfg.value = value.length > 1 ? value : value[0];
+            }
+
         @endif
 
         // Initialize the plugin.
