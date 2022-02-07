@@ -27,7 +27,9 @@ jobs:
                     -   laravel: 7.*
                         php: 8.1
                     -   laravel: 9.x-dev
-                        php: 7.*
+                        php: 7.3
+                    -   laravel: 9.x-dev
+                        php: 7.4
 
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
 
