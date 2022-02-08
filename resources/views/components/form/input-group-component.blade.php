@@ -1,3 +1,11 @@
+{{-- Setup the internal errors bag for the component --}}
+
+@php
+    $setErrorsBag($errors);
+@endphp
+
+{{-- Setup the input group component structure --}}
+
 <div class="{{ $makeFormGroupClass() }}">
 
     {{-- Input label --}}
@@ -31,6 +39,11 @@
             <strong>{{ $errors->first($errorKey) }}</strong>
         </span>
     @endif
+
+    {{-- Bottom slot --}}
+    @isset($bottomSlot)
+        {{ $bottomSlot }}
+    @endisset
 
 </div>
 

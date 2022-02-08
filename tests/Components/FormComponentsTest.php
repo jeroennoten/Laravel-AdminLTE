@@ -1,12 +1,14 @@
 <?php
 
 use Illuminate\Support\MessageBag;
-use JeroenNoten\LaravelAdminLte\Components;
+use JeroenNoten\LaravelAdminLte\View\Components;
 
 class FormComponentsTest extends TestCase
 {
     /**
      * Return array with the available blade components.
+     *
+     * @return array
      */
     protected function getComponents()
     {
@@ -33,12 +35,28 @@ class FormComponentsTest extends TestCase
 
     /**
      * Add an error on the session's error bag for the provided $key.
+     *
+     * @param  string  $key  The key for which to add an error
+     * @return void
      */
     protected function addErrorOnSessionFor($key)
     {
         $msgBag = new MessageBag();
         $msgBag->add($key, 'error');
         session()->put('errors', $msgBag);
+    }
+
+    /**
+     * Flash an input with value into the current laravel request.
+     *
+     * @param  string  $key  The input key
+     * @param  mixed  $val  The input value
+     * @return void
+     */
+    protected function addInputOnCurrentRequest($key, $val)
+    {
+        session()->flashInput([$key => $val]);
+        request()->setLaravelsession(session());
     }
 
     /*
@@ -57,11 +75,11 @@ class FormComponentsTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
-    | Individual form components tests.
+    | Input group component tests.
     |--------------------------------------------------------------------------
     */
 
-    public function testInputGroupComponent()
+    public function testInvalidInputGroupComponentBySessionErrorsBag()
     {
         $component = new Components\Form\InputGroupComponent(
             'name', null, null, 'lg', null, 'fgroup-class', 'igroup-class'
@@ -83,6 +101,120 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testInvalidInputGroupComponentByErrorsBagSetup()
+    {
+        // Note we configure a specific error key called 'nameErrorKey'.
+
+        $component = new Components\Form\InputGroupComponent(
+            'name', null, null, 'sm', null, 'fgroup-class',
+            'igroup-class', null, 'nameErrorKey'
+        );
+
+        // Setup an internal errors bag for the component.
+
+        $msgBag = new MessageBag();
+        $msgBag->add('nameErrorKey', 'error');
+        $component->setErrorsBag($msgBag);
+
+        // Test the component.
+
+        $iGroupClass = $component->makeInputGroupClass();
+        $fGroupClass = $component->makeFormGroupClass();
+        $iClass = $component->makeItemClass();
+
+        $this->assertStringContainsString('input-group', $iGroupClass);
+        $this->assertStringContainsString('input-group-sm', $iGroupClass);
+        $this->assertStringContainsString('igroup-class', $iGroupClass);
+        $this->assertStringContainsString('adminlte-invalid-igroup', $iGroupClass);
+        $this->assertStringContainsString('form-group', $fGroupClass);
+        $this->assertStringContainsString('fgroup-class', $fGroupClass);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Date range component tests.
+    |--------------------------------------------------------------------------
+    */
+
+    public function testDateRangeComponent()
+    {
+        $component = new Components\Form\DateRange('name');
+
+        $this->addErrorOnSessionFor('name');
+
+        $iClass = $component->makeItemClass();
+
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testDateRangeComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\DateRange('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\DateRange(
+            'name', null, null, null, null, null, null,
+            null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Input color component tests.
+    |--------------------------------------------------------------------------
+    */
+
+    public function testInputColorComponent()
+    {
+        $component = new Components\Form\InputColor('name');
+
+        $this->addErrorOnSessionFor('name');
+
+        $iClass = $component->makeItemClass();
+
+        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    public function testInputColorComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\InputColor('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\InputColor(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Input date component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testInputDateComponent()
     {
         $component = new Components\Form\InputDate('name');
@@ -95,6 +227,33 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testInputDateComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\InputDate('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\InputDate(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Input file component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testInputFileComponent()
     {
         $component = new Components\Form\InputFile('name', null, null, 'sm');
@@ -105,6 +264,12 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('custom-file-input', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Input slider component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testInputSliderComponent()
     {
@@ -124,6 +289,34 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testInputSliderComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\InputSlider('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\InputSlider(
+            'name', null, null, null, null, null, null,
+            null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Input switch component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testInputSwitchComponent()
     {
         $component = new Components\Form\InputSwitch(
@@ -141,6 +334,33 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('adminlte-invalid-iswgroup', $iGroupClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
+
+    public function testInputSwitchComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\InputSwitch('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\InputSwitch(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Options component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testOptionsComponent()
     {
@@ -200,6 +420,12 @@ class FormComponentsTest extends TestCase
         $this->assertStringMatchesFormat($format, $html);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Select component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testSelectComponent()
     {
         $component = new Components\Form\Select('name');
@@ -211,6 +437,33 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
+
+    public function testSelectComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\Select('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\Select(
+            'name', null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Select2 component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testSelect2Component()
     {
@@ -224,6 +477,33 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
+    public function testSelect2ComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\Select2('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\Select2(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | SelectBs component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testSelectBsComponent()
     {
         $component = new Components\Form\SelectBs('name', null, null, 'lg');
@@ -236,6 +516,33 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('form-control-lg', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
+
+    public function testSelectBsComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\SelectBs('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\SelectBs(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Text editor component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testTextEditorComponent()
     {
@@ -251,5 +558,26 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
         $this->assertStringContainsString('igroup-class', $iGroupClass);
         $this->assertStringContainsString('adminlte-invalid-itegroup', $iGroupClass);
+    }
+
+    public function testTextEditorComponentOldSupport()
+    {
+        // Test component with old support disabled.
+
+        $component = new Components\Form\TextEditor('name');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('default', $oVal);
+
+        // Test component with old support enabled.
+
+        $component = new Components\Form\TextEditor(
+            'name', null, null, null, null, null, null, null, null, null, true
+        );
+
+        $this->addInputOnCurrentRequest('name', 'foo');
+        $oVal = $component->getOldValue('name', 'default');
+
+        $this->assertEquals('foo', $oVal);
     }
 }
