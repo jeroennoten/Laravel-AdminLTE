@@ -50,11 +50,14 @@
         @endif
 
         {{-- Tab List --}}
-        <ul class="navbar-nav" role="tablist">
+        <ul class="navbar-nav overflow-hidden" role="tablist">
 
             {{-- Default Tab --}}
             @if(! empty(config('adminlte.iframe.default_tab.url')))
                 <li class="nav-item active" role="presentation">
+                    <a href="#" class="btn-iframe-close" data-widget="iframe-close" data-type="only-this">
+                        <i class="fas fa-times"></i>
+                    </a>
                     <a id="tab-default" class="nav-link active" data-toggle="row" href="#panel-default"
                        role="tab" aria-controls="panel-default" aria-selected="true">
                         {{-- TODO: How to translate the configured title? --}}
@@ -84,22 +87,6 @@
     {{-- IFrame Tab Content --}}
     <div class="tab-content">
 
-        {{-- Default Tab Content --}}
-        @if(! empty(config('adminlte.iframe.default_tab.url')))
-            <div id="panel-default" class="tab-pane fade active show" role="tabpanel" aria-labelledby="tab-default">
-                {{-- TODO: Height can't be harcoded, because it depends on user screen size --}}
-                {{-- TODO: This should be fixed on the underlying AdminLTE package --}}
-                <iframe src="{{ config('adminlte.iframe.default_tab.url') }}" style="height: 671px;"></iframe>
-            </div>
-        @endif
-
-        {{-- Empty Tab --}}
-        <div class="tab-empty">
-            <h2 class="display-4 text-center">
-                {{ __('adminlte::iframe.tab_empty') }}
-            </h2>
-        </div>
-
         {{-- Loading Overlay --}}
         <div class="tab-loading">
         <div>
@@ -109,6 +96,20 @@
                 {{ __('adminlte::iframe.tab_loading') }}
             </h2>
         </div>
+        </div>
+
+        {{-- Default Tab Content --}}
+        @if(! empty(config('adminlte.iframe.default_tab.url')))
+            <div id="panel-default" class="tab-pane fade" role="tabpanel" aria-labelledby="tab-default">
+                <iframe src="{{ config('adminlte.iframe.default_tab.url') }}"></iframe>
+            </div>
+        @endif
+
+        {{-- Empty Tab --}}
+        <div class="tab-empty">
+            <h2 class="display-4 text-center">
+                {{ __('adminlte::iframe.tab_empty') }}
+            </h2>
         </div>
 
     </div>
