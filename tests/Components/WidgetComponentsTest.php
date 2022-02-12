@@ -86,12 +86,14 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card', $cClass);
         $this->assertStringContainsString('card-info', $cClass);
 
+        $hClass = $component->makeCardHeaderClass();
+        $this->assertStringContainsString('card-header', $hClass);
+
         $cbClass = $component->makeCardBodyClass();
         $this->assertStringContainsString('card-body', $cbClass);
 
-        $hClass = $component->makeCardHeaderClass();
-        $this->assertStringContainsString('card-header', $hClass);
-        $this->assertStringNotContainsString('d-none', $hClass);
+        $fClass = $component->makeCardFooterClass();
+        $this->assertStringContainsString('card-footer', $fClass);
 
         $ctClass = $component->makeCardTitleClass();
         $this->assertStringContainsString('card-title', $ctClass);
@@ -103,30 +105,38 @@ class WidgetComponentsTest extends TestCase
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('card', $cClass);
         $this->assertStringContainsString('card-danger', $cClass);
+        $this->assertTrue($component->isCardHeaderEmpty());
+        $this->assertFalse($component->isCardHeaderEmpty(true));
 
-        $hClass = $component->makeCardHeaderClass();
-        $this->assertStringContainsString('card-header', $hClass);
-        $this->assertStringContainsString('d-none', $hClass);
-
-        // Test collapsed with full theme and extra body class:
-        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
-        // $collapsible, $removable, $maximizable.
+        // Test collapsed mode with full theme and extra body, footer and
+        // header classed:
+        // $title, $icon, $theme, $themeMode, $headerClass, $bodyClass,
+        // $footerClass, $disabled, $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
-            'title', null, 'success', 'full', 'body-class', null, 'collapsed'
+            'title', null, 'success', 'full', 'header-class', 'body-class',
+            'footer-class', null, 'collapsed'
         );
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('bg-gradient-success', $cClass);
         $this->assertStringContainsString('collapsed-card', $cClass);
 
+        $hClass = $component->makeCardHeaderClass();
+        $this->assertStringContainsString('card-header', $hClass);
+        $this->assertStringContainsString('header-class', $hClass);
+
         $cbClass = $component->makeCardBodyClass();
         $this->assertStringContainsString('card-body', $cbClass);
         $this->assertStringContainsString('body-class', $cbClass);
 
+        $fClass = $component->makeCardFooterClass();
+        $this->assertStringContainsString('card-footer', $fClass);
+        $this->assertStringContainsString('footer-class', $fClass);
+
         // Test outline theme:
-        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
-        // $collapsible, $removable, $maximizable.
+        // $title, $icon, $theme, $themeMode, $headerClass, $bodyClass,
+        // $footerClass, $disabled, $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
             'title', null, 'teal', 'outline'

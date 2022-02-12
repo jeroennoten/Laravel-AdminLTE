@@ -36,12 +36,28 @@ class Card extends Component
     public $themeMode;
 
     /**
+     * Extra classes for the "card-header" element. This provides a way to
+     * customize the card header container style.
+     *
+     * @var string
+     */
+    public $headerClass;
+
+    /**
      * Extra classes for the "card-body" element. This provides a way to
      * customize the card body container style.
      *
      * @var string
      */
     public $bodyClass;
+
+    /**
+     * Extra classes for the "card-footer" element. This provides a way to
+     * customize the card footer container style.
+     *
+     * @var string
+     */
+    public $footerClass;
 
     /**
      * Indicates if the card is disabled. When enabled, an overay will show
@@ -83,14 +99,17 @@ class Card extends Component
      */
     public function __construct(
         $title = null, $icon = null, $theme = null, $themeMode = null,
-        $bodyClass = null, $disabled = null, $collapsible = null,
-        $removable = null, $maximizable = null
+        $headerClass = null, $bodyClass = null, $footerClass = null,
+        $disabled = null, $collapsible = null, $removable = null,
+        $maximizable = null
     ) {
         $this->title = $title;
         $this->icon = $icon;
         $this->theme = $theme;
         $this->themeMode = $themeMode;
+        $this->headerClass = $headerClass;
         $this->bodyClass = $bodyClass;
+        $this->footerClass = $footerClass;
         $this->disabled = $disabled;
         $this->removable = $removable;
         $this->collapsible = $collapsible;
@@ -123,6 +142,22 @@ class Card extends Component
     }
 
     /**
+     * Make the class attribute for the card header.
+     *
+     * @return string
+     */
+    public function makeCardHeaderClass()
+    {
+        $classes = ['card-header'];
+
+        if (isset($this->headerClass)) {
+            $classes[] = $this->headerClass;
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
      * Make the class attribute for the card body.
      *
      * @return string
@@ -139,16 +174,16 @@ class Card extends Component
     }
 
     /**
-     * Make the class attribute for the card header.
+     * Make the class attribute for the card footer.
      *
      * @return string
      */
-    public function makeCardHeaderClass()
+    public function makeCardFooterClass()
     {
-        $classes = ['card-header'];
+        $classes = ['card-footer'];
 
-        if ($this->isCardHeaderEmpty()) {
-            $classes[] = 'd-none';
+        if (isset($this->footerClass)) {
+            $classes[] = $this->footerClass;
         }
 
         return implode(' ', $classes);
@@ -173,13 +208,15 @@ class Card extends Component
     /**
      * Check if the card header is empty (no items defined for the header).
      *
+     * @param  bool  $hasSlot  Whether the card header slot is defined
      * @return bool
      */
-    protected function isCardHeaderEmpty()
+    public function isCardHeaderEmpty($hasSlot = false)
     {
         $hasTools = isset($this->collapsible) ||
                     isset($this->maximizable) ||
-                    isset($this->removable);
+                    isset($this->removable) ||
+                    $hasSlot;
 
         return empty($this->title) && empty($this->icon) && ! $hasTools;
     }
