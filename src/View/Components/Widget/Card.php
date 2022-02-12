@@ -208,7 +208,7 @@ class Card extends Component
     /**
      * Check if the card header is empty (no items defined for the header).
      *
-     * @param  bool $hasSlot Whether the card header slot is defined
+     * @param  bool  $hasSlot Whether the card header slot is defined
      * @return bool
      */
     public function isCardHeaderEmpty($hasSlot = false)
