@@ -33,7 +33,7 @@ class ToolComponentsTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
-    | Individual tool components tests.
+    | Datatable component tests.
     |--------------------------------------------------------------------------
     */
 
@@ -45,7 +45,10 @@ class ToolComponentsTest extends TestCase
 
         $tClass = $component->makeTableClass();
         $this->assertStringContainsString('table', $tClass);
+    }
 
+    public function testDatatableComponentWithAdvancedOptions()
+    {
         // Test advanced component.
         // $id, $heads, $theme, $headTheme, $bordered, $hoverable, $striped,
         // $compressed, $withFooter, $footerTheme, $beautify, $withButtons,
@@ -84,6 +87,12 @@ class ToolComponentsTest extends TestCase
         );
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Modal component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testModalComponent()
     {
         // Test basic component.
@@ -102,7 +111,10 @@ class ToolComponentsTest extends TestCase
 
         $cbClass = $component->makeCloseButtonClass();
         $this->assertStringContainsString('bg-secondary', $cbClass);
+    }
 
+    public function testModalComponentWithAdvancedOptions()
+    {
         // Test with all constructor arguments:
         // $id, $title, $icon, $size, $theme, $vCentered, $scrollable,
         // $staticBackdrop, $disableAnimations.
