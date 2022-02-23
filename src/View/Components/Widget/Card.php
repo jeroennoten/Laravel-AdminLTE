@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Card extends Component
 {
@@ -103,7 +104,7 @@ class Card extends Component
         $disabled = null, $collapsible = null, $removable = null,
         $maximizable = null
     ) {
-        $this->title = $title;
+        $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->icon = $icon;
         $this->theme = $theme;
         $this->themeMode = $themeMode;
