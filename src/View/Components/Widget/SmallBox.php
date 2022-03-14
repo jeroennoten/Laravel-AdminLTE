@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class SmallBox extends Component
 {
@@ -67,12 +68,12 @@ class SmallBox extends Component
         $title = null, $text = null, $icon = null, $theme = null,
         $url = null, $urlText = null, $loading = null
     ) {
-        $this->title = $title;
-        $this->text = $text;
+        $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
+        $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
         $this->icon = $icon;
         $this->theme = $theme;
         $this->url = $url;
-        $this->urlText = $urlText;
+        $this->urlText = UtilsHelper::applyHtmlEntityDecoder($urlText);
         $this->loading = $loading;
     }
 

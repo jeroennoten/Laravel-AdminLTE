@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class InputGroupComponent extends Component
 {
@@ -97,7 +98,7 @@ class InputGroupComponent extends Component
     ) {
         $this->id = $id ?? $name;
         $this->name = $name;
-        $this->label = $label;
+        $this->label = UtilsHelper::applyHtmlEntityDecoder($label);
         $this->size = $igroupSize;
         $this->fgroupClass = $fgroupClass;
         $this->labelClass = $labelClass;

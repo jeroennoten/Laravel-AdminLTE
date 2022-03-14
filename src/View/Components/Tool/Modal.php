@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Tool;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Modal extends Component
 {
@@ -90,7 +91,7 @@ class Modal extends Component
         $disableAnimations = null
     ) {
         $this->id = $id;
-        $this->title = $title;
+        $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->icon = $icon;
         $this->size = $size;
         $this->theme = $theme;

@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Button extends Component
 {
@@ -44,7 +45,7 @@ class Button extends Component
     public function __construct(
         $label = null, $type = 'button', $theme = 'default', $icon = null
     ) {
-        $this->label = $label;
+        $this->label = UtilsHelper::applyHtmlEntityDecoder($label);
         $this->type = $type;
         $this->theme = $theme;
         $this->icon = $icon;
