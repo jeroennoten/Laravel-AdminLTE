@@ -71,6 +71,6 @@ jobs:
             -   name: Upload coverage to scrutinizer-ci
                 if: matrix.php == '8.1' && matrix.laravel == '9.*' && matrix.dependency-version == 'prefer-stable'
                 run: |
-                    - vendor/bin/phpunit --testsuite Laravel7+ --coverage-clover=coverage.clover
-                    - wget https://scrutinizer-ci.com/ocular.phar
-                    - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+                    vendor/bin/phpunit --testsuite Laravel7+ --coverage-clover=coverage.clover
+                    wget https://scrutinizer-ci.com/ocular.phar
+                    php ocular.phar code-coverage:upload --format=php-clover coverage.clover
