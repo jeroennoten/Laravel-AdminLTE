@@ -85,7 +85,7 @@ class LayoutHelperTest extends TestCase
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini-md', $data);
         $this->assertStringNotContainsString('sidebar-mini-xs', $data);
-        $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
+        $this->assertDoesNotMatchRegularExpression('/sidebar-mini[^-]/', $data);
 
         // Test config 'sidebar_mini' => 'xs'.
 
@@ -93,7 +93,7 @@ class LayoutHelperTest extends TestCase
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini-xs', $data);
         $this->assertStringNotContainsString('sidebar-mini-md', $data);
-        $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
+        $this->assertDoesNotMatchRegularExpression('/sidebar-mini[^-]/', $data);
     }
 
     public function testMakeBodyClassesWithSidebarCollapseConfig()
