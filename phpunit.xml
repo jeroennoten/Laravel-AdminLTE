@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit colors="true">
-    <testsuites>
-        <testsuite name="Laravel7+">
-            <directory suffix="Test.php">./tests</directory>
-        </testsuite>
-        <testsuite name="Laravel6">
-            <directory suffix="Test.php">./tests</directory>
-            <exclude>./tests/Components</exclude>
-        </testsuite>
-    </testsuites>
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./src</directory>
-        </whitelist>
-    </filter>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage processUncoveredFiles="true">
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </coverage>
+  <testsuites>
+    <testsuite name="Laravel7+">
+      <directory suffix="Test.php">./tests</directory>
+    </testsuite>
+    <testsuite name="Laravel6">
+      <directory suffix="Test.php">./tests</directory>
+      <exclude>./tests/Components</exclude>
+    </testsuite>
+  </testsuites>
 </phpunit>
