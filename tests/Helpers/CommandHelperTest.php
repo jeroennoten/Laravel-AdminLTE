@@ -67,7 +67,7 @@ class CommandHelperTest extends TestCase
         // Ensure the folder do not exists.
 
         $this->clearFolder($this->sourceFolder);
-        $this->assertDirectoryNotExists($this->sourceFolder);
+        $this->assertDirectoryDoesNotExist($this->sourceFolder);
 
         // Now, ensure the folder exists.
 
@@ -87,7 +87,7 @@ class CommandHelperTest extends TestCase
         // Ensure the root folder do not exists.
 
         $this->clearFolder($this->sourceFolder);
-        $this->assertDirectoryNotExists($this->sourceFolder);
+        $this->assertDirectoryDoesNotExist($this->sourceFolder);
 
         // Now, ensure the subfolder exists.
 
@@ -114,9 +114,9 @@ class CommandHelperTest extends TestCase
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileExists($this->targetFolder.'/file1.foo');
         $this->assertFileExists($this->targetFolder.'/file2.bar');
-        $this->assertDirectoryNotExists($this->targetFolder.'/folder1');
-        $this->assertFileNotExists($this->targetFolder.'/folder1/file3.foo');
-        $this->assertFileNotExists($this->targetFolder.'/folder1/file4.bar');
+        $this->assertDirectoryDoesNotExist($this->targetFolder.'/folder1');
+        $this->assertFileDoesNotExist($this->targetFolder.'/folder1/file3.foo');
+        $this->assertFileDoesNotExist($this->targetFolder.'/folder1/file4.bar');
 
         // Clear the created folders.
 
@@ -130,8 +130,8 @@ class CommandHelperTest extends TestCase
 
         CommandHelper::copyDirectory($this->sourceFolder, $this->targetFolder);
 
-        $this->assertDirectoryNotExists($this->sourceFolder);
-        $this->assertDirectoryNotExists($this->targetFolder);
+        $this->assertDirectoryDoesNotExist($this->sourceFolder);
+        $this->assertDirectoryDoesNotExist($this->targetFolder);
     }
 
     public function testCopyDirectoryWhenSourceRestricted()
@@ -146,7 +146,7 @@ class CommandHelperTest extends TestCase
         CommandHelper::copyDirectory($this->sourceFolder, $this->targetFolder);
 
         $this->assertDirectoryExists($this->sourceFolder);
-        $this->assertDirectoryNotExists($this->targetFolder);
+        $this->assertDirectoryDoesNotExist($this->targetFolder);
 
         // Try to copy a file.
 
@@ -157,7 +157,7 @@ class CommandHelperTest extends TestCase
         );
 
         $this->assertDirectoryExists($this->sourceFolder);
-        $this->assertDirectoryNotExists($this->targetFolder);
+        $this->assertDirectoryDoesNotExist($this->targetFolder);
 
         // Clear the created folders.
 
@@ -310,10 +310,10 @@ class CommandHelperTest extends TestCase
 
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileExists($this->targetFolder.'/file1.foo');
-        $this->assertFileNotExists($this->targetFolder.'/file2.bar');
+        $this->assertFileDoesNotExist($this->targetFolder.'/file2.bar');
         $this->assertDirectoryExists($this->targetFolder.'/folder1');
         $this->assertFileExists($this->targetFolder.'/folder1/file3.foo');
-        $this->assertFileNotExists($this->targetFolder.'/folder1/file4.bar');
+        $this->assertFileDoesNotExist($this->targetFolder.'/folder1/file4.bar');
 
         // Clear the created folders.
 
@@ -337,11 +337,11 @@ class CommandHelperTest extends TestCase
         );
 
         $this->assertDirectoryExists($this->targetFolder);
-        $this->assertFileNotExists($this->targetFolder.'/file1.foo');
-        $this->assertFileNotExists($this->targetFolder.'/file2.bar');
+        $this->assertFileDoesNotExist($this->targetFolder.'/file1.foo');
+        $this->assertFileDoesNotExist($this->targetFolder.'/file2.bar');
         $this->assertDirectoryExists($this->targetFolder.'/folder1');
         $this->assertFileExists($this->targetFolder.'/folder1/file3.foo');
-        $this->assertFileNotExists($this->targetFolder.'/folder1/file4.bar');
+        $this->assertFileDoesNotExist($this->targetFolder.'/folder1/file4.bar');
 
         // Clear the created folders.
 
@@ -365,10 +365,10 @@ class CommandHelperTest extends TestCase
         );
 
         $this->assertDirectoryExists($this->targetFolder);
-        $this->assertFileNotExists($this->targetFolder.'/file1.foo');
+        $this->assertFileDoesNotExist($this->targetFolder.'/file1.foo');
         $this->assertFileExists($this->targetFolder.'/file2.bar');
         $this->assertDirectoryExists($this->targetFolder.'/folder1');
-        $this->assertFileNotExists($this->targetFolder.'/folder1/file3.foo');
+        $this->assertFileDoesNotExist($this->targetFolder.'/folder1/file3.foo');
         $this->assertFileExists($this->targetFolder.'/folder1/file4.bar');
 
         // Clear the created folders.
@@ -613,7 +613,7 @@ class CommandHelperTest extends TestCase
             CommandHelper::removeDirectory($this->sourceFolder);
         }
 
-        $this->assertDirectoryNotExists($this->sourceFolder);
+        $this->assertDirectoryDoesNotExist($this->sourceFolder);
     }
 
     public function testGetPackagePath()
