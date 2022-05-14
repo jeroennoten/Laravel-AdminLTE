@@ -28,7 +28,12 @@
             {
                 let startDate = picker.startDate.format(picker.locale.format);
                 let endDate = picker.endDate.format(picker.locale.format);
-                $(this).val(startDate + picker.locale.separator + endDate);
+
+                let value = picker.singleDatePicker
+                    ? startDate
+                    : startDate + picker.locale.separator + endDate;
+
+                $(this).val(value);
             });
 
             $('#{{ $id }}').on('cancel.daterangepicker', function(ev, picker)
