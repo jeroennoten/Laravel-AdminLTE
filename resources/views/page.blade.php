@@ -14,6 +14,12 @@
 @section('body')
     <div class="wrapper">
 
+        {{--Preloader--}}
+        @if($layoutHelper->isPreloaderEnabled())
+            @include('adminlte::partials.common.preloader')
+        @endif
+
+
         {{-- Top Navbar --}}
         @if($layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.navbar.navbar-layout-topnav')

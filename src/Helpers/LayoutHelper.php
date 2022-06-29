@@ -33,6 +33,18 @@ class LayoutHelper
     }
 
     /**
+     * Check if preloader is enabled.
+     *
+     * @return bool
+     */
+    public static function isPreloaderEnabled()
+    {
+        return config('adminlte.preloader');
+    }
+
+
+
+    /**
      * Check if layout boxed is enabled.
      *
      * @return bool

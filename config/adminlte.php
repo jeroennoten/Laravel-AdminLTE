@@ -90,6 +90,26 @@ return [
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
 
+
+
+ /*
+ |--------------------------------------------------------------------------
+ | Preloader
+ |--------------------------------------------------------------------------
+ |
+ | Here we can change the preloader options.
+ | Keep null for the default values.
+ |
+ */
+
+    'preloader' => true,
+    'preloader_img' => null,
+    'preloader_alt' => 'AdminLTE Alt Image Text',
+    'preloader_img_width' => 60,
+    'preloader_img_height' => 60,
+
+
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Views Classes
