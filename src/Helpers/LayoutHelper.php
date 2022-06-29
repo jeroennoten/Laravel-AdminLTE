@@ -42,8 +42,6 @@ class LayoutHelper
         return config('adminlte.preloader');
     }
 
-
-
     /**
      * Check if layout boxed is enabled.
      *
