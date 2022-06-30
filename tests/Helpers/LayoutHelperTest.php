@@ -4,6 +4,21 @@ use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 
 class LayoutHelperTest extends TestCase
 {
+    public function testEnableDisablePreloader()
+    {
+        // Test with config enabled.
+
+        config(['adminlte.preloader.enabled' => true]);
+
+        $this->assertTrue(LayoutHelper::isPreloaderEnabled());
+
+        // Test with config disabled.
+
+        config(['adminlte.preloader.enabled' => false]);
+
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled());
+    }
+
     public function testMakeBodyData()
     {
         // Test without config.
