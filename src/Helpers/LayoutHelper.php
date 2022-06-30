@@ -39,7 +39,7 @@ class LayoutHelper
      */
     public static function isPreloaderEnabled()
     {
-        return config('adminlte.preloader');
+        return config('adminlte.preloader', false);
     }
 
     /**

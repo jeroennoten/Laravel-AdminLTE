@@ -1,4 +1,3 @@
-@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 
 <div class="preloader flex-column justify-content-center align-items-center">
 
