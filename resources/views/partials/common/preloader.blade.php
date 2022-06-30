@@ -1,8 +1,10 @@
-
 <div class="preloader flex-column justify-content-center align-items-center">
 
-    <img class="animation__shake" src="{{ asset(config('adminlte.preloader_image', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
-         alt="{{  config('adminlte.preloader_alt', 'AdminLTE')}}"
-         width="{{ config('adminlte.preloader_img_width', '60')}}"
-         height="{{ config('adminlte.preloader_img_height', '60')}}" >
+    {{-- Preloader logo --}}
+    <img src="{{ asset(config('adminlte.preloader.img.path', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
+         class="{{ config('adminlte.preloader.img.effect', 'animation__shake') }}"
+         alt="{{ config('adminlte.preloader.img.alt', 'AdminLTE Preloader Image') }}"
+         width="{{ config('adminlte.preloader.img.width', 60) }}"
+         height="{{ config('adminlte.preloader.img.height', 60) }}">
+
 </div>

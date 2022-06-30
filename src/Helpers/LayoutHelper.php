@@ -23,6 +23,16 @@ class LayoutHelper
     protected static $sidebarMiniValues = ['xs', 'md', 'lg'];
 
     /**
+     * Check if the preloader animation is enabled.
+     *
+     * @return bool
+     */
+    public static function isPreloaderEnabled()
+    {
+        return config('adminlte.preloader.enabled', false);
+    }
+
+    /**
      * Check if layout topnav is enabled.
      *
      * @return bool
@@ -30,16 +40,6 @@ class LayoutHelper
     public static function isLayoutTopnavEnabled()
     {
         return config('adminlte.layout_topnav') || View::getSection('layout_topnav');
-    }
-
-    /**
-     * Check if preloader is enabled.
-     *
-     * @return bool
-     */
-    public static function isPreloaderEnabled()
-    {
-        return config('adminlte.preloader', false);
     }
 
     /**

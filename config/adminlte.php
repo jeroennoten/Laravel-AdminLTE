@@ -54,6 +54,29 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Preloader Animation
+    |--------------------------------------------------------------------------
+    |
+    | Here you can change the preloader animation configuration.
+    |
+    | For detailed instructions you can look the layout section here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
+    |
+    */
+
+    'preloader' => [
+        'enabled' => true,
+        'img' => [
+            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'alt' => 'AdminLTE Preloader Image',
+            'effect' => 'animation__shake',
+            'width' => 60,
+            'height' => 60,
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | User Menu
     |--------------------------------------------------------------------------
     |
@@ -89,22 +112,6 @@ return [
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => null,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Preloader
-    |--------------------------------------------------------------------------
-    |
-    | Here we can change the preloader options.
-    | Keep null for the default values.
-    |
-    */
-
-    'preloader' => true,
-    'preloader_img' => null,
-    'preloader_alt' => 'AdminLTE Alt Image Text',
-    'preloader_img_width' => 60,
-    'preloader_img_height' => 60,
 
     /*
     |--------------------------------------------------------------------------
