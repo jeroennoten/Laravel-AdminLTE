@@ -59,7 +59,7 @@ return [
     |
     | Here you can change the preloader animation configuration.
     |
-    | For detailed instructions you can look the layout section here:
+    | For detailed instructions you can look the preloader section here:
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
     |
     */
