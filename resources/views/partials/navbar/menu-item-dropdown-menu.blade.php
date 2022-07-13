@@ -1,7 +1,7 @@
 <li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item dropdown">
 
     {{-- Menu toggler --}}
-    <a class="nav-link dropdown-toggle" href=""
+    <a class="nav-link dropdown-toggle {{ $item['class'] }}" href=""
        data-toggle="dropdown" {!! $item['data-compiled'] ?? '' !!}>
 
         {{-- Icon (optional) --}}

@@ -1,6 +1,6 @@
 <li @isset($item['id']) id="{{ $item['id'] }}" @endisset>
 
-    <a class="dropdown-item" href="{{ $item['href'] }}"
+    <a class="dropdown-item {{ $item['class'] }}" href="{{ $item['href'] }}"
        @isset($item['target']) target="{{ $item['target'] }}" @endisset
        {!! $item['data-compiled'] ?? '' !!}>
 
