@@ -210,7 +210,7 @@ class LayoutHelper
 
         if (in_array($sidebarMiniCfg, self::$sidebarMiniValues)) {
             $suffix = $sidebarMiniCfg === 'lg' ? '' : "-{$sidebarMiniCfg}";
-            $classes[] = "sidebar-mini${suffix}";
+            $classes[] = "sidebar-mini{$suffix}";
         }
 
         // Add classes related to the "sidebar_collapse" configuration.
