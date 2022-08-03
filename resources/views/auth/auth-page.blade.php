@@ -1,11 +1,11 @@
 @extends('adminlte::master')
 
-@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+@php($dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home'))
 
 @if (config('adminlte.use_route_url', false))
-    @php( $dashboard_url = $dashboard_url ? route($dashboard_url) : '' )
+    @php($dashboard_url = $dashboard_url ? route($dashboard_url) : '')
 @else
-    @php( $dashboard_url = $dashboard_url ? url($dashboard_url) : '' )
+    @php($dashboard_url = $dashboard_url ? url($dashboard_url) : '')
 @endif
 
 @section('adminlte_css')
@@ -21,8 +21,16 @@
         {{-- Logo --}}
         <div class="{{ $auth_type ?? 'login' }}-logo">
             <a href="{{ $dashboard_url }}">
-                <img src="{{ asset(config('adminlte.logo_img')) }}" height="50">
-                {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
+                @if (config('adminlte.auth_logo_img'))
+                    <img src={{ asset(config('adminlte.auth_logo_img')) }} height="{{ config('adminlte.auth_logo_height') }}"
+                        class="{{ config('adminlte.auth_logo_class') }}" alt="{{ config('adminlte.auth_logo_alt') }}">
+                @else
+                    <img src="{{ asset(config('adminlte.logo_img')) }}" height="50">
+                @endif
+
+                {!! config('adminlte.auth_logo_text')
+                    ? config('adminlte.auth_logo_text')
+                    : config('adminlte.logo', '<b>Admin</b>LTE') !!}
             </a>
         </div>
 

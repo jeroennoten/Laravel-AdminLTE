@@ -72,6 +72,24 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Logo Authentication
+    |--------------------------------------------------------------------------
+    |
+    | Here you can change the logo of your pages authentication.
+    |
+    | For detailed instructions you can look the logo authentication section here:
+    |
+    |
+    */
+
+    'auth_logo_text' => '',
+    'auth_logo_img' => '',
+    'auth_logo_height' => 50,
+    'auth_logo_class' => '',
+    'auth_logo_alt' => '',
+
+    /*
+    |--------------------------------------------------------------------------
     | Preloader Animation
     |--------------------------------------------------------------------------
     |
