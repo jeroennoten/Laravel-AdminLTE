@@ -7,7 +7,7 @@
 [![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/jeroennoten/Laravel-AdminLTE.svg?logo=scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 
-This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io/themes/v3/) with [Laravel](https://laravel.com/) (6 or higher). It has no requirements and dependencies besides **Laravel**, so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/8.x/blade) that you can extend and advanced menu configuration possibilities. Also, and optionally, the package includes a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
+This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io/themes/v3/) with [Laravel](https://laravel.com/) (6 or higher). It has no requirements and dependencies besides **Laravel**, so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/blade) that you can extend and an advanced menu configuration system. Also, and optionally, the package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
 
 If you want to use an older **Laravel** or **AdminLTE** version, review the following package releases:
 - **Releases 1.x**:
@@ -32,10 +32,10 @@ The current package requirements are:
 
 You can report issues or ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please, start your issue with `[BUG]` and your question with `[QUESTION]` in the subject.
 
-If you have a question, it is recommended to search and check the closed issues first.
+If you have a question, it is recommended to make a search over the closed issues first.
 
-To submit a Pull Request, please fork this repository, create a new branch and commit your new/updated code in there. Then open a Pull Request from your new branch. Refer to the [contribution guidelines](https://github.com/jeroennoten/Laravel-AdminLTE/blob/master/.github/CONTRIBUTING.md) for detailed instructions. When submitting a Pull Request take the next notes into consideration:
+To submit a Pull Request, fork this repository and create a new branch to commit your new changes there. Finally, open a Pull Request from your new branch. Refer to the [contribution guidelines](https://github.com/jeroennoten/Laravel-AdminLTE/blob/master/.github/CONTRIBUTING.md) for detailed instructions. When submitting a Pull Request take the next notes into consideration:
 
-- Check that the Pull Request don't introduce a high downgrade on the code quality.
-- If the Pull Request introduce new features, consider adding the related documentation of this feature on the Wiki documentation.
-- Keep the package focused, don't add special support to other packages or to very particular situations. These changes will make the package more hard to maintain.
+- Verify that the Pull Request don't introduce a high downgrade on the code quality.
+- If the Pull Request introduces a new feature, consider adding a proposal of the documentation for the Wiki.
+- Keep the package focused, don't add special support to other packages or to solve very particular situations. These changes will make the package more hard to maintain.
