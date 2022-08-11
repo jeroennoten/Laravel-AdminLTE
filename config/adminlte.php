@@ -72,6 +72,23 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Authenticated Logo
+    |--------------------------------------------------------------------------
+    |
+    | Here you can change the logo for login screens.
+    |
+    | For detailed instructions you can look the logo section here:
+    | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
+    |
+    */
+
+    'auth_logo' => false,
+    'auth_logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+    'auth_logo_img_class' => '',
+    'auth_logo_img_alt' => '',
+
+    /*
+    |--------------------------------------------------------------------------
     | Preloader Animation
     |--------------------------------------------------------------------------
     |
