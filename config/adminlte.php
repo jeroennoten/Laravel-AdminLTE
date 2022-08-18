@@ -53,7 +53,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Logo
+    | Admin Panel Logo
     |--------------------------------------------------------------------------
     |
     | Here you can change the logo of your admin panel.
@@ -68,24 +68,31 @@ return [
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
     'logo_img_xl_class' => 'brand-image-xs',
-    'logo_img_alt' => 'AdminLTE',
+    'logo_img_alt' => 'Admin Logo',
 
     /*
     |--------------------------------------------------------------------------
-    | Authenticated Logo
+    | Authentication Logo
     |--------------------------------------------------------------------------
     |
-    | Here you can change the logo for login screens.
+    | Here you can setup an alternative logo to use on your login and register
+    | screens. When disabled, the admin panel logo will be used instead.
     |
-    | For detailed instructions you can look the logo section here:
+    | For detailed instructions you can look the auth logo section here:
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
     |
     */
 
-    'auth_logo' => false,
-    'auth_logo_img' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
-    'auth_logo_img_class' => '',
-    'auth_logo_img_alt' => '',
+    'auth_logo' => [
+        'enabled' => false,
+        'img' => [
+            'path' => 'vendor/adminlte/dist/img/AdminLTELogo.png',
+            'alt' => 'Auth Logo',
+            'class' => '',
+            'width' => 50,
+            'height' => 50,
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------
