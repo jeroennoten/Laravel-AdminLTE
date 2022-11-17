@@ -7,6 +7,13 @@ class Input extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * Unescaped the data
+     *
+     * @var bool
+     */
+    public $isEscaped;
+
+    /**
      * Create a new component instance.
      *
      * @return void
@@ -14,12 +21,14 @@ class Input extends InputGroupComponent
     public function __construct(
         $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
         $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
-        $errorKey = null, $enableOldSupport = null
+        $errorKey = null, $enableOldSupport = null, $isEscaped = true
     ) {
         parent::__construct(
             $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
             $igroupClass, $disableFeedback, $errorKey
         );
+
+        $this->isEscaped = $isEscaped;
 
         $this->enableOldSupport = isset($enableOldSupport);
     }

@@ -4,7 +4,7 @@
 
     {{-- Input --}}
     <input id="{{ $id }}" name="{{ $name }}"
-        value="{{ $getOldValue($errorKey, $attributes->get('value')) }}"
+        value="@if($isEscaped) {{ $getOldValue($errorKey, $attributes->get('value')) }} @else {!! $getOldValue($errorKey, $attributes->get('value')) !!} @endif"
         {{ $attributes->merge(['class' => $makeItemClass()]) }}>
 
 @overwrite
