@@ -4,6 +4,21 @@ use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 
 class LayoutHelperTest extends TestCase
 {
+    public function testEnableDisablePreloader()
+    {
+        // Test with config enabled.
+
+        config(['adminlte.preloader.enabled' => true]);
+
+        $this->assertTrue(LayoutHelper::isPreloaderEnabled());
+
+        // Test with config disabled.
+
+        config(['adminlte.preloader.enabled' => false]);
+
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled());
+    }
+
     public function testMakeBodyData()
     {
         // Test without config.
@@ -85,7 +100,7 @@ class LayoutHelperTest extends TestCase
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini-md', $data);
         $this->assertStringNotContainsString('sidebar-mini-xs', $data);
-        $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
+        $this->assertDoesNotMatchRegularExpression('/sidebar-mini[^-]/', $data);
 
         // Test config 'sidebar_mini' => 'xs'.
 
@@ -93,7 +108,7 @@ class LayoutHelperTest extends TestCase
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('sidebar-mini-xs', $data);
         $this->assertStringNotContainsString('sidebar-mini-md', $data);
-        $this->assertNotRegExp('/sidebar-mini[^-]/', $data);
+        $this->assertDoesNotMatchRegularExpression('/sidebar-mini[^-]/', $data);
     }
 
     public function testMakeBodyClassesWithSidebarCollapseConfig()

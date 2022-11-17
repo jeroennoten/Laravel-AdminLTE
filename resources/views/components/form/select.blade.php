@@ -10,24 +10,20 @@
 
 @overwrite
 
-{{-- Support to auto select old submitted values --}}
+{{-- Support to auto select the old submitted values --}}
 
-@if($errors->any())
+@if($errors->any() && $enableOldSupport)
 @push('js')
 <script>
 
     $(() => {
 
-        let oldOptions = @json(collect($makeItemValue($errorKey)));
+        let oldOptions = @json(collect($getOldValue($errorKey)));
 
         $('#{{ $id }} option').each(function()
         {
             let value = $(this).val() || $(this).text();
-
-            if (oldOptions.includes(value))
-            {
-                $(this).prop('selected', true);
-            }
+            $(this).prop('selected', oldOptions.includes(value));
         });
     });
 

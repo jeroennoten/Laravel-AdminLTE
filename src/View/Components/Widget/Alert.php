@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Alert extends Component
 {
@@ -61,7 +62,7 @@ class Alert extends Component
     ) {
         $this->theme = $theme;
         $this->icon = $icon;
-        $this->title = $title;
+        $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->dismissable = $dismissable;
 
         // When a theme is provided, use the default theme icon if no other

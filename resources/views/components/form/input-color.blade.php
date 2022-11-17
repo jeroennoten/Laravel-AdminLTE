@@ -31,6 +31,14 @@
         $('#{{ $id }}').colorpicker( @json($config) )
             .on('change', setAddonColor);
 
+        // Add support to auto select the previous submitted value in case
+        // of validation errors.
+
+        @if($errors->any() && $enableOldSupport)
+            let oldColor = @json($getOldValue($errorKey, ""));
+            $('#{{ $id }}').val(oldColor).change();
+        @endif
+
         // Set the initial color for the addon.
 
         setAddonColor();

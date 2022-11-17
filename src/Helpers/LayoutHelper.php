@@ -23,6 +23,16 @@ class LayoutHelper
     protected static $sidebarMiniValues = ['xs', 'md', 'lg'];
 
     /**
+     * Check if the preloader animation is enabled.
+     *
+     * @return bool
+     */
+    public static function isPreloaderEnabled()
+    {
+        return config('adminlte.preloader.enabled', false);
+    }
+
+    /**
      * Check if layout topnav is enabled.
      *
      * @return bool
@@ -200,7 +210,7 @@ class LayoutHelper
 
         if (in_array($sidebarMiniCfg, self::$sidebarMiniValues)) {
             $suffix = $sidebarMiniCfg === 'lg' ? '' : "-{$sidebarMiniCfg}";
-            $classes[] = "sidebar-mini${suffix}";
+            $classes[] = "sidebar-mini{$suffix}";
         }
 
         // Add classes related to the "sidebar_collapse" configuration.

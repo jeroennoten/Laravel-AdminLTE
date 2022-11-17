@@ -18,20 +18,17 @@
     $(() => {
         $('#{{ $id }}').select2( @json($config) );
 
-        {{-- Add support to auto select old submitted values --}}
+        // Add support to auto select old submitted values in case of
+        // validation errors.
 
-        @if($errors->any())
+        @if($errors->any() && $enableOldSupport)
 
-            let oldOptions = @json(collect($makeItemValue($errorKey)));
+            let oldOptions = @json(collect($getOldValue($errorKey)));
 
             $('#{{ $id }} option').each(function()
             {
                 let value = $(this).val() || $(this).text();
-
-                if (oldOptions.includes(value))
-                {
-                    $(this).prop('selected', true);
-                }
+                $(this).prop('selected', oldOptions.includes(value));
             });
 
             $('#{{ $id }}').trigger('change');
@@ -42,7 +39,7 @@
 </script>
 @endpush
 
-{{-- Setup the height and font size of the plugin when using sm/lg sizes --}}
+{{-- CSS workarounds for the Select2 plugin --}}
 {{-- NOTE: this may change with newer plugin versions --}}
 
 @once
@@ -81,6 +78,21 @@
     .input-group-lg .select2-selection--multiple .select2-selection__rendered {
         font-size: 1.25rem !important;
         line-height: 1.7;
+    }
+
+    {{-- Enhance the plugin to support readonly attribute --}}
+    select[readonly].select2-hidden-accessible + .select2-container {
+        pointer-events: none;
+        touch-action: none;
+    }
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-selection {
+        background: #e9ecef;
+        box-shadow: none;
+    }
+
+    select[readonly].select2-hidden-accessible + .select2-container .select2-search__field {
+        display: none;
     }
 
 </style>

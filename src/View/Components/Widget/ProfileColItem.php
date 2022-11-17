@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class ProfileColItem extends Component
 {
@@ -61,8 +62,8 @@ class ProfileColItem extends Component
         $title = null, $text = null, $icon = null, $size = 4,
         $badge = null, $url = null
     ) {
-        $this->title = $title;
-        $this->text = $text;
+        $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
+        $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
         $this->icon = $icon;
         $this->size = $size;
         $this->badge = $badge;

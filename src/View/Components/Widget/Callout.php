@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Callout extends Component
 {
@@ -45,7 +46,7 @@ class Callout extends Component
     ) {
         $this->theme = $theme;
         $this->icon = $icon;
-        $this->title = $title;
+        $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->titleClass = $titleClass;
     }
 

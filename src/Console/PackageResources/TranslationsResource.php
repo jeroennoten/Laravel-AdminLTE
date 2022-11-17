@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\App;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class TranslationsResource extends PackageResource
@@ -17,7 +18,7 @@ class TranslationsResource extends PackageResource
 
         $this->description = 'The default package translations files';
         $this->source = CommandHelper::getPackagePath('resources/lang');
-        $this->target = resource_path('lang/vendor/adminlte');
+        $this->target = App::langPath().'/vendor/adminlte';
         $this->required = true;
 
         // Fill the set of installation messages.

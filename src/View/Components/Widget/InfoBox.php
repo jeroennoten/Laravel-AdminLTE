@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class InfoBox extends Component
 {
@@ -76,10 +77,10 @@ class InfoBox extends Component
         $theme = null, $iconTheme = null, $progress = null,
         $progressTheme = 'white'
     ) {
-        $this->title = $title;
-        $this->text = $text;
+        $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
+        $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
         $this->icon = $icon;
-        $this->description = $description;
+        $this->description = UtilsHelper::applyHtmlEntityDecoder($description);
         $this->theme = $theme;
         $this->iconTheme = $iconTheme;
         $this->progress = $progress;

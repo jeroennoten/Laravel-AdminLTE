@@ -33,7 +33,7 @@ class LayoutComponentsTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
-    | Individual layout components tests.
+    | Navbar notification component tests.
     |--------------------------------------------------------------------------
     */
 
@@ -150,6 +150,12 @@ class LayoutComponentsTest extends TestCase
         $uUrl = $component->makeUpdateUrl();
         $this->assertEquals(null, $uUrl);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Navbar darkmode widget component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testNavbarDarkmodeWidgetClasses()
     {

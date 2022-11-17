@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class ProfileWidget extends Component
 {
@@ -74,8 +75,8 @@ class ProfileWidget extends Component
         $name = null, $desc = null, $img = null, $theme = null, $cover = null,
         $headerClass = null, $footerClass = null, $layoutType = 'modern'
     ) {
-        $this->name = $name;
-        $this->desc = $desc;
+        $this->name = UtilsHelper::applyHtmlEntityDecoder($name);
+        $this->desc = UtilsHelper::applyHtmlEntityDecoder($desc);
         $this->img = $img;
         $this->theme = $theme;
         $this->cover = $cover;

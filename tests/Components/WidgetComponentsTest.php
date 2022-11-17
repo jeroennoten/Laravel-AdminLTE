@@ -40,23 +40,22 @@ class WidgetComponentsTest extends TestCase
 
     /*
     |--------------------------------------------------------------------------
-    | Individual widget components tests.
+    | Alert component tests.
     |--------------------------------------------------------------------------
     */
 
-    public function testAlertComponent()
+    public function testAlertComponentWithoutTheme()
     {
-        // Test without theme.
-
-        $component = new Components\Widget\Alert(null, null, null);
+        $component = new Components\Widget\Alert();
 
         $aClass = $component->makeAlertClass();
 
         $this->assertStringContainsString('alert', $aClass);
         $this->assertStringContainsString('border', $aClass);
+    }
 
-        // Test with theme.
-
+    public function testAlertComponentWithTheme()
+    {
         $component = new Components\Widget\Alert('danger', null, null, true);
 
         $aClass = $component->makeAlertClass();
@@ -65,6 +64,12 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('alert-danger', $aClass);
         $this->assertStringContainsString('alert-dismissable', $aClass);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Callout component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testCalloutComponent()
     {
@@ -76,6 +81,12 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('callout-danger', $cClass);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Card component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testCardComponent()
     {
         // Test basic component.
@@ -86,16 +97,21 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card', $cClass);
         $this->assertStringContainsString('card-info', $cClass);
 
+        $hClass = $component->makeCardHeaderClass();
+        $this->assertStringContainsString('card-header', $hClass);
+
         $cbClass = $component->makeCardBodyClass();
         $this->assertStringContainsString('card-body', $cbClass);
 
-        $hClass = $component->makeCardHeaderClass();
-        $this->assertStringContainsString('card-header', $hClass);
-        $this->assertStringNotContainsString('d-none', $hClass);
+        $fClass = $component->makeCardFooterClass();
+        $this->assertStringContainsString('card-footer', $fClass);
 
         $ctClass = $component->makeCardTitleClass();
         $this->assertStringContainsString('card-title', $ctClass);
+    }
 
+    public function testCardComponentWithoutHeader()
+    {
         // Test basic component without header.
 
         $component = new Components\Widget\Card(null, null, 'danger');
@@ -103,30 +119,44 @@ class WidgetComponentsTest extends TestCase
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('card', $cClass);
         $this->assertStringContainsString('card-danger', $cClass);
+        $this->assertTrue($component->isCardHeaderEmpty());
+        $this->assertFalse($component->isCardHeaderEmpty(true));
+    }
 
-        $hClass = $component->makeCardHeaderClass();
-        $this->assertStringContainsString('card-header', $hClass);
-        $this->assertStringContainsString('d-none', $hClass);
-
-        // Test collapsed with full theme and extra body class:
-        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
-        // $collapsible, $removable, $maximizable.
+    public function testCardComponentCollapsedWithFullThemeMode()
+    {
+        // Test collapsed mode with full theme and extra body, footer and
+        // header classed:
+        // $title, $icon, $theme, $themeMode, $headerClass, $bodyClass,
+        // $footerClass, $disabled, $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
-            'title', null, 'success', 'full', 'body-class', null, 'collapsed'
+            'title', null, 'success', 'full', 'header-class', 'body-class',
+            'footer-class', null, 'collapsed'
         );
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('bg-gradient-success', $cClass);
         $this->assertStringContainsString('collapsed-card', $cClass);
 
+        $hClass = $component->makeCardHeaderClass();
+        $this->assertStringContainsString('card-header', $hClass);
+        $this->assertStringContainsString('header-class', $hClass);
+
         $cbClass = $component->makeCardBodyClass();
         $this->assertStringContainsString('card-body', $cbClass);
         $this->assertStringContainsString('body-class', $cbClass);
 
+        $fClass = $component->makeCardFooterClass();
+        $this->assertStringContainsString('card-footer', $fClass);
+        $this->assertStringContainsString('footer-class', $fClass);
+    }
+
+    public function testCardComponentWithOutlineThemeMode()
+    {
         // Test outline theme:
-        // $title, $icon, $theme, $themeMode, $bodyClass, $disabled,
-        // $collapsible, $removable, $maximizable.
+        // $title, $icon, $theme, $themeMode, $headerClass, $bodyClass,
+        // $footerClass, $disabled, $collapsible, $removable, $maximizable.
 
         $component = new Components\Widget\Card(
             'title', null, 'teal', 'outline'
@@ -139,6 +169,12 @@ class WidgetComponentsTest extends TestCase
         $ctClass = $component->makeCardTitleClass();
         $this->assertStringContainsString('text-teal', $ctClass);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Info box component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testInfoBoxComponent()
     {
@@ -155,6 +191,12 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('bg-primary', $iClass);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Profile col item component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testProfileColItemComponent()
     {
         $component = new Components\Widget\ProfileColItem(
@@ -165,6 +207,12 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('badge', $twClass);
         $this->assertStringContainsString('bg-b-theme', $twClass);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Profile row item component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testProfileRowItemComponent()
     {
@@ -177,7 +225,13 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('bg-b-theme', $twClass);
     }
 
-    public function testProfileWidgetComponent()
+    /*
+    |--------------------------------------------------------------------------
+    | Profile widget component tests.
+    |--------------------------------------------------------------------------
+    */
+
+    public function testProfileWidgetComponentWithoutCover()
     {
         // Test without cover.
 
@@ -204,7 +258,10 @@ class WidgetComponentsTest extends TestCase
 
         $hStyle = $component->makeHeaderStyle();
         $this->assertTrue(empty($hStyle));
+    }
 
+    public function testProfileWidgetComponentWithCoverAndClassicLayout()
+    {
         // Test with cover and classic layout.
 
         $component = new Components\Widget\ProfileWidget(
@@ -222,6 +279,12 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString("background: url('img.png')", $hStyle);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Progress component tests.
+    |--------------------------------------------------------------------------
+    */
+
     public function testProgressComponent()
     {
         // Test basic component.
@@ -237,7 +300,10 @@ class WidgetComponentsTest extends TestCase
 
         $pbStyle = $component->makeProgressBarStyle();
         $this->assertStringContainsString('width:0%', $pbStyle);
+    }
 
+    public function testProgressComponentWithAdvancedOptions()
+    {
         // Test with all constructor arguments:
         // $value, $theme, $size, $striped, $vertical, $animated, $withLabel.
 
@@ -259,6 +325,12 @@ class WidgetComponentsTest extends TestCase
         $pbStyle = $component->makeProgressBarStyle();
         $this->assertStringContainsString('height:75%', $pbStyle);
     }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Small box component tests.
+    |--------------------------------------------------------------------------
+    */
 
     public function testSmallBoxComponent()
     {

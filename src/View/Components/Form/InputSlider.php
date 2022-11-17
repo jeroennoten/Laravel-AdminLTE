@@ -4,6 +4,8 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
 class InputSlider extends InputGroupComponent
 {
+    use Traits\OldValueSupportTrait;
+
     /**
      * The bootstrap-slider plugin configuration parameters. Array with
      * key => value pairs, where the key should be an existing configuration
@@ -29,7 +31,7 @@ class InputSlider extends InputGroupComponent
     public function __construct(
         $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
         $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
-        $errorKey = null, $config = [], $color = null
+        $errorKey = null, $config = [], $color = null, $enableOldSupport = null
     ) {
         parent::__construct(
             $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
@@ -37,6 +39,7 @@ class InputSlider extends InputGroupComponent
         );
 
         $this->config = is_array($config) ? $config : [];
+        $this->enableOldSupport = isset($enableOldSupport);
         $this->color = $color;
 
         // Set a default plugin 'id' option.

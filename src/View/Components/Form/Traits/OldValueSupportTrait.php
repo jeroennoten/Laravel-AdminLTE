@@ -5,23 +5,24 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Form\Traits;
 trait OldValueSupportTrait
 {
     /**
-     * Enable the retrievement of the submitted value in case of validation
-     * errors. This submitted value may be automatically shown when there is a
-     * validation error.
+     * Whether to enable the retrievement of the submitted value in case of
+     * validation errors. If enabled, the submitted value will be automatically
+     * shown when there is a validation error.
      *
      * @var bool
      */
-    protected $enableOldSupport;
+    public $enableOldSupport;
 
     /**
-     * Make the value attribute for an input item, with auto lookup for a
-     * submitted value in case of validation errors.
+     * Gets the previous submitted value for an input item. When the old value
+     * support is disabled or the old value can't be found, the specified
+     * default value is returned.
      *
-     * @param  string  $errorKey  The key name to lookup for validation errors
-     * @param  mixed  $default  The default value for the input element
+     * @param  string  $errorKey  The key to use for look up the old value
+     * @param  mixed  $default  Default value to use when there isn't old value
      * @return mixed
      */
-    public function makeItemValue($errorKey, $default = null)
+    public function getOldValue($errorKey, $default = null)
     {
         return $this->enableOldSupport ? old($errorKey, $default) : $default;
     }

@@ -18,30 +18,38 @@
 
         // Check for disabled attribute (alternative to data-slider-enable).
 
-        @isset($attributes['disabled'])
+        @if($attributes->has('disabled'))
             usrCfg.enabled = false;
-        @endisset
+        @endif
 
         // Check for min, max and step attributes (alternatives to
         // data-slider-min, data-slider-max and data-slider-step).
 
-        @isset($attributes['min'])
-            usrCfg.min = {{ $attributes['min'] }};
-        @endisset
+        @if($attributes->has('min'))
+            usrCfg.min = Number( @json($attributes['min']) );
+        @endif
 
-        @isset($attributes['max'])
-            usrCfg.max = {{ $attributes['max'] }};
-        @endisset
+        @if($attributes->has('max'))
+            usrCfg.max = Number( @json($attributes['max']) );
+        @endif
 
-        @isset($attributes['step'])
-            usrCfg.step = {{ $attributes['step'] }};
-        @endisset
+        @if($attributes->has('step'))
+            usrCfg.step = Number( @json($attributes['step']) );
+        @endif
 
         // Check for value attribute (alternative to data-slider-value).
+        // Also, add support to auto select the previous submitted value.
 
-        @isset($attributes['value'])
-            usrCfg.value = {{ $attributes['value'] }};
-        @endisset
+        @if($attributes->has('value') || ($errors->any() && $enableOldSupport))
+
+            let value = @json($getOldValue($errorKey, $attributes['value']));
+
+            if (value) {
+                value = value.split(",").map(Number);
+                usrCfg.value = value.length > 1 ? value : value[0];
+            }
+
+        @endif
 
         // Initialize the plugin.
 
