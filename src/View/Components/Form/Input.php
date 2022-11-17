@@ -7,7 +7,7 @@ class Input extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
-     * Unescaped the data
+     * Unescaped the data.
      *
      * @var bool
      */
