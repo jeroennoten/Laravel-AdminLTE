@@ -10,22 +10,14 @@ jobs:
             fail-fast: true
             matrix:
                 php: [7.3, 7.4, 8.0, 8.1]
-                laravel: [6.*, 7.*, 8.*, 9.*]
+                laravel: [8.*, 9.*]
                 dependency-version: [prefer-lowest, prefer-stable]
                 include:
                     -   laravel: 9.*
                         testbench: 7.*
                     -   laravel: 8.*
                         testbench: 6.22.*
-                    -   laravel: 7.*
-                        testbench: 5.20.*
-                    -   laravel: 6.*
-                        testbench: 4.18.*
                 exclude:
-                    -   laravel: 6.*
-                        php: 8.1
-                    -   laravel: 7.*
-                        php: 8.1
                     -   laravel: 9.*
                         php: 7.3
                     -   laravel: 9.*
@@ -58,15 +50,10 @@ jobs:
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
                     composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
 
-                # Test suite for Laravel 6.x versions.
-            -   name: Execute Laravel 6.x tests
-                if: matrix.laravel == '6.*'
-                run: vendor/bin/phpunit --testsuite Laravel6
-
-                # Test suite for Laravel 7+ versions.
-            -   name: Execute Laravel 7+ tests
-                if: matrix.laravel == '7.*' || matrix.laravel == '8.*' || matrix.laravel == '9.*'
-                run: vendor/bin/phpunit --testsuite Laravel7+
+                # Test suite for Laravel
+            -   name: Execute Laravel tests
+                if: matrix.laravel == '8.*' || matrix.laravel == '9.*'
+                run: vendor/bin/phpunit --testsuite Laravel
 
                 # Upload coverage only for latest versions.
             -   name: Upload coverage to scrutinizer-ci
