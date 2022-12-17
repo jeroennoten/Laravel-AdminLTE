@@ -44,7 +44,7 @@ class SelectBs extends InputGroupComponent
     {
         $classes = ['form-control'];
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
         }
 

@@ -143,7 +143,7 @@ class InputGroupComponent extends Component
             $classes[] = "input-group-{$this->size}";
         }
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'adminlte-invalid-igroup';
         }
 
@@ -163,7 +163,7 @@ class InputGroupComponent extends Component
     {
         $classes = ['form-control'];
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
         }
 
@@ -185,13 +185,16 @@ class InputGroupComponent extends Component
 
         $errors = $this->errorsBag ?? session()->get('errors');
 
-        // Check if exists any error related to the configured error key.
+        // Check if the invalid feedback is enabled and there exists an error
+        // related to the configured error key.
 
-        return ! empty($errors) && $errors->has($this->errorKey);
+        return ! isset($this->disableFeedback)
+            && ! empty($errors)
+            && $errors->has($this->errorKey);
     }
 
     /**
-     * Setup the internal errors bag.
+     * Setup the errors bag internally.
      *
      * @param  \Illuminate\Support\MessageBag  $errorsBag
      * @return void

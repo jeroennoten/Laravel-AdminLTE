@@ -49,7 +49,7 @@ class InputSwitch extends InputGroupComponent
             $classes[] = "input-group-{$this->size}";
         }
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'adminlte-invalid-iswgroup';
         }
 
@@ -69,7 +69,7 @@ class InputSwitch extends InputGroupComponent
     {
         $classes = [];
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
         }
 

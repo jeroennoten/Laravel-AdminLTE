@@ -47,7 +47,7 @@ class InputFile extends InputGroupComponent
     {
         $classes = ['custom-file-input'];
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
         }
 
