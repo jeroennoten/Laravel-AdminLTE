@@ -8,7 +8,7 @@ class SelectBs extends InputGroupComponent
 
     /**
      * The bootstrap-select plugin configuration parameters. Array with
-     * key => value pairs, where the key should be an existing configuration
+     * 'key => value' pairs, where the key should be an existing configuration
      * property of the bootstrap-select plugin.
      *
      * @var array
@@ -36,7 +36,8 @@ class SelectBs extends InputGroupComponent
     }
 
     /**
-     * Make the class attribute for the input group item.
+     * Make the class attribute for the input group item. Note we overwrite
+     * the method of the parent class.
      *
      * @return string
      */
@@ -44,7 +45,7 @@ class SelectBs extends InputGroupComponent
     {
         $classes = ['form-control'];
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
         }
 
