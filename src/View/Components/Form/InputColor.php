@@ -8,7 +8,7 @@ class InputColor extends InputGroupComponent
 
     /**
      * The Bootstrap Colorpicker plugin configuration parameters. Array with
-     * key => value pairs, where the key should be an existing configuration
+     * 'key => value' pairs, where the key should be an existing configuration
      * property of the plugin.
      *
      * @var array

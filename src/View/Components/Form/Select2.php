@@ -7,7 +7,7 @@ class Select2 extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
-     * The select2 plugin configuration parameters. Array with key => value
+     * The select2 plugin configuration parameters. Array with 'key => value'
      * pairs, where the key should be an existing configuration property of
      * the select2 plugin.
      *

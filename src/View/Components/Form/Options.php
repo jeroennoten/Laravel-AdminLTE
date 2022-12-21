@@ -9,7 +9,7 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 class Options extends Component
 {
     /**
-     * The list of options as key value pairs.
+     * The list of options as 'key => value' pairs.
      *
      * @var array
      */

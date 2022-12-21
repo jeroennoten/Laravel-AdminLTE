@@ -30,7 +30,9 @@
 @push('js')
 <script>
 
-    $(() => {bsCustomFileInput.init();})
+    $(() => {
+        bsCustomFileInput.init();
+    })
 
 </script>
 @endpush

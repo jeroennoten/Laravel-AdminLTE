@@ -25,8 +25,8 @@ class InputGroupComponent extends Component
 
     /**
      * The name attribute for the underlying input group item. This value will
-     * be used as the default id attribute when not provided. The input group
-     * item may be an "input", a "select", a "textarea", etc.
+     * be also used as the default id attribute when no other is provided. The
+     * input group item may be an "input", a "select", a "textarea", etc.
      *
      * @var string
      */
@@ -47,7 +47,7 @@ class InputGroupComponent extends Component
     public $size;
 
     /**
-     * Additional classes for "input-group" element. This provides a way to
+     * Additional classes for the "input-group" element. This provides a way to
      * customize the input group container style.
      *
      * @var string
@@ -171,8 +171,8 @@ class InputGroupComponent extends Component
     }
 
     /**
-     * Check if there exists validation errors on the session related to the
-     * configured error key.
+     * Check if there are validation errors in the session related to the
+     * error key.
      *
      * @return bool
      */

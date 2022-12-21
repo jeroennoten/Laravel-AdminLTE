@@ -7,7 +7,7 @@ class TextEditor extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
-     * The Summernote plugin configuration parameters. Array with key => value
+     * The Summernote plugin configuration parameters. Array with 'key => value'
      * pairs, where the key should be an existing configuration property of
      * the plugin.
      *
