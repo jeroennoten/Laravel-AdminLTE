@@ -4,6 +4,44 @@
 
 @section('adminlte_css')
     @stack('css')
+
+    <style>
+        @media (max-width: 991px) {
+
+            body:not(.sidebar-open) .main-sidebar,
+            body:not(.sidebar-open) .main-sidebar::before {
+                margin-left: -{{ config('adminlte.sidebar_width') ?? '250px' }};
+                width: {{ config('adminlte.sidebar_width') ?? '250px' }};
+            }
+        }
+
+        .sidebar-collapse .main-sidebar,
+        .sidebar-collapse .main-sidebar::before {
+            margin-left: -{{ config('adminlte.sidebar_width') ?? '250px' }};
+        }
+
+        .sidebar-mini .main-sidebar .nav-link,
+        .sidebar-mini-md .main-sidebar .nav-link,
+        .sidebar-mini-xs .main-sidebar .nav-link {
+            width: calc({{ config('adminlte.sidebar_width') ?? '250px' }} - .5rem * 2);
+            transition: width ease-in-out .3s;
+        }
+
+        @media (min-width: 992px) {
+
+            .main-sidebar,
+            .main-sidebar::before {
+                width: {{ config('adminlte.sidebar_width') ?? '250px' }};
+            }
+
+            body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .content-wrapper,
+            body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-footer,
+            body:not(.sidebar-mini-md):not(.sidebar-mini-xs):not(.layout-top-nav) .main-header {
+                margin-left: {{ config('adminlte.sidebar_width') ?? '250px' }};
+            }
+        }
+    </style>
+
     @yield('css')
 @stop
 
