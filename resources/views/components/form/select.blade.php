@@ -2,7 +2,7 @@
 
 {{-- Set errors bag internallly --}}
 
-@php($setErrorsBag($errors))
+@php($setErrorsBag($errors ?? null))
 
 {{-- Set input group item section --}}
 
