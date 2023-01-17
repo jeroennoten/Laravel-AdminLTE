@@ -72,9 +72,9 @@ class Progress extends Component
         $value = 0, $theme = 'info', $size = null, $striped = null,
         $vertical = null, $animated = null, $withLabel = null
     ) {
-        // Control and setup the value property.
+        // Setup the value property, to be between 0 and 100.
 
-        $this->value = ($value >= 0 && $value <= 100) ? $value : 0;
+        $this->value = max(min($value, 100), 0);
 
         // Initialize other properties.
 

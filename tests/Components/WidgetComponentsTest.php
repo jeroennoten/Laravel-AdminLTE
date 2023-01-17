@@ -191,6 +191,39 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('bg-primary', $iClass);
     }
 
+    public function testInfoBoxComponentProgressAttribute()
+    {
+        // Test that the progress attribute always stays in the range [0, 100].
+
+        $component = new Components\Widget\InfoBox();
+        $this->assertNull($component->progress);
+
+        $component = new Components\Widget\infoBox(
+            null, null, null, null, null, null, 67
+        );
+        $this->assertEquals($component->progress, 67);
+
+        $component = new Components\Widget\infoBox(
+            null, null, null, null, null, null, 100
+        );
+        $this->assertEquals($component->progress, 100);
+
+        $component = new Components\Widget\infoBox(
+            null, null, null, null, null, null, 0
+        );
+        $this->assertEquals($component->progress, 0);
+
+        $component = new Components\Widget\infoBox(
+            null, null, null, null, null, null, -21.14
+        );
+        $this->assertEquals($component->progress, 0);
+
+        $component = new Components\Widget\infoBox(
+            null, null, null, null, null, null, 527.67
+        );
+        $this->assertEquals($component->progress, 100);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Profile col item component tests.
@@ -324,6 +357,26 @@ class WidgetComponentsTest extends TestCase
 
         $pbStyle = $component->makeProgressBarStyle();
         $this->assertStringContainsString('height:75%', $pbStyle);
+    }
+
+    public function testProgressComponentValueAttribute()
+    {
+        // test that the value attribute always stays in the range [0, 100].
+
+        $component = new Components\Widget\Progress(67);
+        $this->assertEquals($component->value, 67);
+
+        $component = new Components\Widget\Progress(100);
+        $this->assertEquals($component->value, 100);
+
+        $component = new Components\Widget\Progress(0);
+        $this->assertEquals($component->value, 0);
+
+        $component = new Components\Widget\Progress(-21.14);
+        $this->assertEquals($component->value, 0);
+
+        $component = new Components\Widget\Progress(527.67);
+        $this->assertEquals($component->value, 100);
     }
 
     /*
