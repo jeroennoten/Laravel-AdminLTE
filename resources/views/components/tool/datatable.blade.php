@@ -9,7 +9,8 @@
         <tr>
             @foreach($heads as $th)
                 <th @isset($th['width']) style="width:{{ $th['width'] }}%" @endisset
-                    @isset($th['no-export']) dt-no-export @endisset>
+                    @isset($th['no-export']) dt-no-export @endisset
+                    class="@isset($th['classes']) {{ $th['classes'] }} @endisset">
                     {{ is_array($th) ? ($th['label'] ?? '') : $th }}
                 </th>
             @endforeach
