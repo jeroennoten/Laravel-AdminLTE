@@ -83,7 +83,13 @@ class InfoBox extends Component
         $this->description = UtilsHelper::applyHtmlEntityDecoder($description);
         $this->theme = $theme;
         $this->iconTheme = $iconTheme;
-        $this->progress = $progress;
+
+        // Setup the progress property, to be between 0 and 100 when defined.
+
+        $this->progress = isset($progress)
+            ? max(min($progress, 100), 0)
+            : null;
+
         $this->progressTheme = $progressTheme;
     }
 
