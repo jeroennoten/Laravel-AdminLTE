@@ -8,7 +8,8 @@
     <thead @isset($headTheme) class="thead-{{ $headTheme }}" @endisset>
         <tr>
             @foreach($heads as $th)
-                <th @isset($th['width']) style="width:{{ $th['width'] }}%" @endisset
+                <th @isset($th['classes']) class="{{ $th['classes'] }}" @endisset
+                    @isset($th['width']) style="width:{{ $th['width'] }}%" @endisset
                     @isset($th['no-export']) dt-no-export @endisset>
                     {{ is_array($th) ? ($th['label'] ?? '') : $th }}
                 </th>
