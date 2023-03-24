@@ -123,7 +123,7 @@ class InputFileKrajee extends InputGroupComponent
     /**
      * Get the preset mode configuration.
      *
-     * @return void
+     * @return array
      */
     protected function getPresetModeCfg()
     {
