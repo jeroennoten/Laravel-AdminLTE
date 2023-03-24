@@ -132,7 +132,6 @@ class InputFileKrajee extends InputGroupComponent
         // Check for valid preset mode and generate the related plugin config.
 
         switch ($this->presetMode) {
-
             case 'avatar':
                 $modeCfg = $this->makeAvatarCfg();
                 break;
