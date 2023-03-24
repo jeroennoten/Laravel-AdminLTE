@@ -16,20 +16,21 @@ class FormComponentsTest extends TestCase
 
         return [
             "{$base}.input-group-component" => new Components\Form\InputGroupComponent('name'),
-            "{$base}.button"       => new Components\Form\Button(),
-            "{$base}.date-range"   => new Components\Form\DateRange('name'),
-            "{$base}.input"        => new Components\Form\Input('name'),
-            "{$base}.input-color"  => new Components\Form\InputColor('name'),
-            "{$base}.input-date"   => new Components\Form\InputDate('name'),
-            "{$base}.input-file"   => new Components\Form\InputFile('name'),
+            "{$base}.button" => new Components\Form\Button(),
+            "{$base}.date-range" => new Components\Form\DateRange('name'),
+            "{$base}.input" => new Components\Form\Input('name'),
+            "{$base}.input-color" => new Components\Form\InputColor('name'),
+            "{$base}.input-date" => new Components\Form\InputDate('name'),
+            "{$base}.input-file" => new Components\Form\InputFile('name'),
+            "{$base}.input-file-krajee" => new Components\Form\InputFileKrajee('name'),
             "{$base}.input-slider" => new Components\Form\InputSlider('name'),
             "{$base}.input-switch" => new Components\Form\InputSwitch('name'),
-            "{$base}.select"       => new Components\Form\Select('name'),
-            "{$base}.select2"      => new Components\Form\Select2('name'),
-            "{$base}.select-bs"    => new Components\Form\SelectBs('name'),
-            "{$base}.textarea"     => new Components\Form\Textarea('name'),
-            "{$base}.text-editor"  => new Components\Form\TextEditor('name'),
-            "{$base}.options"      => new Components\Form\Options(['o1, o2']),
+            "{$base}.select" => new Components\Form\Select('name'),
+            "{$base}.select2" => new Components\Form\Select2('name'),
+            "{$base}.select-bs" => new Components\Form\SelectBs('name'),
+            "{$base}.textarea" => new Components\Form\Textarea('name'),
+            "{$base}.text-editor" => new Components\Form\TextEditor('name'),
+            "{$base}.options" => new Components\Form\Options(['o1, o2']),
         ];
     }
 
@@ -263,6 +264,96 @@ class FormComponentsTest extends TestCase
 
         $this->assertStringContainsString('custom-file-input', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Input file Krajee component tests.
+    |--------------------------------------------------------------------------
+    */
+
+    public function testInputFileKrajeeComponentBasic()
+    {
+        app()->setLocale('es');
+        $component = new Components\Form\InputFileKrajee('name');
+
+        // Test default values for the plugin configuration.
+
+        $this->assertEquals('fa5', $component->config['theme']);
+        $this->assertEquals('es', $component->config['language']);
+
+        $this->assertStringNotContainsString(
+            'input-group',
+            $component->config['inputGroupClass']
+        );
+
+        // Test invalid feedback classes.
+
+        $ifClass = $component->makeInvalidFeedbackClass();
+
+        $this->assertStringContainsString('invalid-feedback', $ifClass);
+        $this->assertStringContainsString('d-block', $ifClass);
+    }
+
+    public function testInputFileKrajeeComponentAdvanced()
+    {
+        app()->setLocale('en');
+
+        $cfg = [
+            'inputGroupClass' => 'ig-class-1',
+            'theme' => 'theme-foo',
+            'language' => 'br',
+        ];
+
+        $component = new Components\Form\InputFileKrajee(
+            'name', null, null, 'lg', null, null, 'ig-class-2', null, null, $cfg
+        );
+
+        // Test default values for the plugin configuration.
+
+        $this->assertEquals('theme-foo', $component->config['theme']);
+        $this->assertEquals('br', $component->config['language']);
+
+        $pluginIGroupClasses = explode(
+            ' ',
+            $component->config['inputGroupClass']
+        );
+
+        $this->assertContains('ig-class-1', $pluginIGroupClasses);
+        $this->assertContains('ig-class-2', $pluginIGroupClasses);
+        $this->assertContains('input-group-lg', $pluginIGroupClasses);
+        $this->assertNotContains('input-group', $pluginIGroupClasses);
+    }
+
+    public function testInputFileKrajeeComponentWithPresets()
+    {
+        // Test avatar preset mode.
+
+        $component = new Components\Form\InputFileKrajee(
+            'name', null, null, null, null, null, null,
+            null, null, null, 'avatar'
+        );
+
+        $ifClass = $component->makeInvalidFeedbackClass();
+
+        $this->assertEquals('avatar', $component->presetMode);
+        $this->assertStringContainsString('invalid-feedback', $ifClass);
+        $this->assertStringContainsString('d-block', $ifClass);
+        $this->assertStringContainsString('text-center', $ifClass);
+
+        // Test minimalist preset mode.
+
+        $component = new Components\Form\InputFileKrajee(
+            'name', null, null, null, null, null, null,
+            null, null, null, 'minimalist'
+        );
+
+        $ifClass = $component->makeInvalidFeedbackClass();
+
+        $this->assertEquals('minimalist', $component->presetMode);
+        $this->assertStringContainsString('invalid-feedback', $ifClass);
+        $this->assertStringContainsString('d-block', $ifClass);
+        $this->assertStringNotContainsString('text-center', $ifClass);
     }
 
     /*
