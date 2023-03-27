@@ -42,7 +42,6 @@ class LangFilter implements FilterInterface
         // Translate the menu item properties.
 
         foreach ($this->itemProperties as $prop) {
-
             // Check if the property exists for the item.
 
             if (! isset($item[$prop])) {

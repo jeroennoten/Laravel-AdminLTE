@@ -203,7 +203,6 @@ class AdminLteInstallCommand extends Command
     protected function exportPackageResources(...$resources)
     {
         foreach ($resources as $resource) {
-
             // Check if resource was already installed on the current command
             // execution. This can happen, for example, when using:
             // php artisan --type=full --with=auth_views
