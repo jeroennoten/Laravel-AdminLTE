@@ -146,7 +146,6 @@ class Builder
             if (isset($item['key']) && $item['key'] === $itemKey) {
                 return [$key];
             } elseif (MenuItemHelper::isSubmenu($item)) {
-
                 // Do the recursive call to search on submenu. If we found the
                 // item, merge the path with the current one.
 
@@ -186,7 +185,6 @@ class Builder
         // Now, apply all the filters on the item.
 
         foreach ($this->filters as $filter) {
-
             // If the item is not allowed to be shown, there is no sense to
             // continue applying the filters.
 
