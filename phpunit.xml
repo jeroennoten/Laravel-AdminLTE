@@ -6,12 +6,8 @@
     </include>
   </coverage>
   <testsuites>
-    <testsuite name="Laravel7+">
+    <testsuite name="Laravel">
       <directory suffix="Test.php">./tests</directory>
-    </testsuite>
-    <testsuite name="Laravel6">
-      <directory suffix="Test.php">./tests</directory>
-      <exclude>./tests/Components</exclude>
     </testsuite>
   </testsuites>
 </phpunit>
