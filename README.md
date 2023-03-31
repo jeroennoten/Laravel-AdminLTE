@@ -13,9 +13,9 @@ If you want to use an older **Laravel** or **AdminLTE** version, review the foll
 - **Releases 1.x**:
   These releases supports Laravel 5 and include AdminLTE v2
 - **Releases 2.x**:
-  These releases supports Laravel 6 or higher and include AdminLTE v2
+  These releases supports Laravel 6 and include AdminLTE v2
 - **Releases 3.x (<=3.8.6)**:
-  These releases supports Laravel 6 or higher and include AdminLTE v3
+  These releases supports Laravel 6 and include AdminLTE v3
 
 ## Documentation
 
@@ -33,6 +33,8 @@ The current package requirements are:
 ## Issues, Questions and Pull Requests
 
 You can report issues or ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please, start your issue with `[BUG]` and your question with `[QUESTION]` in the subject.
+
+You may also use the issues to propose changes for the **Wiki Pages**, in that case use `[WIKI]` at the beginning of the subject.
 
 If you have a question, it is recommended to make a search over the closed issues first.
 
