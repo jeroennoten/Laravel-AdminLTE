@@ -28,8 +28,8 @@
       }
   },
   "require": {
-    "laravel/framework": ">=6.0",
-    "php": ">=7.2.0",
+    "laravel/framework": ">=7.0",
+    "php": ">=7.2.5",
     "almasaeed2010/adminlte": "3.2.*"
   },
   "require-dev": {

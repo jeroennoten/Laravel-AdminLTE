@@ -220,18 +220,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
      */
     private function loadComponents()
     {
-        // Support of x-components is only available for Laravel >= 7.x
-        // versions. So, we check if we can load components.
-
-        $canLoadComponents = method_exists(
-            'Illuminate\Support\ServiceProvider',
-            'loadViewComponentsAs'
-        );
-
-        if (! $canLoadComponents) {
-            return;
-        }
-
         // Load all the blade-x components.
 
         $components = array_merge(
