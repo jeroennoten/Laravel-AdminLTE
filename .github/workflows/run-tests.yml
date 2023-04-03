@@ -11,7 +11,7 @@ jobs:
             matrix:
                 php: [7.3, 7.4, 8.0, 8.1, 8.2]
                 laravel: [7.*, 8.*, 9.*, 10.*]
-                dependency-version: [prefer-lowest, prefer-stable]
+                stability: [prefer-lowest, prefer-stable]
                 include:
                     -   laravel: 10.*
                         testbench: 8.*
@@ -39,7 +39,7 @@ jobs:
                     -   laravel: 10.*
                         php: 8.0
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.dependency-version }}
+        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
         steps:
             -   name: Checkout code
@@ -64,7 +64,7 @@ jobs:
             -   name: Install dependencies
                 run: |
                     composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
-                    composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+                    composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
                 # Test suite for Laravel.
             -   name: Execute Laravel tests
@@ -72,7 +72,7 @@ jobs:
 
                 # Upload coverage only for latest versions.
             -   name: Upload coverage to scrutinizer-ci
-                if: matrix.php == '8.2' && matrix.laravel == '10.*' && matrix.dependency-version == 'prefer-stable'
+                if: matrix.php == '8.2' && matrix.laravel == '10.*' && matrix.stability == 'prefer-stable'
                 run: |
                     vendor/bin/phpunit --testsuite Laravel --coverage-clover=coverage.clover
                     vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
