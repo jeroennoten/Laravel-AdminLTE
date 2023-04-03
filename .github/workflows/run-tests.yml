@@ -13,14 +13,14 @@ jobs:
                 laravel: [7.*, 8.*, 9.*, 10.*]
                 stability: [prefer-lowest, prefer-stable]
                 include:
-                    -   laravel: 10.*
-                        testbench: 8.*
-                    -   laravel: 9.*
-                        testbench: 7.*
-                    -   laravel: 8.*
-                        testbench: 6.22.*
                     -   laravel: 7.*
                         testbench: 5.20.*
+                    -   laravel: 8.*
+                        testbench: 6.22.*
+                    -   laravel: 9.*
+                        testbench: 7.*
+                    -   laravel: 10.*
+                        testbench: 8.*
                 exclude:
                     -   laravel: 7.*
                         php: 8.1
@@ -63,7 +63,7 @@ jobs:
 
             -   name: Install dependencies
                 run: |
-                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
+                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
                     composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
                 # Test suite for Laravel.
