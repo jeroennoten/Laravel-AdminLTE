@@ -4,9 +4,9 @@ use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 
 class AdminLteTest extends TestCase
 {
-    public function __construct()
+    public function setUp(): void
     {
-        parent::__construct();
+        parent::setUp();
 
         // Register a listener to 'BuildingMenu' event in order to add items
         // to the menu.
