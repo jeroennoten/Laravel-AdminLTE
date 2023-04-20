@@ -3,76 +3,76 @@ name: run-tests
 on: [push, pull_request]
 
 jobs:
-    tests:
-        runs-on: ubuntu-latest
+  tests:
+    runs-on: ubuntu-latest
 
-        strategy:
-            fail-fast: true
-            matrix:
-                php: [7.3, 7.4, 8.0, 8.1, 8.2]
-                laravel: [7.*, 8.*, 9.*, 10.*]
-                stability: [prefer-lowest, prefer-stable]
-                include:
-                    -   laravel: 7.*
-                        testbench: 5.20.*
-                    -   laravel: 8.*
-                        testbench: 6.22.*
-                    -   laravel: 9.*
-                        testbench: 7.*
-                    -   laravel: 10.*
-                        testbench: 8.*
-                exclude:
-                    -   laravel: 7.*
-                        php: 8.1
-                    -   laravel: 7.*
-                        php: 8.2
-                    -   laravel: 8.*
-                        php: 8.2
-                    -   laravel: 9.*
-                        php: 7.3
-                    -   laravel: 9.*
-                        php: 7.4
-                    -   laravel: 10.*
-                        php: 7.3
-                    -   laravel: 10.*
-                        php: 7.4
-                    -   laravel: 10.*
-                        php: 8.0
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [7.3, 7.4, 8.0, 8.1, 8.2]
+        laravel: [7.*, 8.*, 9.*, 10.*]
+        stability: [prefer-lowest, prefer-stable]
+        include:
+          - laravel: 7.*
+            testbench: 5.20.*
+          - laravel: 8.*
+            testbench: 6.22.*
+          - laravel: 9.*
+            testbench: 7.*
+          - laravel: 10.*
+            testbench: 8.*
+        exclude:
+          - laravel: 7.*
+            php: 8.1
+          - laravel: 7.*
+            php: 8.2
+          - laravel: 8.*
+            php: 8.2
+          - laravel: 9.*
+            php: 7.3
+          - laravel: 9.*
+            php: 7.4
+          - laravel: 10.*
+            php: 7.3
+          - laravel: 10.*
+            php: 7.4
+          - laravel: 10.*
+            php: 8.0
 
-        name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
+    name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
-        steps:
-            -   name: Checkout code
-                uses: actions/checkout@v3
-                with:
-                    ref: ${{ github.event.pull_request.head.sha }}
-                    fetch-depth: 0
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
 
-            -   name: Cache dependencies
-                uses: actions/cache@v3
-                with:
-                    path: ~/.composer/cache/files
-                    key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-            -   name: Setup PHP
-                uses: shivammathur/setup-php@v2
-                with:
-                    php-version: ${{ matrix.php }}
-                    extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
-                    coverage: xdebug
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
+          coverage: xdebug
 
-            -   name: Install dependencies
-                run: |
-                    composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
-                    composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+      - name: Install dependencies
+        run: |
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
+          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
-                # Test suite for Laravel.
-            -   name: Execute Laravel tests
-                run: vendor/bin/phpunit --testsuite Laravel
+        # Test suite for Laravel.
+      - name: Execute Laravel tests
+        run: vendor/bin/phpunit --testsuite Laravel
 
-                # Upload coverage only for latest versions.
-            -   name: Upload coverage to scrutinizer-ci
-                if: matrix.php == '8.2' && matrix.laravel == '10.*' && matrix.stability == 'prefer-stable'
-                run: |
-                    vendor/bin/phpunit --testsuite Laravel --coverage-clover=coverage.clover
-                    vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+        # Upload coverage only for latest versions.
+      - name: Upload coverage to scrutinizer-ci
+        if: matrix.php == '8.2' && matrix.laravel == '10.*' && matrix.stability == 'prefer-stable'
+        run: |
+          vendor/bin/phpunit --testsuite Laravel --coverage-clover=coverage.clover
+          vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
