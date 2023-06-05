@@ -16,7 +16,7 @@ class InfoBox extends Component
 
     /**
      * An URL for the title.
-     * 
+     *
      * @var string
      */
     public $url;
