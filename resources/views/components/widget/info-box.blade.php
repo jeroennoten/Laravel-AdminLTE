@@ -15,7 +15,7 @@
             <span class="info-box-text">
                 @if(isset($url))
                     <a href="{{ $url }}">{{ $title }}</a>
-                @else
+                @else 
                     {{ $title }}
                 @endif
             </span>
