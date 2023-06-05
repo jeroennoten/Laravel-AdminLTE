@@ -15,6 +15,13 @@ class InfoBox extends Component
     public $title;
 
     /**
+     * An URL for the title.
+     * 
+     * @var string
+     */
+    public $url;
+
+    /**
      * A short text description for the box.
      *
      * @var string
@@ -73,11 +80,12 @@ class InfoBox extends Component
      * @return void
      */
     public function __construct(
-        $title = null, $text = null, $icon = null, $description = null,
+        $title = null, $url = null, $text = null, $icon = null, $description = null,
         $theme = null, $iconTheme = null, $progress = null,
         $progressTheme = 'white'
     ) {
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
+        $this->url = UtilsHelper::applyHtmlEntityDecoder($url);
         $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
         $this->icon = $icon;
         $this->description = UtilsHelper::applyHtmlEntityDecoder($description);
