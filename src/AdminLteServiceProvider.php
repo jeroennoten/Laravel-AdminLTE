@@ -50,6 +50,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
         'input-color' => Form\InputColor::class,
         'input-date' => Form\InputDate::class,
         'input-file' => Form\InputFile::class,
+        'input-file-krajee' => Form\InputFileKrajee::class,
         'input-slider' => Form\InputSlider::class,
         'input-switch' => Form\InputSwitch::class,
         'options' => Form\Options::class,
@@ -219,18 +220,6 @@ class AdminLteServiceProvider extends BaseServiceProvider
      */
     private function loadComponents()
     {
-        // Support of x-components is only available for Laravel >= 7.x
-        // versions. So, we check if we can load components.
-
-        $canLoadComponents = method_exists(
-            'Illuminate\Support\ServiceProvider',
-            'loadViewComponentsAs'
-        );
-
-        if (! $canLoadComponents) {
-            return;
-        }
-
         // Load all the blade-x components.
 
         $components = array_merge(

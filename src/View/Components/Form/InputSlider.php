@@ -8,7 +8,7 @@ class InputSlider extends InputGroupComponent
 
     /**
      * The bootstrap-slider plugin configuration parameters. Array with
-     * key => value pairs, where the key should be an existing configuration
+     * 'key => value' pairs, where the key should be an existing configuration
      * property of the plugin.
      *
      * @var array
@@ -61,7 +61,7 @@ class InputSlider extends InputGroupComponent
             $classes[] = "input-group-{$this->size}";
         }
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'adminlte-invalid-islgroup';
         }
 

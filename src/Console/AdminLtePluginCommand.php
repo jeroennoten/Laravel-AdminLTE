@@ -172,7 +172,6 @@ class AdminLtePluginCommand extends Command
         $bar->start();
 
         foreach ($pluginsKeys as $key) {
-
             // Advance the progress bar one step.
 
             $bar->advance();
@@ -289,7 +288,6 @@ class AdminLtePluginCommand extends Command
         // Install the plugins.
 
         foreach ($pluginsKeys as $pluginKey) {
-
             // Advance the progress bar one step.
 
             $bar->advance();
@@ -385,7 +383,6 @@ class AdminLtePluginCommand extends Command
         // Remove the plugins.
 
         foreach ($pluginsKeys as $pluginKey) {
-
             // Advance the progress bar one step.
 
             $bar->advance();

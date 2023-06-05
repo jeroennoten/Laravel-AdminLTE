@@ -12,7 +12,7 @@ class InputFile extends InputGroupComponent
     public $placeholder;
 
     /**
-     * A legend for replace the default 'Browse' text.
+     * A legend for the replacement of the default 'Browser' text.
      *
      * @var string
      */
@@ -39,7 +39,8 @@ class InputFile extends InputGroupComponent
     }
 
     /**
-     * Make the class attribute for the input group item.
+     * Make the class attribute for the input group item. Note we overwrite
+     * the method of the parent class.
      *
      * @return string
      */
@@ -47,7 +48,7 @@ class InputFile extends InputGroupComponent
     {
         $classes = ['custom-file-input'];
 
-        if ($this->isInvalid() && ! isset($this->disableFeedback)) {
+        if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
         }
 

@@ -34,7 +34,6 @@ class InstallTest extends CommandTestCase
         // Test installation of the resources.
 
         foreach ($this->getResources() as $name => $res) {
-
             // Ensure the required vendor assets exists, if needed.
 
             if ($name === 'assets') {
