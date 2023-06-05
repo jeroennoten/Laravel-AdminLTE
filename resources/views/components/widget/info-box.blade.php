@@ -12,7 +12,13 @@
 
         {{-- Box title --}}
         @isset($title)
-            <span class="info-box-text">{{ $title }}</span>
+            <span class="info-box-text">
+                @if(isset($url))
+                    <a href="{{ $url }}">{{ $title }}</a>
+                @else
+                    {{ $title }}
+                @endif
+            </span>
         @endisset
 
         {{-- Box short text --}}
