@@ -179,7 +179,7 @@ class WidgetComponentsTest extends TestCase
     public function testInfoBoxComponent()
     {
         $component = new Components\Widget\InfoBox(
-            'title', 'text', null, null, 'danger', 'primary'
+            'title', null, 'text', null, null, 'danger', 'primary'
         );
 
         $bClass = $component->makeBoxClass();
