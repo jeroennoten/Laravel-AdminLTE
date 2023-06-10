@@ -36,6 +36,20 @@ class InfoBox extends Component
     public $icon;
 
     /**
+     * An URL for the box.
+     *
+     * @var string
+     */
+    public $url;
+
+    /**
+     * The target element of the box for the URL (title or text).
+     *
+     * @var string
+     */
+    public $urlTarget;
+
+    /**
      * The box theme (light, dark, primary, secondary, info, success, warning,
      * danger or any other AdminLTE color like lighblue or teal).
      *
@@ -74,13 +88,15 @@ class InfoBox extends Component
      */
     public function __construct(
         $title = null, $text = null, $icon = null, $description = null,
-        $theme = null, $iconTheme = null, $progress = null,
-        $progressTheme = 'white'
+        $url = null, $urlTarget = 'title', $theme = null, $iconTheme = null,
+        $progress = null, $progressTheme = 'white'
     ) {
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
         $this->icon = $icon;
         $this->description = UtilsHelper::applyHtmlEntityDecoder($description);
+        $this->url = $url;
+        $this->urlTarget = $urlTarget;
         $this->theme = $theme;
         $this->iconTheme = $iconTheme;
 

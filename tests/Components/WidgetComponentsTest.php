@@ -179,7 +179,7 @@ class WidgetComponentsTest extends TestCase
     public function testInfoBoxComponent()
     {
         $component = new Components\Widget\InfoBox(
-            'title', 'text', null, null, 'danger', 'primary'
+            'title', 'text', 'icon', null, null, null, 'danger', 'primary'
         );
 
         $bClass = $component->makeBoxClass();
@@ -199,27 +199,27 @@ class WidgetComponentsTest extends TestCase
         $this->assertNull($component->progress);
 
         $component = new Components\Widget\infoBox(
-            null, null, null, null, null, null, 67
+            null, null, null, null, null, null, null, null, 67
         );
         $this->assertEquals($component->progress, 67);
 
         $component = new Components\Widget\infoBox(
-            null, null, null, null, null, null, 100
+            null, null, null, null, null, null, null, null, 100
         );
         $this->assertEquals($component->progress, 100);
 
         $component = new Components\Widget\infoBox(
-            null, null, null, null, null, null, 0
+            null, null, null, null, null, null, null, null, 0
         );
         $this->assertEquals($component->progress, 0);
 
         $component = new Components\Widget\infoBox(
-            null, null, null, null, null, null, -21.14
+            null, null, null, null, null, null, null, null, -21.14
         );
         $this->assertEquals($component->progress, 0);
 
         $component = new Components\Widget\infoBox(
-            null, null, null, null, null, null, 527.67
+            null, null, null, null, null, null, null, null, 527.67
         );
         $this->assertEquals($component->progress, 100);
     }
