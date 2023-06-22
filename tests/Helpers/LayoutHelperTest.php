@@ -68,7 +68,7 @@ class LayoutHelperTest extends TestCase
         $this->assertStringContainsString('data-scrollbar-auto-hide=s', $data);
     }
 
-    public function testMakeBodyClassesWithouConfig()
+    public function testMakeBodyClassesWithoutConfig()
     {
         // Test without config.
 
