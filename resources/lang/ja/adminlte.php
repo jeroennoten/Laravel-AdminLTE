@@ -6,7 +6,7 @@ return [
     'email'                       => 'メールアドレス',
     'password'                    => 'パスワード',
     'retype_password'             => 'もう一度入力',
-    'remember_me'                 => 'パスワードを記憶する',
+    'remember_me'                 => '認証状態を保持する',
     'register'                    => '登録する',
     'register_a_new_membership'   => 'アカウントを登録する',
     'i_forgot_my_password'        => 'パスワードを忘れた',
