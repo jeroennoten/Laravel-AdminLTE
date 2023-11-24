@@ -14,7 +14,7 @@ return [
     'sign_in'                     => 'ログイン',
     'log_out'                     => 'ログアウト',
     'toggle_navigation'           => 'ナビゲーションを開閉',
-    'login_message'               => 'ログインしてセッションを開始する',
+    'login_message'               => 'ログイン画面',
     'register_message'            => 'アカウントを登録する',
     'password_reset_message'      => 'パスワードをリセットする',
     'reset_password'              => 'パスワードをリセットする',
