@@ -131,10 +131,16 @@ class ActiveChecker
             return (bool) preg_match($regex, $this->request->path());
         }
 
-        // If pattern is not a regex, check if the requested url matches the full url request.
+        // If pattern is not a regex, check if the requested url matches the
+        // absolute path to the given pattern. When the pattern uses query
+        // parameters, compare with the full url request.
 
         $pattern = preg_replace('@^https?://@', '*', $this->url->to($pattern));
-        $request = $this->request->fullUrl();
+        $request = $this->request->url();
+
+        if (isset(parse_url($pattern)['query'])) {
+            $request = $this->request->fullUrl();
+        }
 
         return Str::is(trim($pattern), trim($request));
     }
