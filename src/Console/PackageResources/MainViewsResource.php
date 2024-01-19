@@ -23,9 +23,9 @@ class MainViewsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install'   => 'Install the AdminLTE main views?',
+            'install' => 'Install the AdminLTE main views?',
             'overwrite' => 'The main views already exists. Want to replace the views?',
-            'success'   => 'Main views installed successfully.',
+            'success' => 'Main views installed successfully.',
         ];
     }
 

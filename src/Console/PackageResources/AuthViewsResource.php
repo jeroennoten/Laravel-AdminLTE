@@ -12,12 +12,12 @@ class AuthViewsResource extends PackageResource
      * @var array
      */
     protected $authViewsContent = [
-        'login.blade.php'             => '@extends(\'adminlte::auth.login\')',
-        'register.blade.php'          => '@extends(\'adminlte::auth.register\')',
-        'verify.blade.php'            => '@extends(\'adminlte::auth.verify\')',
+        'login.blade.php' => '@extends(\'adminlte::auth.login\')',
+        'register.blade.php' => '@extends(\'adminlte::auth.register\')',
+        'verify.blade.php' => '@extends(\'adminlte::auth.verify\')',
         'passwords/confirm.blade.php' => '@extends(\'adminlte::auth.passwords.confirm\')',
-        'passwords/email.blade.php'   => '@extends(\'adminlte::auth.passwords.email\')',
-        'passwords/reset.blade.php'   => '@extends(\'adminlte::auth.passwords.reset\')',
+        'passwords/email.blade.php' => '@extends(\'adminlte::auth.passwords.email\')',
+        'passwords/reset.blade.php' => '@extends(\'adminlte::auth.passwords.reset\')',
     ];
 
     /**
@@ -37,9 +37,9 @@ class AuthViewsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install'   => 'Install the AdminLTE authentication views?',
+            'install' => 'Install the AdminLTE authentication views?',
             'overwrite' => 'The authentication views already exists. Want to replace the views?',
-            'success'   => 'Authentication views installed successfully.',
+            'success' => 'Authentication views installed successfully.',
         ];
     }
 

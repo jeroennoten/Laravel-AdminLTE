@@ -13,7 +13,7 @@ class ToolComponentsTest extends TestCase
 
         return [
             "{$base}.datatable" => new Components\Tool\Datatable('id', []),
-            "{$base}.modal"     => new Components\Tool\Modal('id'),
+            "{$base}.modal" => new Components\Tool\Modal('id'),
         ];
     }
 

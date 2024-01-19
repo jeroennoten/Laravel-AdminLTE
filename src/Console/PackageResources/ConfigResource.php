@@ -23,9 +23,9 @@ class ConfigResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install'   => 'Install the package config file?',
+            'install' => 'Install the package config file?',
             'overwrite' => 'The config file already exists. Want to replace it?',
-            'success'   => 'Configuration file installed successfully.',
+            'success' => 'Configuration file installed successfully.',
         ];
     }
 

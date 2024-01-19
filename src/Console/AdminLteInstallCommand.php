@@ -79,12 +79,12 @@ class AdminLteInstallCommand extends Command
         // Fill the array with the package resources.
 
         $this->pkgResources = [
-            'assets'       => new AssetsResource(),
-            'config'       => new ConfigResource(),
+            'assets' => new AssetsResource(),
+            'config' => new ConfigResource(),
             'translations' => new TranslationsResource(),
-            'main_views'   => new MainViewsResource(),
-            'auth_views'   => new AuthViewsResource(),
-            'basic_views'  => new BasicViewsResource(),
+            'main_views' => new MainViewsResource(),
+            'auth_views' => new AuthViewsResource(),
+            'basic_views' => new BasicViewsResource(),
             'basic_routes' => new BasicRoutesResource(),
         ];
 
@@ -95,29 +95,29 @@ class AdminLteInstallCommand extends Command
         $full = array_merge($enhanced, ['basic_views', 'basic_routes']);
 
         $this->optTypeResources = [
-            'basic'    => $basic,
+            'basic' => $basic,
             'enhanced' => $enhanced,
-            'full'     => $full,
+            'full' => $full,
         ];
 
         // Add the resources related to each available --only option.
 
         $this->optOnlyResources = [
-            'assets'       => ['assets'],
-            'config'       => ['config'],
+            'assets' => ['assets'],
+            'config' => ['config'],
             'translations' => ['translations'],
-            'main_views'   => ['main_views'],
-            'auth_views'   => ['auth_views'],
-            'basic_views'  => ['basic_views'],
+            'main_views' => ['main_views'],
+            'auth_views' => ['auth_views'],
+            'basic_views' => ['basic_views'],
             'basic_routes' => ['basic_routes'],
         ];
 
         // Add the resources related to each available --with option.
 
         $this->optWithResources = [
-            'main_views'   => ['main_views'],
-            'auth_views'   => ['auth_views'],
-            'basic_views'  => ['basic_views'],
+            'main_views' => ['main_views'],
+            'auth_views' => ['auth_views'],
+            'basic_views' => ['basic_views'],
             'basic_routes' => ['basic_routes'],
         ];
     }

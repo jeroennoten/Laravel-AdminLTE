@@ -32,9 +32,9 @@ class BasicViewsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install'   => 'Install the AdminLTE basic views?',
+            'install' => 'Install the AdminLTE basic views?',
             'overwrite' => 'The basic views already exists. Want to replace the views?',
-            'success'   => 'Basic views installed successfully.',
+            'success' => 'Basic views installed successfully.',
         ];
     }
 
