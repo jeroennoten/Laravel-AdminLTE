@@ -31,9 +31,19 @@
 
         widget.addEventListener('click', () => {
 
-            // Toggle dark-mode class on the body tag.
+            // Toggle dark-mode class on the main body tag.
 
             body.classList.toggle('dark-mode');
+
+            // Support to IFrame mode: toggle dark-mode class on the body of
+            // any present iframe.
+
+            let iframes = document.querySelectorAll('div.iframe-mode iframe');
+
+            iframes.forEach((f) => {
+                b = f.contentDocument.querySelector('body');
+                b.classList.toggle('dark-mode');
+            });
 
             // Toggle the classes on the widget icon.
 
