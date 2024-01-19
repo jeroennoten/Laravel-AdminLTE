@@ -219,9 +219,9 @@ class PluginsResource extends PackageResource
         // Fill the set of installation messages templates.
 
         $this->messages = [
-            'install'   => 'Install the AdminLTE :plugin plugin?',
+            'install' => 'Install the AdminLTE :plugin plugin?',
             'overwrite' => 'The :plugin plugin already exists. Want to replace the plugin?',
-            'remove'    => 'Do you really want to remove the :plugin plugin?',
+            'remove' => 'Do you really want to remove the :plugin plugin?',
         ];
     }
 

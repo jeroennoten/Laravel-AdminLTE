@@ -12,15 +12,15 @@ class WidgetComponentsTest extends TestCase
         $base = 'adminlte::components.widget';
 
         return [
-            "{$base}.alert"            => new Components\Widget\Alert(),
-            "{$base}.callout"          => new Components\Widget\Callout(),
-            "{$base}.card"             => new Components\Widget\Card(),
-            "{$base}.info-box"         => new Components\Widget\InfoBox(),
+            "{$base}.alert" => new Components\Widget\Alert(),
+            "{$base}.callout" => new Components\Widget\Callout(),
+            "{$base}.card" => new Components\Widget\Card(),
+            "{$base}.info-box" => new Components\Widget\InfoBox(),
             "{$base}.profile-col-item" => new Components\Widget\ProfileColItem(),
             "{$base}.profile-row-item" => new Components\Widget\ProfileRowItem(),
-            "{$base}.profile-widget"   => new Components\Widget\ProfileWidget(),
-            "{$base}.progress"         => new Components\Widget\Progress(),
-            "{$base}.small-box"        => new Components\Widget\SmallBox(),
+            "{$base}.profile-widget" => new Components\Widget\ProfileWidget(),
+            "{$base}.progress" => new Components\Widget\Progress(),
+            "{$base}.small-box" => new Components\Widget\SmallBox(),
         ];
     }
 

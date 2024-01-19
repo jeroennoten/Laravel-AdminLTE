@@ -29,12 +29,12 @@ class CommandTestCase extends TestCase
     {
         if (! isset($this->resources)) {
             $this->resources = [
-                'assets'       => new AssetsResource(),
-                'config'       => new ConfigResource(),
+                'assets' => new AssetsResource(),
+                'config' => new ConfigResource(),
                 'translations' => new TranslationsResource(),
-                'main_views'   => new MainViewsResource(),
-                'auth_views'   => new AuthViewsResource(),
-                'basic_views'  => new BasicViewsResource(),
+                'main_views' => new MainViewsResource(),
+                'auth_views' => new AuthViewsResource(),
+                'basic_views' => new BasicViewsResource(),
                 'basic_routes' => new BasicRoutesResource(),
             ];
         }

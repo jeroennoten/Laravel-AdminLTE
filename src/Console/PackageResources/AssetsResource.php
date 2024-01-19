@@ -79,9 +79,9 @@ class AssetsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install'   => 'Install the basic package assets?',
+            'install' => 'Install the basic package assets?',
             'overwrite' => 'The basic assets already exists. Want to replace the assets?',
-            'success'   => 'Basic assets installed successfully.',
+            'success' => 'Basic assets installed successfully.',
         ];
     }
 

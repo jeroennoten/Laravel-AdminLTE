@@ -24,9 +24,9 @@ class TranslationsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install'   => 'Install the package translations files?',
+            'install' => 'Install the package translations files?',
             'overwrite' => 'The translation files already exists. Want to replace the files?',
-            'success'   => 'Translation files installed successfully.',
+            'success' => 'Translation files installed successfully.',
         ];
     }
 

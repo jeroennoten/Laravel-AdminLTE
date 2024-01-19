@@ -65,10 +65,10 @@ class AdminLte
         // Fill the map of filters methods.
 
         $this->menuFilterMap = [
-            'sidebar'      => [$this, 'sidebarFilter'],
-            'navbar-left'  => [$this, 'navbarLeftFilter'],
+            'sidebar' => [$this, 'sidebarFilter'],
+            'navbar-left' => [$this, 'navbarLeftFilter'],
             'navbar-right' => [$this, 'navbarRightFilter'],
-            'navbar-user'  => [$this, 'navbarUserMenuFilter'],
+            'navbar-user' => [$this, 'navbarUserMenuFilter'],
         ];
     }
 

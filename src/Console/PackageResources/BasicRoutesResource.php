@@ -23,9 +23,9 @@ class BasicRoutesResource extends PackageResource
         // Fill the installation messages.
 
         $this->messages = [
-            'install'   => 'Install the basic package routes?',
+            'install' => 'Install the basic package routes?',
             'overwrite' => 'Basic routes are already installed. Want to install they again?',
-            'success'   => 'Basic routes installed successfully.',
+            'success' => 'Basic routes installed successfully.',
         ];
     }
 

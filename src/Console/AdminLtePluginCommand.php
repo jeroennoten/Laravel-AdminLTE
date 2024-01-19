@@ -74,9 +74,9 @@ class AdminLtePluginCommand extends Command
         // Fill the available operations handlers.
 
         $this->opHandlers = [
-            'list'    => [$this, 'showPlugins'],
+            'list' => [$this, 'showPlugins'],
             'install' => [$this, 'installPlugins'],
-            'remove'  => [$this, 'removePlugins'],
+            'remove' => [$this, 'removePlugins'],
         ];
 
         // Create the plugins resource instance.

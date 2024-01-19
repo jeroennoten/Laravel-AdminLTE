@@ -12,15 +12,15 @@ class InputDate extends InputGroupComponent
      * @var array
      */
     protected $icons = [
-        'time'     => 'fas fa-clock',
-        'date'     => 'fas fa-calendar-alt',
-        'up'       => 'fas fa-arrow-up',
-        'down'     => 'fas fa-arrow-down',
+        'time' => 'fas fa-clock',
+        'date' => 'fas fa-calendar-alt',
+        'up' => 'fas fa-arrow-up',
+        'down' => 'fas fa-arrow-down',
         'previous' => 'fas fa-chevron-left',
-        'next'     => 'fas fa-chevron-right',
-        'today'    => 'fas fa-calendar-check-o',
-        'clear'    => 'fas fa-trash',
-        'close'    => 'fas fa-times',
+        'next' => 'fas fa-chevron-right',
+        'today' => 'fas fa-calendar-check-o',
+        'clear' => 'fas fa-trash',
+        'close' => 'fas fa-times',
     ];
 
     /**

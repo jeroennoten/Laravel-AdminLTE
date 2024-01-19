@@ -457,7 +457,7 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text'    => 'Home',
+                'text' => 'Home',
                 'submenu' => [
                     ['text' => 'About', 'url' => '/about'],
                 ],
@@ -476,11 +476,11 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text'    => 'Home',
+                'text' => 'Home',
                 'submenu' => [
                     [
-                        'text'    => 'About',
-                        'url'     => '/about',
+                        'text' => 'About',
+                        'url' => '/about',
                         'submenu' => [
                             ['text' => 'Test', 'url' => '/test'],
                         ],
@@ -542,11 +542,11 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text'    => 'Menu',
+                'text' => 'Menu',
                 'submenu' => [
                     [
-                        'text'  => 'About',
-                        'url'   => '/about',
+                        'text' => 'About',
+                        'url' => '/about',
                     ],
                 ],
             ]
@@ -563,11 +563,11 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text'    => 'Menu',
+                'text' => 'Menu',
                 'submenu' => [
                     [
-                        'text'    => 'About',
-                        'route'   => 'pages.about',
+                        'text' => 'About',
+                        'route' => 'pages.about',
                     ],
                 ],
             ]
@@ -583,8 +583,8 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text'    => 'Menu',
-                'url'     => '#',
+                'text' => 'Menu',
+                'url' => '#',
                 'submenu' => [
                     ['url' => 'home'],
                 ],
@@ -653,13 +653,13 @@ class BuilderTest extends TestCase
         $builder->add(
             [
                 'text' => 'About',
-                'url'  => 'about',
-                'can'  => 'show-about',
+                'url' => 'about',
+                'can' => 'show-about',
             ],
             [
                 'text' => 'Home',
-                'url'  => '/',
-                'can'  => 'show-home',
+                'url' => '/',
+                'can' => 'show-home',
             ]
         );
 
@@ -682,8 +682,8 @@ class BuilderTest extends TestCase
         $builder->add(
             [
                 'text' => 'Home',
-                'url'  => '/',
-                'can'  => 'show-home',
+                'url' => '/',
+                'can' => 'show-home',
             ]
         );
 
@@ -709,11 +709,11 @@ class BuilderTest extends TestCase
         $builder = $this->makeMenuBuilder('http://example.com', $gate);
 
         $builder->add(
-            ['text' => 'LinkA', 'url'  => 'link_a', 'can'  => false],
-            ['text' => 'LinkB', 'url'  => 'link_b', 'can'  => 1024],
-            ['text' => 'LinkC', 'url'  => 'link_c', 'can'  => ''],
-            ['text' => 'LinkD', 'url'  => 'link_d', 'can'  => []],
-            ['text' => 'LinkE', 'url'  => 'link_e']
+            ['text' => 'LinkA', 'url' => 'link_a', 'can' => false],
+            ['text' => 'LinkB', 'url' => 'link_b', 'can' => 1024],
+            ['text' => 'LinkC', 'url' => 'link_c', 'can' => ''],
+            ['text' => 'LinkD', 'url' => 'link_d', 'can' => []],
+            ['text' => 'LinkE', 'url' => 'link_e']
         );
 
         $this->assertCount(5, $builder->menu);
@@ -751,13 +751,13 @@ class BuilderTest extends TestCase
         $builder->add(
             [
                 'text' => 'Users',
-                'url'  => 'users',
-                'can'  => ['show-users', 'edit-user'],
+                'url' => 'users',
+                'can' => ['show-users', 'edit-user'],
             ],
             [
                 'text' => 'Settings',
-                'url'  => 'settings',
-                'can'  => ['show-settings'],
+                'url' => 'settings',
+                'can' => ['show-settings'],
             ]
         );
 
@@ -786,11 +786,11 @@ class BuilderTest extends TestCase
         $builder->add(
             [
                 'header' => 'HEADER',
-                'can'  => 'show-header',
+                'can' => 'show-header',
             ],
             [
                 'header' => 'SETTINGS',
-                'can'  => 'show-settings',
+                'can' => 'show-settings',
             ]
         );
 
