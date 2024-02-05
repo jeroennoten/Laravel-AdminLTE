@@ -63,7 +63,7 @@
         {{-- User menu footer --}}
         <li class="user-footer">
             @if($profile_url)
-                <a href="{{ $profile_url }}" class="btn btn-default btn-flat">
+                <a href="{{ $profile_url }}" class="nav-link btn btn-default btn-flat d-inline-block">
                     <i class="fa fa-fw fa-user text-lightblue"></i>
                     {{ __('adminlte::menu.profile') }}
                 </a>
