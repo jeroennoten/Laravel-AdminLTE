@@ -45,7 +45,7 @@ class LayoutHelper
             'preloader',
             'flex-column',
             'justify-content-center',
-            'align-items-center'
+            'align-items-center',
         ];
 
         if (self::isPreloaderEnabled('cwrapper')) {
