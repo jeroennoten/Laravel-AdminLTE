@@ -23,13 +23,52 @@ class LayoutHelper
     protected static $sidebarMiniValues = ['xs', 'md', 'lg'];
 
     /**
-     * Check if the preloader animation is enabled.
+     * Check if the preloader animation is enabled for the specified mode.
      *
+     * @param  string  $mode  The preloader mode to check.
      * @return bool
      */
-    public static function isPreloaderEnabled()
+    public static function isPreloaderEnabled($mode = 'fullscreen')
     {
-        return config('adminlte.preloader.enabled', false);
+        return config('adminlte.preloader.enabled', false)
+            && config('adminlte.preloader.mode', 'fullscreen') == $mode;
+    }
+
+    /**
+     * Make and return the set of classes related to the preloader.
+     *
+     * @return string
+     */
+    public static function makePreloaderClasses()
+    {
+        $classes = [
+            'preloader',
+            'flex-column',
+            'justify-content-center',
+            'align-items-center'
+        ];
+
+        if (self::isPreloaderEnabled('cwrapper')) {
+            $classes[] = 'position-absolute';
+        }
+
+        return trim(implode(' ', $classes));
+    }
+
+    /**
+     * Make and return the set of styles related to the preloader.
+     *
+     * @return string
+     */
+    public static function makePreloaderStyle()
+    {
+        $styles = [];
+
+        if (self::isPreloaderEnabled('cwrapper')) {
+            $styles[] = 'z-index:1000';
+        }
+
+        return trim(implode(';', $styles));
     }
 
     /**
@@ -96,6 +135,33 @@ class LayoutHelper
         }
 
         return trim(implode(' ', $data));
+    }
+
+    /**
+     * Make and return the set of classes related to the content-wrapper
+     * element.
+     *
+     * @return string
+     */
+    public static function makeContentWrapperClasses()
+    {
+        $classes = ['content-wrapper'];
+
+        // Add classes from the configuration file.
+
+        $cfg = config('adminlte.classes_content_wrapper');
+
+        if (is_string($cfg) && ! empty($cfg)) {
+            $classes[] = $cfg;
+        }
+
+        // Add position-relative when using a content-wrapper preloader.
+
+        if (self::isPreloaderEnabled('cwrapper')) {
+            $classes[] = 'position-relative';
+        }
+
+        return trim(implode(' ', $classes));
     }
 
     /**

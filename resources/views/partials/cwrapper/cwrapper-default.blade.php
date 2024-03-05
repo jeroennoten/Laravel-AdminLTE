@@ -7,7 +7,12 @@
 @endif
 
 {{-- Default Content Wrapper --}}
-<div class="content-wrapper {{ config('adminlte.classes_content_wrapper', '') }}">
+<div class="{{ $layoutHelper->makeContentWrapperClasses() }}">
+
+    {{-- Preloader Animation (cwrapper mode) --}}
+    @if($layoutHelper->isPreloaderEnabled('cwrapper'))
+        @include('adminlte::partials.common.preloader')
+    @endif
 
     {{-- Content Header --}}
     @hasSection('content_header')

@@ -14,7 +14,7 @@
 @section('body')
     <div class="wrapper">
 
-        {{-- Preloader Animation --}}
+        {{-- Preloader Animation (fullscreen mode) --}}
         @if($layoutHelper->isPreloaderEnabled())
             @include('adminlte::partials.common.preloader')
         @endif
