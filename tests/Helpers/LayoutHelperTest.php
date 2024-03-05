@@ -4,19 +4,121 @@ use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 
 class LayoutHelperTest extends TestCase
 {
-    public function testEnableDisablePreloader()
+    public function testEnableDisablePreloaderFullscreenMode()
     {
         // Test with config enabled.
 
         config(['adminlte.preloader.enabled' => true]);
 
         $this->assertTrue(LayoutHelper::isPreloaderEnabled());
+        $this->assertTrue(LayoutHelper::isPreloaderEnabled('fullscreen'));
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled('cwrapper'));
 
         // Test with config disabled.
 
         config(['adminlte.preloader.enabled' => false]);
 
         $this->assertFalse(LayoutHelper::isPreloaderEnabled());
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled('fullscreen'));
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled('cwrapper'));
+    }
+
+    public function testEnableDisablePreloaderCWrapperMode()
+    {
+        // Test with config enabled.
+
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'cwrapper',
+        ]);
+
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled());
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled('fullscreen'));
+        $this->assertTrue(LayoutHelper::isPreloaderEnabled('cwrapper'));
+
+        // Test with config disabled.
+
+        config([
+            'adminlte.preloader.enabled' => false,
+            'adminlte.preloader.mode' => 'cwrapper',
+        ]);
+
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled());
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled('fullscreen'));
+        $this->assertFalse(LayoutHelper::isPreloaderEnabled('cwrapper'));
+    }
+
+    public function testMakePreloaderClasses()
+    {
+        // Test without config.
+
+        $data = LayoutHelper::makePreloaderClasses();
+        $this->assertEquals(
+            'preloader flex-column justify-content-center align-items-center',
+            $data
+        );
+
+        // Test with cwrapper mode enabled.
+
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'cwrapper',
+        ]);
+
+        $data = LayoutHelper::makePreloaderClasses();
+
+        $this->assertStringContainsString(
+            'preloader flex-column justify-content-center align-items-center',
+            $data
+        );
+
+        $this->assertStringContainsString('position-absolute', $data);
+    }
+
+    public function testMakePreloaderStyle()
+    {
+        // Test without config.
+
+        $data = LayoutHelper::makePreloaderStyle();
+        $this->assertEquals('', $data);
+
+        // Test with cwrapper mode enabled.
+
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'cwrapper',
+        ]);
+
+        $data = LayoutHelper::makePreloaderStyle();
+        $this->assertStringContainsString('z-index:', $data);
+    }
+
+    public function testMakeContentWrapperClasses()
+    {
+        // Test without config.
+
+        $data = LayoutHelper::makeContentWrapperClasses();
+        $this->assertEquals('content-wrapper', $data);
+
+        // Test with custom classes on the configuration.
+
+        config(['adminlte.classes_content_wrapper' => 'class1 class2']);
+
+        $data = LayoutHelper::makeContentWrapperClasses();
+        $this->assertStringContainsString('content-wrapper', $data);
+        $this->assertStringContainsString('class1', $data);
+        $this->assertStringContainsString('class2', $data);
+
+        // Test with cwrapper mode enabled.
+
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'cwrapper',
+        ]);
+
+        $data = LayoutHelper::makeContentWrapperClasses();
+        $this->assertStringContainsString('content-wrapper', $data);
+        $this->assertStringContainsString('position-relative', $data);
     }
 
     public function testMakeBodyData()
