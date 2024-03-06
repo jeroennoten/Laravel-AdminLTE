@@ -1,4 +1,5 @@
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+@inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\preloaderHelper')
 
 @if($layoutHelper->isLayoutTopnavEnabled())
     @php( $def_container_class = 'container' )
@@ -10,7 +11,7 @@
 <div class="{{ $layoutHelper->makeContentWrapperClasses() }}">
 
     {{-- Preloader Animation (cwrapper mode) --}}
-    @if($layoutHelper->isPreloaderEnabled('cwrapper'))
+    @if($preloaderHelper->isPreloaderEnabled('cwrapper'))
         @include('adminlte::partials.common.preloader')
     @endif
 

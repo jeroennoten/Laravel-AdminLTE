@@ -4,6 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Helpers;
 
 use Illuminate\Support\Facades\View;
 use JeroenNoten\LaravelAdminLte\Events\ReadingDarkModePreference;
+Use JeroenNoten\LaravelAdminLte\Helpers\PreloaderHelper;
 use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 
 class LayoutHelper
@@ -21,55 +22,6 @@ class LayoutHelper
      * @var array
      */
     protected static $sidebarMiniValues = ['xs', 'md', 'lg'];
-
-    /**
-     * Check if the preloader animation is enabled for the specified mode.
-     *
-     * @param  string  $mode  The preloader mode to check.
-     * @return bool
-     */
-    public static function isPreloaderEnabled($mode = 'fullscreen')
-    {
-        return config('adminlte.preloader.enabled', false)
-            && config('adminlte.preloader.mode', 'fullscreen') == $mode;
-    }
-
-    /**
-     * Make and return the set of classes related to the preloader.
-     *
-     * @return string
-     */
-    public static function makePreloaderClasses()
-    {
-        $classes = [
-            'preloader',
-            'flex-column',
-            'justify-content-center',
-            'align-items-center',
-        ];
-
-        if (self::isPreloaderEnabled('cwrapper')) {
-            $classes[] = 'position-absolute';
-        }
-
-        return trim(implode(' ', $classes));
-    }
-
-    /**
-     * Make and return the set of styles related to the preloader.
-     *
-     * @return string
-     */
-    public static function makePreloaderStyle()
-    {
-        $styles = [];
-
-        if (self::isPreloaderEnabled('cwrapper')) {
-            $styles[] = 'z-index:1000';
-        }
-
-        return trim(implode(';', $styles));
-    }
 
     /**
      * Check if layout topnav is enabled.
@@ -157,7 +109,7 @@ class LayoutHelper
 
         // Add position-relative when using a content-wrapper preloader.
 
-        if (self::isPreloaderEnabled('cwrapper')) {
+        if (PreloaderHelper::isPreloaderEnabled('cwrapper')) {
             $classes[] = 'position-relative';
         }
 

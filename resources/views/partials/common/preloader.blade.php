@@ -1,6 +1,6 @@
-@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+@inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\PreloaderHelper')
 
-<div class="{{ $layoutHelper->makePreloaderClasses() }}" style="{{ $layoutHelper->makePreloaderStyle() }}">
+<div class="{{ $preloaderHelper->makePreloaderClasses() }}" style="{{ $preloaderHelper->makePreloaderStyle() }}">
 
     @hasSection('preloader')
 
