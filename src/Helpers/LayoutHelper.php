@@ -4,7 +4,6 @@ namespace JeroenNoten\LaravelAdminLte\Helpers;
 
 use Illuminate\Support\Facades\View;
 use JeroenNoten\LaravelAdminLte\Events\ReadingDarkModePreference;
-Use JeroenNoten\LaravelAdminLte\Helpers\PreloaderHelper;
 use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 
 class LayoutHelper
