@@ -4,19 +4,32 @@ use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 
 class LayoutHelperTest extends TestCase
 {
-    public function testEnableDisablePreloader()
+    public function testMakeContentWrapperClasses()
     {
-        // Test with config enabled.
+        // Test without config.
 
-        config(['adminlte.preloader.enabled' => true]);
+        $data = LayoutHelper::makeContentWrapperClasses();
+        $this->assertEquals('content-wrapper', $data);
 
-        $this->assertTrue(LayoutHelper::isPreloaderEnabled());
+        // Test with custom classes on the configuration.
 
-        // Test with config disabled.
+        config(['adminlte.classes_content_wrapper' => 'class1 class2']);
 
-        config(['adminlte.preloader.enabled' => false]);
+        $data = LayoutHelper::makeContentWrapperClasses();
+        $this->assertStringContainsString('content-wrapper', $data);
+        $this->assertStringContainsString('class1', $data);
+        $this->assertStringContainsString('class2', $data);
 
-        $this->assertFalse(LayoutHelper::isPreloaderEnabled());
+        // Test with cwrapper mode enabled.
+
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'cwrapper',
+        ]);
+
+        $data = LayoutHelper::makeContentWrapperClasses();
+        $this->assertStringContainsString('content-wrapper', $data);
+        $this->assertStringContainsString('position-relative', $data);
     }
 
     public function testMakeBodyData()

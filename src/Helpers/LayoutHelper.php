@@ -23,16 +23,6 @@ class LayoutHelper
     protected static $sidebarMiniValues = ['xs', 'md', 'lg'];
 
     /**
-     * Check if the preloader animation is enabled.
-     *
-     * @return bool
-     */
-    public static function isPreloaderEnabled()
-    {
-        return config('adminlte.preloader.enabled', false);
-    }
-
-    /**
      * Check if layout topnav is enabled.
      *
      * @return bool
@@ -96,6 +86,33 @@ class LayoutHelper
         }
 
         return trim(implode(' ', $data));
+    }
+
+    /**
+     * Make and return the set of classes related to the content-wrapper
+     * element.
+     *
+     * @return string
+     */
+    public static function makeContentWrapperClasses()
+    {
+        $classes = ['content-wrapper'];
+
+        // Add classes from the configuration file.
+
+        $cfg = config('adminlte.classes_content_wrapper');
+
+        if (is_string($cfg) && ! empty($cfg)) {
+            $classes[] = $cfg;
+        }
+
+        // Add position-relative when using a content-wrapper preloader.
+
+        if (PreloaderHelper::isPreloaderEnabled('cwrapper')) {
+            $classes[] = 'position-relative';
+        }
+
+        return trim(implode(' ', $classes));
     }
 
     /**
