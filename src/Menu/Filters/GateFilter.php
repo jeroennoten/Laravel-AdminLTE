@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use Illuminate\Contracts\Auth\Access\Gate;
+use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 
 class GateFilter implements FilterInterface
 {
@@ -35,7 +36,10 @@ class GateFilter implements FilterInterface
         // Set a special attribute when item is not allowed. Items with this
         // attribute will be filtered out of the menu.
 
-        if (! $this->isAllowed($item)) {
+        $isWholeRestrictedSubmenu = MenuItemHelper::isSubmenu($item)
+            && $this->allItemsRestricted($item['submenu']);
+
+        if (! $this->isAllowed($item) || $isWholeRestrictedSubmenu) {
             $item['restricted'] = true;
         }
 
@@ -64,6 +68,25 @@ class GateFilter implements FilterInterface
 
         if (is_string($item['can']) || is_array($item['can'])) {
             return $this->gate->any($item['can'], $args);
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if a set of items are all restricted (or unallowed).
+     *
+     * @param  array  $items  An array with the menu items to check
+     * @return bool
+     */
+    protected function allItemsRestricted($items)
+    {
+        // Check if every provided item is restricted.
+
+        foreach($items as $item) {
+            if ($this->isAllowed($item)) {
+                return false;
+            }
         }
 
         return true;
