@@ -83,7 +83,7 @@ class GateFilter implements FilterInterface
     {
         // Check if every provided item is restricted.
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             if ($this->isAllowed($item)) {
                 return false;
             }

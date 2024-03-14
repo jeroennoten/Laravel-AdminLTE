@@ -862,7 +862,7 @@ class BuilderTest extends TestCase
                         'text' => 'Home',
                         'url' => '/',
                         'can' => 'show-home',
-                    ]
+                    ],
                 ],
             ]
         );
