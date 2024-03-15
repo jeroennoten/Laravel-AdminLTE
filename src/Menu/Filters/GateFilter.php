@@ -3,7 +3,6 @@
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
 use Illuminate\Contracts\Auth\Access\Gate;
-use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 
 class GateFilter implements FilterInterface
 {

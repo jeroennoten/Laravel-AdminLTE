@@ -51,7 +51,7 @@ class AdminLteTest extends TestCase
         // Add (1) non empty submenu to the sidebar menu.
 
         $event->menu->add(['text' => 'submenu2', 'submenu' => [
-            ['text' => 'subitem', 'url' => 'url']
+            ['text' => 'subitem', 'url' => 'url'],
         ]]);
 
         // Add (1) invalid item.
