@@ -36,10 +36,7 @@ class GateFilter implements FilterInterface
         // Set a special attribute when item is not allowed. Items with this
         // attribute will be filtered out of the menu.
 
-        $isWholeRestrictedSubmenu = MenuItemHelper::isSubmenu($item)
-            && $this->allItemsRestricted($item['submenu']);
-
-        if (! $this->isAllowed($item) || $isWholeRestrictedSubmenu) {
+        if (! $this->isAllowed($item)) {
             $item['restricted'] = true;
         }
 
@@ -68,25 +65,6 @@ class GateFilter implements FilterInterface
 
         if (is_string($item['can']) || is_array($item['can'])) {
             return $this->gate->any($item['can'], $args);
-        }
-
-        return true;
-    }
-
-    /**
-     * Check if a set of items are all restricted (or unallowed).
-     *
-     * @param  array  $items  An array with the menu items to check
-     * @return bool
-     */
-    protected function allItemsRestricted($items)
-    {
-        // Check if every provided item is restricted.
-
-        foreach ($items as $item) {
-            if ($this->isAllowed($item)) {
-                return false;
-            }
         }
 
         return true;

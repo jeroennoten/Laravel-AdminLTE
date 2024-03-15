@@ -851,7 +851,7 @@ class BuilderTest extends TestCase
 
         $builder->add(
             [
-                'text' => 'Submenu',
+                'text' => 'Submenu1',
                 'submenu' => [
                     [
                         'text' => 'About',
@@ -862,6 +862,21 @@ class BuilderTest extends TestCase
                         'text' => 'Home',
                         'url' => '/',
                         'can' => 'show-home',
+                    ],
+                    [
+                        'text' => 'Submenu2',
+                        'submenu' => [
+                            [
+                                'text' => 'Home1',
+                                'url' => '/home1',
+                                'can' => 'show-home',
+                            ],
+                            [
+                                'text' => 'Home2',
+                                'url' => '/home2',
+                                'can' => 'show-home',
+                            ],
+                        ],
                     ],
                 ],
             ]
