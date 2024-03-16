@@ -82,9 +82,7 @@ jobs:
 
         # Test suite for Laravel.
       - name: Execute Laravel tests
-        run: |
-          vendor/bin/phpunit --migrate-configuration
-          vendor/bin/phpunit --testsuite Laravel
+        run: vendor/bin/phpunit --testsuite Laravel
 
         # Upload coverage only for latest versions.
       - name: Upload coverage to scrutinizer-ci
