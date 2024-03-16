@@ -82,12 +82,15 @@ jobs:
 
         # Test suite for Laravel.
       - name: Execute Laravel tests
-        run: vendor/bin/phpunit --testsuite Laravel
+        run: |
+          vendor/bin/phpunit --migrate-configuration
+          vendor/bin/phpunit --testsuite Laravel
 
         # Upload coverage only for latest versions.
       - name: Upload coverage to scrutinizer-ci
         if: matrix.php == '8.3' && matrix.laravel == '11.*' && matrix.stability == 'prefer-stable'
         run: |
+          vendor/bin/phpunit --migrate-configuration
           vendor/bin/phpunit --testsuite Laravel --coverage-clover=coverage.clover
           wget https://scrutinizer-ci.com/ocular.phar
           php ocular.phar code-coverage:upload --format=php-clover coverage.clover
