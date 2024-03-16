@@ -89,4 +89,6 @@ jobs:
         if: matrix.php == '8.3' && matrix.laravel == '11.*' && matrix.stability == 'prefer-stable'
         run: |
           vendor/bin/phpunit --testsuite Laravel --coverage-clover=coverage.clover
-          vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+          #vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
