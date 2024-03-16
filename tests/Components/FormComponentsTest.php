@@ -57,7 +57,7 @@ class FormComponentsTest extends TestCase
     protected function addInputOnCurrentRequest($key, $val)
     {
         session()->flashInput([$key => $val]);
-        request()->setLaravelsession(session());
+        request()->setLaravelsession(session()->driver());
     }
 
     /*
