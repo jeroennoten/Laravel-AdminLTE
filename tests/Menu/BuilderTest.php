@@ -798,6 +798,93 @@ class BuilderTest extends TestCase
         $this->assertStringContainsString('HEADER', $builder->menu[0]['header']);
     }
 
+    public function testCanOnSubmenu()
+    {
+        $gate = $this->makeGate();
+
+        $gate->define('show-about', function () {
+            return true;
+        });
+
+        $gate->define('show-home', function () {
+            return false;
+        });
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            [
+                'text' => 'Submenu',
+                'submenu' => [
+                    [
+                        'text' => 'About',
+                        'url' => 'about',
+                        'can' => 'show-about',
+                    ],
+                    [
+                        'text' => 'Home',
+                        'url' => '/',
+                        'can' => 'show-home',
+                    ],
+                ],
+            ]
+        );
+
+        $this->assertCount(1, $builder->menu);
+        $this->assertCount(1, $builder->menu[0]['submenu']);
+        $this->assertEquals('About', $builder->menu[0]['submenu'][0]['text']);
+    }
+
+    public function testCanOnWholeRestrictedSubmenu()
+    {
+        $gate = $this->makeGate();
+
+        $gate->define('show-about', function () {
+            return false;
+        });
+
+        $gate->define('show-home', function () {
+            return false;
+        });
+
+        $builder = $this->makeMenuBuilder('http://example.com', $gate);
+
+        $builder->add(
+            [
+                'text' => 'Submenu1',
+                'submenu' => [
+                    [
+                        'text' => 'About',
+                        'url' => 'about',
+                        'can' => 'show-about',
+                    ],
+                    [
+                        'text' => 'Home',
+                        'url' => '/',
+                        'can' => 'show-home',
+                    ],
+                    [
+                        'text' => 'Submenu2',
+                        'submenu' => [
+                            [
+                                'text' => 'Home1',
+                                'url' => '/home1',
+                                'can' => 'show-home',
+                            ],
+                            [
+                                'text' => 'Home2',
+                                'url' => '/home2',
+                                'can' => 'show-home',
+                            ],
+                        ],
+                    ],
+                ],
+            ]
+        );
+
+        $this->assertCount(0, $builder->menu);
+    }
+
     public function testLangTranslate()
     {
         $builder = $this->makeMenuBuilder('http://example.com');

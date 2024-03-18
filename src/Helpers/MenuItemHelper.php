@@ -64,6 +64,14 @@ class MenuItemHelper
      */
     public static function isAllowed($item)
     {
+        // We won't allow empty submenu items on the menu.
+
+        if (self::isSubmenu($item) && ! count($item['submenu'])) {
+            return false;
+        }
+
+        // In any other case, fallback to the restricted property.
+
         return $item && empty($item['restricted']);
     }
 }

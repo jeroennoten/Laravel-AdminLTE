@@ -43,9 +43,16 @@ class AdminLteTest extends TestCase
 
         $event->menu->add(['text' => 'searchLT', 'type' => 'navbar-search', 'topnav' => true]);
 
-        // Add (1) submenu to the sidebar menu.
+        // Add (1) empty submenu to the sidebar menu. This item should be
+        // filtered out of the menu.
 
-        $event->menu->add(['text' => 'submenu', 'submenu' => []]);
+        $event->menu->add(['text' => 'submenu1', 'submenu' => []]);
+
+        // Add (1) non empty submenu to the sidebar menu.
+
+        $event->menu->add(['text' => 'submenu2', 'submenu' => [
+            ['text' => 'subitem', 'url' => 'url'],
+        ]]);
 
         // Add (1) invalid item.
 
@@ -70,7 +77,7 @@ class AdminLteTest extends TestCase
         $this->assertEquals('topnavRT', $menu[6]['text']);
         $this->assertEquals('topnavUT', $menu[7]['text']);
         $this->assertEquals('searchLT', $menu[8]['text']);
-        $this->assertEquals('submenu', $menu[9]['text']);
+        $this->assertEquals('submenu2', $menu[9]['text']);
         $this->assertEquals('invalid', $menu[10]['text']);
         $this->assertEquals('search', $menu[11]['text']);
     }
@@ -90,7 +97,7 @@ class AdminLteTest extends TestCase
         $this->assertEquals('topnavLF', $menu[2]['text']);
         $this->assertEquals('topnavRF', $menu[3]['text']);
         $this->assertEquals('topnavUF', $menu[4]['text']);
-        $this->assertEquals('submenu', $menu[9]['text']);
+        $this->assertEquals('submenu2', $menu[9]['text']);
         $this->assertEquals('search', $menu[11]['text']);
     }
 
@@ -131,7 +138,7 @@ class AdminLteTest extends TestCase
         $this->assertEquals('topnavUF', $menu[4]['text']);
         $this->assertEquals('topnavLT', $menu[5]['text']);
         $this->assertEquals('searchLT', $menu[8]['text']);
-        $this->assertEquals('submenu', $menu[9]['text']);
+        $this->assertEquals('submenu2', $menu[9]['text']);
         $this->assertEquals('search', $menu[11]['text']);
     }
 
