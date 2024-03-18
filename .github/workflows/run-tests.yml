@@ -85,11 +85,11 @@ jobs:
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
-        # Execute the test suite for Laravel.
+      # Execute the test suite for Laravel.
       - name: Execute Laravel tests
         run: vendor/bin/phpunit --testsuite Laravel
 
-        # Upload code coverage to Scrutinizer CI, only for specific version.
+      # Upload code coverage to Scrutinizer CI, only for specific version.
       - name: Upload coverage to scrutinizer-ci
         if: matrix.php == '8.2' && matrix.laravel == '10.*' && matrix.stability == 'prefer-stable'
         run: |
