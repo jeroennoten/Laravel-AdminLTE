@@ -34,7 +34,6 @@
   },
   "require-dev": {
     "phpunit/phpunit": ">=9.1",
-    "orchestra/testbench": ">=4.0",
-    "scrutinizer/ocular": "^1.9"
+    "orchestra/testbench": ">=4.0"
   }
 }

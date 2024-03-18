@@ -9,8 +9,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.3, 7.4, 8.0, 8.1, 8.2]
-        laravel: [7.*, 8.*, 9.*, 10.*]
+        php: [7.3, 7.4, 8.0, 8.1, 8.2, 8.3]
+        laravel: [7.*, 8.*, 9.*, 10.*, 11.*]
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 7.*
@@ -21,13 +21,19 @@ jobs:
             testbench: 7.*
           - laravel: 10.*
             testbench: 8.*
+          - laravel: 11.*
+            testbench: 9.*
         exclude:
           - laravel: 7.*
             php: 8.1
           - laravel: 7.*
             php: 8.2
+          - laravel: 7.*
+            php: 8.3
           - laravel: 8.*
             php: 8.2
+          - laravel: 8.*
+            php: 8.3
           - laravel: 9.*
             php: 7.3
           - laravel: 9.*
@@ -38,22 +44,34 @@ jobs:
             php: 7.4
           - laravel: 10.*
             php: 8.0
+          - laravel: 11.*
+            php: 7.3
+          - laravel: 11.*
+            php: 7.4
+          - laravel: 11.*
+            php: 8.0
+          - laravel: 11.*
+            php: 8.1
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
     steps:
+
+      # Checkout the package code.
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
+      # Cache dependencies and build outputs to improve workflow execution time.
       - name: Cache dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ~/.composer/cache/files
           key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
+      # Setup PHP and extensions.
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -61,18 +79,22 @@ jobs:
           extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
           coverage: xdebug
 
+      # Install the package dependencies.
       - name: Install dependencies
         run: |
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
-        # Test suite for Laravel.
+      # Execute the test suite for Laravel.
       - name: Execute Laravel tests
         run: vendor/bin/phpunit --testsuite Laravel
 
-        # Upload coverage only for latest versions.
+      # Upload code coverage to Scrutinizer CI, only for specific version.
       - name: Upload coverage to scrutinizer-ci
         if: matrix.php == '8.2' && matrix.laravel == '10.*' && matrix.stability == 'prefer-stable'
         run: |
+          composer require scrutinizer/ocular
+          cp phpunit.xml.dist phpunit.xml
+          vendor/bin/phpunit --migrate-configuration
           vendor/bin/phpunit --testsuite Laravel --coverage-clover=coverage.clover
           vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover
