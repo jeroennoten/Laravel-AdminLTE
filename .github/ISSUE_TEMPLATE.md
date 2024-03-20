@@ -1,12 +1,12 @@
-| Question                | Answer
-| ----------------------- | -----------------------
-| Issue or Enhancement    | Issue|Enhancement
-| Laravel Version         | Used version of Laravel
-| Project Version         | Used version of this project
+| Question          | Answer
+| ----------------- | -----------------------
+| Issue Type        | <!-- Fill with: BUG, FEATURE or QUESTION -->
+| Laravel Version   | <!-- Fill with your version of Laravel -->
+| Project Version   | <!-- Fill with the used version of this project -->
 
 ### Current Behavior
 
-<!-- What is the actual behavior? -->
+<!-- What is the current behavior? -->
 
 ### Expected Behavior
 
