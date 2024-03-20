@@ -1,13 +1,13 @@
 | Question                | Answer
 | ----------------------- | -----------------------
-| Issue or Enhancement    | Issue|Enhancement
+| Pull request type       | <!-- Fill with: ISSUE or ENHANCEMENT -->
 | License                 | MIT
 
-#### What's in this PR?
+### What's in this PR?
 
 <!-- Explain what the changes in this Pull Request (PR) do. -->
 
-#### Checklist
+### Checklist
 
 - [ ] I tested these changes.
 - [ ] I have linked the related issues.
