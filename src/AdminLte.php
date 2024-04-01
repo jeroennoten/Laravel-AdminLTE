@@ -56,7 +56,7 @@ class AdminLte
      * Gets all menu items, or a specific set of them.
      *
      * @param  string  $sectionToken  A token representing a section of items
-     * @return array  A set of menu items
+     * @return array A set of menu items
      */
     public function menu($sectionToken = null)
     {
@@ -98,7 +98,7 @@ class AdminLte
      * Build the menu filters.
      *
      * @param  array  $filters  The array of filters classes to be resolved
-     * @return array  The set of filters that will be applied on each menu item
+     * @return array The set of filters that will be applied on each menu item
      */
     protected function buildFilters($filters)
     {

@@ -2,7 +2,6 @@
 
 namespace JeroenNoten\LaravelAdminLte;
 
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
