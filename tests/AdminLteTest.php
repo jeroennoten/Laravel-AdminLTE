@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Event;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 
 class AdminLteTest extends TestCase
@@ -8,13 +9,14 @@ class AdminLteTest extends TestCase
     {
         parent::setUp();
 
-        // Register a listener to 'BuildingMenu' event in order to add items
-        // to the menu.
+        // Clean the static menu configuration.
 
-        $this->getDispatcher()->listen(
-            BuildingMenu::class,
-            [$this, 'addMenuItems']
-        );
+        config(['adminlte.menu' => []]);
+
+        // Register a listener to the 'BuildingMenu' event in order to
+        // dynamically add items to the menu.
+
+        Event::listen(BuildingMenu::class, [$this, 'addMenuItems']);
     }
 
     public function addMenuItems(BuildingMenu $event)

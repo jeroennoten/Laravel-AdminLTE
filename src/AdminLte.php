@@ -2,135 +2,111 @@
 
 namespace JeroenNoten\LaravelAdminLte;
 
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Events\Dispatcher;
 use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
 use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 use JeroenNoten\LaravelAdminLte\Helpers\NavbarItemHelper;
 use JeroenNoten\LaravelAdminLte\Helpers\SidebarItemHelper;
-use JeroenNoten\LaravelAdminLte\Menu\Builder;
+use JeroenNoten\LaravelAdminLte\Menu\Builder as MenuBuilder;
 
 class AdminLte
 {
     /**
-     * The array of menu items.
+     * The menu builder instance. This instance will be in charge of generating
+     * the compiled version of the menu.
+     *
+     * @var MenuBuilder
+     */
+    protected $menuBuilder;
+
+    /**
+     * A map between the valid section filter tokens and their respective filter
+     * methods. These filters are intended to get a specific set of menu items
+     * (sidebar items, navbar items, etc).
      *
      * @var array
      */
-    protected $menu;
-
-    /**
-     * The array of menu filters. These filters will apply on each one of the
-     * menu items in order to transforms they in some way.
-     *
-     * @var array
-     */
-    protected $filters;
-
-    /**
-     * The events dispatcher.
-     *
-     * @var Dispatcher
-     */
-    protected $events;
-
-    /**
-     * The application service container.
-     *
-     * @var Container
-     */
-    protected $container;
-
-    /**
-     * Map between a valid menu filter token and his respective filter method.
-     * These filters are intended to get a specific set of menu items.
-     *
-     * @var array
-     */
-    protected $menuFilterMap;
+    protected $sectionFilterMap;
 
     /**
      * Constructor.
      *
      * @param  array  $filters
-     * @param  Dispatcher  $events
-     * @param  Container  $container
      */
-    public function __construct(array $filters, Dispatcher $events, Container $container)
+    public function __construct(array $filters)
     {
-        $this->filters = $filters;
-        $this->events = $events;
-        $this->container = $container;
+        // Setup the map of section filters methods.
 
-        // Fill the map of filters methods.
-
-        $this->menuFilterMap = [
+        $this->sectionFilterMap = [
             'sidebar' => [$this, 'sidebarFilter'],
             'navbar-left' => [$this, 'navbarLeftFilter'],
             'navbar-right' => [$this, 'navbarRightFilter'],
             'navbar-user' => [$this, 'navbarUserMenuFilter'],
         ];
+
+        // Create the menu builder instance.
+
+        $this->menuBuilder = new MenuBuilder($this->buildFilters($filters));
+
+        // Build the menu.
+
+        $this->buildMenu();
     }
 
     /**
-     * Get all the menu items, or a specific set of these.
+     * Gets all menu items, or a specific set of them.
      *
-     * @param  string  $filterToken  Token representing a subset of the menu items
-     * @return array A set of menu items
+     * @param  string  $sectionToken  A token representing a section of items
+     * @return array  A set of menu items
      */
-    public function menu($filterToken = null)
+    public function menu($sectionToken = null)
     {
-        if (empty($this->menu)) {
-            $this->menu = $this->buildMenu();
-        }
+        // Check for section filter token.
 
-        // Check for filter token.
-
-        if (isset($this->menuFilterMap[$filterToken])) {
+        if (isset($this->sectionFilterMap[$sectionToken])) {
             return array_filter(
-                $this->menu,
-                $this->menuFilterMap[$filterToken]
+                $this->menuBuilder->menu,
+                $this->sectionFilterMap[$sectionToken]
             );
         }
 
-        // No filter token provided, return the complete menu.
+        // When no section filter token is provided, return the complete menu.
 
-        return $this->menu;
+        return $this->menuBuilder->menu;
     }
 
     /**
-     * Build the menu.
+     * Build the compiled version of the menu.
      *
-     * @return array The set of menu items
+     * @return void
      */
     protected function buildMenu()
     {
-        // Create the menu builder instance.
+        // First, if any, compile the static menu configuration.
 
-        $builder = new Builder($this->buildFilters());
+        $menu = config('adminlte.menu', []);
+        $menu = is_array($menu) ? $menu : [];
+        $this->menuBuilder->add(...$menu);
 
-        // Dispatch the BuildingMenu event. Listeners of this event will fill
-        // the menu.
+        // Now, dispatch the BuildingMenu event. Listeners of this event may
+        // dynamically change the menu or generate it completely when a static
+        // menu configuration isn't viable.
 
-        $this->events->dispatch(new BuildingMenu($builder));
-
-        // Return the set of menu items.
-
-        return $builder->menu;
+        event(new BuildingMenu($this->menuBuilder));
     }
 
     /**
      * Build the menu filters.
      *
-     * @return array The set of filters that will apply on each menu item
+     * @param  array  $filters  The array of filters classes to be resolved
+     * @return array  The set of filters that will be applied on each menu item
      */
-    protected function buildFilters()
+    protected function buildFilters($filters)
     {
-        return array_map([$this->container, 'make'], $this->filters);
+        return array_map([app(), 'make'], $filters);
     }
 
     /**
-     * Filter method used to get the sidebar menu items.
+     * A filter method to get the sidebar menu items.
      *
      * @param  mixed  $item  A menu item
      * @return bool
@@ -141,14 +117,20 @@ class AdminLte
     }
 
     /**
-     * Filter method used to get the top navbar left menu items.
+     * A filter method to get the top navbar left menu items.
      *
      * @param  mixed  $item  A menu item
      * @return bool
      */
     private function navbarLeftFilter($item)
     {
-        if (LayoutHelper::isLayoutTopnavEnabled() && SidebarItemHelper::isValidItem($item)) {
+        // When layout topnav is enabled, most of the sidebar items will also
+        // be placed on the left section of the top navbar.
+
+        if (
+            LayoutHelper::isLayoutTopnavEnabled() &&
+            SidebarItemHelper::isValidItem($item)
+        ) {
             return NavbarItemHelper::isAcceptedItem($item);
         }
 
@@ -156,7 +138,7 @@ class AdminLte
     }
 
     /**
-     * Filter method used to get the top navbar right menu items.
+     * A filter method to get the top navbar right menu items.
      *
      * @param  mixed  $item  A menu item
      * @return bool
@@ -167,7 +149,7 @@ class AdminLte
     }
 
     /**
-     * Filter method used to get the navbar user menu items.
+     * A filter method to get the top navbar user menu items.
      *
      * @param  mixed  $item  A menu item
      * @return bool
