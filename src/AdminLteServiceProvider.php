@@ -99,7 +99,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Bootstrap the package's services.
+     * Bootstrap the package services.
      *
      * @return void
      */
@@ -148,36 +148,27 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Get the absolute path to some package resource.
-     *
-     * @param  string  $path  The relative path to the resource
-     * @return string
-     */
-    private function packagePath($path)
-    {
-        return __DIR__."/../$path";
-    }
-
-    /**
-     * Register the package's artisan commands.
+     * Register the artisan commands of the package.
      *
      * @return void
      */
     private function registerCommands()
     {
-        $this->commands([
-            AdminLteInstallCommand::class,
-            AdminLteStatusCommand::class,
-            AdminLteUpdateCommand::class,
-            AdminLtePluginCommand::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                AdminLteInstallCommand::class,
+                AdminLteStatusCommand::class,
+                AdminLteUpdateCommand::class,
+                AdminLtePluginCommand::class,
+            ]);
+        }
     }
 
     /**
-     * Register the package's view composers. View composers are callbacks or
-     * class methods that are called when a view is rendered. If you have data
-     * that you want to be bound to a view each time that view is rendered, a
-     * view composer can help you organize that logic into a single location.
+     * Register the view composers of the package. View composers are callbacks
+     * or class methods that are called when a view is rendered. If you have
+     * data that you want to be bound to a view each time that view is rendered,
+     * a view composer can help you organize that logic into a single location.
      *
      * @return void
      */
@@ -191,7 +182,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Load the package's blade view components.
+     * Load the blade view components of the package.
      *
      * @return void
      */
@@ -210,7 +201,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Load the package's web routes.
+     * Load the routes of the package.
      *
      * @return void
      */
@@ -226,5 +217,16 @@ class AdminLteServiceProvider extends BaseServiceProvider
             $routesPath = $this->packagePath('routes/web.php');
             $this->loadRoutesFrom($routesPath);
         });
+    }
+
+    /**
+     * Get the absolute path to some package resource.
+     *
+     * @param  string  $path  The relative path to the resource
+     * @return string
+     */
+    private function packagePath($path)
+    {
+        return __DIR__."/../$path";
     }
 }
