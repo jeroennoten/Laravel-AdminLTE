@@ -30,7 +30,7 @@ class AdminLte
     /**
      * Constructor.
      *
-     * @param  array  $filters
+     * @param  array  $filters  The filters to use on the menu compilation
      */
     public function __construct(array $filters)
     {
@@ -56,7 +56,7 @@ class AdminLte
      * Gets all menu items, or a specific set of them.
      *
      * @param  string  $sectionToken  A token representing a section of items
-     * @return array A set of menu items
+     * @return array
      */
     public function menu($sectionToken = null)
     {
@@ -95,10 +95,11 @@ class AdminLte
     }
 
     /**
-     * Build the menu filters.
+     * Build and resolve the specified menu filters. Returns the set of filters
+     * that will be applied on each menu item.
      *
-     * @param  array  $filters  The array of filters classes to be resolved
-     * @return array The set of filters that will be applied on each menu item
+     * @param  array  $filters  The array of filter classes to be resolved
+     * @return array
      */
     protected function buildFilters($filters)
     {
@@ -106,9 +107,9 @@ class AdminLte
     }
 
     /**
-     * A filter method to get the sidebar menu items.
+     * A filter method to check whether a menu item belongs to the left sidebar.
      *
-     * @param  mixed  $item  A menu item
+     * @param  mixed  $item  The menu item to check
      * @return bool
      */
     private function sidebarFilter($item)
@@ -117,9 +118,10 @@ class AdminLte
     }
 
     /**
-     * A filter method to get the top navbar left menu items.
+     * A filter method to check whether a menu item belongs to the left section
+     * of the top navbar.
      *
-     * @param  mixed  $item  A menu item
+     * @param  mixed  $item  The menu item to check
      * @return bool
      */
     private function navbarLeftFilter($item)
@@ -138,9 +140,10 @@ class AdminLte
     }
 
     /**
-     * A filter method to get the top navbar right menu items.
+     * A filter method to check whether a menu item belongs to the right section
+     * of the top navbar.
      *
-     * @param  mixed  $item  A menu item
+     * @param  mixed  $item  The menu item to check
      * @return bool
      */
     private function navbarRightFilter($item)
@@ -149,9 +152,10 @@ class AdminLte
     }
 
     /**
-     * A filter method to get the top navbar user menu items.
+     * A filter method to check whether a menu item belongs to the user menu
+     * section of the top navbar.
      *
-     * @param  mixed  $item  A menu item
+     * @param  mixed  $item  The menu item to check
      * @return bool
      */
     private function navbarUserMenuFilter($item)
