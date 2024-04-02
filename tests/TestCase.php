@@ -26,7 +26,7 @@ class TestCase extends BaseTestCase
     private $translator;
 
     /**
-     * Load the packages services providers.
+     * Load the package services providers.
      *
      * @return array
      */
@@ -103,12 +103,7 @@ class TestCase extends BaseTestCase
             return new GenericUser([]);
         };
 
-        return new Gate($this->makeContainer(), $userResolver);
-    }
-
-    protected function makeContainer()
-    {
-        return new Illuminate\Container\Container();
+        return new Gate($this->app, $userResolver);
     }
 
     protected function getRouteCollection()
