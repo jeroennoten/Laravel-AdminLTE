@@ -8,46 +8,50 @@ use JeroenNoten\LaravelAdminLte\Helpers\SidebarItemHelper;
 class SearchFilter implements FilterInterface
 {
     /**
-     * The default name attribute to be used on the search input.
+     * The default HTML name attribute to be used on the search input.
      *
      * @var string
      */
-    protected $defInputName = 'adminlteSearch';
+    protected $defName = 'adminlteSearch';
 
     /**
-     * The default method attribute to be used on the search input.
+     * The default HTML method attribute to be used on the search input.
      *
      * @var string
      */
     protected $defMethod = 'get';
 
     /**
-     * Transforms a menu item. Makes the proper search bar configuration.
+     * Transforms a menu item. Makes the proper configuration for a search bar
+     * item.
      *
      * @param  array  $item  A menu item
-     * @return array The transformed menu item
+     * @return array
      */
     public function transform($item)
     {
-        $isSearch = NavbarItemHelper::isSearch($item) ||
-                    SidebarItemHelper::isSearch($item);
+        // Menu items that aren't a search bar should be ignored.
 
-        if (! $isSearch) {
+        $isSearchBar = NavbarItemHelper::isSearch($item)
+            || SidebarItemHelper::isSearch($item);
+
+        if (! $isSearchBar) {
             return $item;
         }
 
-        // Configure search bar method.
+        // Setup the search bar method attribute.
 
-        if (! isset($item['method'])) {
-            $item['method'] = $this->defMethod;
-        } elseif (! in_array(strtolower($item['method']), ['post', 'get'])) {
+        $isValidMethod = isset($item['method'])
+            && in_array(strtolower($item['method']), ['post', 'get']);
+
+        if (! $isValidMethod) {
             $item['method'] = $this->defMethod;
         }
 
-        // Configure search bar input name.
+        // Setup the search bar input name attribute.
 
-        if (! isset($item['input_name'])) {
-            $item['input_name'] = $this->defInputName;
+        if (empty($item['input_name'])) {
+            $item['input_name'] = $this->defName;
         }
 
         return $item;

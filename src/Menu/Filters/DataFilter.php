@@ -5,10 +5,11 @@ namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 class DataFilter implements FilterInterface
 {
     /**
-     * Transforms a menu item. Adds the compiled data attributes when suitable.
+     * Transforms a menu item. Adds the compiled version of HTML data
+     * attributes to an item when suitable.
      *
      * @param  array  $item  A menu item
-     * @return array The transformed menu item
+     * @return array
      */
     public function transform($item)
     {
@@ -20,17 +21,17 @@ class DataFilter implements FilterInterface
     }
 
     /**
-     * Compile an array of data attributes into a data string.
+     * Compile an array of HTML data attributes into a data string.
      *
-     * @param  array  $dataArray  Array of html data attributes
-     * @return string The compiled version of data attributes
+     * @param  array  $dataArray  Array of HTML data attributes
+     * @return string
      */
     protected function compileData($dataArray)
     {
         $compiled = [];
 
         foreach ($dataArray as $key => $value) {
-            $compiled[] = 'data-'.$key.'="'.$value.'"';
+            $compiled[] = "data-{$key}=\"{$value}\"";
         }
 
         return implode(' ', $compiled);
