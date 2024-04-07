@@ -11,7 +11,7 @@ class DataFilterTest extends TestCase
             'data' => [
                 'param1' => 'value1',
                 'param2' => 'value2',
-            ]
+            ],
         ]);
 
         $this->assertEquals(
