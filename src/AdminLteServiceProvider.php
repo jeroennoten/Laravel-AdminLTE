@@ -2,18 +2,13 @@
 
 namespace JeroenNoten\LaravelAdminLte;
 
-use Illuminate\Contracts\Config\Repository;
-use Illuminate\Contracts\Container\Container;
-use Illuminate\Contracts\Events\Dispatcher;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteInstallCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLtePluginCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteStatusCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteUpdateCommand;
-use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
-use JeroenNoten\LaravelAdminLte\Http\ViewComposers\AdminLteComposer;
 use JeroenNoten\LaravelAdminLte\View\Components\Form;
 use JeroenNoten\LaravelAdminLte\View\Components\Layout;
 use JeroenNoten\LaravelAdminLte\View\Components\Tool;
@@ -29,7 +24,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     protected $pkgPrefix = 'adminlte';
 
     /**
-     * Array with the available layout components.
+     * Array with the available layout blade components.
      *
      * @var array
      */
@@ -39,7 +34,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     ];
 
     /**
-     * Array with the available form components.
+     * Array with the available form blade components.
      *
      * @var array
      */
@@ -62,7 +57,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     ];
 
     /**
-     * Array with the available tool components.
+     * Array with the available tool blade components.
      *
      * @var array
      */
@@ -72,7 +67,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     ];
 
     /**
-     * Array with the available widget components.
+     * Array with the available widget blade components.
      *
      * @var array
      */
@@ -98,28 +93,23 @@ class AdminLteServiceProvider extends BaseServiceProvider
         // Bind a singleton instance of the AdminLte class into the service
         // container.
 
-        $this->app->singleton(AdminLte::class, function (Container $app) {
-            return new AdminLte(
-                $app['config']['adminlte.filters'],
-                $app['events'],
-                $app
-            );
+        $this->app->singleton(AdminLte::class, function () {
+            return new AdminLte(config('adminlte.filters', []));
         });
     }
 
     /**
-     * Bootstrap the package's services.
+     * Bootstrap the package services.
      *
      * @return void
      */
-    public function boot(Factory $view, Dispatcher $events, Repository $config)
+    public function boot()
     {
         $this->loadViews();
         $this->loadTranslations();
         $this->loadConfig();
         $this->registerCommands();
-        $this->registerViewComposers($view);
-        $this->registerMenu($events, $config);
+        $this->registerViewComposers();
         $this->loadComponents();
         $this->loadRoutes();
     }
@@ -142,12 +132,12 @@ class AdminLteServiceProvider extends BaseServiceProvider
      */
     private function loadTranslations()
     {
-        $translationsPath = $this->packagePath('resources/lang');
-        $this->loadTranslationsFrom($translationsPath, $this->pkgPrefix);
+        $transPath = $this->packagePath('resources/lang');
+        $this->loadTranslationsFrom($transPath, $this->pkgPrefix);
     }
 
     /**
-     * Load the package config.
+     * Load the package configuration.
      *
      * @return void
      */
@@ -158,63 +148,41 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Get the absolute path to some package resource.
-     *
-     * @param  string  $path  The relative path to the resource
-     * @return string
-     */
-    private function packagePath($path)
-    {
-        return __DIR__."/../$path";
-    }
-
-    /**
-     * Register the package's artisan commands.
+     * Register the artisan commands of the package.
      *
      * @return void
      */
     private function registerCommands()
     {
-        $this->commands([
-            AdminLteInstallCommand::class,
-            AdminLteStatusCommand::class,
-            AdminLteUpdateCommand::class,
-            AdminLtePluginCommand::class,
-        ]);
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                AdminLteInstallCommand::class,
+                AdminLteStatusCommand::class,
+                AdminLteUpdateCommand::class,
+                AdminLtePluginCommand::class,
+            ]);
+        }
     }
 
     /**
-     * Register the package's view composers.
+     * Register the view composers of the package. View composers are callbacks
+     * or class methods that are called when a view is rendered. If you have
+     * data that you want to be bound to a view each time that view is rendered,
+     * a view composer can help you organize that logic into a single location.
      *
      * @return void
      */
-    private function registerViewComposers(Factory $view)
+    private function registerViewComposers()
     {
-        $view->composer('adminlte::page', AdminLteComposer::class);
+        // Bind the AdminLte singleton instance into each adminlte page view.
+
+        View::composer('adminlte::page', function (\Illuminate\View\View $v) {
+            $v->with('adminlte', $this->app->make(AdminLte::class));
+        });
     }
 
     /**
-     * Register the menu events handlers.
-     *
-     * @return void
-     */
-    private static function registerMenu(Dispatcher $events, Repository $config)
-    {
-        // Register a handler for the BuildingMenu event, this handler will add
-        // the menu defined on the config file to the menu builder instance.
-
-        $events->listen(
-            BuildingMenu::class,
-            function (BuildingMenu $event) use ($config) {
-                $menu = $config->get('adminlte.menu', []);
-                $menu = is_array($menu) ? $menu : [];
-                $event->menu->add(...$menu);
-            }
-        );
-    }
-
-    /**
-     * Load the blade view components.
+     * Load the blade view components of the package.
      *
      * @return void
      */
@@ -233,7 +201,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
     }
 
     /**
-     * Load the package web routes.
+     * Load the routes of the package.
      *
      * @return void
      */
@@ -249,5 +217,16 @@ class AdminLteServiceProvider extends BaseServiceProvider
             $routesPath = $this->packagePath('routes/web.php');
             $this->loadRoutesFrom($routesPath);
         });
+    }
+
+    /**
+     * Get the absolute path to some package resource.
+     *
+     * @param  string  $path  The relative path to the resource
+     * @return string
+     */
+    private function packagePath($path)
+    {
+        return __DIR__."/../$path";
     }
 }

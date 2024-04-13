@@ -3,7 +3,6 @@
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Auth\GenericUser;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
-use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\UrlGenerator;
@@ -22,14 +21,14 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class TestCase extends BaseTestCase
 {
-    private $dispatcher;
-
     private $routeCollection;
 
     private $translator;
 
     /**
-     * Load the packages services providers.
+     * Load the package services providers.
+     *
+     * @return array
      */
     protected function getPackageProviders($app)
     {
@@ -38,8 +37,16 @@ class TestCase extends BaseTestCase
         return ['JeroenNoten\LaravelAdminLte\AdminLteServiceProvider'];
     }
 
-    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null, $locale = 'en')
-    {
+    /**
+     * Make a menu builder instance.
+     *
+     * @return Builder
+     */
+    protected function makeMenuBuilder(
+        $uri = 'http://example.com',
+        GateContract $gate = null,
+        $locale = 'en'
+    ) {
         return new Builder([
             new GateFilter($gate ?: $this->makeGate()),
             new HrefFilter($this->makeUrlGenerator($uri)),
@@ -71,9 +78,9 @@ class TestCase extends BaseTestCase
         return Request::createFromBase(SymfonyRequest::create($uri));
     }
 
-    protected function makeAdminLte()
+    protected function makeAdminLte($filters = [])
     {
-        return new AdminLte($this->getFilters(), $this->getDispatcher(), $this->makeContainer());
+        return new AdminLte($filters);
     }
 
     protected function makeUrlGenerator($uri = 'http://example.com', $scheme = null)
@@ -96,26 +103,7 @@ class TestCase extends BaseTestCase
             return new GenericUser([]);
         };
 
-        return new Gate($this->makeContainer(), $userResolver);
-    }
-
-    protected function makeContainer()
-    {
-        return new Illuminate\Container\Container();
-    }
-
-    protected function getDispatcher()
-    {
-        if (! $this->dispatcher) {
-            $this->dispatcher = new Dispatcher;
-        }
-
-        return $this->dispatcher;
-    }
-
-    private function getFilters()
-    {
-        return [];
+        return new Gate($this->app, $userResolver);
     }
 
     protected function getRouteCollection()
