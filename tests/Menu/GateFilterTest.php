@@ -18,8 +18,8 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', fn() => true);
-        Gate::define('show-home', fn() => false);
+        Gate::define('show-about', fn () => true);
+        Gate::define('show-home', fn () => false);
 
         // Create the menu.
 
@@ -40,7 +40,7 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-home', fn() => false);
+        Gate::define('show-home', fn () => false);
 
         // Create the menu.
 
@@ -59,8 +59,8 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', fn() => true);
-        Gate::define('show-home', fn() => false);
+        Gate::define('show-about', fn () => true);
+        Gate::define('show-home', fn () => false);
 
         // Create the menu.
 
@@ -88,9 +88,9 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-users', fn() => true);
-        Gate::define('edit-user', fn() => false);
-        Gate::define('show-settings', fn() => false);
+        Gate::define('show-users', fn () => true);
+        Gate::define('edit-user', fn () => false);
+        Gate::define('show-settings', fn () => false);
 
         // Create the menu.
 
@@ -119,8 +119,8 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-header', fn() => true);
-        Gate::define('show-settings', fn() => false);
+        Gate::define('show-header', fn () => true);
+        Gate::define('show-settings', fn () => false);
 
         // Create the menu.
 
@@ -141,8 +141,8 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', fn() => true);
-        Gate::define('show-home', fn() => false);
+        Gate::define('show-about', fn () => true);
+        Gate::define('show-home', fn () => false);
 
         // Create the menu.
 
@@ -177,8 +177,8 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', fn() => false);
-        Gate::define('show-home', fn() => false);
+        Gate::define('show-about', fn () => false);
+        Gate::define('show-home', fn () => false);
 
         // Create the menu.
 
