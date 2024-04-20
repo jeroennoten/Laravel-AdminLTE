@@ -18,8 +18,12 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', function () {return true;});
-        Gate::define('show-home', function () {return false;});
+        Gate::define('show-about', function () {
+            return true;
+        });
+        Gate::define('show-home', function () {
+            return false;
+        });
 
         // Create the menu.
 
@@ -40,7 +44,9 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-home', function () {return false;});
+        Gate::define('show-home', function () {
+            return false;
+        });
 
         // Create the menu.
 
@@ -59,8 +65,12 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', function () {return true;});
-        Gate::define('show-home', function () {return false;});
+        Gate::define('show-about', function () {
+            return true;
+        });
+        Gate::define('show-home', function () {
+            return false;
+        });
 
         // Create the menu.
 
@@ -88,9 +98,15 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-users', function () {return true;});
-        Gate::define('edit-user', function () {return false;});
-        Gate::define('show-settings', function () {return false;});
+        Gate::define('show-users', function () {
+            return true;
+        });
+        Gate::define('edit-user', function () {
+            return false;
+        });
+        Gate::define('show-settings', function () {
+            return false;
+        });
 
         // Create the menu.
 
@@ -119,8 +135,12 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-header', function () {return true;});
-        Gate::define('show-settings', function () {return false;});
+        Gate::define('show-header', function () {
+            return true;
+        });
+        Gate::define('show-settings', function () {
+            return false;
+        });
 
         // Create the menu.
 
@@ -141,8 +161,12 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', function () {return true;});
-        Gate::define('show-home', function () {return false;});
+        Gate::define('show-about', function () {
+            return true;
+        });
+        Gate::define('show-home', function () {
+            return false;
+        });
 
         // Create the menu.
 
@@ -177,8 +201,12 @@ class GateFilterTest extends TestCase
     {
         // Define some Gate rules.
 
-        Gate::define('show-about', function () {return false;});
-        Gate::define('show-home', function () {return false;});
+        Gate::define('show-about', function () {
+            return false;
+        });
+        Gate::define('show-home', function () {
+            return false;
+        });
 
         // Create the menu.
 
