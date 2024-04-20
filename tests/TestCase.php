@@ -23,8 +23,6 @@ class TestCase extends BaseTestCase
 {
     private $routeCollection;
 
-    private $translator;
-
     /**
      * Load the package services providers.
      *
@@ -42,30 +40,17 @@ class TestCase extends BaseTestCase
      *
      * @return Builder
      */
-    protected function makeMenuBuilder(
-        $uri = 'http://example.com',
-        GateContract $gate = null,
-        $locale = 'en'
-    ) {
+    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
+    {
         return new Builder([
             new GateFilter($gate ?: $this->makeGate()),
             new HrefFilter($this->makeUrlGenerator($uri)),
             new ActiveFilter($this->makeActiveChecker($uri)),
             new ClassesFilter(),
             new DataFilter(),
-            new LangFilter($this->makeTranslator($locale)),
+            new LangFilter(),
             new SearchFilter(),
         ]);
-    }
-
-    protected function makeTranslator($locale = 'en')
-    {
-        $translationLoader = new Illuminate\Translation\FileLoader(new Illuminate\Filesystem\Filesystem, 'resources/lang/');
-
-        $this->translator = new Illuminate\Translation\Translator($translationLoader, $locale);
-        $this->translator->addNamespace('adminlte', 'resources/lang/');
-
-        return $this->translator;
     }
 
     protected function makeActiveChecker($uri = 'http://example.com', $scheme = null)
@@ -113,10 +98,5 @@ class TestCase extends BaseTestCase
         }
 
         return $this->routeCollection;
-    }
-
-    protected function getTranslator()
-    {
-        return $this->translator;
     }
 }
