@@ -2,40 +2,23 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
-use Illuminate\Contracts\Auth\Access\Gate;
+use Illuminate\Support\Facades\Gate;
 
 class GateFilter implements FilterInterface
 {
     /**
-     * The Laravel gate instance, used to check for permissions.
-     *
-     * @var Gate
-     */
-    protected $gate;
-
-    /**
-     * Constructor.
-     *
-     * @param  Gate  $gate
-     */
-    public function __construct(Gate $gate)
-    {
-        $this->gate = $gate;
-    }
-
-    /**
      * Transforms a menu item. Add the restricted property to a menu item
-     * when situable.
+     * when the it's not authorized by the Laravel's Gate feature.
      *
      * @param  array  $item  A menu item
-     * @return array The transformed menu item
+     * @return array
      */
     public function transform($item)
     {
-        // Set a special attribute when item is not allowed. Items with this
-        // attribute will be filtered out of the menu.
+        // Set a special property when the item is not authorized by Gate.
+        // Items with this property set will be filtered out from the menu.
 
-        if (! $this->isAllowed($item)) {
+        if (! $this->isAuthorized($item)) {
             $item['restricted'] = true;
         }
 
@@ -43,12 +26,12 @@ class GateFilter implements FilterInterface
     }
 
     /**
-     * Check if a menu item is allowed for the current user.
+     * Check if a menu item is authorized to be shown for the current user.
      *
      * @param  array  $item  A menu item
      * @return bool
      */
-    protected function isAllowed($item)
+    protected function isAuthorized($item)
     {
         // Check if there are any permission defined for the item.
 
@@ -58,12 +41,12 @@ class GateFilter implements FilterInterface
 
         // Read the extra arguments (a db model instance can be used).
 
-        $args = isset($item['model']) ? $item['model'] : [];
+        $args = ! empty($item['model']) ? $item['model'] : [];
 
         // Check if the current user can perform the configured permissions.
 
         if (is_string($item['can']) || is_array($item['can'])) {
-            return $this->gate->any($item['can'], $args);
+            return Gate::any($item['can'], $args);
         }
 
         return true;
