@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Auth\Access\Gate;
-use Illuminate\Auth\GenericUser;
-use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteCollection;
 use Illuminate\Routing\UrlGenerator;
@@ -40,10 +37,10 @@ class TestCase extends BaseTestCase
      *
      * @return Builder
      */
-    protected function makeMenuBuilder($uri = 'http://example.com', GateContract $gate = null)
+    protected function makeMenuBuilder($uri = 'http://example.com')
     {
         return new Builder([
-            new GateFilter($gate ?: $this->makeGate()),
+            new GateFilter(),
             new HrefFilter($this->makeUrlGenerator($uri)),
             new ActiveFilter($this->makeActiveChecker($uri)),
             new ClassesFilter(),
@@ -80,15 +77,6 @@ class TestCase extends BaseTestCase
         }
 
         return $UrlGenerator;
-    }
-
-    protected function makeGate()
-    {
-        $userResolver = function () {
-            return new GenericUser([]);
-        };
-
-        return new Gate($this->app, $userResolver);
     }
 
     protected function getRouteCollection()
