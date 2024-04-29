@@ -47,7 +47,7 @@ class HrefFilter implements FilterInterface
      * Make and return the href HTML attribute fom the route attribute of a
      * menu item.
      *
-     * @param  string|array  $routeAttr  The route attribute of a menu item
+     * @param  mixed  $routeAttr  The route attribute of a menu item
      * @return string
      */
     protected function makeHrefFromRouteAttr($routeAttr)
