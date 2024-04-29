@@ -4,6 +4,8 @@ class DataFilterTest extends TestCase
 {
     public function testDataAttributesAreCompiled()
     {
+        // Build the menu.
+
         $builder = $this->makeMenuBuilder();
 
         $builder->add([
@@ -13,6 +15,8 @@ class DataFilterTest extends TestCase
                 'param2' => 'value2',
             ],
         ]);
+
+        // Make assertions.
 
         $this->assertEquals(
             'data-param1="value1" data-param2="value2"',
