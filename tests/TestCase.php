@@ -1,8 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Routing\RouteCollection;
-use Illuminate\Routing\UrlGenerator;
 use JeroenNoten\LaravelAdminLte\AdminLte;
 use JeroenNoten\LaravelAdminLte\Menu\ActiveChecker;
 use JeroenNoten\LaravelAdminLte\Menu\Builder;
@@ -14,12 +11,9 @@ use JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter;
 use JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter;
 use Orchestra\Testbench\TestCase as BaseTestCase;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 class TestCase extends BaseTestCase
 {
-    private $routeCollection;
-
     /**
      * Load the package services providers.
      *
@@ -37,12 +31,12 @@ class TestCase extends BaseTestCase
      *
      * @return Builder
      */
-    protected function makeMenuBuilder($uri = 'http://example.com')
+    protected function makeMenuBuilder()
     {
         return new Builder([
             new GateFilter(),
-            new HrefFilter($this->makeUrlGenerator($uri)),
-            new ActiveFilter($this->makeActiveChecker($uri)),
+            new HrefFilter(),
+            new ActiveFilter($this->makeActiveChecker()),
             new ClassesFilter(),
             new DataFilter(),
             new LangFilter(),
@@ -50,41 +44,23 @@ class TestCase extends BaseTestCase
         ]);
     }
 
-    protected function makeActiveChecker($uri = 'http://example.com', $scheme = null)
+    /**
+     * Make an ActiveChecker instance.
+     *
+     * @return ActiveChecker
+     */
+    protected function makeActiveChecker()
     {
-        return new ActiveChecker($this->makeUrlGenerator($uri, $scheme));
+        return new ActiveChecker();
     }
 
-    private function makeRequest($uri)
-    {
-        return Request::createFromBase(SymfonyRequest::create($uri));
-    }
-
+    /**
+     * Make an AdminLte instance.
+     *
+     * @return AdminLte
+     */
     protected function makeAdminLte($filters = [])
     {
         return new AdminLte($filters);
-    }
-
-    protected function makeUrlGenerator($uri = 'http://example.com', $scheme = null)
-    {
-        $UrlGenerator = new UrlGenerator(
-            $this->getRouteCollection(),
-            $this->makeRequest($uri)
-        );
-
-        if ($scheme) {
-            $UrlGenerator->forceScheme($scheme);
-        }
-
-        return $UrlGenerator;
-    }
-
-    protected function getRouteCollection()
-    {
-        if (! $this->routeCollection) {
-            $this->routeCollection = new RouteCollection();
-        }
-
-        return $this->routeCollection;
     }
 }

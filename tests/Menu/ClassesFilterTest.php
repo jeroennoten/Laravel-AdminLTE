@@ -1,16 +1,25 @@
 <?php
 
 use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as RouteFacade;
 
 class ClassesFilterTest extends TestCase
 {
     public function testActiveClassIsAdded()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/about');
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
         $builder->add(
             ['text' => 'About', 'url' => 'about'],
             ['text' => 'Profile', 'url' => 'profile'],
         );
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertStringContainsString('active', $menu[0]['class']);
@@ -19,14 +28,21 @@ class ClassesFilterTest extends TestCase
 
     public function testActiveClassIsAddedWhenUsingRoute()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/about');
+        // Define a route name and emulate a request.
 
-        $this->getRouteCollection()->add(
+        RouteFacade::getRoutes()->add(
             new Route('GET', 'about', ['as' => 'pages.about'])
         );
 
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
         $builder->add(['text' => 'About', 'route' => 'pages.about']);
         $builder->add(['text' => 'Profile', 'url' => 'profile']);
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertEquals('active', $menu[0]['class']);
@@ -35,19 +51,24 @@ class ClassesFilterTest extends TestCase
 
     public function testActiveClassIsAddedOnSubmenu()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/about');
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             [
                 'text' => 'Menu',
                 'submenu' => [
-                    [
-                        'text' => 'About',
-                        'url' => 'about',
-                    ],
+                    ['text' => 'About', 'url' => 'about'],
                 ],
             ]
         );
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertStringContainsString('active', $menu[0]['class']);
@@ -57,23 +78,28 @@ class ClassesFilterTest extends TestCase
 
     public function testActiveClassIsAddedOnSubmenuUsingRoute()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/about');
+        // Define a route name and emulate a request.
 
-        $this->getRouteCollection()->add(
+        RouteFacade::getRoutes()->add(
             new Route('GET', 'about', ['as' => 'pages.about'])
         );
+
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             [
                 'text' => 'Menu',
                 'submenu' => [
-                    [
-                        'text' => 'About',
-                        'route' => 'pages.about',
-                    ],
+                    ['text' => 'About', 'route' => 'pages.about'],
                 ],
             ]
         );
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertStringContainsString('active', $menu[0]['class']);
@@ -83,7 +109,13 @@ class ClassesFilterTest extends TestCase
 
     public function testActiveClassIsAddedOnSubmenuUsingHashUrl()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/home');
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             [
@@ -95,6 +127,8 @@ class ClassesFilterTest extends TestCase
             ]
         );
 
+        // Make assertions.
+
         $menu = $builder->menu;
         $this->assertTrue($menu[0]['active']);
         $this->assertStringContainsString('active', $menu[0]['class']);
@@ -104,8 +138,16 @@ class ClassesFilterTest extends TestCase
 
     public function testActiveClassIsAddedOnTopNavItem()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/about');
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
         $builder->add(['text' => 'About', 'url' => 'about', 'topnav' => true]);
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertStringContainsString('active', $menu[0]['class']);
@@ -113,36 +155,53 @@ class ClassesFilterTest extends TestCase
 
     public function testActiveClassIsAddedOnTopNavRightItem()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/about');
-        $builder->add(['text' => 'About', 'url' => 'about', 'topnav_right' => true]);
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
+        $builder->add(
+            ['text' => 'About', 'url' => 'about', 'topnav_right' => true]
+        );
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertStringContainsString('active', $menu[0]['class']);
     }
 
-    public function testSubmenuClassIsAddedWhenAddInMultipleItems()
+    public function testSubmenuIsActiveWhenAddInAnActiveItem()
     {
-        $builder = $this->makeMenuBuilder('http://example.com');
+        // Emulate a request.
 
-        // Add a new link item.
+        $this->get('http://example.com/about');
 
+        // Build the menu. Add a new link, and then add new elements inside
+        // this one, including one active item. An active submenu item should
+        // be created after this sequence.
+
+        $builder = $this->makeMenuBuilder();
         $builder->add(['text' => 'Home', 'url' => '/', 'key' => 'home']);
-
-        // Add elements inside the previous one, now it will be a submenu item.
-
         $builder->addIn('home', ['text' => 'Profile', 'url' => '/profile']);
         $builder->addIn('home', ['text' => 'About', 'url' => '/about']);
 
-        // Check the "submenu_class" attribute is added.
+        // Make assertions.
 
         $menu = $builder->menu;
+        $this->assertStringContainsString('active', $menu[0]['class']);
         $this->assertStringContainsString('menu-open', $menu[0]['submenu_class']);
     }
 
     public function testAddingCustomClassesAttributes()
     {
+        // Build the menu.
+
         $builder = $this->makeMenuBuilder();
         $builder->add(['text' => 'About', 'classes' => 'foo bar']);
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertStringContainsString('foo', $menu[0]['class']);
@@ -151,13 +210,19 @@ class ClassesFilterTest extends TestCase
 
     public function testAddingCustomClassesAttributesOnActiveItem()
     {
-        $builder = $this->makeMenuBuilder('http://example.com/about');
+        // Emulate a request.
 
-        $builder->add([
-            'text' => 'About',
-            'url' => 'about',
-            'classes' => 'foo bar',
-        ]);
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
+
+        $builder->add(
+            ['text' => 'About', 'url' => 'about', 'classes' => 'foo bar']
+        );
+
+        // Make assertions.
 
         $menu = $builder->menu;
         $this->assertStringContainsString('active', $menu[0]['class']);

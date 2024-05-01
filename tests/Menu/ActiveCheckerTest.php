@@ -2,194 +2,314 @@
 
 class ActiveCheckerTest extends TestCase
 {
-    public function testExact()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/about');
+    /**
+     * Holds an active checker instance.
+     *
+     * @var ActiveChecker
+     */
+    protected $checker;
 
-        $this->assertTrue($checker->isActive(['url' => 'about']));
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // Create the active checker instance.
+
+        $this->checker = $this->makeActiveChecker();
     }
 
-    public function testRoot()
+    public function testWithLinkItem()
     {
-        $checker = $this->makeActiveChecker('http://example.com');
+        // Emulate a request.
 
-        $this->assertTrue($checker->isActive(['url' => '/']));
+        $this->get('http://example.com/about');
+
+        // Make assertions.
+
+        $this->assertTrue($this->checker->isActive(['url' => 'about']));
     }
 
-    public function testNotActive()
+    public function testWithLinkItemUsingRootUrl()
     {
-        $checker = $this->makeActiveChecker('http://example.com/about');
+        // Emulate a request.
 
-        $this->assertFalse($checker->isActive(['url' => 'home']));
+        $this->get('http://example.com');
+
+        // Make assertions.
+
+        $this->assertTrue($this->checker->isActive(['url' => '/']));
     }
 
-    public function testStringNotActive()
+    public function testWithLinkItemUsingNotActiveUrl()
     {
-        $checker = $this->makeActiveChecker();
+        // Emulate a request.
 
-        $this->assertFalse($checker->isActive('HEADER'));
+        $this->get('http://example.com/about');
+
+        // Make assertions.
+
+        $this->assertFalse($this->checker->isActive(['url' => 'home']));
     }
 
-    public function testSub()
+    public function testHeaderItemWillNotBeActive()
     {
-        $checker = $this->makeActiveChecker('http://example.com/about/sub');
+        // Emulate a request.
 
-        $this->assertTrue($checker->isActive(['url' => 'about/sub']));
+        $this->get('http://example.com');
+
+        // Make assertions.
+
+        $this->assertFalse($this->checker->isActive('HEADER'));
     }
 
-    public function testSubmenu()
+    public function testWithLinkItemUsingSubUrl()
     {
-        $checker = $this->makeActiveChecker('http://example.com/home');
+        // Emulate a request.
 
-        $isActive = $checker->isActive(
-            [
-                'submenu' => [
-                    ['url' => 'foo'],
-                    ['url' => 'home'],
+        $this->get('http://example.com/about/sub');
+
+        // Make assertions.
+
+        $this->assertTrue($this->checker->isActive(['url' => 'about/sub']));
+    }
+
+    public function testWithSubmenuItem()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive([
+            'submenu' => [
+                ['url' => 'foo'],
+                ['url' => 'home'],
+            ],
+        ]);
+
+        $this->assertTrue($isActive);
+    }
+
+    public function testWithMultiLevelSubmenu()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive([
+            'text' => 'Level 0',
+            'submenu' => [
+                [
+                    'text' => 'Level 1',
+                    'submenu' => [['url' => 'foo'], ['url' => 'home']],
                 ],
-            ]
+            ],
+        ]);
+
+        $this->assertTrue($isActive);
+    }
+
+    public function testLinkWithExplicitActiveAttribute()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive(['active' => ['home']]);
+        $this->assertTrue($isActive);
+
+        $isActive = $this->checker->isActive(['active' => ['about']]);
+        $this->assertFalse($isActive);
+    }
+
+    public function testLinkWithExplicitActiveAttributeAndWildcards()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home/sub');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive(['active' => ['home/*']]);
+        $this->assertTrue($isActive);
+
+        $isActive = $this->checker->isActive(['active' => ['home/su*']]);
+        $this->assertTrue($isActive);
+
+        $isActive = $this->checker->isActive(['active' => ['hom*']]);
+        $this->assertTrue($isActive);
+
+        $isActive = $this->checker->isActive(['active' => ['home/t*']]);
+        $this->assertFalse($isActive);
+    }
+
+    public function testLinkWithExplicitActiveOverridesUrl()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/admin/users');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive(['url' => 'admin']);
+        $this->assertFalse($isActive);
+
+        $isActive = $this->checker->isActive([
+            'url' => 'admin',
+            'active' => ['admin*'],
+        ]);
+
+        $this->assertTrue($isActive);
+    }
+
+    public function testLinkWithFullUrl()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive(
+            ['url' => 'http://example.com/about']
         );
 
         $this->assertTrue($isActive);
     }
 
-    public function testMultiLevelSubmenu()
+    public function testLinkWithFullSubUrl()
     {
-        $checker = $this->makeActiveChecker('http://example.com/home');
+        // Emulate a request.
 
-        $isActive = $checker->isActive(
-            [
-                'text' => 'Level 0',
-                'submenu' => [
-                    [
-                        'text' => 'Level 1',
-                        'submenu' => [
-                            ['url' => 'foo'],
-                            ['url' => 'home'],
-                        ],
-                    ],
-                ],
-            ]
+        $this->get('http://example.com/about/sub');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive(
+            ['url' => 'http://example.com/about/sub']
         );
 
         $this->assertTrue($isActive);
     }
 
-    public function testExplicitActive()
+    public function testLinkWithFullUrlAndDifferentSchemas()
     {
-        $checker = $this->makeActiveChecker('http://example.com/home');
+        // Emulate a request.
 
-        $isActive = $checker->isActive(['active' => ['home']]);
-        $this->assertTrue($isActive);
+        $this->get('https://example.com/about');
 
-        $isActive = $checker->isActive(['active' => ['about']]);
-        $this->assertFalse($isActive);
-    }
+        // Make assertions. Note schema should be ignored.
 
-    public function testExplicitActiveRegex()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/home/sub');
-
-        $isActive = $checker->isActive(['active' => ['home/*']]);
-        $this->assertTrue($isActive);
-
-        $isActive = $checker->isActive(['active' => ['home/su*']]);
-        $this->assertTrue($isActive);
-
-        $isActive = $checker->isActive(['active' => ['hom*']]);
-        $this->assertTrue($isActive);
-
-        $isActive = $checker->isActive(['active' => ['home/t*']]);
-        $this->assertFalse($isActive);
-    }
-
-    public function testExplicitOverridesDefault()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/admin/users');
-
-        $isActive = $checker->isActive(['active' => ['admin']]);
-        $this->assertFalse($isActive);
-    }
-
-    public function testFullUrl()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/about');
-
-        $isActive = $checker->isActive(['url' => 'http://example.com/about']);
-        $this->assertTrue($isActive);
-    }
-
-    public function testFullUrlSub()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/about/sub');
-
-        $isActive = $checker->isActive(['url' => 'http://example.com/about/sub']);
-        $this->assertTrue($isActive);
-    }
-
-    public function testHttps()
-    {
-        $checker = $this->makeActiveChecker('https://example.com/about');
-
-        $isActive = $checker->isActive(['url' => 'https://example.com/about']);
-        $this->assertTrue($isActive);
-
-        $isActive = $checker->isActive(['url' => 'about']);
-        $this->assertTrue($isActive);
-    }
-
-    public function testParams()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/menu?param=option');
-
-        $this->assertTrue($checker->isActive(['url' => 'menu']));
-        $this->assertTrue($checker->isActive(['active' => ['menu']]));
-        $this->assertTrue($checker->isActive(['active' => ['menu?param=option']]));
-        $this->assertFalse($checker->isActive(['active' => ['menu?param=foo']]));
-    }
-
-    public function testSubParams()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/menu/item1?param=option');
-
-        $this->assertTrue($checker->isActive(['url' => 'menu/item1']));
-        $this->assertTrue($checker->isActive(['active' => ['menu/*']]));
-    }
-
-    public function testExplicitActiveRegexEvaluation()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/posts/1');
-
-        $this->assertTrue($checker->isActive(['active' => ['regex:@^posts/[0-9]+$@']]));
-        $this->assertFalse($checker->isActive(['active' => ['regex:@^post/[0-9]+$@']]));
-    }
-
-    public function testActivefallbackToUrl()
-    {
-        $checker = $this->makeActiveChecker('http://example.com/home');
-
-        $isActive = $checker->isActive(
-            [
-                'url' => 'home',
-                'active' => ['about', 'no-home'],
-                'submenu' => [],
-            ]
+        $isActive = $this->checker->isActive(
+            ['url' => 'http://example.com/about']
         );
 
         $this->assertTrue($isActive);
+
+        $isActive = $this->checker->isActive(
+            ['url' => 'https://example.com/about']
+        );
+
+        $this->assertTrue($isActive);
+
+        $isActive = $this->checker->isActive(['url' => 'about']);
+        $this->assertTrue($isActive);
     }
 
-    public function testWithForcedScheme()
+    public function testLinkUrlWithQueryParams()
     {
-        $checker = $this->makeActiveChecker('http://example.com/about', 'https');
+        // Emulate a request.
 
-        $isActive = $checker->isActive(['url' => 'about']);
+        $this->get('http://example.com/menu?param=value');
+
+        // Make assertions.
+
+        $this->assertTrue($this->checker->isActive(['url' => 'menu']));
+        $this->assertTrue($this->checker->isActive(['active' => ['menu']]));
+
+        $this->assertTrue(
+            $this->checker->isActive(['active' => ['menu?param=value']])
+        );
+
+        $this->assertFalse(
+            $this->checker->isActive(['active' => ['menu?param=foo']])
+        );
+    }
+
+    public function testLinkSubUrlWithQueryParams()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/menu/item1?param=option');
+
+        // Make assertions.
+
+        $this->assertTrue($this->checker->isActive(['url' => 'menu/item1']));
+        $this->assertTrue($this->checker->isActive(['active' => ['menu/item1']]));
+        $this->assertTrue($this->checker->isActive(['active' => ['menu/*']]));
+    }
+
+    public function testLinkWithExplicitActiveAndRegex()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/posts/1');
+
+        // Make assertions.
+
+        $this->assertTrue(
+            $this->checker->isActive(['active' => ['regex:@^posts/[0-9]+$@']])
+        );
+
+        $this->assertFalse(
+            $this->checker->isActive(['active' => ['regex:@^post/[0-9]+$@']])
+        );
+    }
+
+    public function testActiveWillfallbackToUrlAttribute()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive([
+            'url' => 'home',
+            'active' => ['about', 'no-home'],
+            'submenu' => [],
+        ]);
+
+        $this->assertTrue($isActive);
+    }
+
+    public function testLinkWhenSchemeIsForced()
+    {
+        // Force HTTPS schema and emulate a request.
+
+        url()->forceScheme('https');
+        $this->get('http://example.com/about');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive(['url' => 'about']);
         $this->assertTrue($isActive);
 
-        $isActive = $checker->isActive(['url' => 'http://example.com/about']);
+        $isActive = $this->checker->isActive(
+            ['url' => 'http://example.com/about']
+        );
+
         $this->assertTrue($isActive);
 
-        $isActive = $checker->isActive(['url' => 'https://example.com/about']);
+        $isActive = $this->checker->isActive(
+            ['url' => 'https://example.com/about']
+        );
+
         $this->assertTrue($isActive);
     }
 }

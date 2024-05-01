@@ -27,7 +27,7 @@ class GateFilterTest extends TestCase
 
         // Create the menu.
 
-        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             ['text' => 'About', 'url' => 'about', 'can' => 'show-about'],
@@ -50,7 +50,7 @@ class GateFilterTest extends TestCase
 
         // Create the menu.
 
-        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             ['text' => 'Home', 'url' => '/', 'can' => 'show-home']
@@ -74,7 +74,7 @@ class GateFilterTest extends TestCase
 
         // Create the menu.
 
-        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             ['text' => 'LinkA', 'url' => 'link_a', 'can' => false],
@@ -110,7 +110,7 @@ class GateFilterTest extends TestCase
 
         // Create the menu.
 
-        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             [
@@ -144,7 +144,7 @@ class GateFilterTest extends TestCase
 
         // Create the menu.
 
-        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             ['header' => 'HEADER', 'can' => 'show-header'],
@@ -170,7 +170,7 @@ class GateFilterTest extends TestCase
 
         // Create the menu.
 
-        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             [
@@ -210,7 +210,7 @@ class GateFilterTest extends TestCase
 
         // Create the menu.
 
-        $builder = $this->makeMenuBuilder('http://example.com');
+        $builder = $this->makeMenuBuilder();
 
         $builder->add(
             [
