@@ -37,6 +37,10 @@
         $('#{{ $id }}').colorpicker( @json($config) )
             .on('change', setAddonColor);
 
+        $('#{{ $id }}').on('colorpickerChange', function(e) {
+            this.dispatchEvent(new Event('input'));
+        });
+
         // Add support to auto select the previous submitted value in case
         // of validation errors.
 
