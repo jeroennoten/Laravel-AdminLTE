@@ -5,6 +5,12 @@ namespace JeroenNoten\LaravelAdminLte\Menu;
 use Illuminate\Support\Arr;
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
 
+/**
+ * Class Builder.
+ * Responsible of building and compiling the menu.
+ *
+ * @property array $menu
+ */
 class Builder
 {
     /**

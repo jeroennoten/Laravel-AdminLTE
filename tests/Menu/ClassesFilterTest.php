@@ -207,8 +207,8 @@ class ClassesFilterTest extends TestCase
             'text' => 'Submenu',
             'submenu' => [
                 ['text' => 'Profile', 'url' => 'profile'],
-                ['text' => 'About', 'url' => 'about', 'key' => 'about']
-            ]
+                ['text' => 'About', 'url' => 'about', 'key' => 'about'],
+            ],
         ]);
 
         // Make assertions.
@@ -246,7 +246,7 @@ class ClassesFilterTest extends TestCase
                     'submenu' => [
                         ['text' => 'linkB', 'url' => 'linkB'],
                         ['text' => 'About', 'url' => 'about', 'key' => 'about'],
-                    ]
+                    ],
                 ],
             ],
         ]);
