@@ -194,6 +194,80 @@ class ClassesFilterTest extends TestCase
         $this->assertStringContainsString('menu-open', $menu[0]['submenu_class']);
     }
 
+    public function testSubmenuIsNotActiveWhenRemovingTheActiveItem()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
+        $builder->add([
+            'text' => 'Submenu',
+            'submenu' => [
+                ['text' => 'Profile', 'url' => 'profile'],
+                ['text' => 'About', 'url' => 'about', 'key' => 'about'],
+            ],
+        ]);
+
+        // Make assertions.
+
+        $menu = $builder->menu;
+        $this->assertStringContainsString('active', $menu[0]['class']);
+        $this->assertStringContainsString('menu-open', $menu[0]['submenu_class']);
+
+        // Remove the active item from the submenu.
+
+        $builder->remove('about');
+
+        // Make assertions.
+
+        $menu = $builder->menu;
+        $this->assertStringNotContainsString('active', $menu[0]['class']);
+        $this->assertStringNotContainsString('menu-open', $menu[0]['submenu_class']);
+    }
+
+    public function testSubmenuIsNotActiveWhenRemovingNestedActiveItem()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // Build the menu.
+
+        $builder = $this->makeMenuBuilder();
+        $builder->add([
+            'text' => 'Submenu1',
+            'submenu' => [
+                ['text' => 'linkA', 'url' => 'linkA'],
+                [
+                    'text' => 'Submenu2',
+                    'submenu' => [
+                        ['text' => 'linkB', 'url' => 'linkB'],
+                        ['text' => 'About', 'url' => 'about', 'key' => 'about'],
+                    ],
+                ],
+            ],
+        ]);
+
+        // Make assertions.
+
+        $menu = $builder->menu;
+        $this->assertStringContainsString('active', $menu[0]['class']);
+        $this->assertStringContainsString('menu-open', $menu[0]['submenu_class']);
+
+        // Remove the active item from the nested submenu.
+
+        $builder->remove('about');
+
+        // Make assertions.
+
+        $menu = $builder->menu;
+        $this->assertStringNotContainsString('active', $menu[0]['class']);
+        $this->assertStringNotContainsString('menu-open', $menu[0]['submenu_class']);
+    }
+
     public function testAddingCustomClassesAttributes()
     {
         // Build the menu.
