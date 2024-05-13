@@ -3,14 +3,14 @@
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
 /**
- * TODO: On the future, all menu items should have a type property. We can use
- * the type property to easy distinguish the item type and avoid guessing it by
- * they properties.
+ * TODO: In the future, all the menu items should have a type property. So, we
+ * can use this property to easily distinguish the item type and avoid guessing
+ * it by other properties.
  */
 class MenuItemHelper
 {
     /**
-     * Check if a menu item is a header.
+     * Checks if a menu item is a header.
      *
      * @param  mixed  $item
      * @return bool
@@ -21,43 +21,43 @@ class MenuItemHelper
     }
 
     /**
-     * Check if a menu item is a link.
+     * Checks if a menu item is a link.
      *
      * @param  mixed  $item
      * @return bool
      */
     public static function isLink($item)
     {
-        return isset($item['text']) &&
-               (isset($item['url']) || isset($item['route']));
+        return isset($item['text'])
+            && (isset($item['url']) || isset($item['route']));
     }
 
     /**
-     * Check if a menu item is a submenu.
+     * Checks if a menu item is a submenu.
      *
      * @param  mixed  $item
      * @return bool
      */
     public static function isSubmenu($item)
     {
-        return isset($item['text'], $item['submenu']) &&
-               is_array($item['submenu']);
+        return isset($item['text'], $item['submenu'])
+            && is_array($item['submenu']);
     }
 
     /**
-     * Check if a menu item is a legacy search bar.
+     * Checks if a menu item is a legacy search box.
      *
      * @param  mixed  $item
      * @return bool
      */
     public static function isLegacySearch($item)
     {
-        return isset($item['text'], $item['search']) &&
-               $item['search'];
+        return isset($item['text'], $item['search'])
+            && ! empty($item['search']);
     }
 
     /**
-     * Check if a menu item is allowed to be shown (not restricted).
+     * Checks if a menu item is allowed to be shown (not restricted).
      *
      * @param  mixed  $item
      * @return bool
