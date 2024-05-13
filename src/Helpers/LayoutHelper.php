@@ -9,59 +9,61 @@ use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 class LayoutHelper
 {
     /**
-     * Set of tokens related to screen sizes/breakpoints.
+     * Holds the set of tokens related to screen sizes/breakpoints.
      *
      * @var array
      */
     protected static $screenBreakpoints = ['xs', 'sm', 'md', 'lg', 'xl'];
 
     /**
-     * Set of tokens related to sidebar mini config values.
+     * Holds the set of tokens related to the valid config values of the
+     * sidebar mini option.
      *
      * @var array
      */
     protected static $sidebarMiniValues = ['xs', 'md', 'lg'];
 
     /**
-     * Check if layout topnav is enabled.
+     * Checks if layout topnav is enabled.
      *
      * @return bool
      */
     public static function isLayoutTopnavEnabled()
     {
-        return config('adminlte.layout_topnav') || View::getSection('layout_topnav');
+        return config('adminlte.layout_topnav', false)
+            || ! empty(View::getSection('layout_topnav'));
     }
 
     /**
-     * Check if layout boxed is enabled.
+     * Checks if layout boxed is enabled.
      *
      * @return bool
      */
     public static function isLayoutBoxedEnabled()
     {
-        return config('adminlte.layout_boxed') || View::getSection('layout_boxed');
+        return config('adminlte.layout_boxed', false)
+            || ! empty(View::getSection('layout_boxed'));
     }
 
     /**
-     * Make and return the set of classes related to the body tag.
+     * Makes and return the set of classes related to the body tag.
      *
      * @return string
      */
     public static function makeBodyClasses()
     {
         $classes = [];
-
-        $classes = array_merge($classes, self::makeLayoutClasses());
-        $classes = array_merge($classes, self::makeSidebarClasses());
-        $classes = array_merge($classes, self::makeRightSidebarClasses());
-        $classes = array_merge($classes, self::makeCustomBodyClasses());
-        $classes = array_merge($classes, self::makeDarkModeClasses());
+        array_push($classes, ...self::makeLayoutClasses());
+        array_push($classes, ...self::makeSidebarClasses());
+        array_push($classes, ...self::makeRightSidebarClasses());
+        array_push($classes, ...self::makeCustomBodyClasses());
+        array_push($classes, ...self::makeDarkModeClasses());
 
         return trim(implode(' ', $classes));
     }
 
     /**
-     * Make and return the set of data attributes related to the body tag.
+     * Makes and return the set of data attributes related to the body tag.
      *
      * @return string
      */
@@ -89,7 +91,7 @@ class LayoutHelper
     }
 
     /**
-     * Make and return the set of classes related to the content-wrapper
+     * Makes and return the set of classes related to the content-wrapper
      * element.
      *
      * @return string
@@ -100,7 +102,7 @@ class LayoutHelper
 
         // Add classes from the configuration file.
 
-        $cfg = config('adminlte.classes_content_wrapper');
+        $cfg = config('adminlte.classes_content_wrapper', '');
 
         if (is_string($cfg) && ! empty($cfg)) {
             $classes[] = $cfg;
@@ -116,7 +118,7 @@ class LayoutHelper
     }
 
     /**
-     * Make and return the set of classes related to the layout configuration.
+     * Makes and return the set of classes related to the layout configuration.
      *
      * @return array
      */
@@ -139,7 +141,9 @@ class LayoutHelper
         // Add classes related to fixed sidebar layout configuration. The fixed
         // sidebar is not compatible with layout topnav.
 
-        if (! self::isLayoutTopnavEnabled() && config('adminlte.layout_fixed_sidebar')) {
+        $fixedSidebar = config('adminlte.layout_fixed_sidebar', false);
+
+        if (! self::isLayoutTopnavEnabled() && $fixedSidebar) {
             $classes[] = 'layout-fixed';
         }
 
@@ -147,15 +151,15 @@ class LayoutHelper
         // navbar/footer is not compatible with layout boxed.
 
         if (! self::isLayoutBoxedEnabled()) {
-            $classes = array_merge($classes, self::makeFixedResponsiveClasses('navbar'));
-            $classes = array_merge($classes, self::makeFixedResponsiveClasses('footer'));
+            array_push($classes, ...self::makeFixedResponsiveClasses('navbar'));
+            array_push($classes, ...self::makeFixedResponsiveClasses('footer'));
         }
 
         return $classes;
     }
 
     /**
-     * Make the set of classes related to a fixed responsive configuration.
+     * Makes the set of classes related to a fixed responsive configuration.
      *
      * @param  string  $section  The layout section (navbar or footer)
      * @return array
@@ -163,7 +167,7 @@ class LayoutHelper
     private static function makeFixedResponsiveClasses($section)
     {
         $classes = [];
-        $cfg = config("adminlte.layout_fixed_{$section}");
+        $cfg = config("adminlte.layout_fixed_{$section}", false);
 
         if ($cfg === true) {
             $cfg = ['xs' => true];
@@ -189,7 +193,7 @@ class LayoutHelper
     }
 
     /**
-     * Make a responsive class for the navbar/footer fixed mode on a particular
+     * Makes a responsive class for the navbar/footer fixed mode on a particular
      * breakpoint token.
      *
      * @param  string  $section  The layout section (navbar or footer)
@@ -213,7 +217,7 @@ class LayoutHelper
     }
 
     /**
-     * Make the set of classes related to the main left sidebar configuration.
+     * Makes the set of classes related to the main left sidebar configuration.
      *
      * @return array
      */
@@ -232,7 +236,10 @@ class LayoutHelper
 
         // Add classes related to the "sidebar_collapse" configuration.
 
-        if (config('adminlte.sidebar_collapse') || View::getSection('sidebar_collapse')) {
+        $sidebarCollapse = config('adminlte.sidebar_collapse', false)
+            || ! empty(View::getSection('sidebar_collapse'));
+
+        if ($sidebarCollapse) {
             $classes[] = 'sidebar-collapse';
         }
 
@@ -240,7 +247,7 @@ class LayoutHelper
     }
 
     /**
-     * Make the set of classes related to the right sidebar configuration.
+     * Makes the set of classes related to the right sidebar configuration.
      *
      * @return array
      */
@@ -250,7 +257,10 @@ class LayoutHelper
 
         // Add classes related to the "right_sidebar" configuration.
 
-        if (config('adminlte.right_sidebar') && config('adminlte.right_sidebar_push')) {
+        $rightSidebarPush = config('adminlte.right_sidebar', false)
+            && config('adminlte.right_sidebar_push', false);
+
+        if ($rightSidebarPush) {
             $classes[] = 'control-sidebar-push';
         }
 
@@ -258,7 +268,7 @@ class LayoutHelper
     }
 
     /**
-     * Make the set of classes related to custom body classes configuration.
+     * Makes the set of classes related to custom body classes configuration.
      *
      * @return array
      */
@@ -267,7 +277,7 @@ class LayoutHelper
         $classes = [];
         $cfg = config('adminlte.classes_body', '');
 
-        if (is_string($cfg) && $cfg) {
+        if (is_string($cfg) && ! empty($cfg)) {
             $classes[] = $cfg;
         }
 
@@ -275,7 +285,7 @@ class LayoutHelper
     }
 
     /**
-     * Make the set of classes related to the dark mode.
+     * Makes the set of classes related to the dark mode.
      *
      * @return array
      */
