@@ -154,14 +154,14 @@ class CommandHelper
     }
 
     /**
-     * Get the fully qualified path to some package resource.
+     * Gets the fully qualified path to the specified package resource.
      *
      * @param  string  $path  Relative path to the resource
-     * @return string Fully qualified path to the resource
+     * @return string
      */
     public static function getPackagePath($path = null)
     {
-        if (! $path) {
+        if (empty($path)) {
             return self::$packagePath;
         }
 
@@ -169,14 +169,14 @@ class CommandHelper
     }
 
     /**
-     * Get the fully qualified path to some package stub resource.
+     * Gets the fully qualified path to the specified package stub resource.
      *
      * @param  string  $path  Relative path to the stub resource
-     * @return string Fully qualified path to the stub resource
+     * @return string
      */
     public static function getStubPath($path = null)
     {
-        if (! $path) {
+        if (empty($path)) {
             return self::$stubsPath;
         }
 
@@ -184,16 +184,17 @@ class CommandHelper
     }
 
     /**
-     * Get the fully qualified path relative to the configured view path.
+     * Gets the fully qualified path to the specified view resource, relative to
+     * the configured view path.
      *
-     * @param  string  $path  Relative path to some view
-     * @return string Fully qualified path to the view
+     * @param  string  $path  Relative path to some view resource
+     * @return string
      */
     public static function getViewPath($path = null)
     {
         $basePath = config('view.paths')[0] ?? resource_path('views');
 
-        if (! $path) {
+        if (empty($path)) {
             return $basePath;
         }
 
@@ -201,7 +202,8 @@ class CommandHelper
     }
 
     /**
-     * Check if a file is included in a set of ignored file patterns.
+     * Checks if a file belongs to the set of specified file patterns to be
+     * ignored.
      *
      * @param  string  $file  The file to check
      * @param  array  $ignores  Array of file patterns to be ignored
@@ -210,9 +212,9 @@ class CommandHelper
     protected static function isIgnoredFile($file, $ignores)
     {
         foreach ($ignores as $pattern) {
-            $match = Str::startsWith($pattern, 'regex:') ?
-                     preg_match(Str::substr($pattern, 6), $file) :
-                     Str::is($pattern, $file);
+            $match = Str::startsWith($pattern, 'regex:')
+                ? preg_match(Str::substr($pattern, 6), $file)
+                : Str::is($pattern, $file);
 
             if ($match) {
                 return true;
