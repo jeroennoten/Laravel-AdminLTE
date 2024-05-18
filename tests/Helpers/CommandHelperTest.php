@@ -562,21 +562,6 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testRemoveDirectory()
-    {
-        // Create folder structure.
-
-        $this->createFolderStructure($this->sourceFolder);
-
-        // Remove the created folder.
-
-        if (File::isDirectory($this->sourceFolder)) {
-            CommandHelper::removeDirectory($this->sourceFolder);
-        }
-
-        $this->assertDirectoryDoesNotExist($this->sourceFolder);
-    }
-
     public function testGetPackagePath()
     {
         $this->assertEquals(

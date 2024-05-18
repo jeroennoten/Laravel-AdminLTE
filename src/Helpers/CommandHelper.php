@@ -138,30 +138,19 @@ class CommandHelper
     }
 
     /**
-     * Check if two files are equals by comparing sha1 hash values.
+     * Checks if two files are equals by comparing their hash values.
      *
-     * @param  string  $file1  The first file
-     * @param  string  $file2  The second file
+     * @param  string  $file1  The path to the first file
+     * @param  string  $file2  The path to the second file
      * @return bool
      */
     public static function compareFiles($file1, $file2)
     {
-        if (! is_file($file1) || ! is_file($file2)) {
+        if (! File::isFile($file1) || ! File::isFile($file2)) {
             return false;
         }
 
-        return sha1_file($file1) === sha1_file($file2);
-    }
-
-    /**
-     * Recursively delete a directory.
-     *
-     * @param  string  $dir  The directory to remove
-     * @return bool
-     */
-    public static function removeDirectory($dir)
-    {
-        return File::deleteDirectory($dir);
+        return File::hash($file1) === File::hash($file2);
     }
 
     /**

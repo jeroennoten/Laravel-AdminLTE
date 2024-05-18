@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class TranslationsResource extends PackageResource
@@ -52,7 +53,7 @@ class TranslationsResource extends PackageResource
         // Uninstall the translation files.
 
         if (is_dir($this->target)) {
-            CommandHelper::removeDirectory($this->target);
+            File::deleteDirectory($this->target);
         }
     }
 

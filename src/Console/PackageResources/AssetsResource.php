@@ -274,7 +274,7 @@ class AssetsResource extends PackageResource
         // Uninstall the asset (actually, the target should be a folder).
 
         if (is_dir($target)) {
-            CommandHelper::removeDirectory($target);
+            File::deleteDirectory($target);
         }
     }
 }

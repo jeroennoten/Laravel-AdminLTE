@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class PluginsResource extends PackageResource
@@ -495,7 +496,7 @@ class PluginsResource extends PackageResource
         $target = $res['target'];
 
         if (is_dir($target)) {
-            CommandHelper::removeDirectory($target);
+            File::deleteDirectory($target);
         }
     }
 }

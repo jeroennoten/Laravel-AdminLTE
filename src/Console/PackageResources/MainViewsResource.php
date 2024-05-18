@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class MainViewsResource extends PackageResource
@@ -51,7 +52,7 @@ class MainViewsResource extends PackageResource
         // Uninstall the package main views.
 
         if (is_dir($this->target)) {
-            CommandHelper::removeDirectory($this->target);
+            File::deleteDirectory($this->target);
         }
     }
 
