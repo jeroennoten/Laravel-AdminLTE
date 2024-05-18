@@ -62,45 +62,6 @@ class CommandHelperTest extends TestCase
         }
     }
 
-    public function testEnsureDirectoryExists()
-    {
-        // Ensure the folder do not exists.
-
-        $this->clearFolder($this->sourceFolder);
-        $this->assertDirectoryDoesNotExist($this->sourceFolder);
-
-        // Now, ensure the folder exists.
-
-        CommandHelper::ensureDirectoryExists($this->sourceFolder);
-
-        $this->assertDirectoryExists($this->sourceFolder);
-
-        // Clear the created folder.
-
-        $this->clearFolder($this->sourceFolder);
-    }
-
-    public function testEnsureDirectoryExistsWithSubfolders()
-    {
-        $folder = $this->sourceFolder.'/folder1/folder2';
-
-        // Ensure the root folder do not exists.
-
-        $this->clearFolder($this->sourceFolder);
-        $this->assertDirectoryDoesNotExist($this->sourceFolder);
-
-        // Now, ensure the subfolder exists.
-
-        CommandHelper::ensureDirectoryExists($folder);
-
-        $this->assertDirectoryExists($this->sourceFolder);
-        $this->assertDirectoryExists($folder);
-
-        // Clean the created folder.
-
-        $this->clearFolder($this->sourceFolder);
-    }
-
     public function testCopyDirectory()
     {
         // Create folder structure.

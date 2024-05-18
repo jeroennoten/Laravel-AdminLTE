@@ -8,33 +8,18 @@ use Illuminate\Support\Str;
 class CommandHelper
 {
     /**
-     * Path to the package root folder.
+     * The path to the package's root folder.
      *
      * @var string
      */
     protected static $packagePath = __DIR__.'/../../';
 
     /**
-     * Path to the package stubs folder.
+     * The path to the package's stubs folder.
      *
      * @var string
      */
     protected static $stubsPath = __DIR__.'/../Console/stubs';
-
-    /**
-     * Ensure a directory exists by creating it when needed.
-     *
-     * @param  string  $dir  The path of the directory
-     * @param  int  $mode  The directory access mode
-     * @param  bool  $recursive  Allow creating nested directories present in path
-     * @return void
-     */
-    public static function ensureDirectoryExists($dir, $mode = 0755, $recursive = true)
-    {
-        if (! is_dir($dir)) {
-            mkdir($dir, $mode, $recursive);
-        }
-    }
 
     /**
      * Copy an entire directory to a destination.
@@ -56,7 +41,7 @@ class CommandHelper
 
         // Ensure the destination folder exists.
 
-        self::ensureDirectoryExists($dest);
+        File::ensureDirectoryExists($dest);
 
         // Copy the source files to destination.
 
