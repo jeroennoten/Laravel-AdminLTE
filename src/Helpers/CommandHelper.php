@@ -73,11 +73,13 @@ class CommandHelper
 
             if (! $res) {
                 closedir($dirHandler);
+
                 return false;
             }
         }
 
         closedir($dirHandler);
+
         return true;
     }
 
@@ -133,11 +135,13 @@ class CommandHelper
 
             if (! $res) {
                 closedir($dirHandler);
+
                 return false;
             }
         }
 
         closedir($dirHandler);
+
         return true;
     }
 
