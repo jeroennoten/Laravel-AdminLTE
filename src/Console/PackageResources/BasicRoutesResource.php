@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class BasicRoutesResource extends PackageResource
@@ -48,7 +49,7 @@ class BasicRoutesResource extends PackageResource
 
         // Add the routes.
 
-        CommandHelper::ensureDirectoryExists(dirname($this->target));
+        File::ensureDirectoryExists(dirname($this->target));
         file_put_contents($this->target, $routes, FILE_APPEND);
     }
 

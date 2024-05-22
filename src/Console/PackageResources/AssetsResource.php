@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class AssetsResource extends PackageResource
@@ -190,7 +191,7 @@ class AssetsResource extends PackageResource
                 $res['ignore'] ?? []
             );
         } elseif (is_file($res['source'])) {
-            CommandHelper::ensureDirectoryExists(dirname($res['target']));
+            File::ensureDirectoryExists(dirname($res['target']));
             copy($res['source'], $res['target']);
         }
     }
@@ -273,7 +274,7 @@ class AssetsResource extends PackageResource
         // Uninstall the asset (actually, the target should be a folder).
 
         if (is_dir($target)) {
-            CommandHelper::removeDirectory($target);
+            File::deleteDirectory($target);
         }
     }
 }

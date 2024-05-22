@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class AuthViewsResource extends PackageResource
@@ -55,7 +56,7 @@ class AuthViewsResource extends PackageResource
 
         foreach ($this->source as $file => $content) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
-            CommandHelper::ensureDirectoryExists(dirname($target));
+            File::ensureDirectoryExists(dirname($target));
             file_put_contents($target, $content);
         }
     }

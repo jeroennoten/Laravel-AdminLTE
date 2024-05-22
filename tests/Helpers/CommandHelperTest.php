@@ -5,8 +5,29 @@ use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class CommandHelperTest extends TestCase
 {
-    protected $sourceFolder = 'test-folder';
-    protected $targetFolder = 'test-folder-copy';
+    /**
+     * Holds the source folder path that will be used during the tests.
+     *
+     * @var string
+     */
+    protected $sourceFolder;
+
+    /**
+     * Holds the target folder path that will be used during the tests.
+     *
+     * @var string
+     */
+    protected $targetFolder;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // Setup the source and target folders.
+
+        $this->sourceFolder = base_path('foo-folder');
+        $this->targetFolder = base_path('foo-folder-copy');
+    }
 
     protected function createFolderStructure($folder, $full = true)
     {
@@ -41,18 +62,6 @@ class CommandHelperTest extends TestCase
             $fileName = $folder.'/folder1/file4.bar';
             File::put($fileName, $fileName);
         }
-
-        // Check the structure is created.
-
-        $this->assertDirectoryExists($folder);
-        $this->assertFileExists($folder.'/file1.foo');
-        $this->assertDirectoryExists($folder.'/folder1');
-        $this->assertFileExists($folder.'/folder1/file3.foo');
-
-        if ($full) {
-            $this->assertFileExists($folder.'/file2.bar');
-            $this->assertFileExists($folder.'/folder1/file4.bar');
-        }
     }
 
     protected function clearFolder($folder)
@@ -62,55 +71,22 @@ class CommandHelperTest extends TestCase
         }
     }
 
-    public function testEnsureDirectoryExists()
-    {
-        // Ensure the folder do not exists.
-
-        $this->clearFolder($this->sourceFolder);
-        $this->assertDirectoryDoesNotExist($this->sourceFolder);
-
-        // Now, ensure the folder exists.
-
-        CommandHelper::ensureDirectoryExists($this->sourceFolder);
-
-        $this->assertDirectoryExists($this->sourceFolder);
-
-        // Clear the created folder.
-
-        $this->clearFolder($this->sourceFolder);
-    }
-
-    public function testEnsureDirectoryExistsWithSubfolders()
-    {
-        $folder = $this->sourceFolder.'/folder1/folder2';
-
-        // Ensure the root folder do not exists.
-
-        $this->clearFolder($this->sourceFolder);
-        $this->assertDirectoryDoesNotExist($this->sourceFolder);
-
-        // Now, ensure the subfolder exists.
-
-        CommandHelper::ensureDirectoryExists($folder);
-
-        $this->assertDirectoryExists($this->sourceFolder);
-        $this->assertDirectoryExists($folder);
-
-        // Clean the created folder.
-
-        $this->clearFolder($this->sourceFolder);
-    }
-
     public function testCopyDirectory()
     {
         // Create folder structure.
 
         $this->createFolderStructure($this->sourceFolder);
 
-        // Make a copy of the folder.
+        // Make a non recursive copy of the folder.
 
-        CommandHelper::copyDirectory($this->sourceFolder, $this->targetFolder);
+        $res = CommandHelper::copyDirectory(
+            $this->sourceFolder,
+            $this->targetFolder
+        );
 
+        // Make the assertions.
+
+        $this->assertTrue($res);
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileExists($this->targetFolder.'/file1.foo');
         $this->assertFileExists($this->targetFolder.'/file2.bar');
@@ -126,36 +102,92 @@ class CommandHelperTest extends TestCase
 
     public function testCopyDirectoryWhenSourceNotExists()
     {
-        // Make a copy of the folder.
+        // Try to make a copy of a folder that does not exists.
 
-        CommandHelper::copyDirectory($this->sourceFolder, $this->targetFolder);
+        $res = CommandHelper::copyDirectory(
+            $this->sourceFolder,
+            $this->targetFolder
+        );
 
+        // Make the assertions.
+
+        $this->assertFalse($res);
         $this->assertDirectoryDoesNotExist($this->sourceFolder);
         $this->assertDirectoryDoesNotExist($this->targetFolder);
     }
 
-    public function testCopyDirectoryWhenSourceRestricted()
+    public function testCopyDirectoryWithoutHavingReadPermissions()
     {
         // Create folder structure.
 
         $this->createFolderStructure($this->sourceFolder);
         chmod($this->sourceFolder, 0300);
 
-        // Make a copy of the folder.
+        // Try to make a copy of the folder.
 
-        CommandHelper::copyDirectory($this->sourceFolder, $this->targetFolder);
+        $res = CommandHelper::copyDirectory(
+            $this->sourceFolder,
+            $this->targetFolder
+        );
 
+        // Make assertions.
+
+        $this->assertFalse($res);
         $this->assertDirectoryExists($this->sourceFolder);
         $this->assertDirectoryDoesNotExist($this->targetFolder);
 
+        // Clear the created folders.
+
+        chmod($this->sourceFolder, 0777);
+        $this->clearFolder($this->sourceFolder);
+    }
+
+    public function testCopyDirectoryWhenSubFolderIsRestricted()
+    {
+        // Create folder structure.
+
+        $this->createFolderStructure($this->sourceFolder);
+        chmod($this->sourceFolder.'/folder1', 0300);
+
+        // Try to make a copy of the folder.
+
+        $res = CommandHelper::copyDirectory(
+            $this->sourceFolder,
+            $this->targetFolder,
+            false,
+            true
+        );
+
+        // Make assertions.
+
+        $this->assertFalse($res);
+        $this->assertDirectoryExists($this->sourceFolder);
+        $this->assertDirectoryExists($this->targetFolder);
+        $this->assertDirectoryDoesNotExist($this->targetFolder.'/folder1');
+
+        // Clear the created folders.
+
+        chmod($this->sourceFolder.'/folder1', 0777);
+        $this->clearFolder($this->sourceFolder);
+        $this->clearFolder($this->targetFolder);
+    }
+
+    public function testCopyDirectoryUsingFileAsSource()
+    {
+        // Create folder structure.
+
+        $this->createFolderStructure($this->sourceFolder);
+
         // Try to copy a file.
 
-        chmod($this->sourceFolder, 0755);
-        CommandHelper::copyDirectory(
+        $res = CommandHelper::copyDirectory(
             $this->sourceFolder.'/file1.foo',
             $this->targetFolder
         );
 
+        // Make assertions.
+
+        $this->assertFalse($res);
         $this->assertDirectoryExists($this->sourceFolder);
         $this->assertDirectoryDoesNotExist($this->targetFolder);
 
@@ -164,7 +196,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->sourceFolder);
     }
 
-    public function testCopyDirectoryRecursive()
+    public function testCopyDirectoryWithRecursiveFlag()
     {
         // Create folder structure.
 
@@ -172,12 +204,16 @@ class CommandHelperTest extends TestCase
 
         // Make a copy of the folder.
 
-        CommandHelper::copyDirectory(
+        $res = CommandHelper::copyDirectory(
             $this->sourceFolder,
             $this->targetFolder,
-            false, true
+            false,
+            true
         );
 
+        // Make assertions.
+
+        $this->assertTrue($res);
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileExists($this->targetFolder.'/file1.foo');
         $this->assertFileExists($this->targetFolder.'/file2.bar');
@@ -191,7 +227,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCopyDirectoryWithoutForce()
+    public function testCopyDirectoryWithoutForceFlag()
     {
         // Create folder structure.
 
@@ -203,12 +239,16 @@ class CommandHelperTest extends TestCase
 
         // Make a copy of the folder.
 
-        CommandHelper::copyDirectory(
+        $res = CommandHelper::copyDirectory(
             $this->sourceFolder,
             $this->targetFolder,
-            false, true
+            false,
+            true
         );
 
+        // Make assertions.
+
+        $this->assertTrue($res);
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileExists($this->targetFolder.'/file1.foo');
         $this->assertFileExists($this->targetFolder.'/file2.bar');
@@ -242,7 +282,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCopyDirectoryWithForce()
+    public function testCopyDirectoryWithForceFlag()
     {
         // Create folder structure.
 
@@ -254,12 +294,16 @@ class CommandHelperTest extends TestCase
 
         // Make a copy of the folder.
 
-        CommandHelper::copyDirectory(
+        $res = CommandHelper::copyDirectory(
             $this->sourceFolder,
             $this->targetFolder,
-            true, true
+            true,
+            true
         );
 
+        // Make assertions.
+
+        $this->assertTrue($res);
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileExists($this->targetFolder.'/file1.foo');
         $this->assertFileExists($this->targetFolder.'/file2.bar');
@@ -302,12 +346,17 @@ class CommandHelperTest extends TestCase
         // Make a copy of the folder.
 
         $ignores = ['file2.bar', 'file4.bar'];
-        CommandHelper::copyDirectory(
+        $res = CommandHelper::copyDirectory(
             $this->sourceFolder,
             $this->targetFolder,
-            true, true, $ignores
+            true,
+            true,
+            $ignores
         );
 
+        // Make assertions.
+
+        $this->assertTrue($res);
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileExists($this->targetFolder.'/file1.foo');
         $this->assertFileDoesNotExist($this->targetFolder.'/file2.bar');
@@ -330,12 +379,17 @@ class CommandHelperTest extends TestCase
         // Make a copy of the folder.
 
         $ignores = ['*.bar', 'file1.*'];
-        CommandHelper::copyDirectory(
+        $res = CommandHelper::copyDirectory(
             $this->sourceFolder,
             $this->targetFolder,
-            true, true, $ignores
+            true,
+            true,
+            $ignores
         );
 
+        // Make assertions.
+
+        $this->assertTrue($res);
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileDoesNotExist($this->targetFolder.'/file1.foo');
         $this->assertFileDoesNotExist($this->targetFolder.'/file2.bar');
@@ -358,12 +412,17 @@ class CommandHelperTest extends TestCase
         // Make a copy of the folder.
 
         $ignores = ['regex:@file[1,3].*@'];
-        CommandHelper::copyDirectory(
+        $res = CommandHelper::copyDirectory(
             $this->sourceFolder,
             $this->targetFolder,
-            true, true, $ignores
+            true,
+            true,
+            $ignores
         );
 
+        // Make assertions.
+
+        $this->assertTrue($res);
         $this->assertDirectoryExists($this->targetFolder);
         $this->assertFileDoesNotExist($this->targetFolder.'/file1.foo');
         $this->assertFileExists($this->targetFolder.'/file2.bar');
@@ -377,7 +436,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCompareDirectoriesWhenEqual()
+    public function testCompareEqualDirectories()
     {
         // Create folder structure.
 
@@ -408,7 +467,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCompareDirectoriesWhenNotEquals()
+    public function testCompareDistinctDirectories()
     {
         // Create folder structure.
 
@@ -436,7 +495,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCompareDirectoriesWhenDestinyNotExists()
+    public function testCompareDirectoriesWhenDirDoesNotExists()
     {
         // Compare the directories without recursion.
 
@@ -463,7 +522,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCompareDirectoriesWhenBasicFilesIgnored()
+    public function testCompareDirectoriesWithBasicFilesIgnored()
     {
         // Create folder structure.
 
@@ -500,7 +559,7 @@ class CommandHelperTest extends TestCase
             ['file1.foo']
         ));
 
-        // Compare the directories with recursion ignoring files.
+        // Compare the directories with recursion ignoring all distinct files.
 
         $this->assertTrue(CommandHelper::compareDirectories(
             $this->sourceFolder,
@@ -515,7 +574,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCompareDirectoriesWhenWildcardFilesIgnored()
+    public function testCompareDirectoriesWithWildcardFilesIgnored()
     {
         // Create folder structure.
 
@@ -543,7 +602,7 @@ class CommandHelperTest extends TestCase
             ['*.foo']
         ));
 
-        // Compare the directories with recursion ignoring files.
+        // Compare the directories with recursion ignoring all distinct files.
 
         $this->assertTrue(CommandHelper::compareDirectories(
             $this->sourceFolder,
@@ -558,7 +617,7 @@ class CommandHelperTest extends TestCase
         $this->clearFolder($this->targetFolder);
     }
 
-    public function testCompareDirectoriesWhenRegexFilesIgnored()
+    public function testCompareDirectoriesWithRegexFilesIgnored()
     {
         // Create folder structure.
 
@@ -586,7 +645,7 @@ class CommandHelperTest extends TestCase
             ['regex:/file.*foo/']
         ));
 
-        // Compare the directories with recursion ignoring files.
+        // Compare the directories with recursion ignoring all distinct files.
 
         $this->assertTrue(CommandHelper::compareDirectories(
             $this->sourceFolder,
@@ -599,21 +658,6 @@ class CommandHelperTest extends TestCase
 
         $this->clearFolder($this->sourceFolder);
         $this->clearFolder($this->targetFolder);
-    }
-
-    public function testRemoveDirectory()
-    {
-        // Create folder structure.
-
-        $this->createFolderStructure($this->sourceFolder);
-
-        // Remove the created folder.
-
-        if (File::isDirectory($this->sourceFolder)) {
-            CommandHelper::removeDirectory($this->sourceFolder);
-        }
-
-        $this->assertDirectoryDoesNotExist($this->sourceFolder);
     }
 
     public function testGetPackagePath()

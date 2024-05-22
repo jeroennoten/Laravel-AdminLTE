@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
@@ -62,7 +63,7 @@ class CommandTestCase extends TestCase
 
         if ($resName === 'assets') {
             $target = $target.DIRECTORY_SEPARATOR.'adminlte';
-            CommandHelper::EnsureDirectoryExists($target);
+            File::EnsureDirectoryExists($target);
         } elseif ($resName === 'config') {
             $this->createDummyFile($target);
         } elseif ($resName === 'translations') {
@@ -94,7 +95,7 @@ class CommandTestCase extends TestCase
     protected function createDummyFile($filePath, $content = null)
     {
         $content = $content ?? 'dummy-content';
-        CommandHelper::ensureDirectoryExists(dirname($filePath));
+        File::ensureDirectoryExists(dirname($filePath));
         file_put_contents($filePath, $content);
     }
 

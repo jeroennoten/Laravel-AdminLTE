@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class BasicViewsResource extends PackageResource
@@ -50,7 +51,7 @@ class BasicViewsResource extends PackageResource
 
         foreach ($this->source as $file => $stub) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
-            CommandHelper::ensureDirectoryExists(dirname($target));
+            File::ensureDirectoryExists(dirname($target));
             copy(CommandHelper::getStubPath($stub), $target);
         }
     }

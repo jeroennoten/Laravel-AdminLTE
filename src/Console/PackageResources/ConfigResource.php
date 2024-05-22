@@ -2,6 +2,7 @@
 
 namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
 class ConfigResource extends PackageResource
@@ -38,7 +39,7 @@ class ConfigResource extends PackageResource
     {
         // Install the configuration file.
 
-        CommandHelper::ensureDirectoryExists(dirname($this->target));
+        File::ensureDirectoryExists(dirname($this->target));
         copy($this->source, $this->target);
     }
 

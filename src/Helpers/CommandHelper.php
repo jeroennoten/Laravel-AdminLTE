@@ -8,97 +8,99 @@ use Illuminate\Support\Str;
 class CommandHelper
 {
     /**
-     * Path to the package root folder.
+     * The path to the package's root folder.
      *
      * @var string
      */
     protected static $packagePath = __DIR__.'/../../';
 
     /**
-     * Path to the package stubs folder.
+     * The path to the package's stubs folder.
      *
      * @var string
      */
     protected static $stubsPath = __DIR__.'/../Console/stubs';
 
     /**
-     * Ensure a directory exists by creating it when needed.
+     * Copies a directory to the specified destination. Returns whether the
+     * directory could be copied successfully.
      *
-     * @param  string  $dir  The path of the directory
-     * @param  int  $mode  The directory access mode
-     * @param  bool  $recursive  Allow creating nested directories present in path
-     * @return void
-     */
-    public static function ensureDirectoryExists($dir, $mode = 0755, $recursive = true)
-    {
-        if (! is_dir($dir)) {
-            mkdir($dir, $mode, $recursive);
-        }
-    }
-
-    /**
-     * Copy an entire directory to a destination.
-     *
-     * @param  string  $dir  The path of the source folder
-     * @param  string  $dest  The path of the destination folder
+     * @param  string  $directory  The path of the directory to be copied
+     * @param  string  $destination  The path of the destination folder
      * @param  bool  $force  Whether to force the overwrite of existing files
      * @param  bool  $recursive  Whether to copy subfolders recursively
-     * @param  array  $ignores  Array of files to be ignored
-     * @return void
+     * @param  array  $ignores  An array of name patterns to ignore while copying
+     * @return bool
      */
-    public static function copyDirectory($dir, $dest, $force = false, $recursive = false, $ignores = [])
-    {
-        // Open the source folder. Return if fails to open.
+    public static function copyDirectory(
+        $directory,
+        $destination,
+        $force = false,
+        $recursive = false,
+        $ignores = []
+    ) {
+        // Check if we can open the source folder.
 
-        if (! is_resource($dirHandler = @opendir($dir))) {
-            return;
+        if (! is_resource($dirHandler = @opendir($directory))) {
+            return false;
         }
 
         // Ensure the destination folder exists.
 
-        self::ensureDirectoryExists($dest);
+        File::ensureDirectoryExists($destination);
 
-        // Copy the source files to destination.
+        // Copy the folder to the destination. Note we will skip dots items.
 
-        while (($file = readdir($dirHandler)) !== false) {
-            // Check if this file should be ignored.
+        $avoids = array_merge($ignores, ['.', '..']);
 
-            $filesToIgnore = array_merge($ignores, ['.', '..']);
+        while (($item = readdir($dirHandler)) !== false) {
+            $s = $directory.DIRECTORY_SEPARATOR.$item;
+            $t = $destination.DIRECTORY_SEPARATOR.$item;
 
-            if (self::isIgnoredFile($file, $filesToIgnore)) {
+            // Check if this item should be copied or ignored.
+
+            if (! self::shouldCopyItem($s, $t, $force, $recursive, $avoids)) {
                 continue;
             }
 
-            // Now, copy the file/folder. If the resource is a folder, proceed
-            // recursively. Otherwise, copy the file to destination.
+            // Finally, copy the file/folder to destination. If the item is a
+            // folder we proceed recursively. Otherwise, copy the file to the
+            // destination.
 
-            $source = $dir.DIRECTORY_SEPARATOR.$file;
-            $target = $dest.DIRECTORY_SEPARATOR.$file;
+            $res = File::isDirectory($s)
+                ? self::copyDirectory($s, $t, $force, $recursive, $ignores)
+                : File::copy($s, $t);
 
-            if (is_dir($source) && $recursive) {
-                self::copyDirectory($source, $target, $force, $recursive, $ignores);
-            } elseif (is_file($source) && ($force || ! file_exists($target))) {
-                copy($source, $target);
+            if (! $res) {
+                closedir($dirHandler);
+
+                return false;
             }
         }
 
-        // Close the source folder.
-
         closedir($dirHandler);
+
+        return true;
     }
 
     /**
-     * Compare two directories file by file.
+     * Compares two directories file by file. Returns a boolean indicating
+     * whether the two directories are equal, or null when one of the
+     * directories does not exists.
      *
      * @param  string  $dir1  The path of the first folder
      * @param  string  $dir2  The path of the second folder
      * @param  bool  $recursive  Whether to compare subfolders recursively
-     * @param  array  $ignores  Array of files to be ignored
-     * @return bool|null Result of comparison or null if a folder not exists
+     * @param  array  $ignores  An array of name patterns to ignore while comparing
+     * @return bool|null
      */
-    public static function compareDirectories($dir1, $dir2, $recursive = false, $ignores = [])
-    {
-        // Open the first folder. Return if fails to open.
+    public static function compareDirectories(
+        $dir1,
+        $dir2,
+        $recursive = false,
+        $ignores = []
+    ) {
+        // Check if we can open the first folder.
 
         if (! is_resource($dirHandler = @opendir($dir1))) {
             return;
@@ -110,84 +112,64 @@ class CommandHelper
             return;
         }
 
-        // Now, compare the folders.
+        // Now, compare the folders. Note we will skip dots items.
 
-        while (($file = readdir($dirHandler)) !== false) {
-            // Check if this file should be ignored.
+        $avoids = array_merge($ignores, ['.', '..']);
 
-            $filesToIgnore = array_merge($ignores, ['.', '..']);
+        while (($item = readdir($dirHandler)) !== false) {
+            $s = $dir1.DIRECTORY_SEPARATOR.$item;
+            $t = $dir2.DIRECTORY_SEPARATOR.$item;
 
-            if (self::isIgnoredFile($file, $filesToIgnore)) {
+            // Check if this item should be compared or ignored.
+
+            if (! self::shouldCompareItem($s, $recursive, $avoids)) {
                 continue;
             }
 
-            // Get paths of the resources to compare.
+            // Finally, compare the files/folders. If the item to compare is a
+            // folder we proceed recursively.
 
-            $source = $dir1.DIRECTORY_SEPARATOR.$file;
-            $target = $dir2.DIRECTORY_SEPARATOR.$file;
+            $res = File::isDirectory($s)
+                ? (bool) self::compareDirectories($s, $t, $recursive, $ignores)
+                : self::compareFiles($s, $t);
 
-            // If the resources to compare are files, check that both files are
-            // equals.
+            if (! $res) {
+                closedir($dirHandler);
 
-            if (is_file($source) && ! self::compareFiles($source, $target)) {
-                return false;
-            }
-
-            // If the resources to compare are folders, recursively compare the
-            // folders.
-
-            $isDir = is_dir($source) && $recursive;
-
-            if ($isDir && ! (bool) self::compareDirectories($source, $target, $recursive, $ignores)) {
                 return false;
             }
         }
 
-        // Close the opened folder.
-
         closedir($dirHandler);
-
-        // At this point all the resources compared are equals.
 
         return true;
     }
 
     /**
-     * Check if two files are equals by comparing sha1 hash values.
+     * Checks if two files are equals by comparing their hash values.
      *
-     * @param  string  $file1  The first file
-     * @param  string  $file2  The second file
+     * @param  string  $file1  The path to the first file
+     * @param  string  $file2  The path to the second file
      * @return bool
      */
     public static function compareFiles($file1, $file2)
     {
-        if (! is_file($file1) || ! is_file($file2)) {
+        if (! File::isFile($file1) || ! File::isFile($file2)) {
             return false;
         }
 
-        return sha1_file($file1) === sha1_file($file2);
+        return File::hash($file1) === File::hash($file2);
     }
 
     /**
-     * Recursively delete a directory.
-     *
-     * @param  string  $dir  The directory to remove
-     * @return bool
-     */
-    public static function removeDirectory($dir)
-    {
-        return File::deleteDirectory($dir);
-    }
-
-    /**
-     * Get the fully qualified path to some package resource.
+     * Gets the fully qualified path to the specified package resource.
      *
      * @param  string  $path  Relative path to the resource
-     * @return string Fully qualified path to the resource
+     * @return string
      */
     public static function getPackagePath($path = null)
     {
-        if (! $path) {
+        if (empty($path)) {
             return self::$packagePath;
         }
 
@@ -195,14 +177,14 @@ class CommandHelper
     }
 
     /**
-     * Get the fully qualified path to some package stub resource.
+     * Gets the fully qualified path to the specified package stub resource.
      *
      * @param  string  $path  Relative path to the stub resource
-     * @return string Fully qualified path to the stub resource
+     * @return string
      */
     public static function getStubPath($path = null)
     {
-        if (! $path) {
+        if (empty($path)) {
             return self::$stubsPath;
         }
 
@@ -210,16 +192,17 @@ class CommandHelper
     }
 
     /**
-     * Get the fully qualified path relative to the configured view path.
+     * Gets the fully qualified path to the specified view resource, relative to
+     * the configured view path.
      *
-     * @param  string  $path  Relative path to some view
-     * @return string Fully qualified path to the view
+     * @param  string  $path  Relative path to some view resource
+     * @return string
      */
     public static function getViewPath($path = null)
     {
         $basePath = config('view.paths')[0] ?? resource_path('views');
 
-        if (! $path) {
+        if (empty($path)) {
             return $basePath;
         }
 
@@ -227,18 +210,71 @@ class CommandHelper
     }
 
     /**
-     * Check if a file is included in a set of ignored file patterns.
+     * Checks whether an item (file or folder) should be copied to the
+     * specified destination by analyzing the recursive and force flags, and a
+     * set of item name patterns to be ignored.
      *
-     * @param  string  $file  The file to check
-     * @param  array  $ignores  Array of file patterns to be ignored
+     * @param  string  $s  The source item path
+     * @param  string  $t  The target destination path
+     * @param  bool  $fFlag  The value of the force flag
+     * @param  bool  $rFlag  The value of the recursive flag
+     * @param  array  $ignores  An array of name patterns to be ignored
      * @return bool
      */
-    protected static function isIgnoredFile($file, $ignores)
+    protected static function shouldCopyItem($s, $t, $fFlag, $rFlag, $ignores)
+    {
+        // At first, we should copy the item when it's a directoy and the
+        // recursive flag is set, or when it's a file and the target path does
+        // not exists or the force flag is set.
+
+        $shouldCopy = File::isDirectory($s)
+            ? $rFlag
+            : (! File::exists($t) || $fFlag);
+
+        // Then we should also check the item name does not match any of the
+        // ignore patterns.
+
+        return $shouldCopy
+            && ! self::isIgnoredItem(File::basename($s), $ignores);
+    }
+
+    /**
+     * Checks whether an item (file or folder) should be compared by analyzing
+     * the recursive flag, and a set of item name patterns to be ignored.
+     *
+     * @param  string  $s  The source item path
+     * @param  bool  $rFlag  The value of the recursive flag
+     * @param  array  $ignores  An array of name patterns to be ignored
+     * @return bool
+     */
+    protected static function shouldCompareItem($s, $rFlag, $ignores)
+    {
+        // At first, we should compare the item when it's a file or when it's
+        // a directory and the recursive flag is set.
+
+        $shouldCompare = File::isFile($s) || $rFlag;
+
+        // Then we should also check that the item name does not match any of
+        // the ignore patterns.
+
+        return $shouldCompare
+            && ! self::isIgnoredItem(File::basename($s), $ignores);
+    }
+
+    /**
+     * Checks if the name of a folder or file belongs to a set of specified
+     * patterns to be ignored.
+     *
+     * @param  string  $name  The name of the folder or file to verify
+     * @param  array  $ignores  An array of name patterns to be ignored
+     * @return bool
+     */
+    protected static function isIgnoredItem($name, $ignores)
     {
         foreach ($ignores as $pattern) {
-            $match = Str::startsWith($pattern, 'regex:') ?
-                     preg_match(Str::substr($pattern, 6), $file) :
-                     Str::is($pattern, $file);
+            $match = Str::startsWith($pattern, 'regex:')
+                ? preg_match(Str::substr($pattern, 6), $name)
+                : Str::is($pattern, $name);
 
             if ($match) {
                 return true;
