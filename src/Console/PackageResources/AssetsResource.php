@@ -100,7 +100,7 @@ class AssetsResource extends PackageResource
         foreach ($this->source as $asset) {
             if (! $this->installAsset($asset)) {
                 return false;
-            };
+            }
         }
 
         return true;
