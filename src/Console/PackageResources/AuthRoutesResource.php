@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
-class BasicRoutesResource extends PackageResource
+class AuthRoutesResource extends PackageResource
 {
     /**
      * Create a new resource instance.
@@ -51,7 +51,7 @@ class BasicRoutesResource extends PackageResource
 
         File::ensureDirectoryExists(File::dirname($this->target));
 
-        return File::put($this->target, $routes, FILE_APPEND);
+        return (bool) File::append($this->target, $routes);
     }
 
     /**
@@ -71,7 +71,7 @@ class BasicRoutesResource extends PackageResource
             $targetContent = File::get($this->target);
             $targetContent = str_replace($routes, '', $targetContent);
 
-            return File::put($this->target, $targetContent);
+            return (bool) File::put($this->target, $targetContent);
         }
 
         return false;

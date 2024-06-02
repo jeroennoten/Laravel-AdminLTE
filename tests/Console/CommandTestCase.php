@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
@@ -36,7 +36,7 @@ class CommandTestCase extends TestCase
                 'main_views' => new MainViewsResource(),
                 'auth_views' => new AuthViewsResource(),
                 'basic_views' => new BasicViewsResource(),
-                'basic_routes' => new BasicRoutesResource(),
+                'basic_routes' => new AuthRoutesResource(),
             ];
         }
 
