@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
@@ -74,7 +73,6 @@ class AdminLteStatusCommand extends Command
             'translations' => new TranslationsResource(),
             'main_views' => new MainViewsResource(),
             'auth_views' => new AuthViewsResource(),
-            'basic_views' => new BasicViewsResource(),
             'basic_routes' => new AuthRoutesResource(),
         ];
     }

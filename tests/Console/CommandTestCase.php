@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
@@ -35,7 +34,6 @@ class CommandTestCase extends TestCase
                 'translations' => new TranslationsResource(),
                 'main_views' => new MainViewsResource(),
                 'auth_views' => new AuthViewsResource(),
-                'basic_views' => new BasicViewsResource(),
                 'basic_routes' => new AuthRoutesResource(),
             ];
         }
@@ -74,9 +72,6 @@ class CommandTestCase extends TestCase
             $this->createDummyFile($target);
         } elseif ($resName === 'auth_views') {
             $target = $target.DIRECTORY_SEPARATOR.'login.blade.php';
-            $this->createDummyFile($target);
-        } elseif ($resName === 'basic_views') {
-            $target = $target.DIRECTORY_SEPARATOR.'home.blade.php';
             $this->createDummyFile($target);
         } elseif ($resName === 'basic_routes') {
             $stubFile = CommandHelper::getStubPath('routes.stub');

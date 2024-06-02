@@ -6,7 +6,6 @@ use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
@@ -20,8 +19,8 @@ class AdminLteInstallCommand extends Command
      */
     protected $signature = 'adminlte:install
         {--type=basic : The installation type: basic (default), enhanced or full}
-        {--only=* : To install only specific resources: assets, config, translations, auth_views, basic_views, basic_routes or main_views. Can\'t be used with option --with}
-        {--with=* : To install with additional resources: auth_views, basic_views, basic_routes or main_views}
+        {--only=* : To install only specific resources: assets, config, translations, auth_views, basic_routes or main_views. Can\'t be used with option --with}
+        {--with=* : To install with additional resources: auth_views, basic_routes or main_views}
         {--force : To force the overwrite of existing files}
         {--interactive : The installation will guide you through the process}';
 
@@ -84,7 +83,6 @@ class AdminLteInstallCommand extends Command
             'translations' => new TranslationsResource(),
             'main_views' => new MainViewsResource(),
             'auth_views' => new AuthViewsResource(),
-            'basic_views' => new BasicViewsResource(),
             'basic_routes' => new AuthRoutesResource(),
         ];
 
@@ -92,7 +90,7 @@ class AdminLteInstallCommand extends Command
 
         $basic = ['assets', 'config', 'translations'];
         $enhanced = array_merge($basic, ['auth_views']);
-        $full = array_merge($enhanced, ['basic_views', 'basic_routes']);
+        $full = array_merge($enhanced, ['basic_routes']);
 
         $this->optTypeResources = [
             'basic' => $basic,
@@ -108,7 +106,6 @@ class AdminLteInstallCommand extends Command
             'translations' => ['translations'],
             'main_views' => ['main_views'],
             'auth_views' => ['auth_views'],
-            'basic_views' => ['basic_views'],
             'basic_routes' => ['basic_routes'],
         ];
 
@@ -117,7 +114,6 @@ class AdminLteInstallCommand extends Command
         $this->optWithResources = [
             'main_views' => ['main_views'],
             'auth_views' => ['auth_views'],
-            'basic_views' => ['basic_views'],
             'basic_routes' => ['basic_routes'],
         ];
     }

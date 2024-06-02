@@ -285,7 +285,6 @@ class InstallTest extends CommandTestCase
             $this->getResources('config'),
             $this->getResources('translations'),
             $this->getResources('auth_views'),
-            $this->getResources('basic_views'),
             $this->getResources('basic_routes'),
         ];
 
@@ -330,7 +329,7 @@ class InstallTest extends CommandTestCase
             $this->getResources('translations'),
         ];
 
-        $newRes = ['main_views', 'auth_views', 'basic_views', 'basic_routes'];
+        $newRes = ['main_views', 'auth_views', 'basic_routes'];
 
         // Ensure the required vendor assets exists.
 
