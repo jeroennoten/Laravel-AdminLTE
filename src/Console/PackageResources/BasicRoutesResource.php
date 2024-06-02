@@ -16,7 +16,7 @@ class BasicRoutesResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->description = 'The package routes';
+        $this->description = 'A set of routes for the Laravel/UI auth scaffolding';
         $this->source = CommandHelper::getStubPath('routes.stub');
         $this->target = base_path('routes/web.php');
         $this->required = false;
@@ -24,77 +24,77 @@ class BasicRoutesResource extends PackageResource
         // Fill the installation messages.
 
         $this->messages = [
-            'install' => 'Install the basic package routes?',
-            'overwrite' => 'Basic routes are already installed. Want to install they again?',
-            'success' => 'Basic routes installed successfully.',
+            'install' => 'Do you want to publish the Laravel/UI auth routes?',
+            'overwrite' => 'The auth routes were already published. Want to publish again?',
+            'success' => 'Auth routes published successfully.',
         ];
     }
 
     /**
-     * Install/Export the resource.
+     * Installs or publishes the resource.
      *
-     * @return void
+     * @return bool
      */
     public function install()
     {
-        // If routes already exists, there is no need to install again.
+        // If the routes already exists, we won't publish they again.
 
         if ($this->exists()) {
-            return;
+            return true;
         }
 
-        // Get the routes to install.
+        // Get the set of routes to publish.
 
-        $routes = file_get_contents($this->source);
+        $routes = File::get($this->source);
 
-        // Add the routes.
+        // Add the routes to the web routes file.
 
-        File::ensureDirectoryExists(dirname($this->target));
-        file_put_contents($this->target, $routes, FILE_APPEND);
+        File::ensureDirectoryExists(File::dirname($this->target));
+
+        return File::put($this->target, $routes, FILE_APPEND);
     }
 
     /**
-     * Uninstall/Remove the resource.
+     * Uninstalls the resource.
      *
-     * @return void
+     * @return bool
      */
     public function uninstall()
     {
-        $routes = file_get_contents($this->source);
+        // Get the set of routes to be removed.
 
-        // If the target routes file exists, remove the package routes.
+        $routes = File::get($this->source);
 
-        if (is_file($this->target)) {
-            $targetContent = file_get_contents($this->target);
+        // If the target routes file exists, then remove the auth routes.
+
+        if (File::isFile($this->target)) {
+            $targetContent = File::get($this->target);
             $targetContent = str_replace($routes, '', $targetContent);
-            file_put_contents($this->target, $targetContent);
+            return File::put($this->target, $targetContent);
         }
+
+        return false;
     }
 
     /**
-     * Check if the resource already exists on the target destination.
+     * Checks whether the resource already exists in the target location.
      *
      * @return bool
      */
     public function exists()
     {
-        $routes = file_get_contents($this->source);
+        $routes = File::get($this->source);
 
-        // First, check if the target routes file exists.
+        // Check whether the target routes file exists and contains the
+        // expected routes.
 
-        if (! is_file($this->target)) {
-            return false;
-        }
-
-        // Now, check if the target file already contains the routes.
-
-        $targetContent = file_get_contents($this->target);
-
-        return strpos($targetContent, $routes) !== false;
+        return File::isFile($this->target)
+            && (strpos(File::get($this->target), $routes) !== false);
     }
 
     /**
-     * Check if the resource is correctly installed.
+     * Checks whether the resource is correctly installed, i.e. if the source
+     * items matches with the items available at the target location.
      *
      * @return bool
      */
