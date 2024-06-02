@@ -70,6 +70,7 @@ class BasicRoutesResource extends PackageResource
         if (File::isFile($this->target)) {
             $targetContent = File::get($this->target);
             $targetContent = str_replace($routes, '', $targetContent);
+
             return File::put($this->target, $targetContent);
         }
 
