@@ -325,8 +325,8 @@ class AdminLtePluginCommand extends Command
     {
         // Customize the output messages.
 
-        $confirmMsg = $this->plugins->getInstallMessage('install');
-        $overwriteMsg = $this->plugins->getInstallMessage('overwrite');
+        $confirmMsg = $this->plugins->getInstallMessage('install') ?? '';
+        $overwriteMsg = $this->plugins->getInstallMessage('overwrite') ?? '';
 
         $confirmMsg = strtr($confirmMsg, [':plugin' => $pluginKey]);
         $overwriteMsg = strtr($overwriteMsg, [':plugin' => $pluginKey]);
@@ -420,7 +420,7 @@ class AdminLtePluginCommand extends Command
     {
         // Customize the output messages.
 
-        $confirmMsg = $this->plugins->getInstallMessage('remove');
+        $confirmMsg = $this->plugins->getInstallMessage('remove') ?? '';
         $confirmMsg = strtr($confirmMsg, [':plugin' => $pluginKey]);
 
         // Check if the plugin is valid.
