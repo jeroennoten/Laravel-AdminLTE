@@ -3,7 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
@@ -69,7 +69,7 @@ class AdminLteStatusCommand extends Command
         // Fill the array with the package resources.
 
         $this->pkgResources = [
-            'assets' => new AssetsResource(),
+            'assets' => new AdminlteAssetsResource(),
             'config' => new ConfigResource(),
             'translations' => new TranslationsResource(),
             'main_views' => new MainViewsResource(),

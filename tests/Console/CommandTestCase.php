@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\File;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
@@ -30,7 +30,7 @@ class CommandTestCase extends TestCase
     {
         if (! isset($this->resources)) {
             $this->resources = [
-                'assets' => new AssetsResource(),
+                'assets' => new AdminlteAssetsResource(),
                 'config' => new ConfigResource(),
                 'translations' => new TranslationsResource(),
                 'main_views' => new MainViewsResource(),

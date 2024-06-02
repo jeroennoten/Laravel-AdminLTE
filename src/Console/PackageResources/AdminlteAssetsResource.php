@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
-class AssetsResource extends PackageResource
+class AdminlteAssetsResource extends PackageResource
 {
     /**
      * Create a new resource instance.
@@ -275,7 +275,7 @@ class AssetsResource extends PackageResource
      * Uninstalls the specified asset.
      *
      * @param  array  $asset  An array with the asset data
-     * @return void
+     * @return bool
      */
     protected function uninstallAsset($asset)
     {
