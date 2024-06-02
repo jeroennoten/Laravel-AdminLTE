@@ -8,7 +8,8 @@ use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 class AuthViewsResource extends PackageResource
 {
     /**
-     * Array with the replacement content of the authentication views.
+     * Array with the replacement content for the authentication views of the
+     * legacy Laravel/UI package.
      *
      * @var array
      */
@@ -30,7 +31,7 @@ class AuthViewsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->description = 'The default package authentication views';
+        $this->description = 'AdminLTE styled auth views to replace the Laravel/UI ones';
         $this->source = $this->authViewsContent;
         $this->target = CommandHelper::getViewPath('auth');
         $this->required = false;
@@ -38,60 +39,68 @@ class AuthViewsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install' => 'Install the AdminLTE authentication views?',
-            'overwrite' => 'The authentication views already exists. Want to replace the views?',
-            'success' => 'Authentication views installed successfully.',
+            'install' => 'Do you want to publish the replacement auth views for Laravel/UI?',
+            'overwrite' => 'The auth views were already published. Want to replace?',
+            'success' => 'Auth views published successfully',
         ];
     }
 
     /**
-     * Install/Export the resource.
+     * Installs or publishes the resource.
      *
-     * @return void
+     * @return bool
      */
     public function install()
     {
-        // Install the authentication views. We going to replace the content
-        // of any existing authentication view.
+        // Publish the authentication views. We are going to replace the content
+        // of any existing authentication view that were originally provided by
+        // the legacy Laravel/UI package.
 
         foreach ($this->source as $file => $content) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
-            File::ensureDirectoryExists(dirname($target));
-            file_put_contents($target, $content);
+            File::ensureDirectoryExists(File::dirname($target));
+
+            if (! File::put($target, $content)) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**
-     * Uninstall/Remove the resource.
+     * Uninstalls the resource.
      *
-     * @return void
+     * @return bool
      */
     public function uninstall()
     {
-        // Remove the package authentication views.
+        // Remove the published authentication views.
 
         foreach ($this->source as $file => $content) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
-            if (is_file($target)) {
-                unlink($target);
+            if (File::isFile($target) && ! File::delete($target)) {
+                return false;
             }
         }
+
+        return true;
     }
 
     /**
-     * Check if the resource already exists on the target destination.
+     * Checks whether the resource already exists in the target location.
      *
      * @return bool
      */
     public function exists()
     {
-        // Check if any of the authentication views already exists.
+        // Check if any of the authentication views is published.
 
         foreach ($this->source as $file => $content) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
-            if (is_file($target)) {
+            if (File::isFile($target)) {
                 return true;
             }
         }
@@ -100,7 +109,8 @@ class AuthViewsResource extends PackageResource
     }
 
     /**
-     * Check if the resource is correctly installed.
+     * Checks whether the resource is correctly installed, i.e. if the source
+     * items matches with the items available at the target location.
      *
      * @return bool
      */
@@ -118,7 +128,7 @@ class AuthViewsResource extends PackageResource
     }
 
     /**
-     * Check if an authentication view is correctly installed.
+     * Checks whether an authentication view is correctly installed.
      *
      * @param  string  $path  Absolute path of the authentication view
      * @param  string  $content  The expected content of the view
@@ -126,6 +136,6 @@ class AuthViewsResource extends PackageResource
      */
     protected function authViewInstalled($path, $content)
     {
-        return is_file($path) && (file_get_contents($path) === $content);
+        return File::isFile($path) && (File::get($path) === $content);
     }
 }
