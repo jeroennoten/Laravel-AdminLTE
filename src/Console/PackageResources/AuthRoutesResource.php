@@ -16,7 +16,7 @@ class AuthRoutesResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->description = 'A set of routes for the Laravel/UI auth scaffolding';
+        $this->description = 'The set of routes for the Laravel/UI auth scaffolding';
         $this->source = CommandHelper::getStubPath('routes.stub');
         $this->target = base_path('routes/web.php');
         $this->required = false;
@@ -26,7 +26,7 @@ class AuthRoutesResource extends PackageResource
         $this->messages = [
             'install' => 'Do you want to publish the Laravel/UI auth routes?',
             'overwrite' => 'The auth routes were already published. Want to publish again?',
-            'success' => 'Auth routes published successfully.',
+            'success' => 'Auth routes published successfully',
         ];
     }
 
@@ -43,7 +43,7 @@ class AuthRoutesResource extends PackageResource
             return true;
         }
 
-        // Get the set of routes to publish.
+        // Get the set of routes to be published.
 
         $routes = File::get($this->source);
 
@@ -66,6 +66,7 @@ class AuthRoutesResource extends PackageResource
         $routes = File::get($this->source);
 
         // If the target routes file exists, then remove the auth routes.
+        // Otherwise, we consider the routes as uninstalled.
 
         if (File::isFile($this->target)) {
             $targetContent = File::get($this->target);
@@ -74,7 +75,7 @@ class AuthRoutesResource extends PackageResource
             return (bool) File::put($this->target, $targetContent);
         }
 
-        return false;
+        return true;
     }
 
     /**
