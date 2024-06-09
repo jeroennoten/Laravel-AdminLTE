@@ -16,7 +16,7 @@ class AdminlteAssetsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->description = 'The required files for use the AdminLTE template';
+        $this->description = 'The set of files required to use the AdminLTE template';
         $this->target = public_path('vendor');
         $this->required = true;
 
@@ -158,7 +158,7 @@ class AdminlteAssetsResource extends PackageResource
     }
 
     /**
-     * Install the specified AdminLTE asset.
+     * Installs the specified AdminLTE asset.
      *
      * @param  array  $asset  An array with the asset data
      * @return bool
@@ -219,7 +219,7 @@ class AdminlteAssetsResource extends PackageResource
      */
     protected function assetExists($asset)
     {
-        return File::isDirectory($asset['target']);
+        return File::exists($asset['target']);
     }
 
     /**
@@ -281,12 +281,14 @@ class AdminlteAssetsResource extends PackageResource
     {
         $target = $asset['target'];
 
-        // Uninstall the asset (actually, the target is always a folder).
+        // Uninstall the specified asset. Note the asset target location is
+        // always a folder. When the target folder does not exists, we consider
+        // the asset as uninstalled.
 
         if (File::isDirectory($target)) {
             return File::deleteDirectory($target);
         }
 
-        return false;
+        return true;
     }
 }
