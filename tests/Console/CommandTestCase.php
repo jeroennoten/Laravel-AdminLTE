@@ -72,7 +72,8 @@ class CommandTestCase extends TestCase
             $this->createDummyFile($target);
         } elseif ($resName === 'auth_views') {
             $target = $target.DIRECTORY_SEPARATOR.'login.blade.php';
-            $this->createDummyFile($target);
+            $loginContent = '@extends(\'adminlte::auth.login\')';
+            $this->createDummyFile($target, $loginContent);
         } elseif ($resName === 'basic_routes') {
             $stubFile = CommandHelper::getStubPath('routes.stub');
             $content = file_get_contents($stubFile);
