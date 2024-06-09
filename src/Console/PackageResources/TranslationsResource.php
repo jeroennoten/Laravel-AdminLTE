@@ -55,13 +55,14 @@ class TranslationsResource extends PackageResource
      */
     public function uninstall()
     {
-        // Remove the translation files from the target folder.
+        // Remove the translation files from the target folder. When
+        // translations does not exists, we consider they as uninstalled.
 
         if (File::isDirectory($this->target)) {
             return File::deleteDirectory($this->target);
         }
 
-        return false;
+        return true;
     }
 
     /**
