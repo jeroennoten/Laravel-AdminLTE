@@ -51,13 +51,14 @@ class ConfigResource extends PackageResource
      */
     public function uninstall()
     {
-        // Delete the published configuration file.
+        // Delete the published configuration file. When file does not exists,
+        // we consider the config file as uninstalled.
 
         if (File::isFile($this->target)) {
             return File::delete($this->target);
         }
 
-        return false;
+        return true;
     }
 
     /**
