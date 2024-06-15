@@ -16,67 +16,161 @@ class MainViewsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->description = 'The default package main views';
-        $this->source = CommandHelper::getPackagePath('resources/views');
+        $this->description = 'The set of views that defines the AdminLTE layout';
         $this->target = CommandHelper::getViewPath('vendor/adminlte');
         $this->required = false;
+
+        // Note we declare the source as an array of files and folders, we do
+        // this way o avoid copying the components views located at the
+        // 'resources/views/components' folder.
+
+        $this->source = [
+            CommandHelper::getPackagePath('resources/views/auth'),
+            CommandHelper::getPackagePath('resources/views/master.blade.php'),
+            CommandHelper::getPackagePath('resources/views/page.blade.php'),
+            CommandHelper::getPackagePath('resources/views/partials'),
+            CommandHelper::getPackagePath('resources/views/plugins.blade.php'),
+        ];
 
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install' => 'Install the AdminLTE main views?',
-            'overwrite' => 'The main views already exists. Want to replace the views?',
-            'success' => 'Main views installed successfully.',
+            'install' => 'Do you want to publish the AdminLTE layout views?',
+            'overwrite' => 'The layout views were already published. Want to replace?',
+            'success' => 'AdminLTE layout views published successfully',
         ];
     }
 
     /**
-     * Install/Export the resource.
+     * Installs or publishes the resource.
      *
-     * @return void
+     * @return bool
      */
     public function install()
     {
-        // Install the main views.
+        // Publish the package layout views.
 
-        CommandHelper::copyDirectory($this->source, $this->target, true, true);
+        foreach ($this->source as $src) {
+            $tgt = $this->target.DIRECTORY_SEPARATOR.File::basename($src);
+
+            if (! $this->publishResource($src, $tgt)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
-     * Uninstall/Remove the resource.
+     * Uninstalls the resource.
      *
-     * @return void
+     * @return bool
      */
     public function uninstall()
     {
-        // Uninstall the package main views.
+        // Uninstall the package layout views.
 
-        if (is_dir($this->target)) {
-            File::deleteDirectory($this->target);
+        foreach ($this->source as $src) {
+            $tgt = $this->target.DIRECTORY_SEPARATOR.File::basename($src);
+
+            if (! $this->uninstallResource($tgt)) {
+                return false;
+            }
         }
+
+        return true;
     }
 
     /**
-     * Check if the resource already exists on the target destination.
+     * Checks whether the resource already exists in the target location.
      *
      * @return bool
      */
     public function exists()
     {
-        return is_dir($this->target);
+        foreach ($this->source as $src) {
+            $tgt = $this->target.DIRECTORY_SEPARATOR.File::basename($src);
+
+            if (File::exists($tgt)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
-     * Check if the resource is correctly installed.
+     * Checks whether the resource is correctly installed, i.e. if the source
+     * items matches with the items available at the target location.
      *
      * @return bool
      */
     public function installed()
     {
-        return (bool) CommandHelper::compareDirectories(
-            $this->source,
-            $this->target,
-            true
-        );
+        foreach ($this->source as $src) {
+            $tgt = $this->target.DIRECTORY_SEPARATOR.File::basename($src);
+
+            if (! $this->resourceInstalled($src, $tgt)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Publishes the specified source (usually a file or folder) at the
+     * specified target location.
+     *
+     * @param  string  $source  The source path
+     * @param  string  $target  The target path
+     * @return bool
+     */
+    protected function publishResource($source, $target)
+    {
+        // Check whether the resource is a file or a directory.
+
+        return File::isDirectory($source)
+            ? (bool) CommandHelper::copyDirectory($source, $target, true, true)
+            : File::copy($source, $target);
+    }
+
+    /**
+     * Uninstalls the resource at the specified target location.
+     *
+     * @param  string  $target  The target path
+     * @return bool
+     */
+    protected function uninstallResource($target)
+    {
+        // When the target does not exists, we consider the resource as
+        // unistalled.
+
+        if (! File::exists($target)) {
+            return true;
+        }
+
+        // Uninstall the resource at the specified target location.
+
+        return File::isDirectory($target)
+            ? File::deleteDirectory($target)
+            : File::delete($target);
+    }
+
+    /**
+     * Checks whether a resource is correctly installed at the specified target
+     * location.
+     *
+     * @param  string  $source  The source path
+     * @param  string  $target  The target path
+     * @return bool
+     */
+    protected function resourceInstalled($source, $target)
+    {
+        // Check whether the resource is a file or a directory.
+
+        return File::isDirectory($source)
+            ? (bool) CommandHelper::compareDirectories($source, $target, true)
+            : CommandHelper::compareFiles($source, $target);
     }
 }
