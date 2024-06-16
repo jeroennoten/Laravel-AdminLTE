@@ -5,7 +5,7 @@ use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
@@ -32,7 +32,7 @@ class CommandTestCase extends TestCase
                 'assets' => new AdminlteAssetsResource(),
                 'config' => new ConfigResource(),
                 'translations' => new TranslationsResource(),
-                'main_views' => new MainViewsResource(),
+                'main_views' => new LayoutViewsResource(),
                 'auth_views' => new AuthViewsResource(),
                 'basic_routes' => new AuthRoutesResource(),
             ];

@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
-class MainViewsResource extends PackageResource
+class LayoutViewsResource extends PackageResource
 {
     /**
      * Create a new resource instance.
