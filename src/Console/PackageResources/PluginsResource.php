@@ -230,14 +230,14 @@ class PluginsResource extends PackageResource
      * Gets the plugins source data.
      *
      * @param  string  $pluginKey  A plugin key
-     * @return array|null
+     * @return array
      */
     public function getSourceData($pluginKey = null)
     {
         // Check if we need to get data of a specific AdminLTE plugin.
 
         if (! empty($pluginKey)) {
-            return $this->plugins[$pluginKey] ?? null;
+            return $this->plugins[$pluginKey] ?? [];
         }
 
         // Otherwise, return all the AdminLTE plugins data.
