@@ -489,7 +489,7 @@ class PluginsResource extends PackageResource
      * Removes the specified resource (usually a folder).
      *
      * @param  array  $res  An array with the resource data
-     * @return bool
+     * @return void
      */
     protected function uninstallResource($res)
     {
