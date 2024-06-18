@@ -33,21 +33,20 @@ class ConfigResource extends PackageResource
     /**
      * Installs or publishes the resource.
      *
-     * @return bool
+     * @return void
      */
     public function install()
     {
         // Copy the configuration file to the target file.
 
         File::ensureDirectoryExists(File::dirname($this->target));
-
-        return File::copy($this->source, $this->target);
+        File::copy($this->source, $this->target);
     }
 
     /**
      * Uninstalls the resource.
      *
-     * @return bool
+     * @return void
      */
     public function uninstall()
     {
@@ -55,10 +54,8 @@ class ConfigResource extends PackageResource
         // we consider the config file as uninstalled.
 
         if (File::isFile($this->target)) {
-            return File::delete($this->target);
+            File::delete($this->target);
         }
-
-        return true;
     }
 
     /**

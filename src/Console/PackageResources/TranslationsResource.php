@@ -34,24 +34,19 @@ class TranslationsResource extends PackageResource
     /**
      * Installs or publishes the resource.
      *
-     * @return bool
+     * @return void
      */
     public function install()
     {
         // Copy the translation files to the target folder.
 
-        return (bool) CommandHelper::copyDirectory(
-            $this->source,
-            $this->target,
-            true,
-            true
-        );
+        CommandHelper::copyDirectory($this->source, $this->target, true, true);
     }
 
     /**
      * Uninstalls the resource.
      *
-     * @return bool
+     * @return void
      */
     public function uninstall()
     {
@@ -59,10 +54,8 @@ class TranslationsResource extends PackageResource
         // translations does not exists, we consider they as uninstalled.
 
         if (File::isDirectory($this->target)) {
-            return File::deleteDirectory($this->target);
+            File::deleteDirectory($this->target);
         }
-
-        return true;
     }
 
     /**

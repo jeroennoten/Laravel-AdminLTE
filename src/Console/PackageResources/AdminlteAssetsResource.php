@@ -91,37 +91,29 @@ class AdminlteAssetsResource extends PackageResource
     /**
      * Installs or publishes the resource.
      *
-     * @return bool
+     * @return void
      */
     public function install()
     {
         // Install the AdminLTE asset files.
 
         foreach ($this->source as $asset) {
-            if (! $this->installAsset($asset)) {
-                return false;
-            }
+            $this->installAsset($asset);
         }
-
-        return true;
     }
 
     /**
      * Uninstalls the resource.
      *
-     * @return bool
+     * @return void
      */
     public function uninstall()
     {
         // Uninstall the AdminLTE asset files.
 
         foreach ($this->source as $asset) {
-            if (! $this->uninstallAsset($asset)) {
-                return false;
-            }
+            $this->uninstallAsset($asset);
         }
-
-        return true;
     }
 
     /**
@@ -161,7 +153,7 @@ class AdminlteAssetsResource extends PackageResource
      * Installs the specified AdminLTE asset.
      *
      * @param  array  $asset  An array with the asset data
-     * @return bool
+     * @return void
      */
     protected function installAsset($asset)
     {
@@ -177,38 +169,32 @@ class AdminlteAssetsResource extends PackageResource
             $res['target'] = $res['target'] ?? $res['source'];
             $res['target'] = $asset['target'].$res['target'];
             $res['source'] = $asset['source'].$res['source'];
-
-            if (! $this->publishResource($res)) {
-                return false;
-            }
+            $this->publishResource($res);
         }
-
-        return true;
     }
 
     /**
      * Publishes the specified resource (usually a file or folder).
      *
      * @param  array  $res  An array with the resource data
-     * @return bool
+     * @return void
      */
     protected function publishResource($res)
     {
         // Check whether the resource is a file or a directory.
 
         if (File::isDirectory($res['source'])) {
-            return CommandHelper::copyDirectory(
+            CommandHelper::copyDirectory(
                 $res['source'],
                 $res['target'],
                 $res['force'] ?? true,
                 $res['recursive'] ?? true,
                 $res['ignore'] ?? []
             );
+        } else {
+            File::ensureDirectoryExists(File::dirname($res['target']));
+            File::copy($res['source'], $res['target']);
         }
-
-        File::ensureDirectoryExists(File::dirname($res['target']));
-
-        return File::copy($res['source'], $res['target']);
     }
 
     /**
@@ -275,7 +261,7 @@ class AdminlteAssetsResource extends PackageResource
      * Uninstalls the specified asset.
      *
      * @param  array  $asset  An array with the asset data
-     * @return bool
+     * @return void
      */
     protected function uninstallAsset($asset)
     {
@@ -286,9 +272,7 @@ class AdminlteAssetsResource extends PackageResource
         // the asset as uninstalled.
 
         if (File::isDirectory($target)) {
-            return File::deleteDirectory($target);
+            File::deleteDirectory($target);
         }
-
-        return true;
     }
 }

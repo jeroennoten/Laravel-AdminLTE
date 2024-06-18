@@ -48,7 +48,7 @@ class AuthViewsResource extends PackageResource
     /**
      * Installs or publishes the resource.
      *
-     * @return bool
+     * @return void
      */
     public function install()
     {
@@ -59,19 +59,14 @@ class AuthViewsResource extends PackageResource
         foreach ($this->source as $file => $content) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
             File::ensureDirectoryExists(File::dirname($target));
-
-            if (! File::put($target, $content)) {
-                return false;
-            }
+            File::put($target, $content);
         }
-
-        return true;
     }
 
     /**
      * Uninstalls the resource.
      *
-     * @return bool
+     * @return void
      */
     public function uninstall()
     {
@@ -80,12 +75,10 @@ class AuthViewsResource extends PackageResource
         foreach ($this->source as $file => $content) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
-            if (File::isFile($target) && ! File::delete($target)) {
-                return false;
+            if (File::isFile($target)) {
+                File::delete($target);
             }
         }
-
-        return true;
     }
 
     /**

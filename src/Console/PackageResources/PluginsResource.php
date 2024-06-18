@@ -249,34 +249,28 @@ class PluginsResource extends PackageResource
      * Installs or publishes the specified plugin.
      *
      * @param  string  $pluginKey  A plugin key
-     * @return bool
+     * @return void
      */
     public function install($pluginKey = null)
     {
         if (isset($pluginKey) && isset($this->plugins[$pluginKey])) {
             $plugin = $this->preparePlugin($this->plugins[$pluginKey]);
-
-            return $this->installPlugin($plugin);
+            $this->installPlugin($plugin);
         }
-
-        return false;
     }
 
     /**
      * Uninstalls the specified plugin.
      *
      * @param  string  $pluginKey  A plugin key
-     * @return bool
+     * @return void
      */
     public function uninstall($pluginKey = null)
     {
         if (isset($pluginKey) && isset($this->plugins[$pluginKey])) {
             $plugin = $this->preparePlugin($this->plugins[$pluginKey]);
-
-            return $this->uninstallPlugin($plugin);
+            $this->uninstallPlugin($plugin);
         }
-
-        return true;
     }
 
     /**
@@ -357,7 +351,7 @@ class PluginsResource extends PackageResource
      * Installs the specified AdminLTE plugin.
      *
      * @param  array  $plugin  An array with the plugin data
-     * @return bool
+     * @return void
      */
     protected function installPlugin($plugin)
     {
@@ -370,37 +364,32 @@ class PluginsResource extends PackageResource
         // Otherwise, publish only the specified plugin resources.
 
         foreach ($plugin['resources'] as $res) {
-            if (! $this->publishResource($res)) {
-                return false;
-            }
+            $this->publishResource($res);
         }
-
-        return true;
     }
 
     /**
      * Publishes the specified resource (usually a file or folder).
      *
      * @param  array  $res  An array with the resource data
-     * @return bool
+     * @return void
      */
     protected function publishResource($res)
     {
         // Check whether the resource is a file or a directory.
 
         if (File::isDirectory($res['source'])) {
-            return CommandHelper::copyDirectory(
+            CommandHelper::copyDirectory(
                 $res['source'],
                 $res['target'],
                 $res['force'] ?? true,
                 $res['recursive'] ?? true,
                 $res['ignore'] ?? []
             );
+        } else {
+            File::ensureDirectoryExists(File::dirname($res['target']));
+            File::copy($res['source'], $res['target']);
         }
-
-        File::ensureDirectoryExists(File::dirname($res['target']));
-
-        return File::copy($res['source'], $res['target']);
     }
 
     /**
@@ -478,7 +467,7 @@ class PluginsResource extends PackageResource
      * Uninstalls the specified plugin.
      *
      * @param  array  $plugin  An array with the plugin data
-     * @return bool
+     * @return void
      */
     protected function uninstallPlugin($plugin)
     {
@@ -492,12 +481,8 @@ class PluginsResource extends PackageResource
         // Otherwise, remove only the specified plugin resources.
 
         foreach ($plugin['resources'] as $res) {
-            if (! $this->uninstallResource($res)) {
-                return false;
-            }
+            $this->uninstallResource($res);
         }
-
-        return true;
     }
 
     /**
@@ -515,9 +500,7 @@ class PluginsResource extends PackageResource
         // resource as uninstalled.
 
         if (File::isDirectory($target)) {
-            return File::deleteDirectory($target);
+            File::deleteDirectory($target);
         }
-
-        return true;
     }
 }

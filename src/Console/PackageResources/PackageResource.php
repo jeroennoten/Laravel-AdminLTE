@@ -46,14 +46,14 @@ abstract class PackageResource
     /**
      * Installs or publishes the resource.
      *
-     * @return bool
+     * @return void
      */
     abstract public function install();
 
     /**
      * Uninstalls the resource.
      *
-     * @return bool
+     * @return void
      */
     abstract public function uninstall();
 

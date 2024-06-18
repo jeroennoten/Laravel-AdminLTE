@@ -33,14 +33,14 @@ class AuthRoutesResource extends PackageResource
     /**
      * Installs or publishes the resource.
      *
-     * @return bool
+     * @return void
      */
     public function install()
     {
         // If the routes already exists, we won't publish they again.
 
         if ($this->exists()) {
-            return true;
+            return;
         }
 
         // Get the set of routes to be published.
@@ -50,14 +50,13 @@ class AuthRoutesResource extends PackageResource
         // Add the routes to the web routes file.
 
         File::ensureDirectoryExists(File::dirname($this->target));
-
-        return (bool) File::append($this->target, $routes);
+        File::append($this->target, $routes);
     }
 
     /**
      * Uninstalls the resource.
      *
-     * @return bool
+     * @return void
      */
     public function uninstall()
     {
@@ -71,11 +70,8 @@ class AuthRoutesResource extends PackageResource
         if (File::isFile($this->target)) {
             $targetContent = File::get($this->target);
             $targetContent = str_replace($routes, '', $targetContent);
-
-            return (bool) File::put($this->target, $targetContent);
+            File::put($this->target, $targetContent);
         }
-
-        return true;
     }
 
     /**

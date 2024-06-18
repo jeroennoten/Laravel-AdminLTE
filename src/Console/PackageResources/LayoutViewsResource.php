@@ -44,7 +44,7 @@ class LayoutViewsResource extends PackageResource
     /**
      * Installs or publishes the resource.
      *
-     * @return bool
+     * @return void
      */
     public function install()
     {
@@ -52,19 +52,14 @@ class LayoutViewsResource extends PackageResource
 
         foreach ($this->source as $src) {
             $tgt = $this->target.DIRECTORY_SEPARATOR.File::basename($src);
-
-            if (! $this->publishResource($src, $tgt)) {
-                return false;
-            }
+            $this->publishResource($src, $tgt);
         }
-
-        return true;
     }
 
     /**
      * Uninstalls the resource.
      *
-     * @return bool
+     * @return void
      */
     public function uninstall()
     {
@@ -72,13 +67,8 @@ class LayoutViewsResource extends PackageResource
 
         foreach ($this->source as $src) {
             $tgt = $this->target.DIRECTORY_SEPARATOR.File::basename($src);
-
-            if (! $this->uninstallResource($tgt)) {
-                return false;
-            }
+            $this->uninstallResource($tgt);
         }
-
-        return true;
     }
 
     /**
@@ -124,22 +114,24 @@ class LayoutViewsResource extends PackageResource
      *
      * @param  string  $source  The source path
      * @param  string  $target  The target path
-     * @return bool
+     * @return void
      */
     protected function publishResource($source, $target)
     {
         // Check whether the resource is a file or a directory.
 
-        return File::isDirectory($source)
-            ? (bool) CommandHelper::copyDirectory($source, $target, true, true)
-            : File::copy($source, $target);
+        if (File::isDirectory($source)) {
+            CommandHelper::copyDirectory($source, $target, true, true);
+        } else {
+            File::copy($source, $target);
+        }
     }
 
     /**
      * Uninstalls the resource at the specified target location.
      *
      * @param  string  $target  The target path
-     * @return bool
+     * @return void
      */
     protected function uninstallResource($target)
     {
@@ -147,14 +139,16 @@ class LayoutViewsResource extends PackageResource
         // unistalled.
 
         if (! File::exists($target)) {
-            return true;
+            return;
         }
 
         // Uninstall the resource at the specified target location.
 
-        return File::isDirectory($target)
-            ? File::deleteDirectory($target)
-            : File::delete($target);
+        if (File::isDirectory($target)) {
+            File::deleteDirectory($target);
+        } else {
+            File::delete($target);
+        }
     }
 
     /**
