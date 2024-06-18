@@ -358,7 +358,9 @@ class PluginsResource extends PackageResource
         // Check if we need to export the entire plugin.
 
         if (! isset($plugin['resources'])) {
-            return $this->publishResource($plugin);
+            $this->publishResource($plugin);
+
+            return;
         }
 
         // Otherwise, publish only the specified plugin resources.
@@ -475,7 +477,9 @@ class PluginsResource extends PackageResource
         // location folder.
 
         if (! isset($plugin['resources'])) {
-            return $this->uninstallResource($plugin);
+            $this->uninstallResource($plugin);
+
+            return;
         }
 
         // Otherwise, remove only the specified plugin resources.

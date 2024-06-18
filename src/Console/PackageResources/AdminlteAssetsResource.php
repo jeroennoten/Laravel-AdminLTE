@@ -160,7 +160,9 @@ class AdminlteAssetsResource extends PackageResource
         // Check if we just need to publish the entire asset.
 
         if (! isset($asset['resources'])) {
-            return $this->publishResource($asset);
+            $this->publishResource($asset);
+
+            return;
         }
 
         // Otherwise, publish only the specified asset resources.
