@@ -100,7 +100,7 @@ class CommandTestCase extends TestCase
     protected function createDummyFile($filePath, $content = null)
     {
         $content = $content ?? 'dummy-content';
-        File::ensureDirectoryExists(dirname($filePath));
+        File::ensureDirectoryExists(File::dirname($filePath));
         File::put($filePath, $content);
     }
 

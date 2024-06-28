@@ -97,7 +97,7 @@ class PluginsTest extends CommandTestCase
         }
     }
 
-    public function testInstallAndUninstallSpecificPLuginWithInteractive()
+    public function testInstallAndUninstallSpecificPLuginInteractively()
     {
         $plugins = new PluginsResource();
         $pluginKey = 'icheckBootstrap';
@@ -110,7 +110,7 @@ class PluginsTest extends CommandTestCase
             [':plugin' => $pluginKey]
         );
 
-        // We can't perfom these tests on old laravel versions. We need support
+        // We can't perfom these tests on old Laravel versions. We need support
         // for the expect confirmation method.
 
         if (! $this->canExpectsConfirmation()) {
@@ -161,7 +161,7 @@ class PluginsTest extends CommandTestCase
             [':plugin' => $pluginKey]
         );
 
-        // We can't perfom these tests on old laravel versions. We need support
+        // We can't perfom these tests on old Laravel versions. We need support
         // for the expect confirmation method.
 
         if (! $this->canExpectsConfirmation()) {
@@ -199,7 +199,7 @@ class PluginsTest extends CommandTestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testAllPluginStatus()
+    public function testGetAllPluginStatus()
     {
         $plugins = new PluginsResource();
 
