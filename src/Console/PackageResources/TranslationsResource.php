@@ -9,7 +9,7 @@ use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 class TranslationsResource extends PackageResource
 {
     /**
-     * Create a new resource instance.
+     * Create a new package resource instance.
      *
      * @return void
      */
@@ -25,50 +25,52 @@ class TranslationsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install' => 'Install the package translations files?',
-            'overwrite' => 'The translation files already exists. Want to replace the files?',
-            'success' => 'Translation files installed successfully.',
+            'install' => 'Do you want to publish the package translations?',
+            'overwrite' => 'Translations were already published. Want to replace?',
+            'success' => 'Translation files published successfully',
         ];
     }
 
     /**
-     * Install/Export the resource.
+     * Installs or publishes the resource.
      *
      * @return void
      */
     public function install()
     {
-        // Install the translations files.
+        // Copy the translation files to the target folder.
 
         CommandHelper::copyDirectory($this->source, $this->target, true, true);
     }
 
     /**
-     * Uninstall/Remove the resource.
+     * Uninstalls the resource.
      *
      * @return void
      */
     public function uninstall()
     {
-        // Uninstall the translation files.
+        // Remove the translation files from the target folder. When
+        // translations does not exists, we consider they as uninstalled.
 
-        if (is_dir($this->target)) {
+        if (File::isDirectory($this->target)) {
             File::deleteDirectory($this->target);
         }
     }
 
     /**
-     * Check if the resource already exists on the target destination.
+     * Checks whether the resource already exists in the target location.
      *
      * @return bool
      */
     public function exists()
     {
-        return is_dir($this->target);
+        return File::isDirectory($this->target);
     }
 
     /**
-     * Check if the resource is correctly installed.
+     * Checks whether the resource is correctly installed, i.e. if the source
+     * items matches with the items available at the target location.
      *
      * @return bool
      */

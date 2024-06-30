@@ -61,7 +61,7 @@ class UpdateTest extends CommandTestCase
         Artisan::call('adminlte:update');
 
         $this->assertStringContainsString(
-            'Outdated main views',
+            'Outdated layout views',
             Artisan::output()
         );
 

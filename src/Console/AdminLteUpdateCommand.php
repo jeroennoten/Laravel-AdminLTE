@@ -3,7 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 
 class AdminLteUpdateCommand extends Command
 {
@@ -27,9 +27,9 @@ class AdminLteUpdateCommand extends Command
      *
      * @var string
      */
-    protected $mainViewsWarn = '<fg=yellow>Outdated main views at %s</>
+    protected $layoutViewsWarn = '<fg=yellow>Outdated layout views at %s</>
     <fg=cyan>
-    We detected that the package main views were previously published and they
+    We detected that the package layout views were previously published and they
     differs from the ones currently available. Note this package may not work
     correctly if you do not update those views manually in order to include the
     latest changes. In the particular case you have recently changed those views
@@ -48,14 +48,15 @@ class AdminLteUpdateCommand extends Command
 
         $this->call('adminlte:install', $options);
 
-        // When the main views were previously installed and they differs from
-        // the original ones, alarm the user that those views may require a
-        // manual update.
+        // When the layout views were previously published and they differs
+        // from the package default ones, alarm the user to notify that those
+        // views may require a manual update.
 
-        $mainViewsRes = new MainViewsResource();
+        $layoutViewsRes = new LayoutViewsResource();
 
-        if ($mainViewsRes->exists() && ! $mainViewsRes->installed()) {
-            $this->info(sprintf($this->mainViewsWarn, $mainViewsRes->target));
+        if ($layoutViewsRes->exists() && ! $layoutViewsRes->installed()) {
+            $msg = sprintf($this->layoutViewsWarn, $layoutViewsRes->target);
+            $this->info($msg);
         }
     }
 }

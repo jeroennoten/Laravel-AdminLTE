@@ -1,12 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\File;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
@@ -14,94 +13,100 @@ use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 class CommandTestCase extends TestCase
 {
     /**
-     * Array to store the set of resources.
+     * Array to store the set of package resources that may be published.
      *
      * @var array
      */
     protected $resources;
 
     /**
-     * Get the array of resources.
+     * Setup this testing class.
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // Setup the resources array.
+
+        $this->resources = [
+            'assets' => new AdminlteAssetsResource(),
+            'config' => new ConfigResource(),
+            'translations' => new TranslationsResource(),
+            'main_views' => new LayoutViewsResource(),
+            'auth_views' => new AuthViewsResource(),
+            'basic_routes' => new AuthRoutesResource(),
+        ];
+    }
+
+    /**
+     * Gets the array of resources or a specific package resource.
      *
-     * @param  string  $name  Name of the resource.
+     * @param  string  $name  Name of the specific resource to get
      * @return array
      */
     protected function getResources($name = null)
     {
-        if (! isset($this->resources)) {
-            $this->resources = [
-                'assets' => new AssetsResource(),
-                'config' => new ConfigResource(),
-                'translations' => new TranslationsResource(),
-                'main_views' => new MainViewsResource(),
-                'auth_views' => new AuthViewsResource(),
-                'basic_views' => new BasicViewsResource(),
-                'basic_routes' => new BasicRoutesResource(),
-            ];
-        }
-
         return $name ? $this->resources[$name] : $this->resources;
     }
 
     /**
-     * Create dummy files for a particular resource.
+     * Creates a set of dummy files for the specified resource.
      *
-     * @param  string  $resName
-     * @param  PackageResource  $res
+     * @param  string  $name  The name of the resource
+     * @param  PackageResource  $resource  The package resource instance
      * @return void
      */
-    protected function createDummyResource($resName, $res)
+    protected function createDummyResource($name, $resource)
     {
-        // Uninstall the resource.
+        // Uninstall the package resource. We need a clean target location
+        // before creating dummy files.
 
-        $res->uninstall();
+        $resource->uninstall();
 
-        // Create a dummy resource on the target destination. This will fire
-        // an overwrite warning when trying to install the resource later.
+        // Create dummy files on the target location. This way, an overwrite
+        // warning will be fired when trying to install the resource later.
 
-        $target = $res->target;
+        $target = $resource->target;
 
-        if ($resName === 'assets') {
+        if ($name === 'assets') {
             $target = $target.DIRECTORY_SEPARATOR.'adminlte';
             File::EnsureDirectoryExists($target);
-        } elseif ($resName === 'config') {
+        } elseif ($name === 'config') {
             $this->createDummyFile($target);
-        } elseif ($resName === 'translations') {
+        } elseif ($name === 'translations') {
             $target = $target.DIRECTORY_SEPARATOR.'en/adminlte.php';
             $this->createDummyFile($target);
-        } elseif ($resName === 'main_views') {
+        } elseif ($name === 'main_views') {
             $target = $target.DIRECTORY_SEPARATOR.'master.blade.php';
             $this->createDummyFile($target);
-        } elseif ($resName === 'auth_views') {
+        } elseif ($name === 'auth_views') {
             $target = $target.DIRECTORY_SEPARATOR.'login.blade.php';
-            $this->createDummyFile($target);
-        } elseif ($resName === 'basic_views') {
-            $target = $target.DIRECTORY_SEPARATOR.'home.blade.php';
-            $this->createDummyFile($target);
-        } elseif ($resName === 'basic_routes') {
+            $loginContent = '@extends(\'adminlte::auth.login\')';
+            $this->createDummyFile($target, $loginContent);
+        } elseif ($name === 'basic_routes') {
             $stubFile = CommandHelper::getStubPath('routes.stub');
-            $content = file_get_contents($stubFile);
+            $content = File::get($stubFile);
             $this->createDummyFile($target, $content);
         }
     }
 
     /**
-     * Create a dummy file with some content.
+     * Creates a dummy file with some content at the specified path.
      *
-     * @param  string  $filePath
-     * @param  string  $content
+     * @param  string  $filePath  The file path
+     * @param  string  $content  The file content
      * @return void
      */
     protected function createDummyFile($filePath, $content = null)
     {
         $content = $content ?? 'dummy-content';
-        File::ensureDirectoryExists(dirname($filePath));
-        file_put_contents($filePath, $content);
+        File::ensureDirectoryExists(File::dirname($filePath));
+        File::put($filePath, $content);
     }
 
     /**
-     * Install the required vendor asset "vendor/almasaeed2010" into the
-     * laravel testing project.
+     * Installs the required AdminLTE assets files ("vendor/almasaeed2010")
+     * into the laravel testing project.
      *
      * @return void
      */
@@ -112,19 +117,32 @@ class CommandTestCase extends TestCase
 
         // Check if vendor assets are already installed.
 
-        if (is_link($target)) {
+        if (File::exists($target)) {
             return;
         }
 
-        // Check if vendor folder exists on the laravel testing project. If
+        // Ensure the vendor folder exists on the laravel testing project. If
         // vendor folder do not exists, create it.
 
-        if (! is_dir(base_path('vendor'))) {
-            mkdir(base_path('vendor'));
-        }
+        File::ensureDirectoryExists(base_path('vendor'));
 
         // Create a symbolic link to the required vendor assets.
 
-        symlink($resource, $target);
+        File::link($resource, $target);
+    }
+
+    /**
+     * Returns whether the expectsConfirmation() method is supported by the
+     * underlying Laravel framework.
+     *
+     * @return bool
+     */
+    protected function canExpectsConfirmation()
+    {
+        return class_exists('Illuminate\Testing\PendingCommand')
+            && method_exists(
+                'Illuminate\Testing\PendingCommand',
+                'expectsConfirmation'
+            );
     }
 }

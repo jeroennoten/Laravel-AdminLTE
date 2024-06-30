@@ -5,15 +5,15 @@ namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 abstract class PackageResource
 {
     /**
-     * The package resource description. A litle summary of what this
-     * resource contains.
+     * The package resource description. A little summary of what this resource
+     * contains.
      *
      * @var string
      */
     public $description;
 
     /**
-     * The resource source. Usually the source will be a set of paths to files
+     * The source items of this resource. Usually a set of paths to files
      * and/or folders.
      *
      * @var mixed
@@ -21,66 +21,67 @@ abstract class PackageResource
     protected $source;
 
     /**
-     * The resource target. The destination of the resource, usually a root
-     * folder or file.
+     * The install location of this resource. Usually a target folder or file.
      *
      * @var mixed
      */
     public $target;
 
     /**
-     * Whether this resource is required for the package in order to work fine.
+     * Whether this resource is required for the package to work fine.
      *
      * @var bool
      */
     public $required;
 
     /**
-     * The set of installation messages for this resource. Usually, the array
-     * should contains keys for 'install', 'overwrite' and 'success' messages.
+     * A set of messages that will be used during the resource installation.
+     * Usually, the array should contains keys for 'install', 'overwrite' and
+     * 'success' messages.
      *
      * @var array
      */
     protected $messages;
 
     /**
-     * Install or export the resource.
+     * Installs or publishes the resource.
      *
      * @return void
      */
     abstract public function install();
 
     /**
-     * Uninstall or remove the resource.
+     * Uninstalls the resource.
      *
      * @return void
      */
     abstract public function uninstall();
 
     /**
-     * Check if the resource already exists on the target destination.
+     * Checks whether the resource already exists in the target location.
      *
      * @return bool
      */
     abstract public function exists();
 
     /**
-     * Check if the resource is correctly installed.
+     * Checks whether the resource is correctly installed, i.e. if the source
+     * items matches with the items available at the target location.
      *
      * @return bool
      */
     abstract public function installed();
 
     /**
-     * Get an installation message.
+     * Gets an installation message.
      *
      * @param  string  $key  The message keyword
-     * @return string
+     * @return string|null
      */
     public function getInstallMessage($key)
     {
         if (! isset($this->messages[$key])) {
-            return '';
+            return null;
         }
 
         return $this->messages[$key];

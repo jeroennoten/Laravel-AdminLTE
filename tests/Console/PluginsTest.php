@@ -31,7 +31,7 @@ class PluginsTest extends CommandTestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testInstallAndUninstallAll()
+    public function testInstallAndUninstallAllPlugins()
     {
         $plugins = new PluginsResource();
         $pluginsKeys = array_keys($plugins->getSourceData());
@@ -63,7 +63,7 @@ class PluginsTest extends CommandTestCase
         }
     }
 
-    public function testInstallAndUninstallSpecific()
+    public function testInstallAndUninstallSpecificPlugins()
     {
         $plugins = new PluginsResource();
         $pluginsKeys = ['datatables', 'icheckBootstrap'];
@@ -97,7 +97,7 @@ class PluginsTest extends CommandTestCase
         }
     }
 
-    public function testInstallAndUninstallSpecificInteractive()
+    public function testInstallAndUninstallSpecificPLuginInteractively()
     {
         $plugins = new PluginsResource();
         $pluginKey = 'icheckBootstrap';
@@ -110,15 +110,10 @@ class PluginsTest extends CommandTestCase
             [':plugin' => $pluginKey]
         );
 
-        // We can't do these test on old laravel versions.
+        // We can't perfom these tests on old Laravel versions. We need support
+        // for the expect confirmation method.
 
-        if (! class_exists('Illuminate\Testing\PendingCommand')) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
-        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
+        if (! $this->canExpectsConfirmation()) {
             $this->assertTrue(true);
 
             return;
@@ -157,7 +152,7 @@ class PluginsTest extends CommandTestCase
         $this->assertFalse($plugins->installed($pluginKey));
     }
 
-    public function testInstallAndUninstallSpecificOverwrite()
+    public function testInstallAndUninstallSpecificPluginWithOverwrite()
     {
         $plugins = new PluginsResource();
         $pluginKey = 'icheckBootstrap';
@@ -166,15 +161,10 @@ class PluginsTest extends CommandTestCase
             [':plugin' => $pluginKey]
         );
 
-        // We can't do these test on old laravel versions.
+        // We can't perfom these tests on old Laravel versions. We need support
+        // for the expect confirmation method.
 
-        if (! class_exists('Illuminate\Testing\PendingCommand')) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
-        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
+        if (! $this->canExpectsConfirmation()) {
             $this->assertTrue(true);
 
             return;
@@ -209,7 +199,7 @@ class PluginsTest extends CommandTestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testAllPluginStatus()
+    public function testGetAllPluginStatus()
     {
         $plugins = new PluginsResource();
 

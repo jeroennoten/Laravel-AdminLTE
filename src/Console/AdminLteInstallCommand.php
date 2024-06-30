@@ -3,12 +3,11 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicRoutesResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BasicViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\MainViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
 
 class AdminLteInstallCommand extends Command
@@ -20,8 +19,8 @@ class AdminLteInstallCommand extends Command
      */
     protected $signature = 'adminlte:install
         {--type=basic : The installation type: basic (default), enhanced or full}
-        {--only=* : To install only specific resources: assets, config, translations, auth_views, basic_views, basic_routes or main_views. Can\'t be used with option --with}
-        {--with=* : To install with additional resources: auth_views, basic_views, basic_routes or main_views}
+        {--only=* : To install only specific resources: assets, config, translations, auth_views, basic_routes or main_views. Can\'t be used with option --with}
+        {--with=* : To install with additional resources: auth_views, basic_routes or main_views}
         {--force : To force the overwrite of existing files}
         {--interactive : The installation will guide you through the process}';
 
@@ -79,20 +78,19 @@ class AdminLteInstallCommand extends Command
         // Fill the array with the package resources.
 
         $this->pkgResources = [
-            'assets' => new AssetsResource(),
+            'assets' => new AdminlteAssetsResource(),
             'config' => new ConfigResource(),
             'translations' => new TranslationsResource(),
-            'main_views' => new MainViewsResource(),
+            'main_views' => new LayoutViewsResource(),
             'auth_views' => new AuthViewsResource(),
-            'basic_views' => new BasicViewsResource(),
-            'basic_routes' => new BasicRoutesResource(),
+            'basic_routes' => new AuthRoutesResource(),
         ];
 
         // Add the resources related to each available --type option.
 
         $basic = ['assets', 'config', 'translations'];
         $enhanced = array_merge($basic, ['auth_views']);
-        $full = array_merge($enhanced, ['basic_views', 'basic_routes']);
+        $full = array_merge($enhanced, ['basic_routes']);
 
         $this->optTypeResources = [
             'basic' => $basic,
@@ -108,7 +106,6 @@ class AdminLteInstallCommand extends Command
             'translations' => ['translations'],
             'main_views' => ['main_views'],
             'auth_views' => ['auth_views'],
-            'basic_views' => ['basic_views'],
             'basic_routes' => ['basic_routes'],
         ];
 
@@ -117,7 +114,6 @@ class AdminLteInstallCommand extends Command
         $this->optWithResources = [
             'main_views' => ['main_views'],
             'auth_views' => ['auth_views'],
-            'basic_views' => ['basic_views'],
             'basic_routes' => ['basic_routes'],
         ];
     }

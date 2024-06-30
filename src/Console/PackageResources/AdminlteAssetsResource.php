@@ -5,7 +5,7 @@ namespace JeroenNoten\LaravelAdminLte\Console\PackageResources;
 use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 
-class AssetsResource extends PackageResource
+class AdminlteAssetsResource extends PackageResource
 {
     /**
      * Create a new resource instance.
@@ -16,16 +16,18 @@ class AssetsResource extends PackageResource
     {
         // Fill the resource data.
 
-        $this->description = 'The AdminLTE required assets';
+        $this->description = 'The set of files required to use the AdminLTE template';
         $this->target = public_path('vendor');
         $this->required = true;
 
         // Define the array of required assets (source).
 
+        $adminltePath = base_path('vendor/almasaeed2010/adminlte/');
+
         $this->source = [
             'adminlte' => [
                 'name' => 'AdminLTE v3',
-                'source' => base_path('vendor/almasaeed2010/adminlte/'),
+                'source' => $adminltePath,
                 'target' => public_path('vendor/adminlte/'),
                 'resources' => [
                     [
@@ -46,22 +48,22 @@ class AssetsResource extends PackageResource
             ],
             'fontawesome' => [
                 'name' => 'FontAwesome 5 Free',
-                'source' => base_path('vendor/almasaeed2010/adminlte/plugins/fontawesome-free'),
+                'source' => $adminltePath.'/plugins/fontawesome-free',
                 'target' => public_path('vendor/fontawesome-free'),
             ],
             'bootstrap' => [
-                'name' => 'Bootstrap 4 (js files only)',
-                'source' => base_path('vendor/almasaeed2010/adminlte/plugins/bootstrap'),
+                'name' => 'Bootstrap 4 (only JS files)',
+                'source' => $adminltePath.'/plugins/bootstrap',
                 'target' => public_path('vendor/bootstrap'),
             ],
             'popper' => [
                 'name' => 'Popper.js (Bootstrap 4 requirement)',
-                'source' => base_path('vendor/almasaeed2010/adminlte/plugins/popper'),
+                'source' => $adminltePath.'/plugins/popper',
                 'target' => public_path('vendor/popper'),
             ],
             'jquery' => [
                 'name' => 'jQuery (Bootstrap 4 requirement)',
-                'source' => base_path('vendor/almasaeed2010/adminlte/plugins/jquery'),
+                'source' => $adminltePath.'/plugins/jquery',
                 'target' => public_path('vendor/jquery'),
                 'ignore' => [
                     'core.js',
@@ -72,7 +74,7 @@ class AssetsResource extends PackageResource
             ],
             'overlay' => [
                 'name' => 'Overlay Scrollbars',
-                'source' => base_path('vendor/almasaeed2010/adminlte/plugins/overlayScrollbars'),
+                'source' => $adminltePath.'/plugins/overlayScrollbars',
                 'target' => public_path('vendor/overlayScrollbars'),
             ],
         ];
@@ -80,20 +82,20 @@ class AssetsResource extends PackageResource
         // Fill the set of installation messages.
 
         $this->messages = [
-            'install' => 'Install the basic package assets?',
-            'overwrite' => 'The basic assets already exists. Want to replace the assets?',
-            'success' => 'Basic assets installed successfully.',
+            'install' => 'Do you want to publish the AdminLTE asset files?',
+            'overwrite' => 'AdminLTE asset files were already published. Want to replace?',
+            'success' => 'AdminLTE assets files published successfully',
         ];
     }
 
     /**
-     * Install/Export the resource.
+     * Installs or publishes the resource.
      *
      * @return void
      */
     public function install()
     {
-        // Install the AdminLTE basic assets.
+        // Install the AdminLTE asset files.
 
         foreach ($this->source as $asset) {
             $this->installAsset($asset);
@@ -101,13 +103,13 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Uninstall/Remove the resource.
+     * Uninstalls the resource.
      *
      * @return void
      */
     public function uninstall()
     {
-        // Uninstall the AdminLTE basic assets.
+        // Uninstall the AdminLTE asset files.
 
         foreach ($this->source as $asset) {
             $this->uninstallAsset($asset);
@@ -115,7 +117,7 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Check if the resource already exists on the target destination.
+     * Checks whether the resource already exists in the target location.
      *
      * @return bool
      */
@@ -131,7 +133,8 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Check if the resource is correctly installed.
+     * Checks whether the resource is correctly installed, i.e. if the source
+     * items matches with the items available at the target location.
      *
      * @return bool
      */
@@ -147,42 +150,42 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Install the specified AdminLTE asset.
+     * Installs the specified AdminLTE asset.
      *
      * @param  array  $asset  An array with the asset data
      * @return void
      */
     protected function installAsset($asset)
     {
-        // Check if we just need to export the entire asset.
+        // Check if we just need to publish the entire asset.
 
         if (! isset($asset['resources'])) {
-            $this->exportResource($asset);
+            $this->publishResource($asset);
 
             return;
         }
 
-        // Otherwise, export only the specified asset resources.
+        // Otherwise, publish only the specified asset resources.
 
         foreach ($asset['resources'] as $res) {
             $res['target'] = $res['target'] ?? $res['source'];
             $res['target'] = $asset['target'].$res['target'];
             $res['source'] = $asset['source'].$res['source'];
-            $this->exportResource($res);
+            $this->publishResource($res);
         }
     }
 
     /**
-     * Exports the specified resource (usually a file or folder).
+     * Publishes the specified resource (usually a file or folder).
      *
      * @param  array  $res  An array with the resource data
      * @return void
      */
-    protected function exportResource($res)
+    protected function publishResource($res)
     {
-        // Check the resource type in order to copy it.
+        // Check whether the resource is a file or a directory.
 
-        if (is_dir($res['source'])) {
+        if (File::isDirectory($res['source'])) {
             CommandHelper::copyDirectory(
                 $res['source'],
                 $res['target'],
@@ -190,32 +193,32 @@ class AssetsResource extends PackageResource
                 $res['recursive'] ?? true,
                 $res['ignore'] ?? []
             );
-        } elseif (is_file($res['source'])) {
-            File::ensureDirectoryExists(dirname($res['target']));
-            copy($res['source'], $res['target']);
+        } else {
+            File::ensureDirectoryExists(File::dirname($res['target']));
+            File::copy($res['source'], $res['target']);
         }
     }
 
     /**
-     * Check if the specified asset already exists on the target destination.
+     * Checks whether the specified asset already exists in the target location.
      *
      * @param  array  $asset  An array with the asset data
      * @return bool
      */
     protected function assetExists($asset)
     {
-        return is_dir($asset['target']);
+        return File::exists($asset['target']);
     }
 
     /**
-     * Check if the specified asset is correctly installed.
+     * Checks whether the specified asset is correctly installed.
      *
      * @param  array  $asset  An array with the asset data
      * @return bool
      */
     protected function assetInstalled($asset)
     {
-        // Check if the asset have resources.
+        // Check whether the asset has resources or not.
 
         if (! isset($asset['resources'])) {
             return $this->resourceInstalled($asset);
@@ -235,34 +238,29 @@ class AssetsResource extends PackageResource
     }
 
     /**
-     * Check if the specified resource is correctly installed.
+     * Checks whether the specified resource is correctly installed.
      *
      * @param  array  $res  An array with the resource data
      * @return bool
      */
     protected function resourceInstalled($res)
     {
-        $installed = false;
+        // Check whether the resource is a file or a directory.
 
-        if (is_dir($res['source'])) {
-            $installed = (bool) CommandHelper::compareDirectories(
+        if (File::isDirectory($res['source'])) {
+            return (bool) CommandHelper::compareDirectories(
                 $res['source'],
                 $res['target'],
                 $res['recursive'] ?? true,
                 $res['ignore'] ?? []
             );
-        } elseif (is_file($res['source'])) {
-            $installed = CommandHelper::compareFiles(
-                $res['source'],
-                $res['target']
-            );
         }
 
-        return $installed;
+        return CommandHelper::compareFiles($res['source'], $res['target']);
     }
 
     /**
-     * Uninstall or remove the specified asset.
+     * Uninstalls the specified asset.
      *
      * @param  array  $asset  An array with the asset data
      * @return void
@@ -271,9 +269,11 @@ class AssetsResource extends PackageResource
     {
         $target = $asset['target'];
 
-        // Uninstall the asset (actually, the target should be a folder).
+        // Uninstall the specified asset. Note the asset target location is
+        // always a folder. When the target folder does not exists, we consider
+        // the asset as uninstalled.
 
-        if (is_dir($target)) {
+        if (File::isDirectory($target)) {
             File::deleteDirectory($target);
         }
     }

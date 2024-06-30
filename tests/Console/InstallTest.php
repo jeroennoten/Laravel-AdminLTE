@@ -56,17 +56,12 @@ class InstallTest extends CommandTestCase
         }
     }
 
-    public function testInstallOnlyInteractive()
+    public function testInstallOnlyWithInteractiveFlag()
     {
-        // We can't do these test on old laravel versions.
+        // We can't perfom these tests on old Laravel versions. We need support
+        // for the expect confirmation method.
 
-        if (! class_exists('Illuminate\Testing\PendingCommand')) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
-        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
+        if (! $this->canExpectsConfirmation()) {
             $this->assertTrue(true);
 
             return;
@@ -87,14 +82,14 @@ class InstallTest extends CommandTestCase
 
             $res->uninstall();
 
-            // Test with --interactive option (response with no).
+            // Test with --interactive option and respond with NO.
 
             $this->artisan("adminlte:install --only={$name} --interactive")
                  ->expectsConfirmation($confirmMsg, 'no');
 
             $this->assertFalse($res->installed());
 
-            // Test with --interactive option (response with yes).
+            // Test with --interactive option and respond with YES.
 
             $this->artisan("adminlte:install --only={$name} --interactive")
                  ->expectsConfirmation($confirmMsg, 'yes');
@@ -108,23 +103,18 @@ class InstallTest extends CommandTestCase
         }
     }
 
-    public function testInstallOnlyOverwrite()
+    public function testInstallOnlyWithOverwriteWarning()
     {
-        // We can't do these test on old laravel versions.
+        // We can't perfom these tests on old Laravel versions. We need support
+        // for the expect confirmation method.
 
-        if (! class_exists('Illuminate\Testing\PendingCommand')) {
+        if (! $this->canExpectsConfirmation()) {
             $this->assertTrue(true);
 
             return;
         }
 
-        if (! method_exists('Illuminate\Testing\PendingCommand', 'expectsConfirmation')) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
-        // Test installation of the resources when an overwrite will occurs.
+        // Test installation of the resources when an overwrite event occurs.
 
         foreach ($this->getResources() as $name => $res) {
             $confirmMsg = $res->getInstallMessage('overwrite');
@@ -139,7 +129,7 @@ class InstallTest extends CommandTestCase
 
             $this->createDummyResource($name, $res);
 
-            // Test when not confirm the overwrite.
+            // Test when overwrite is not confirmed.
 
             $this->artisan("adminlte:install --only={$name}")
                  ->expectsConfirmation($confirmMsg, 'no');
@@ -150,14 +140,14 @@ class InstallTest extends CommandTestCase
                 $this->assertFalse($res->installed());
             }
 
-            // Test when confirm the overwrite.
+            // Test when overwrite is confirmed.
 
             $this->artisan("adminlte:install --only={$name}")
                  ->expectsConfirmation($confirmMsg, 'yes');
 
             $this->assertTrue($res->installed());
 
-            // Test when using --force.
+            // Test when using --force flag.
 
             $this->createDummyResource($name, $res);
             $this->artisan("adminlte:install --only={$name} --force");
@@ -170,7 +160,7 @@ class InstallTest extends CommandTestCase
         }
     }
 
-    public function testInstallOnlyMultipleResources()
+    public function testInstallOnlyWithMultipleResources()
     {
         $resources = [
             $this->getResources('auth_views'),
@@ -285,7 +275,6 @@ class InstallTest extends CommandTestCase
             $this->getResources('config'),
             $this->getResources('translations'),
             $this->getResources('auth_views'),
-            $this->getResources('basic_views'),
             $this->getResources('basic_routes'),
         ];
 
@@ -330,7 +319,7 @@ class InstallTest extends CommandTestCase
             $this->getResources('translations'),
         ];
 
-        $newRes = ['main_views', 'auth_views', 'basic_views', 'basic_routes'];
+        $newRes = ['main_views', 'auth_views', 'basic_routes'];
 
         // Ensure the required vendor assets exists.
 
