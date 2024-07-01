@@ -232,12 +232,24 @@ class WidgetComponentsTest extends TestCase
 
     public function testProfileColItemComponent()
     {
+        // Test with common badge.
+
         $component = new Components\Widget\ProfileColItem(
             'title', 'text', null, null, 'b-theme'
         );
 
         $twClass = $component->makeTextWrapperClass();
         $this->assertStringContainsString('badge', $twClass);
+        $this->assertStringContainsString('bg-b-theme', $twClass);
+
+        // Test with common pill badge.
+
+        $component = new Components\Widget\ProfileColItem(
+            'title', 'text', null, null, 'pill-b-theme'
+        );
+
+        $twClass = $component->makeTextWrapperClass();
+        $this->assertStringContainsString('badge-pill', $twClass);
         $this->assertStringContainsString('bg-b-theme', $twClass);
     }
 
@@ -249,12 +261,24 @@ class WidgetComponentsTest extends TestCase
 
     public function testProfileRowItemComponent()
     {
+        // Test with common badge.
+
         $component = new Components\Widget\ProfileRowItem(
             'title', 'text', null, null, 'b-theme'
         );
 
         $twClass = $component->makeTextWrapperClass();
         $this->assertStringContainsString('badge', $twClass);
+        $this->assertStringContainsString('bg-b-theme', $twClass);
+
+        // Test with common pill badge.
+
+        $component = new Components\Widget\ProfileRowItem(
+            'title', 'text', null, null, 'pill-b-theme'
+        );
+
+        $twClass = $component->makeTextWrapperClass();
+        $this->assertStringContainsString('badge-pill', $twClass);
         $this->assertStringContainsString('bg-b-theme', $twClass);
     }
 
