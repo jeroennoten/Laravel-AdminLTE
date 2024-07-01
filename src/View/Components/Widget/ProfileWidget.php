@@ -29,6 +29,13 @@ class ProfileWidget extends Component
     public $img;
 
     /**
+     * The default icon that will be used when no image is provided.
+     *
+     * @var string
+     */
+    public $icon;
+
+    /**
      * The profile header theme (light, dark, primary, secondary, info, success,
      * warning, danger or any other AdminLTE color like lighblue or teal).
      *
@@ -73,11 +80,13 @@ class ProfileWidget extends Component
      */
     public function __construct(
         $name = null, $desc = null, $img = null, $theme = null, $cover = null,
-        $headerClass = null, $footerClass = null, $layoutType = 'modern'
+        $headerClass = null, $footerClass = null, $layoutType = 'modern',
+        $icon = 'fas fa-user'
     ) {
         $this->name = UtilsHelper::applyHtmlEntityDecoder($name);
         $this->desc = UtilsHelper::applyHtmlEntityDecoder($desc);
         $this->img = $img;
+        $this->icon = $icon;
         $this->theme = $theme;
         $this->cover = $cover;
         $this->headerClass = $headerClass;
