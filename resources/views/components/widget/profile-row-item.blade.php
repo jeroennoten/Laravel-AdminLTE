@@ -9,7 +9,7 @@
 
         {{-- Header --}}
         @isset($title)
-            @if(! empty($url))
+            @if(! empty($url) && $urlTarget === 'title')
                 <a href="{{ $url }}">{{ $title }}</a>
             @else
                 {{ $title }}
@@ -19,7 +19,11 @@
         {{-- Text --}}
         @isset($text)
             <span class="{{ $makeTextWrapperClass() }}">
-                {{ $text }}
+                @if(! empty($url) && $urlTarget === 'text')
+                    <a href="{{ $url }}">{{ $text }}</a>
+                @else
+                    {{ $text }}
+                @endif
             </span>
         @endisset
 

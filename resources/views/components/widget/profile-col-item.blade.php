@@ -10,7 +10,7 @@
         {{-- Header --}}
         @isset($title)
             <h5 class="description-header">
-                @if(! empty($url))
+                @if(! empty($url) && $urlTarget === 'title')
                     <a href="{{ $url }}">{{ $title }}</a>
                 @else
                     {{ $title }}
@@ -22,7 +22,11 @@
         @isset($text)
             <p class="description-text">
                 <span class="{{ $makeTextWrapperClass() }}">
-                    {{ $text }}
+                    @if(! empty($url) && $urlTarget === 'text')
+                        <a href="{{ $url }}">{{ $text }}</a>
+                    @else
+                        {{ $text }}
+                    @endif
                 </span>
             </p>
         @endisset
