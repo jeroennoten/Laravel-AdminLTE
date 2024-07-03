@@ -19,7 +19,7 @@ class AdminLteUpdateCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Update all the required assets for AdminLTE';
+    protected $description = 'Updates the AdminLTE distribution files and its dependencies';
 
     /**
      * A warning notification to be used when main views were previously
