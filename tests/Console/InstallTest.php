@@ -134,7 +134,7 @@ class InstallTest extends CommandTestCase
             $this->artisan("adminlte:install --only={$name}")
                  ->expectsConfirmation($confirmMsg, 'no');
 
-            if ($name === 'basic_routes') {
+            if ($name === 'auth_routes') {
                 $this->assertTrue($res->installed());
             } else {
                 $this->assertFalse($res->installed());
@@ -232,13 +232,14 @@ class InstallTest extends CommandTestCase
         }
     }
 
-    public function testInstallWithTypeEnhanced()
+    public function testInstallWithTypeBasicWithAuth()
     {
         $resources = [
             $this->getResources('assets'),
             $this->getResources('config'),
             $this->getResources('translations'),
             $this->getResources('auth_views'),
+            $this->getResources('auth_routes'),
         ];
 
         // Ensure the required vendor assets exists.
@@ -253,7 +254,43 @@ class InstallTest extends CommandTestCase
 
         // Install resources using the artisan command.
 
-        $this->artisan('adminlte:install --type=enhanced');
+        $this->artisan('adminlte:install --type=basic_with_auth');
+
+        // Assert that the resources are installed.
+
+        foreach ($resources as $res) {
+            $this->assertTrue($res->installed());
+        }
+
+        // Clear installed resources.
+
+        foreach ($resources as $res) {
+            $res->uninstall();
+        }
+    }
+
+    public function testInstallWithTypeBasicWithViews()
+    {
+        $resources = [
+            $this->getResources('assets'),
+            $this->getResources('config'),
+            $this->getResources('translations'),
+            $this->getResources('main_views'),
+        ];
+
+        // Ensure the required vendor assets exists.
+
+        $this->installVendorAssets();
+
+        // Ensure the target resources do not exists.
+
+        foreach ($resources as $res) {
+            $res->uninstall();
+        }
+
+        // Install resources using the artisan command.
+
+        $this->artisan('adminlte:install --type=basic_with_views');
 
         // Assert that the resources are installed.
 
@@ -275,7 +312,8 @@ class InstallTest extends CommandTestCase
             $this->getResources('config'),
             $this->getResources('translations'),
             $this->getResources('auth_views'),
-            $this->getResources('basic_routes'),
+            $this->getResources('auth_routes'),
+            $this->getResources('main_views'),
         ];
 
         // Ensure the required vendor assets exists.
@@ -319,7 +357,7 @@ class InstallTest extends CommandTestCase
             $this->getResources('translations'),
         ];
 
-        $newRes = ['main_views', 'auth_views', 'basic_routes'];
+        $newRes = ['main_views', 'auth_views', 'auth_routes'];
 
         // Ensure the required vendor assets exists.
 
@@ -363,8 +401,9 @@ class InstallTest extends CommandTestCase
             $this->getResources('assets'),
             $this->getResources('config'),
             $this->getResources('translations'),
-            $this->getResources('basic_routes'),
+            $this->getResources('auth_routes'),
             $this->getResources('auth_views'),
+            $this->getResources('main_views'),
         ];
 
         // Ensure the required vendor assets exists.
@@ -385,7 +424,7 @@ class InstallTest extends CommandTestCase
 
         // Install resources using the artisan command.
 
-        $this->artisan('adminlte:install --type=enhanced --with=basic_routes --with=auth_views');
+        $this->artisan('adminlte:install --type=basic_with_auth --with=auth_routes --with=main_views');
 
         // Assert that the resources are installed.
 

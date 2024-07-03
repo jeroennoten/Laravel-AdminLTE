@@ -34,7 +34,7 @@ class CommandTestCase extends TestCase
             'translations' => new TranslationsResource(),
             'main_views' => new LayoutViewsResource(),
             'auth_views' => new AuthViewsResource(),
-            'basic_routes' => new AuthRoutesResource(),
+            'auth_routes' => new AuthRoutesResource(),
         ];
     }
 
@@ -83,7 +83,7 @@ class CommandTestCase extends TestCase
             $target = $target.DIRECTORY_SEPARATOR.'login.blade.php';
             $loginContent = '@extends(\'adminlte::auth.login\')';
             $this->createDummyFile($target, $loginContent);
-        } elseif ($name === 'basic_routes') {
+        } elseif ($name === 'auth_routes') {
             $stubFile = CommandHelper::getStubPath('routes.stub');
             $content = File::get($stubFile);
             $this->createDummyFile($target, $content);
