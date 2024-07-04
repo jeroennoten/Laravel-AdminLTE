@@ -23,8 +23,8 @@ class StatusTest extends CommandTestCase
         // Run the check of the resources status.
 
         $this->artisan('adminlte:status')
-             ->expectsOutput('Checking the resources installation ...')
-             ->expectsOutput('All resources checked succesfully!')
+             ->expectsOutput('Verifying the installation of the resources...')
+             ->expectsOutput('All resources verified successfully!')
              ->assertExitCode(0);
 
         // Clear installed resources.
