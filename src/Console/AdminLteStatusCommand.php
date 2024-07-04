@@ -158,8 +158,8 @@ class AdminLteStatusCommand extends Command
 
         foreach ($this->pkgResources as $name => $resource) {
             $requiredLabel = $resource->required
-                ? 'yes'
-                : $this->styleOutput('no', '#606060');
+                ? $this->styleOutput('yes', 'green')
+                : 'no';
 
             $tblContent[] = [
                 $name,
