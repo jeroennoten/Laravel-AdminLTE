@@ -217,8 +217,8 @@ class PluginsTest extends CommandTestCase
         // Run the check of the plugin status.
 
         $this->artisan('adminlte:plugins')
-             ->expectsOutput('Checking the plugins installation ...')
-             ->expectsOutput('All plugins checked succesfully!')
+             ->expectsOutput('Verifying the installation of the plugins...')
+             ->expectsOutput('All plugins verified successfully!')
              ->assertExitCode(0);
 
         // Clear installed resources.
@@ -242,9 +242,9 @@ class PluginsTest extends CommandTestCase
         // Run the check of the plugin status.
 
         $this->artisan('adminlte:plugins --plugin=icheckBootstrap --plugin=dummy')
-             ->expectsOutput('Checking the plugins installation ...')
+             ->expectsOutput('Verifying the installation of the plugins...')
              ->expectsOutput('The plugin key: dummy is not valid!')
-             ->expectsOutput('All plugins checked succesfully!')
+             ->expectsOutput('All plugins verified successfully!')
              ->assertExitCode(0);
 
         // Clear installed resources.
