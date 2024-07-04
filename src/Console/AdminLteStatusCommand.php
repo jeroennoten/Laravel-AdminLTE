@@ -155,12 +155,11 @@ class AdminLteStatusCommand extends Command
         // Create the table rows.
 
         $tblContent = [];
-        $notRequiredColor = intval(app()->version()) >= 8 ? 'gray' : 'default';
 
         foreach ($this->pkgResources as $name => $resource) {
             $requiredLabel = $resource->required
                 ? 'yes'
-                : $this->styleOutput('no', $notRequiredColor);
+                : $this->styleOutput('no', '#606060');
 
             $tblContent[] = [
                 $name,
