@@ -24,7 +24,7 @@ class AdminLteStatusCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Checks the installation status of the AdminLTE resources';
+    protected $description = 'Checks the installation status of the package resources';
 
     /**
      * Array with all the available package resources.
@@ -41,17 +41,17 @@ class AdminLteStatusCommand extends Command
     protected $status = [
         'installed' => [
             'label' => 'Installed',
-            'legend' => 'The resource is installed and matches with the default package resource',
+            'legend' => 'The resource is published and matches with the package original resource',
             'color' => 'green',
         ],
         'mismatch' => [
             'label' => 'Mismatch',
-            'legend' => 'The installed resource mismatch the package resource (update available or resource modified)',
+            'legend' => 'The resource is published but mismatches with the package original resource (update available or resource modified)',
             'color' => 'yellow',
         ],
         'uninstalled' => [
             'label' => 'Not Installed',
-            'legend' => 'The package resource is not installed',
+            'legend' => 'The resource is not published',
             'color' => 'red',
         ],
     ];
@@ -73,7 +73,7 @@ class AdminLteStatusCommand extends Command
             'translations' => new TranslationsResource(),
             'main_views' => new LayoutViewsResource(),
             'auth_views' => new AuthViewsResource(),
-            'basic_routes' => new AuthRoutesResource(),
+            'auth_routes' => new AuthRoutesResource(),
         ];
     }
 
@@ -84,94 +84,102 @@ class AdminLteStatusCommand extends Command
      */
     public function handle()
     {
+        // Get the installation status of each resource.
+
+        $this->line('Verifying the installation of the resources...');
+        $resStatus = $this->getResourcesStatus();
+        $this->line('');
+        $this->line('All resources verified successfully!');
+
         // Display the resources installation status.
 
-        $this->showResourcesStatus();
+        $this->line('');
+        $this->line('Resources Status:');
+        $this->showResourcesStatus($resStatus);
 
-        // Display the legends table.
+        // Display the status legends table.
 
         $this->line('');
+        $this->line('Status Legends:');
         $this->showStatusLegends();
     }
 
     /**
-     * Display the resources status.
+     * Gets the resources installation status array.
      *
+     * @return array
+     */
+    protected function getResourcesStatus()
+    {
+        // Define the array that will hold the resources status.
+
+        $resStatus = [];
+
+        // Create and initialize a progress bar.
+
+        $bar = $this->output->createProgressBar(count($this->pkgResources));
+        $bar->start();
+
+        // Get the installation status of each resource.
+
+        foreach ($this->pkgResources as $name => $resource) {
+            $resStatus[$name] = $this->getResourceStatus($resource);
+            $bar->advance();
+        }
+
+        $bar->finish();
+
+        // Return the resources status.
+
+        return $resStatus;
+    }
+
+    /**
+     * Displays the status of the resources.
+     *
+     * @param  array  $resStatus  Array with the status of each resource
      * @return void
      */
-    protected function showResourcesStatus()
+    protected function showResourcesStatus($resStatus)
     {
         // Define the table headers.
 
         $tblHeader = [
             $this->styleOutput('Package Resource', 'cyan'),
             $this->styleOutput('Description', 'cyan'),
-            $this->styleOutput('Status', 'cyan'),
+            $this->styleOutput('Publishing Target', 'cyan'),
             $this->styleOutput('Required', 'cyan'),
+            $this->styleOutput('Status', 'cyan'),
         ];
 
-        // Get the table rows.
-
-        $tblContent = $this->getResourcesStatusRows();
-
-        // Display the table.
-
-        $this->line('');
-        $this->table($tblHeader, $tblContent);
-    }
-
-    /**
-     * Get the rows for the resources status table.
-     *
-     * @return array
-     */
-    protected function getResourcesStatusRows()
-    {
-        // Define the array that will hold the table rows.
+        // Create the table rows.
 
         $tblContent = [];
 
-        // Create a progress bar.
-
-        $steps = count($this->pkgResources);
-        $bar = $this->output->createProgressBar($steps);
-
-        // Initialize the status check procedure.
-
-        $this->line('Checking the resources installation ...');
-        $bar->start();
-
         foreach ($this->pkgResources as $name => $resource) {
-            // Fill the status row of the current resource.
+            $requiredLabel = $resource->required
+                ? $this->styleOutput('yes', 'green')
+                : 'no';
 
             $tblContent[] = [
                 $name,
                 $resource->description,
-                $this->getResourceStatus($resource),
-                var_export($resource->required, true),
+                str_replace(base_path('/'), '', $resource->target),
+                $requiredLabel,
+                $resStatus[$name] ?? 'Unknown',
             ];
-
-            // Advance the progress bar one step.
-
-            $bar->advance();
         }
 
-        // Finish the progress bar.
+        // Display the table.
 
-        $bar->finish();
-        $this->line('');
-        $this->line('All resources checked succesfully!');
-
-        // Return the rows.
-
-        return $tblContent;
+        $this->table($tblHeader, $tblContent);
     }
 
     /**
-     * Get the installation status of a package resource.
+     * Gets the installation status of the specified package resource.
      *
      * @param  PackageResource  $resource  The package resource to check
-     * @return string The resource status
+     * @return string
      */
     protected function getResourceStatus($resource)
     {
@@ -187,14 +195,12 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Display the legends of the possible status values.
+     * Displays the legends for the possible status values.
      *
      * @return void
      */
     protected function showStatusLegends()
     {
-        $this->line('Status legends:');
-
         // Create the table headers for the legends.
 
         $tblHeader = [
@@ -219,11 +225,11 @@ class AdminLteStatusCommand extends Command
     }
 
     /**
-     * Give output style to some text.
+     * Gives output style to the provided text.
      *
      * @param  string  $text  The text to be styled
      * @param  string  $color  The output color for the text
-     * @return string The styled text
+     * @return string
      */
     protected function styleOutput($text, $color)
     {

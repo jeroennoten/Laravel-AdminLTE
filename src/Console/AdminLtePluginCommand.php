@@ -13,10 +13,10 @@ class AdminLtePluginCommand extends Command
      * @var string
      */
     protected $signature = 'adminlte:plugins
-        {operation=list : The type of operation: list (default), install or remove}
+        {operation=list : The type of operation: list, install or remove}
         {--plugin=* : To apply the operation only over the specified plugins, the value should be a plugin key}
-        {--force : To force the overwrite of existing files}
-        {--interactive : The installation will guide you through the process}';
+        {--force : To force the overwrite of existing files during an installation process}
+        {--interactive : To allow the operation process guide you through it}';
 
     /**
      * The console command description.
@@ -47,17 +47,17 @@ class AdminLtePluginCommand extends Command
     protected $status = [
         'installed' => [
             'label' => 'Installed',
-            'legend' => 'The plugin is installed and matches with the default package plugin',
+            'legend' => 'The plugin is published and matches with the package original plugin',
             'color' => 'green',
         ],
         'mismatch' => [
             'label' => 'Mismatch',
-            'legend' => 'The installed plugin mismatch the package plugin (update available or plugin modified)',
+            'legend' => 'The plugin is published but mismatches with the package original plugin (update available or plugin modified)',
             'color' => 'yellow',
         ],
         'uninstalled' => [
             'label' => 'Not Installed',
-            'legend' => 'The plugin is not installed',
+            'legend' => 'The plugin is not published',
             'color' => 'red',
         ],
     ];
@@ -110,27 +110,40 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Display a list with the installation status of the plugins.
+     * Displays a list with the installation status of the plugins.
      *
      * @return void
      */
     protected function showPlugins()
     {
-        // Show the plugins status.
+        // Get the list of affected plugins on the current operation.
 
         $pluginsKeys = $this->getAffectedPlugins();
-        $this->showPluginsStatus($pluginsKeys);
+
+        // Get the installation status of the affected plugins.
+
+        $this->line('Verifying the installation of the plugins...');
+        $pluginsStatus = $this->getPluginsStatus($pluginsKeys);
+        $this->line('');
+        $this->line('All plugins verified successfully!');
+
+        // Display the plugins installation status.
+
+        $this->line('');
+        $this->line('Plugins Status:');
+        $this->showPluginsStatus($pluginsStatus);
 
         // Display the legends table.
 
         $this->line('');
+        $this->line('Status legends:');
         $this->showStatusLegends();
     }
 
     /**
-     * Get the list of plugins keys that should be affected by an operation.
+     * Gets the list of plugins keys that should be affected by an operation.
      *
-     * @return array An array with plugins keys
+     * @return array
      */
     protected function getAffectedPlugins()
     {
@@ -146,12 +159,52 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Display the plugins status.
+     * Gets the installation status of the specicied plugins keys.
      *
      * @param  array  $pluginsKeys  Array with the plugins keys to evaluate
+     * @return array
+     */
+    protected function getPluginsStatus($pluginsKeys)
+    {
+        // Define the array that will hold the resources status.
+
+        $status = [];
+
+        // Create and initialize a progress bar.
+
+        $bar = $this->output->createProgressBar(count($pluginsKeys));
+        $bar->start();
+
+        // Get the installation status of each plugin.
+
+        foreach ($pluginsKeys as $key) {
+            $pluginData = $this->plugins->getSourceData($key);
+
+            if (empty($pluginData)) {
+                $this->line('');
+                $this->error("The plugin key: {$key} is not valid!");
+                $bar->advance();
+                continue;
+            }
+
+            $status[$key] = $this->getPluginStatus($key);
+            $bar->advance();
+        }
+
+        $bar->finish();
+
+        // Return the plugins status.
+
+        return $status;
+    }
+
+    /**
+     * Displays the status of the specified plugins.
+     *
+     * @param  array  $pluginsStatus  Array with the status of plugins
      * @return void
      */
-    protected function showPluginsStatus($pluginsKeys)
+    protected function showPluginsStatus($pluginsStatus)
     {
         // Define the table headers.
 
@@ -161,43 +214,14 @@ class AdminLtePluginCommand extends Command
             $this->styleOutput('Status', 'cyan'),
         ];
 
-        // Create a progress bar.
-
-        $bar = $this->output->createProgressBar(count($pluginsKeys));
-
-        // Initialize the status check procedure.
+        // Create the table rows.
 
         $tblContent = [];
-        $this->line('Checking the plugins installation ...');
-        $bar->start();
 
-        foreach ($pluginsKeys as $key) {
-            // Advance the progress bar one step.
-
-            $bar->advance();
-
-            // Get the plugin data.
-
+        foreach ($pluginsStatus as $key => $status) {
             $pluginData = $this->plugins->getSourceData($key);
-
-            if (empty($pluginData)) {
-                $this->line('');
-                $this->error("The plugin key: {$key} is not valid!");
-                continue;
-            }
-
-            // Fill the status row of the current plugin.
-
-            $status = $this->getPluginStatus($key);
             $tblContent[] = [$pluginData['name'], $key, $status];
         }
-
-        // Finish the progress bar.
-
-        $bar->finish();
-        $this->line('');
-        $this->line('All plugins checked succesfully!');
-        $this->line('');
 
         // Display the plugins installation status.
 
@@ -205,10 +229,10 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Get the installation status of a plugin.
+     * Gets the installation status of a plugin.
      *
      * @param  string  $pluginKey  The plugin key
-     * @return string The plugin status
+     * @return string
      */
     protected function getPluginStatus($pluginKey)
     {
@@ -224,14 +248,12 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Display the legends of the possible status values.
+     * Displays the legends of the possible status values.
      *
      * @return void
      */
     protected function showStatusLegends()
     {
-        $this->line('Status legends:');
-
         // Create the table headers for the legends.
 
         $tblHeader = [
@@ -256,11 +278,11 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Give output style to some text.
+     * Gives output style to the specified text.
      *
      * @param  string  $text  The text to be styled
      * @param  string  $color  The output color for the text
-     * @return string The styled text
+     * @return string
      */
     protected function styleOutput($text, $color)
     {
@@ -288,26 +310,27 @@ class AdminLtePluginCommand extends Command
         // Install the plugins.
 
         foreach ($pluginsKeys as $pluginKey) {
-            // Advance the progress bar one step.
+            // Install the plugin, if it's a valid plugin key.
 
-            $bar->advance();
-
-            // Install the plugin.
-
-            if ($this->installPlugin($pluginKey)) {
+            if (empty($this->plugins->getSourceData($pluginKey))) {
+                $this->line('');
+                $this->error("The plugin key: {$pluginKey} is not valid!");
+                $status = $this->styleOutput('Invalid', 'red');
+            } elseif ($this->installPlugin($pluginKey)) {
                 $status = $this->styleOutput('Installed', 'green');
             } else {
-                $status = $this->styleOutput('Not Installed / Invalid', 'red');
+                $status = $this->styleOutput('Not Installed', 'red');
             }
 
             $summary[] = [$pluginKey, $status];
+            $bar->advance();
         }
 
         // Finish the progress bar.
 
         $bar->finish();
         $this->line('');
-        $this->line('The plugins installation is complete. Summary:');
+        $this->line('The installation of plugins is complete. Summary:');
         $this->line('');
 
         // Show summary of installed plugins.
@@ -316,10 +339,10 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Install the specified plugin.
+     * Installs the specified plugin. Returns whether the plugin was installed.
      *
      * @param  string  $pluginKey  The plugin string key
-     * @return bool Whether the plugin was succesfully installed
+     * @return bool
      */
     protected function installPlugin($pluginKey)
     {
@@ -331,27 +354,18 @@ class AdminLtePluginCommand extends Command
         $confirmMsg = strtr($confirmMsg, [':plugin' => $pluginKey]);
         $overwriteMsg = strtr($overwriteMsg, [':plugin' => $pluginKey]);
 
-        // Check if the plugin is valid.
-
-        if (empty($this->plugins->getSourceData($pluginKey))) {
-            $this->line('');
-            $this->error("The plugin key: {$pluginKey} is not valid!");
-
-            return false;
-        }
-
         // Check if the --interactive option is enabled.
 
         if ($this->option('interactive') && ! $this->confirm($confirmMsg)) {
             return false;
         }
 
-        // Check for overwrite warning.
+        // Check for overwrite warning
 
-        $force = $this->option('force');
-        $isOverwrite = ! $force && $this->plugins->exists($pluginKey);
+        $shouldWarnOverwrite = ! $this->option('force')
+            && $this->plugins->exists($pluginKey);
 
-        if ($isOverwrite && ! $this->confirm($overwriteMsg)) {
+        if ($shouldWarnOverwrite && ! $this->confirm($overwriteMsg)) {
             return false;
         }
 
@@ -383,26 +397,27 @@ class AdminLtePluginCommand extends Command
         // Remove the plugins.
 
         foreach ($pluginsKeys as $pluginKey) {
-            // Advance the progress bar one step.
+            // Remove the plugin, if it's a valid plugin key.
 
-            $bar->advance();
-
-            // Remove the plugin.
-
-            if ($this->removePlugin($pluginKey)) {
+            if (empty($this->plugins->getSourceData($pluginKey))) {
+                $this->line('');
+                $this->error("The plugin key: {$pluginKey} is not valid!");
+                $status = $this->styleOutput('Invalid', 'red');
+            } elseif ($this->removePlugin($pluginKey)) {
                 $status = $this->styleOutput('Removed', 'green');
             } else {
-                $status = $this->styleOutput('Not Removed / Invalid', 'red');
+                $status = $this->styleOutput('Not Removed', 'red');
             }
 
             $summary[] = [$pluginKey, $status];
+            $bar->advance();
         }
 
         // Finish the progress bar.
 
         $bar->finish();
         $this->line('');
-        $this->line('The plugins removal is complete. Summary:');
+        $this->line('The removal of plugins is complete. Summary:');
         $this->line('');
 
         // Show summary of removed plugins.
@@ -411,10 +426,11 @@ class AdminLtePluginCommand extends Command
     }
 
     /**
-     * Remove/Uninstall the specified plugin.
+     * Removes/Uninstalls the specified plugin. Returns whether the plugin was
+     * removed.
      *
      * @param  string  $pluginKey  The plugin string key
-     * @return bool Whether the plugin was succesfully removed
+     * @return bool
      */
     protected function removePlugin($pluginKey)
     {
@@ -422,15 +438,6 @@ class AdminLtePluginCommand extends Command
 
         $confirmMsg = $this->plugins->getInstallMessage('remove') ?? '';
         $confirmMsg = strtr($confirmMsg, [':plugin' => $pluginKey]);
-
-        // Check if the plugin is valid.
-
-        if (empty($this->plugins->getSourceData($pluginKey))) {
-            $this->line('');
-            $this->error("The plugin key: {$pluginKey} is not valid!");
-
-            return false;
-        }
 
         // Check if the --interactive option is enabled.
 
