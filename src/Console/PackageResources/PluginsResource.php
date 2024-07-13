@@ -358,7 +358,7 @@ class PluginsResource extends PackageResource
     {
         // First, check and install dependencies plugins, if any.
 
-        foreach(($plugin['dependencies'] ?? []) as $pluginKey) {
+        foreach (($plugin['dependencies'] ?? []) as $pluginKey) {
             $this->install($pluginKey);
         }
 
