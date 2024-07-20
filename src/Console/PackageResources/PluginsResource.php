@@ -10,11 +10,12 @@ class PluginsResource extends PackageResource
     /**
      * The available plugins data. A plugin can contain next data keys:
      * - name: The name of the plugin.
-     * - source: The source of the plugin (relative to base source)
-     * - target: The target of the plugin (relative to base target)
+     * - source: The source of the plugin (relative to base source).
+     * - target: The target of the plugin (relative to base target).
      * - resources: An array with resources data items.
      * - ignore: A list of file patterns to ignore.
      * - recursive: Whether to copy files recursively (default is true).
+     * - dependencies: A list of plugin keys that are required as dependencies.
      *
      * When the target is not specified, the source will be used as the
      * relative path to the base target destination. A resource can contain the
@@ -74,10 +75,8 @@ class PluginsResource extends PackageResource
         ],
         'daterangepicker' => [
             'name' => 'Date Range Picker',
-            'resources' => [
-                ['source' => 'daterangepicker'],
-                ['source' => 'moment'],
-            ],
+            'source' => 'daterangepicker',
+            'dependencies' => ['moment'],
         ],
         'ekkoLightbox' => [
             'name' => 'Ekko Lightbox',
@@ -157,6 +156,10 @@ class PluginsResource extends PackageResource
             ],
             'recursive' => false,
         ],
+        'moment' => [
+            'name' => 'Moment.js',
+            'source' => 'moment',
+        ],
         'paceProgress' => [
             'name' => 'Pace Progress',
             'source' => 'pace-progress',
@@ -186,10 +189,8 @@ class PluginsResource extends PackageResource
         ],
         'tempusdominusBootstrap4' => [
             'name' => 'Tempus Dominus for Bootstrap 4',
-            'resources' => [
-                ['source' => 'tempusdominus-bootstrap-4'],
-                ['source' => 'moment'],
-            ],
+            'source' => 'tempusdominus-bootstrap-4',
+            'dependencies' => ['moment'],
         ],
         'toastr' => [
             'name' => 'Toastr',
@@ -355,7 +356,13 @@ class PluginsResource extends PackageResource
      */
     protected function installPlugin($plugin)
     {
-        // Check if we need to export the entire plugin.
+        // First, check and install dependencies plugins, if any.
+
+        foreach (($plugin['dependencies'] ?? []) as $pluginKey) {
+            $this->install($pluginKey);
+        }
+
+        // Now, check if we need to export the entire plugin.
 
         if (! isset($plugin['resources'])) {
             $this->publishResource($plugin);
