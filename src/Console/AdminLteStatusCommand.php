@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
@@ -74,6 +75,7 @@ class AdminLteStatusCommand extends Command
             'main_views' => new LayoutViewsResource(),
             'auth_views' => new AuthViewsResource(),
             'auth_routes' => new AuthRoutesResource(),
+            'components' => new BladeComponentsResource(),
         ];
     }
 
@@ -161,10 +163,14 @@ class AdminLteStatusCommand extends Command
                 ? $this->styleOutput('yes', 'green')
                 : 'no';
 
+            $publishingTarget = is_array($resource->target)
+                ? implode(PHP_EOL, $resource->target)
+                : $resource->target;
+
             $tblContent[] = [
                 $name,
                 $resource->description,
-                str_replace(base_path('/'), '', $resource->target),
+                str_replace(base_path().'/', '', $publishingTarget),
                 $requiredLabel,
                 $resStatus[$name] ?? 'Unknown',
             ];
