@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
@@ -19,8 +20,8 @@ class AdminLteInstallCommand extends Command
      */
     protected $signature = 'adminlte:install
         {--type=basic : The installation type: basic, basic_with_auth, basic_with_views or full}
-        {--only=* : To install only specific resources: assets, config, translations, auth_views, auth_routes or main_views. Can\'t be mixed with option --with}
-        {--with=* : To install with additional resources: auth_views, auth_routes or main_views}
+        {--only=* : To install only specific resources: assets, config, translations, auth_views, auth_routes, main_views or components. Can\'t be mixed with option --with}
+        {--with=* : To install with additional resources: auth_views, auth_routes, main_views or components}
         {--force : To force the overwrite of existing files during the installation process}
         {--interactive : To allow the installation process guide you through it}';
 
@@ -84,6 +85,7 @@ class AdminLteInstallCommand extends Command
             'main_views' => new LayoutViewsResource(),
             'auth_views' => new AuthViewsResource(),
             'auth_routes' => new AuthRoutesResource(),
+            'components' => new BladeComponentsResource(),
         ];
 
         // Add the resources related to each available --type option.
@@ -91,7 +93,7 @@ class AdminLteInstallCommand extends Command
         $basic = ['assets', 'config', 'translations'];
         $basicWithAuth = array_merge($basic, ['auth_views', 'auth_routes']);
         $basicWithViews = array_merge($basic, ['main_views']);
-        $full = array_merge($basicWithAuth, ['main_views']);
+        $full = array_merge($basicWithAuth, ['main_views', 'components']);
 
         $this->optTypeResources = [
             'basic' => $basic,
@@ -109,6 +111,7 @@ class AdminLteInstallCommand extends Command
             'main_views' => ['main_views'],
             'auth_views' => ['auth_views'],
             'auth_routes' => ['auth_routes'],
+            'components' => ['components'],
         ];
 
         // Add the resources related to each available --with option.
@@ -117,6 +120,7 @@ class AdminLteInstallCommand extends Command
             'main_views' => ['main_views'],
             'auth_views' => ['auth_views'],
             'auth_routes' => ['auth_routes'],
+            'components' => ['components'],
         ];
     }
 

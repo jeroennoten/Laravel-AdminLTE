@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
@@ -35,6 +36,7 @@ class CommandTestCase extends TestCase
             'main_views' => new LayoutViewsResource(),
             'auth_views' => new AuthViewsResource(),
             'auth_routes' => new AuthRoutesResource(),
+            'components' => new BladeComponentsResource(),
         ];
     }
 
@@ -87,6 +89,11 @@ class CommandTestCase extends TestCase
             $stubFile = CommandHelper::getStubPath('routes.stub');
             $content = File::get($stubFile);
             $this->createDummyFile($target, $content);
+        } elseif ($name === 'components') {
+            $view = $target['views'].DIRECTORY_SEPARATOR.'form/input.blade.php';
+            $this->createDummyFile($view);
+            $class = $target['classes'].DIRECTORY_SEPARATOR.'Form/Input.php';
+            $this->createDummyFile($class);
         }
     }
 

@@ -314,6 +314,7 @@ class InstallTest extends CommandTestCase
             $this->getResources('auth_views'),
             $this->getResources('auth_routes'),
             $this->getResources('main_views'),
+            $this->getResources('components'),
         ];
 
         // Ensure the required vendor assets exists.
