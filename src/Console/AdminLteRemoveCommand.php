@@ -69,7 +69,6 @@ class AdminLteRemoveCommand extends Command
         // Read and verify the resources to be uninstalled.
 
         foreach ($this->argument('resource') as $res) {
-
             // Check if resource is valid.
 
             if (! isset($this->pkgResources[$res])) {
@@ -116,6 +115,6 @@ class AdminLteRemoveCommand extends Command
         // Uninstall the resource.
 
         $resource->uninstall();
-        $this->info('The resource was successfully removed.');
+        $this->info('The resource was successfully removed');
     }
 }
