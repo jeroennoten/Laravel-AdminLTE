@@ -64,7 +64,7 @@ class RemoveTest extends CommandTestCase
 
         $resources = array_filter(
             $this->getResources(),
-            fn ($r) => $r->required
+            function ($r) { return $r->required; }
         );
 
         // Test remove command over the required resources, without
