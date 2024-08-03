@@ -112,10 +112,18 @@ class BladeComponentsResource extends PackageResource
     public function installed()
     {
         // Note we can't expect the published component classes to match
-        // exactly with the deault package ones, since the namespace and others
-        // elements may be changed during the installation process.
+        // exactly with the default package ones, since the namespace of the
+        // classes are changed during the installation process. So, we'll just
+        // control that the number of published component classes matches with
+        // the packages default ones.
 
-        return File::isDirectory($this->target['classes'])
+        $srcClassesNum = count(File::allFiles($this->source['classes']));
+
+        $tgtClassesNum = File::isDirectory($this->target['classes'])
+            ? count(File::allFiles($this->target['classes']))
+            : 0;
+
+        return $srcClassesNum === $tgtClassesNum
             && CommandHelper::compareDirectories(
                 $this->source['views'],
                 $this->target['views'],
