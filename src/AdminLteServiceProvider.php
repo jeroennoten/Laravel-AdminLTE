@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteInstallCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLtePluginCommand;
+use JeroenNoten\LaravelAdminLte\Console\AdminLteRemoveCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteStatusCommand;
 use JeroenNoten\LaravelAdminLte\Console\AdminLteUpdateCommand;
 use JeroenNoten\LaravelAdminLte\View\Components\Form;
@@ -157,9 +158,10 @@ class AdminLteServiceProvider extends BaseServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 AdminLteInstallCommand::class,
+                AdminLtePluginCommand::class,
+                AdminLteRemoveCommand::class,
                 AdminLteStatusCommand::class,
                 AdminLteUpdateCommand::class,
-                AdminLtePluginCommand::class,
             ]);
         }
     }
