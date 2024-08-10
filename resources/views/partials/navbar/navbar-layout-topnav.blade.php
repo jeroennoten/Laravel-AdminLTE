@@ -1,3 +1,5 @@
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 <nav class="main-header navbar
     {{ config('adminlte.classes_topnav_nav', 'navbar-expand-md') }}
     {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
@@ -47,7 +49,7 @@
             @endif
 
             {{-- Right sidebar toggler link --}}
-            @if(config('adminlte.right_sidebar'))
+            @if($layoutHelper->isRightSidebarEnabled())
                 @include('adminlte::partials.navbar.menu-item-right-sidebar-toggler')
             @endif
         </ul>
