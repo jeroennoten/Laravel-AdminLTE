@@ -18,19 +18,19 @@
 
 @push('js')
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $(() => {
+            $('#{{ $id }}').bootstrapSwitch( @json($config) );
 
-    $(() => {
-        $('#{{ $id }}').bootstrapSwitch( @json($config) );
+            // Add support to auto select the previous submitted value in case of
+            // validation errors.
 
-        // Add support to auto select the previous submitted value in case of
-        // validation errors.
-
-        @if($errors->any() && $enableOldSupport)
-            let oldState = @json((bool)$getOldValue($errorKey));
-            $('#{{ $id }}').bootstrapSwitch('state', oldState);
-        @endif
-    })
-
+            @if($errors->any() && $enableOldSupport)
+                let oldState = @json((bool)$getOldValue($errorKey));
+                $('#{{ $id }}').bootstrapSwitch('state', oldState);
+            @endif
+        })
+    });
 </script>
 @endpush
 

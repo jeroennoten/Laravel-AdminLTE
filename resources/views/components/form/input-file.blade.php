@@ -29,11 +29,11 @@
 @once
 @push('js')
 <script>
-
-    $(() => {
-        bsCustomFileInput.init();
-    })
-
+    document.addEventListener("DOMContentLoaded", function() {
+        $(() => {
+            bsCustomFileInput.init();
+        })
+    });
 </script>
 @endpush
 @endonce

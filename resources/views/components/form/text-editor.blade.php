@@ -19,27 +19,27 @@
 
 @push('js')
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $(() => {
+            let usrCfg = @json($config);
 
-    $(() => {
-        let usrCfg = @json($config);
+            // Check for placeholder attribute.
 
-        // Check for placeholder attribute.
+            @isset($attributes['placeholder'])
+                usrCfg['placeholder'] = "{{ $attributes['placeholder'] }}";
+            @endisset
 
-        @isset($attributes['placeholder'])
-            usrCfg['placeholder'] = "{{ $attributes['placeholder'] }}";
-        @endisset
+            // Initialize the plugin.
 
-        // Initialize the plugin.
+            $('#{{ $id }}').summernote(usrCfg);
 
-        $('#{{ $id }}').summernote(usrCfg);
+            // Check for disabled attribute.
 
-        // Check for disabled attribute.
-
-        @isset($attributes['disabled'])
-            $('#{{ $id }}').summernote('disable');
-        @endisset
-    })
-
+            @isset($attributes['disabled'])
+                $('#{{ $id }}').summernote('disable');
+            @endisset
+        })
+    });
 </script>
 @endpush
 

@@ -21,18 +21,18 @@
 @if($errors->any() && $enableOldSupport)
 @push('js')
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $(() => {
 
-    $(() => {
+            let oldOptions = @json(collect($getOldValue($errorKey)));
 
-        let oldOptions = @json(collect($getOldValue($errorKey)));
-
-        $('#{{ $id }} option').each(function()
-        {
-            let value = $(this).val() || $(this).text();
-            $(this).prop('selected', oldOptions.includes(value));
+            $('#{{ $id }} option').each(function()
+            {
+                let value = $(this).val() || $(this).text();
+                $(this).prop('selected', oldOptions.includes(value));
+            });
         });
     });
-
 </script>
 @endpush
 @endif

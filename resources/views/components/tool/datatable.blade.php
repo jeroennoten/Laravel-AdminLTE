@@ -39,11 +39,11 @@
 
 @push('js')
 <script>
-
-    $(() => {
-        $('#{{ $id }}').DataTable( @json($config) );
-    })
-
+    document.addEventListener("DOMContentLoaded", function() {
+        $(() => {
+            $('#{{ $id }}').DataTable( @json($config) );
+        })
+    });
 </script>
 @endpush
 

@@ -18,37 +18,38 @@
 
 @push('js')
 <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        $(() => {
 
-    $(() => {
+            // Create a method to set the addon color.
 
-        // Create a method to set the addon color.
+            let setAddonColor = function()
+            {
+                let color = $('#{{ $id }}').data('colorpicker').getValue();
 
-        let setAddonColor = function()
-        {
-            let color = $('#{{ $id }}').data('colorpicker').getValue();
+                $('#{{ $id }}').closest('.input-group')
+                    .find('.input-group-text > i')
+                    .css('color', color);
+            }
 
-            $('#{{ $id }}').closest('.input-group')
-                .find('.input-group-text > i')
-                .css('color', color);
-        }
+            // Init the plugin and register the change event listener.
 
-        // Init the plugin and register the change event listener.
+            $('#{{ $id }}').colorpicker( @json($config) )
+                .on('change', setAddonColor);
 
-        $('#{{ $id }}').colorpicker( @json($config) )
-            .on('change', setAddonColor);
+            // Add support to auto select the previous submitted value in case
+            // of validation errors.
 
-        // Add support to auto select the previous submitted value in case
-        // of validation errors.
+            @if($errors->any() && $enableOldSupport)
+                let oldColor = @json($getOldValue($errorKey, ""));
+                $('#{{ $id }}').val(oldColor).change();
+            @endif
 
-        @if($errors->any() && $enableOldSupport)
-            let oldColor = @json($getOldValue($errorKey, ""));
-            $('#{{ $id }}').val(oldColor).change();
-        @endif
+            // Set the initial color for the addon.
 
-        // Set the initial color for the addon.
+            setAddonColor();
+        })
 
-        setAddonColor();
-    })
-
+    });
 </script>
 @endpush
