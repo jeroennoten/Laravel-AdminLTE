@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\View;
 use JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper;
 
 class LayoutHelperTest extends TestCase
@@ -380,5 +381,28 @@ class LayoutHelperTest extends TestCase
         config(['adminlte.layout_dark_mode' => true]);
         $data = LayoutHelper::makeBodyClasses();
         $this->assertStringContainsString('dark-mode', $data);
+    }
+
+    public function testRightSidebarEnabledMethod()
+    {
+        // Test config 'right_sidebar' => true.
+
+        config(['adminlte.right_sidebar' => true]);
+        $this->assertTrue(LayoutHelper::isRightSidebarEnabled());
+
+        // Test config 'right_sidebar' => false.
+
+        config(['adminlte.right_sidebar' => false]);
+        $this->assertFalse(LayoutHelper::isRightSidebarEnabled());
+
+        // Test when section "right_sidebar" is defined.
+
+        View::inject('right_sidebar', 'dummy-content');
+        $this->assertTrue(LayoutHelper::isRightSidebarEnabled());
+
+        // Test when section "right_sidebar" is not defined.
+
+        View::flushSections();
+        $this->assertFalse(LayoutHelper::isRightSidebarEnabled());
     }
 }
