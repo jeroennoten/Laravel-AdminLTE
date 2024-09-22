@@ -25,7 +25,7 @@
     {{-- Base Stylesheets --}}
     @if(config('adminlte.enabled_laravel_mix', false))
         <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_mix_css_path', 'css/app.css')) }}">
-    @elseif(config('adminlte.laravel_asset_bundling'))
+    @else
         @switch(config('adminlte.laravel_asset_bundling', false))
             @case('mix')
                 <link rel="stylesheet" href="{{ mix(config('adminlte.laravel_css_path', 'css/app.css')) }}">
@@ -97,7 +97,7 @@
     {{-- Base Scripts --}}
     @if(config('adminlte.enabled_laravel_mix', false))
         <script src="{{ mix(config('adminlte.laravel_mix_js_path', 'js/app.js')) }}"></script>
-    @elseif(config('adminlte.laravel_asset_bundling'))
+    @else
         @switch(config('adminlte.laravel_asset_bundling'))
             @case('mix')
                 <script src="{{ mix(config('adminlte.laravel_js_path', 'js/app.js')) }}"></script>
