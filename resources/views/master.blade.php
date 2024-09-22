@@ -36,6 +36,7 @@
             @break
 
             @case('vite_spa')
+                @vite([config('adminlte.laravel_js_path', 'resources/js/app.js')])
             @break
 
             @default
@@ -108,7 +109,6 @@
             @break
 
             @case('vite_spa')
-                @vite([config('adminlte.laravel_js_path', 'resources/js/app.js')])
             @break
 
             @default
