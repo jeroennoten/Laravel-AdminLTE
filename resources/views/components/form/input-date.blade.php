@@ -17,19 +17,17 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        $(() => {
-            let usrCfg = _AdminLTE_InputDate.parseCfg( @json($config) );
-            $('#{{ $id }}').datetimepicker(usrCfg);
+<script type="module">
+    $(() => {
+        let usrCfg = _AdminLTE_InputDate.parseCfg( @json($config) );
+        $('#{{ $id }}').datetimepicker(usrCfg);
 
-            // Add support to auto display the old submitted value or values in case
-            // of validation errors.
+        // Add support to auto display the old submitted value or values in case
+        // of validation errors.
 
-            let value = @json($getOldValue($errorKey, $attributes->get('value')));
-            $('#{{ $id }}').val(value || "");
-        })
-    });
+        let value = @json($getOldValue($errorKey, $attributes->get('value')));
+        $('#{{ $id }}').val(value || "");
+    })
 </script>
 @endpush
 

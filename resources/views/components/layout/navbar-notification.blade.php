@@ -43,39 +43,37 @@
 
 @if (! is_null($makeUpdateUrl()) && $makeUpdatePeriod() > 0)
 @push('js')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        $(() => {
+<script type="module">
+    $(() => {
 
-            // Method to get new notification data from the configured url.
+        // Method to get new notification data from the configured url.
 
-            let updateNotification = (nLink) =>
-            {
-                // Make an ajax call to the configured url. The response should be
-                // an object with the new data. The supported properties are:
-                // 'label', 'label_color', 'icon_color' and 'dropdown'.
+        let updateNotification = (nLink) =>
+        {
+            // Make an ajax call to the configured url. The response should be
+            // an object with the new data. The supported properties are:
+            // 'label', 'label_color', 'icon_color' and 'dropdown'.
 
-                $.ajax({
-                    url: "{{ $makeUpdateUrl() }}"
-                })
-                .done((data) => {
-                    nLink.update(data);
-                })
-                .fail(function(jqXHR, textStatus, errorThrown) {
-                    console.log(jqXHR, textStatus, errorThrown);
-                });
-            };
+            $.ajax({
+                url: "{{ $makeUpdateUrl() }}"
+            })
+            .done((data) => {
+                nLink.update(data);
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR, textStatus, errorThrown);
+            });
+        };
 
-            // First load of the notification data.
+        // First load of the notification data.
 
-            let nLink = new _AdminLTE_NavbarNotification("{{ $id }}");
-            updateNotification(nLink);
+        let nLink = new _AdminLTE_NavbarNotification("{{ $id }}");
+        updateNotification(nLink);
 
-            // Periodically update the notification.
+        // Periodically update the notification.
 
-            setInterval(updateNotification, {{ $makeUpdatePeriod() }}, nLink);
-        })
-    });
+        setInterval(updateNotification, {{ $makeUpdatePeriod() }}, nLink);
+    })
 </script>
 @endpush
 @endif

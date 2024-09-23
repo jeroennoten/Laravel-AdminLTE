@@ -17,60 +17,58 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        $(() => {
-            let usrCfg = @json($config);
+<script type="module">
+    $(() => {
+        let usrCfg = @json($config);
 
-            // Check for disabled attribute (alternative to data-slider-enable).
+        // Check for disabled attribute (alternative to data-slider-enable).
 
-            @if($attributes->has('disabled'))
-                usrCfg.enabled = false;
-            @endif
+        @if($attributes->has('disabled'))
+            usrCfg.enabled = false;
+        @endif
 
-            // Check for min, max and step attributes (alternatives to
-            // data-slider-min, data-slider-max and data-slider-step).
+        // Check for min, max and step attributes (alternatives to
+        // data-slider-min, data-slider-max and data-slider-step).
 
-            @if($attributes->has('min'))
-                usrCfg.min = Number( @json($attributes['min']) );
-            @endif
+        @if($attributes->has('min'))
+            usrCfg.min = Number( @json($attributes['min']) );
+        @endif
 
-            @if($attributes->has('max'))
-                usrCfg.max = Number( @json($attributes['max']) );
-            @endif
+        @if($attributes->has('max'))
+            usrCfg.max = Number( @json($attributes['max']) );
+        @endif
 
-            @if($attributes->has('step'))
-                usrCfg.step = Number( @json($attributes['step']) );
-            @endif
+        @if($attributes->has('step'))
+            usrCfg.step = Number( @json($attributes['step']) );
+        @endif
 
-            // Check for value attribute (alternative to data-slider-value).
-            // Also, add support to auto select the previous submitted value.
+        // Check for value attribute (alternative to data-slider-value).
+        // Also, add support to auto select the previous submitted value.
 
-            @if($attributes->has('value') || ($errors->any() && $enableOldSupport))
+        @if($attributes->has('value') || ($errors->any() && $enableOldSupport))
 
-                let value = @json($getOldValue($errorKey, $attributes['value']));
+            let value = @json($getOldValue($errorKey, $attributes['value']));
 
-                if (value) {
-                    value = value.split(",").map(Number);
-                    usrCfg.value = value.length > 1 ? value : value[0];
-                }
-
-            @endif
-
-            // Initialize the plugin.
-
-            let slider = $('#{{ $id }}').bootstrapSlider(usrCfg);
-
-            // Fix height conflict when orientation is vertical.
-
-            let or = slider.bootstrapSlider('getAttribute', 'orientation');
-
-            if (or == 'vertical') {
-                $('#' + usrCfg.id).css('height', '210px');
-                slider.bootstrapSlider('relayout');
+            if (value) {
+                value = value.split(",").map(Number);
+                usrCfg.value = value.length > 1 ? value : value[0];
             }
-        })
-    });
+
+        @endif
+
+        // Initialize the plugin.
+
+        let slider = $('#{{ $id }}').bootstrapSlider(usrCfg);
+
+        // Fix height conflict when orientation is vertical.
+
+        let or = slider.bootstrapSlider('getAttribute', 'orientation');
+
+        if (or == 'vertical') {
+            $('#' + usrCfg.id).css('height', '210px');
+            slider.bootstrapSlider('relayout');
+        }
+    })
 </script>
 @endpush
 

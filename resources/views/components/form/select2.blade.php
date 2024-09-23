@@ -19,29 +19,27 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        $(() => {
-            $('#{{ $id }}').select2( @json($config) );
+<script type="module">
+    $(() => {
+        $('#{{ $id }}').select2( @json($config) );
 
-            // Add support to auto select old submitted values in case of
-            // validation errors.
+        // Add support to auto select old submitted values in case of
+        // validation errors.
 
-            @if($errors->any() && $enableOldSupport)
+        @if($errors->any() && $enableOldSupport)
 
-                let oldOptions = @json(collect($getOldValue($errorKey)));
+            let oldOptions = @json(collect($getOldValue($errorKey)));
 
-                $('#{{ $id }} option').each(function()
-                {
-                    let value = $(this).val() || $(this).text();
-                    $(this).prop('selected', oldOptions.includes(value));
-                });
+            $('#{{ $id }} option').each(function()
+            {
+                let value = $(this).val() || $(this).text();
+                $(this).prop('selected', oldOptions.includes(value));
+            });
 
-                $('#{{ $id }}').trigger('change');
+            $('#{{ $id }}').trigger('change');
 
-            @endif
-        })
-    });
+        @endif
+    })
 </script>
 @endpush
 

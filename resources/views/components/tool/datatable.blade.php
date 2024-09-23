@@ -38,12 +38,10 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        $(() => {
-            $('#{{ $id }}').DataTable( @json($config) );
-        })
-    });
+<script type="module">
+    $(() => {
+        $('#{{ $id }}').DataTable( @json($config) );
+    })
 </script>
 @endpush
 
