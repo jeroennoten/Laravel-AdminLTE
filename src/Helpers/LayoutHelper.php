@@ -46,6 +46,17 @@ class LayoutHelper
     }
 
     /**
+     * Checks if right sidebar is enabled.
+     *
+     * @return bool
+     */
+    public static function isRightSidebarEnabled()
+    {
+        return config('adminlte.right_sidebar', false)
+            || ! empty(View::getSection('right_sidebar'));
+    }
+
+    /**
      * Makes and return the set of classes related to the body tag.
      *
      * @return string
