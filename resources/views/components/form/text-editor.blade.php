@@ -19,6 +19,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         let usrCfg = @json($config);
 
@@ -38,6 +39,7 @@
             $('#{{ $id }}').summernote('disable');
         @endisset
     })
+
 </script>
 @endpush
 

@@ -18,6 +18,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         let usrCfg = @json($config);
 
@@ -69,6 +70,7 @@
             slider.bootstrapSlider('relayout');
         }
     })
+
 </script>
 @endpush
 

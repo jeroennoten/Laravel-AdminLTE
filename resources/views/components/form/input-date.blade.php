@@ -18,6 +18,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         let usrCfg = _AdminLTE_InputDate.parseCfg( @json($config) );
         $('#{{ $id }}').datetimepicker(usrCfg);
@@ -28,6 +29,7 @@
         let value = @json($getOldValue($errorKey, $attributes->get('value')));
         $('#{{ $id }}').val(value || "");
     })
+
 </script>
 @endpush
 

@@ -44,6 +44,7 @@
 @if (! is_null($makeUpdateUrl()) && $makeUpdatePeriod() > 0)
 @push('js')
 <script type="module">
+
     $(() => {
 
         // Method to get new notification data from the configured url.
@@ -74,6 +75,7 @@
 
         setInterval(updateNotification, {{ $makeUpdatePeriod() }}, nLink);
     })
+
 </script>
 @endpush
 @endif

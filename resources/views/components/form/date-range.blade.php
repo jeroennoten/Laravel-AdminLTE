@@ -18,6 +18,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         let usrCfg = _AdminLTE_DateRange.parseCfg( @json($config) );
 
@@ -96,6 +97,7 @@
 
         $('#{{ $id }}').daterangepicker(usrCfg);
     })
+
 </script>
 @endpush
 

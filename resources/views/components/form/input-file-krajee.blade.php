@@ -37,6 +37,7 @@ one provided by the mentioned layout. So instead, we define a new layout.
 
 @push('js')
 <script type="module">
+
     $(() => {
 
         // Initialize the plugin.
@@ -64,5 +65,6 @@ one provided by the mentioned layout. So instead, we define a new layout.
                 .addClass('border-0');
         @endif
     })
+
 </script>
 @endpush

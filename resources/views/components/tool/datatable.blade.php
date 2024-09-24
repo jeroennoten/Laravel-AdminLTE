@@ -39,9 +39,11 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         $('#{{ $id }}').DataTable( @json($config) );
     })
+
 </script>
 @endpush
 

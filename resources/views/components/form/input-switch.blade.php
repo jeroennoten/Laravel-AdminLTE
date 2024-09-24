@@ -18,6 +18,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         $('#{{ $id }}').bootstrapSwitch( @json($config) );
 
@@ -29,6 +30,7 @@
             $('#{{ $id }}').bootstrapSwitch('state', oldState);
         @endif
     })
+
 </script>
 @endpush
 

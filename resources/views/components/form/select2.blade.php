@@ -20,6 +20,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         $('#{{ $id }}').select2( @json($config) );
 
@@ -40,6 +41,7 @@
 
         @endif
     })
+
 </script>
 @endpush
 

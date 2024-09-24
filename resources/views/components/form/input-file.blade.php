@@ -29,9 +29,11 @@
 @once
 @push('js')
 <script type="module">
+
     $(() => {
         bsCustomFileInput.init();
     })
+
 </script>
 @endpush
 @endonce

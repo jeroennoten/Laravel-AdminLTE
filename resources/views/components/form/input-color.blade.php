@@ -18,6 +18,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
 
         // Create a method to set the addon color.
@@ -48,5 +49,6 @@
 
         setAddonColor();
     })
+
 </script>
 @endpush

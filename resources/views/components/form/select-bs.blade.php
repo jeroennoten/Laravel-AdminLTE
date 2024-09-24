@@ -20,6 +20,7 @@
 
 @push('js')
 <script type="module">
+
     $(() => {
         $('#{{ $id }}').selectpicker( @json($config) );
 
@@ -31,6 +32,7 @@
             $('#{{ $id }}').selectpicker('val', oldOptions);
         @endif
     })
+
 </script>
 @endpush
 

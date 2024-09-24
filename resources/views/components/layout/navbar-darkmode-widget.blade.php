@@ -13,6 +13,7 @@
 @once
 @push('js')
 <script type="module">
+
     $(() => {
 
         const body = document.querySelector('body');
@@ -68,6 +69,7 @@
             });
         });
     })
+
 </script>
 @endpush
 @endonce

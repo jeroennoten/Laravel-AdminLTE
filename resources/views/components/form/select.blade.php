@@ -21,6 +21,7 @@
 @if($errors->any() && $enableOldSupport)
 @push('js')
 <script type="module">
+
     $(() => {
 
         let oldOptions = @json(collect($getOldValue($errorKey)));
@@ -31,6 +32,7 @@
             $(this).prop('selected', oldOptions.includes(value));
         });
     });
+
 </script>
 @endpush
 @endif
