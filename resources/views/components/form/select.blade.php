@@ -20,7 +20,7 @@
 
 @if($errors->any() && $enableOldSupport)
 @push('js')
-<script>
+<script type="module">
 
     $(() => {
 

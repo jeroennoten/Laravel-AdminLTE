@@ -36,7 +36,7 @@ one provided by the mentioned layout. So instead, we define a new layout.
 {{-- Add the plugin initialization code --}}
 
 @push('js')
-<script>
+<script type="module">
 
     $(() => {
 

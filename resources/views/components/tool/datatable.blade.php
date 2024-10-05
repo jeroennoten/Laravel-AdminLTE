@@ -38,7 +38,7 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script>
+<script type="module">
 
     $(() => {
         $('#{{ $id }}').DataTable( @json($config) );

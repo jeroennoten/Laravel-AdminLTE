@@ -28,7 +28,7 @@
 
 @once
 @push('js')
-<script>
+<script type="module">
 
     $(() => {
         bsCustomFileInput.init();

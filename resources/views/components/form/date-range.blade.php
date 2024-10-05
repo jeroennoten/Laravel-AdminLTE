@@ -17,7 +17,7 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script>
+<script type="module">
 
     $(() => {
         let usrCfg = _AdminLTE_DateRange.parseCfg( @json($config) );
