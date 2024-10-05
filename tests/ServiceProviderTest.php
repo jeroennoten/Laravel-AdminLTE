@@ -131,8 +131,8 @@ class ServiceProviderTest extends TestCase
     }
 
     /**
-    * Clear routes and re-register the service provider.
-    */
+     * Clear routes and re-register the service provider.
+     */
     protected function clearRoutesAndReRegisterProvider()
     {
         // Clear the current route collection.
