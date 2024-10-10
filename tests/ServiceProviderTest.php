@@ -1,6 +1,7 @@
 <?php
 
 use JeroenNoten\LaravelAdminLte\AdminLte;
+use JeroenNoten\LaravelAdminLte\AdminLteServiceProvider;
 
 class ServiceProviderTest extends TestCase
 {
@@ -112,10 +113,39 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(isset($aliases['adminlte-modal']));
     }
 
-    public function testBootLoadRoutes()
+    public function testBootLoadDarkModeRoutes()
     {
-        // Assert the package routes names are registered.
+        // Disable dark mode routes and check.
+
+        config(['adminlte.disable_darkmode_routes' => true]);
+        $this->clearRoutesAndReRegisterProvider();
+
+        $this->assertFalse(Route::has('adminlte.darkmode.toggle'));
+
+        // Enable dark mode routes and check again.
+
+        config(['adminlte.disable_darkmode_routes' => false]);
+        $this->clearRoutesAndReRegisterProvider();
 
         $this->assertTrue(Route::has('adminlte.darkmode.toggle'));
+    }
+
+    /**
+     * Clear routes and re-register the service provider.
+     */
+    protected function clearRoutesAndReRegisterProvider()
+    {
+        // Clear the current route collection.
+
+        Route::setRoutes(new \Illuminate\Routing\RouteCollection());
+
+        // Unregister and register the provider again.
+
+        $provider = $this->app->register(AdminLteServiceProvider::class);
+        $provider->boot();
+
+        // Refresh route names after loading routes again.
+
+        Route::getRoutes()->refreshNameLookups();
     }
 }
