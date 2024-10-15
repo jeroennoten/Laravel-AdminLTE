@@ -43,7 +43,7 @@
 
 @if (! is_null($makeUpdateUrl()) && $makeUpdatePeriod() > 0)
 @push('js')
-<script type="module">
+<script>
 
     $(() => {
 

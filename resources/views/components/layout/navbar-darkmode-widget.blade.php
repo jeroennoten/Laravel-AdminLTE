@@ -12,7 +12,7 @@
 
 @once
 @push('js')
-<script type="module">
+<script>
 
     $(() => {
 

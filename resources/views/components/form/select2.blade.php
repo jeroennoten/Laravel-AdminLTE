@@ -19,7 +19,7 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script type="module">
+<script>
 
     $(() => {
         $('#{{ $id }}').select2( @json($config) );
