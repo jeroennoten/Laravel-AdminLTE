@@ -18,7 +18,7 @@
 {{-- Add plugin initialization and configuration code --}}
 
 @push('js')
-<script type="module">
+<script>
 
     $(() => {
         let usrCfg = @json($config);
