@@ -3,5 +3,8 @@
 /.github            export-ignore
 /.scrutinizer.yml   export-ignore
 /.styleci.yml       export-ignore
+/docs               export-ignore
+/package.json       export-ignore
+/package-lock.json  export-ignore
 /phpunit.xml.dist   export-ignore
 /tests              export-ignore
