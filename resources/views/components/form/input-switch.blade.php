@@ -9,8 +9,8 @@
 @section('input_group_item')
 
     {{-- Input Switch --}}
-    <input type="checkbox" id="{{ $id }}" name="{{ $name }}" value="true"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
+    <input type="checkbox" id="{{ $id }}" name="{{ $name }}"
+        {{ $attributes->merge(['class' => $makeItemClass(), 'value' => 'true']) }}>
 
 @overwrite
 
