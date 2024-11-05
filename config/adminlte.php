@@ -139,7 +139,7 @@ return [
     'usermenu_image' => false,
     'usermenu_desc' => false,
     'usermenu_profile_url' => false,
-
+    
     /*
     |--------------------------------------------------------------------------
     | Layout
@@ -265,7 +265,7 @@ return [
     'password_email_url' => 'password/email',
     'profile_url' => false,
     'disable_darkmode_routes' => false,
-
+    'username_field' => 'email', // This to use it inside LoginController username() return Config('adminlte.usernamefield')
     /*
     |--------------------------------------------------------------------------
     | Laravel Asset Bundling
