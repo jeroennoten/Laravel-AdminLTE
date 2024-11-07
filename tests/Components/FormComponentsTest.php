@@ -420,7 +420,7 @@ class FormComponentsTest extends TestCase
         // Test the state property is true when is-checked attribute has a
         // truthy value.
 
-        foreach([true, 1, 'true'] as $v) {
+        foreach ([true, 1, 'true'] as $v) {
             $component = new Components\Form\InputSwitch(
                 'name', null, null, null, null, null, null, null, null, null, $v
             );
@@ -431,7 +431,7 @@ class FormComponentsTest extends TestCase
         // Test the state property is false when is-checked attribute has a
         // falsy value.
 
-        foreach([false, 0, ''] as $v) {
+        foreach ([false, 0, ''] as $v) {
             $component = new Components\Form\InputSwitch(
                 'name', null, null, null, null, null, null, null, null, null, $v
             );
