@@ -20,7 +20,13 @@
 <script>
 
     $(() => {
-        $('#{{ $id }}').bootstrapSwitch( @json($config) );
+
+        let usrCfg = @json($config);
+        $('#{{ $id }}').bootstrapSwitch(usrCfg);
+
+        // Workaround to ensure correct state setup on initialization.
+
+        $('#{{ $id }}').bootstrapSwitch('state', usrCfg.state ?? false);
 
         // Add support to auto select the previous submitted value in case of
         // validation errors.
