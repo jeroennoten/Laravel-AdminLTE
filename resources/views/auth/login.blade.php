@@ -6,6 +6,7 @@
 
 @php( $login_url = View::getSection('login_url') ?? config('adminlte.login_url', 'login') )
 @php( $register_url = View::getSection('register_url') ?? config('adminlte.register_url', 'register') )
+@php( $username = config('adminlte.username_field', 'email') )
 @php( $password_reset_url = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset') )
 
 @if (config('adminlte.use_route_url', false))
@@ -26,8 +27,8 @@
 
         {{-- Email field --}}
         <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                   value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
+            <input type="{{ $username }}" name="{{ $username }}" class="form-control @error($username) is-invalid @enderror"
+                   value="{{ old($username) }}" placeholder="{{ __('adminlte::adminlte.username') }}" autofocus>
 
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -35,7 +36,7 @@
                 </div>
             </div>
 
-            @error('email')
+            @error($username)
                 <span class="invalid-feedback" role="alert">
                     <strong>{{ $message }}</strong>
                 </span>
