@@ -408,7 +408,39 @@ class FormComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
-    public function testInputSwitchComponent()
+    public function testInputSwitchComponentCheckedState()
+    {
+        // Test the state property isn't defined when is-checked attribute
+        // isn't provided.
+
+        $component = new Components\Form\InputSwitch('name');
+
+        $this->assertArrayNotHasKey('state', $component->config);
+
+        // Test the state property is true when is-checked attribute has a
+        // truthy value.
+
+        foreach ([true, 1, 'true'] as $v) {
+            $component = new Components\Form\InputSwitch(
+                'name', null, null, null, null, null, null, null, null, null, $v
+            );
+
+            $this->assertTrue($component->config['state']);
+        }
+
+        // Test the state property is false when is-checked attribute has a
+        // falsy value.
+
+        foreach ([false, 0, ''] as $v) {
+            $component = new Components\Form\InputSwitch(
+                'name', null, null, null, null, null, null, null, null, null, $v
+            );
+
+            $this->assertFalse($component->config['state']);
+        }
+    }
+
+    public function testInputSwitchComponentWithErrorStyle()
     {
         $component = new Components\Form\InputSwitch(
             'name', null, null, 'lg', null, null, 'igroup-class'
@@ -438,7 +470,7 @@ class FormComponentsTest extends TestCase
         // Test component with old support enabled.
 
         $component = new Components\Form\InputSwitch(
-            'name', null, null, null, null, null, null, null, null, null, true
+            'name', null, null, null, null, null, null, null, null, null, null, true
         );
 
         $this->addInputOnCurrentRequest('name', 'foo');
