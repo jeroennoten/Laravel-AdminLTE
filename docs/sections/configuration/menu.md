@@ -648,3 +648,7 @@ class SetupAdminLteMenu
     }
 }
 ```
+
+Thanks to @ruanpepe for contributing with the base of this documentation:
+
+[<img src="https://github.com/ruanpepe.png" width="80px"/>](https://github.com/ruanpepe)

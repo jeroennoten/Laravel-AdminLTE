@@ -673,9 +673,10 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
+is-checked | To specify whether the switch should be active or not (from `v3.14.2`) | bool | `null` | no
 
 > [!Important]
-> Plase, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Plase, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own. Also, the `is-checked` property is only available from package version `v3.14.2` and may be used as an alternative to the **HTML checked attribute**.
 
 The available plugin configuration are those explained on the [plugin documentation](https://bttstrp.github.io/bootstrap-switch/options.html). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use the `data-*` attributes to configure the plugin.
 
