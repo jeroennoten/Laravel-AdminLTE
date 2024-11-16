@@ -106,8 +106,10 @@ You can change the look and behavior of the authentication views (login, registe
 ### Default Style
 
 The set of current default values and the rendered look is the next one:
+<br>
 
-<img src="/imgs/configuration/layout_and_styling/login-default.png" alt="Default Login" width="200" align="right"/>
+<img src="/imgs/configuration/layout_and_styling/login-default.png" alt="Default Login"
+    style="width:200px;margin-left:5px;float:right;"/>
 
 ```php
 'classes_auth_card' => 'card-outline card-primary',
@@ -122,10 +124,11 @@ However, you can customize the options as you want to get some particular themes
 
 ### Dark Theme Style
 
-<img src="/imgs/configuration/layout_and_styling/login-dark.png"
-    alt="Dark Login" width="200" align="right"/>
-
 A dark background with light buttons and icons.
+<br>
+
+<img src="/imgs/configuration/layout_and_styling/login-dark.png" alt="Dark Login"
+    style="width:200px;margin-left:5px;float:right;"/>
 
 ```php
 'classes_auth_card' => 'bg-gradient-dark',
@@ -138,10 +141,11 @@ A dark background with light buttons and icons.
 
 ### Lightblue Theme Style
 
-<img src="/imgs/configuration/layout_and_styling/login-lblue.png"
-    alt="Lightblue Login" width="200" align="right"/>
-
 A lightblue header background with lightblue icons.
+<br>
+
+<img src="/imgs/configuration/layout_and_styling/login-lblue.png" alt="Lightblue Login"
+    style="width:200px;margin-left:5px;float:right;"/>
 
 ```php
 'classes_auth_card' => '',
