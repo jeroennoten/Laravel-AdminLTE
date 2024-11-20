@@ -7,7 +7,7 @@ If you want to use an older **Laravel** or **AdminLTE** version, review the foll
   These releases supports Laravel 5 and include AdminLTE v2
 - **Releases 2.x**:
   These releases supports Laravel 6 and include AdminLTE v2
-- **Releases 3.x (<=3.8.6)**:
+- **Releases 3.x <Badge type="tip"><= v3.8.6</Badge>**:
   These releases supports Laravel 6 and include AdminLTE v3
 
 > [!Important]

@@ -32,7 +32,7 @@ The available options for the `config` attribute are those explained on the [plu
 - `label`: for the column title.
 - `width`: to define the column width percentage.
 - `no-export`: to disable data export for the column (useful for columns with buttons or actions).
-- `classes`: to add extra classes for the column title (only for versions `>= v3.8.6`).
+- `classes`: to add extra classes for the column title (only for versions <Badge type="tip">>= v3.8.6</Badge>).
 
 All other extra attributes you define will be inserted directly on the underlying `table` element.
 

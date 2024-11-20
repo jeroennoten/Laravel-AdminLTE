@@ -1,5 +1,5 @@
 > [!Important]
-> The **Tabbed IFrame mode** is only available from version `v3.7.0` of this package.
+> The **Tabbed IFrame mode** is only available from version <Badge type="tip">v3.7.0</Badge> of this package.
 
 At next you can see the list of configuration options for the **Tabbed IFrame Mode** that you will find on the package configuration file (`config/adminlte.php`). See [Usage/Tabbed IFrame Mode](/sections/overview/usage#tabbed-iframe-mode) to known how to enable this mode.
 

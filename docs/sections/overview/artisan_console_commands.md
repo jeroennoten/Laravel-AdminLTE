@@ -28,7 +28,7 @@ This package provides some artisan commands in order to manage and publish its r
 
   **Target:** The main views will be published in the `resources/views/vendor/adminlte/` folder of your Laravel project.
 
-- __`components`__: (Only from `v3.13.0`) The set of blade components provided by this package. You may publish this resource if you need to make a customization in any of the available components.
+- __`components`__: (Only from <Badge type="tip">v3.13.0</Badge>) The set of blade components provided by this package. You may publish this resource if you need to make a customization in any of the available components.
 
   **Target:** The components views will be published in the `resources/views/vendor/adminlte/components/` folder of your Laravel project, and the components classes will be published in the `app/View/Components/Adminlte/` folder.
 
@@ -56,12 +56,12 @@ You can install all the required and some additional package resources using the
 - `--interactive`: Use this option to allow be guided through the installation process and choose what you want to install.
 
 > [!IMPORTANT]
-> Prior to version `v3.12.0` the resource **`auth_routes`** was named **`basic_routes`**, and the available installation types were: **basic**, **enhanced** (a basic installation plus the `auth_views` resource) and **full** (all resources except the `main_views`). Also, the **`components`** resource was introduced in version `v3.13.0`.
+> Prior to version <Badge type="tip">v3.12.0</Badge> the resource **`auth_routes`** was named **`basic_routes`**, and the available installation types were: **basic**, **enhanced** (a basic installation plus the `auth_views` resource) and **full** (all resources except the `main_views`). Also, the **`components`** resource was introduced in version <Badge type="tip">v3.13.0</Badge>.
 
 ## The `adminlte:remove` Command
 
 > [!IMPORTANT]
-> This command was introduced in version `v3.13.0`.
+> This command was introduced in version <Badge type="tip">v3.13.0</Badge>.
 
 You can uninstall or remove an already published package resource using the `php artisan adminlte:remove {resource}...` command. The command will accept one or more resource names as its arguments. Examples:
 

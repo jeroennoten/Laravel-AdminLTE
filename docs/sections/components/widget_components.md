@@ -130,11 +130,11 @@ This component represents an `AdminLTE` card box. The following attributes are a
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
-body-class | Additional classes for the `card-body` container (only from `v3.6.2`) | string | `null` | no
+body-class | Additional classes for the `card-body` container (only from <Badge type="tip">v3.6.2</Badge>) | string | `null` | no
 collapsible | Enables a collapsible card with a button to collapse/expand it. Use the `'collapsed'` string value to initiate the card on collapsed mode | any | `null` | no
 disabled | Disables the card (an overlay will show over the card) | any | `null` | no
-footer-class | Additional classes for the `card-footer` container (only from `v3.8.1`) | string | `null` | no
-header-class | Additional classes for the `card-header` container (only from `v3.8.1`) | string | `null` | no
+footer-class | Additional classes for the `card-footer` container (only from <Badge type="tip">v3.8.1</Badge>) | string | `null` | no
+header-class | Additional classes for the `card-header` container (only from <Badge type="tip">v3.8.1</Badge>) | string | `null` | no
 icon | A `fontawesome` icon for the card header | string | `null` | no
 maximizable | Enables a maximizable card with a button to maximize it | any | `null` | no
 removable | Enables a removable card with a button to remove it | any | `null` | no
@@ -146,8 +146,8 @@ Any other attribute you define will be directly inserted into the underlying `di
 
 ### Slots
 
-- **toolsSlot**: Use this slot to add extra elements on the card header (only from `v3.8.1`).
-- **footerSlot**: Use this slot to fill the card footer (only from `v3.8.1`).
+- **toolsSlot**: Use this slot to add extra elements on the card header (only from <Badge type="tip">v3.8.1</Badge>).
+- **footerSlot**: Use this slot to fill the card footer (only from <Badge type="tip">v3.8.1</Badge>).
 
 ### Examples
 
@@ -224,8 +224,8 @@ progress-theme | The progress bar theme (same values as `theme` property) | stri
 text | A short text/description for the info box | string | `null` | no
 theme | The small box theme: light, dark, primary, secondary, info, success, warning, danger or any other AdminLTE color like lightblue or teal | string | `null` | no
 title | A title/header for the info box | string | `null` | no
-url | An url for the info box. By default, will be placed on the `title` (only from `v3.9.1`) | string | `null` | no
-url-target | The target element where to place the url: `title` (default) or `text` (only from `v3.9.1`) | string | `null` | no
+url | An url for the info box. By default, will be placed on the `title` (only from <Badge type="tip">v3.9.1</Badge>) | string | `null` | no
+url-target | The target element where to place the url: `title` (default) or `text` (only from <Badge type="tip">v3.9.1</Badge>) | string | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.info-box` element. So, for example, you can define extra classes using the `class` attribute, use the `onclick`, the `id` or any other attribute you may need.
 
@@ -245,7 +245,7 @@ let myInfoBox = new _AdminLTE_InfoBox("myInfoBox");
 
 Then you can use the next methods from the instantiated object:
 
-- **`myInfoBox.update(data)`**: To update the data of the info box element. The **data** should be an object with the new attributes, the supported object keys are: `title`, `text`, `description`, `icon` and `progress` (see examples for more details). The `url` attribute may be also updated from version `v3.9.1`.
+- **`myInfoBox.update(data)`**: To update the data of the info box element. The **data** should be an object with the new attributes, the supported object keys are: `title`, `text`, `description`, `icon` and `progress` (see examples for more details). The `url` attribute may be also updated from version <Badge type="tip">v3.9.1</Badge>.
 
 ### Examples
 
@@ -314,12 +314,12 @@ text | The text/description for the item | string | `null` | no
 title | The title/header for the item | string | `null` | no
 size | The item size. Used to wrap the item inside a `col-size` div | integer | `null` | no
 url | An url for the item. By default, it'll be placed on the title attribute | string | `null` | no
-url-target | The target element where to place the url: `title` (default) or `text` (only from `v3.12.0`) | string | `'title'` | no
+url-target | The target element where to place the url: `title` (default) or `text` (only from <Badge type="tip">v3.12.0</Badge>) | string | `'title'` | no
 
 The available themes for the badge are: light, dark, primary, secondary, info, success, warning, danger or any other `AdminLTE` color like lightblue or teal.
 
 > [!TIP]
-> From version `v3.12.0` you may prepend the `pill-` token to a theme (for example, `pill-primary`) to get a pill badge instead of a normal badge.
+> From version <Badge type="tip">v3.12.0</Badge> you may prepend the `pill-` token to a theme (for example, `pill-primary`) to get a pill badge instead of a normal badge.
 
 Any other attribute you define will be directly inserted into the underlying `div.col-<size>` element. So, for example, you can define `class`, `onclick`, `id` or any other attribute you may need. To see usage examples, check the [Profile Widget Component](#profile-widget).
 
@@ -332,7 +332,7 @@ Attribute | Description | Type | Default | Required
 cover | A cover image url for the profile header section (overlays the theme) | string | `null` | no
 desc | A description for the user profile | string | `null` | no
 footer-class | Extra classes for the profile footer (to customize the footer section) | string | `null` | no
-icon | To setup the default icon that will be used when no image is provided (only from `v3.12.0`) | string | `'fas fa-user'` | no
+icon | To setup the default icon that will be used when no image is provided (only from <Badge type="tip">v3.12.0</Badge>) | string | `'fas fa-user'` | no
 img | An image url for the user profile | string | `null` | no
 header-class | Extra classes for the profile header (to customize the header section) | string | `null` | no
 layout-type | The profile header layout type (`modern` or `classic`). | string | `'modern'` | no

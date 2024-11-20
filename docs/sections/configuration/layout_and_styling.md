@@ -45,7 +45,7 @@ The following config options are available:
   Enables/Disables the dark mode, set this option to the boolean `true` to enable the dark mode.
 
 > [!Important]
-> The `layout_dark_mode` configuration is only available for package version `v3.6.0` or greater.
+> The `layout_dark_mode` configuration is only available for package version <Badge type="tip">v3.6.0</Badge> or greater.
 
 ### Responsive Usage
 
@@ -164,7 +164,7 @@ The following config options are available:
 
 - __`classes_body`__
 
-  Extra classes for the body. From version `v3.8.0` you may use the experimental `sidebar-hidden` class to hide the sidebar.
+  Extra classes for the body. From version <Badge type="tip">v3.8.0</Badge> you may use the experimental `sidebar-hidden` class to hide the sidebar.
 
 - __`classes_brand`__
 
@@ -234,7 +234,7 @@ The following configuration options are available:
   Enables/Disables the collapsed mini sidebar mode. You can use the `'lg'` token to enable the sidebar mini mode for desktop and bigger screens (>= 992px), use the `'md'` token to enable it for small tablet and bigger screens (>= 768px), use the `'xs'` token to always enable the sidebar mini mode, or disable the sidebar mini mode at all with a `null` value.
 
 > [!Important]
-> For package versions previous or equal to `v3.6.0` you need to use `true` in replacement of the `'lg'` token. Also, the `'xs'` token is only available for package versions greater than `v3.6.0`.
+> For package versions previous or equal to <Badge type="tip">v3.6.0</Badge> you need to use `true` in replacement of the `'lg'` token. Also, the `'xs'` token is only available for package versions greater than <Badge type="tip">v3.6.0</Badge>.
 
 - __`sidebar_collapse`__
 
@@ -278,10 +278,10 @@ The following configuration options are available:
 Here you have the option to enable a right sidebar on all your views. When enabled, you can use the `@section('right_sidebar')` section to setup its content. The icon you configure will be displayed at the end of the top menu, and will toggle the visibility (show/hide) of the sidebar. The `slide` option will setup the sidebar to slide over the content with an animation, when `false` the sidebar will be shown over the content without any animation. You can also choose the sidebar theme (`dark` or `light`).
 
 > [!IMPORTANT]
-> The `right_sidebar` section was named `right-sidebar` before version `v3.14.0`. So be sure to use the correct name depending on the package version you're using.
+> The `right_sidebar` section was named `right-sidebar` before version <Badge type="tip">v3.14.0</Badge>. So be sure to use the correct name depending on the package version you're using.
 
 > [!TIP]
-> From version `v3.14.0` the right sidebar will be automatically shown if you fill out the section `right_sidebar` on some of your views (no matter whether it was enabled or not in the configuration file). This feature gives you the possibility to show the right sidebar only on some particular views instead of showing it in all views.
+> From version <Badge type="tip">v3.14.0</Badge> the right sidebar will be automatically shown if you fill out the section `right_sidebar` on some of your views (no matter whether it was enabled or not in the configuration file). This feature gives you the possibility to show the right sidebar only on some particular views instead of showing it in all views.
 
 The following configuration options are available:
 

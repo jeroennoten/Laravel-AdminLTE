@@ -31,7 +31,7 @@ You should note that all the others components that extends from this one will h
 
 - **prependSlot**: Use this slot to prepend an add-on in the input group item.
 - **appendSlot**: Use this slot to append an add-on in the input group item.
-- **bottomSlot**: Use this slot to add extra information or markup below the input group item (only available for versions greater than `v3.7.2`).
+- **bottomSlot**: Use this slot to add extra information or markup below the input group item (only available for versions greater than <Badge type="tip">v3.7.2</Badge>).
 
 # Button
 
@@ -87,7 +87,7 @@ Attribute | Description | Type | Default | Required
 enable-old-support | Enable the auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `>= 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 ### Examples
 
@@ -253,7 +253,7 @@ Finally, you need to use the `@section('plugins.BsCustomFileInput', true)` sente
 # Options
 
 > [!Important]
-> This component is only available from package version `>= 3.7.0`.
+> This component is only available from package version <Badge type="tip">>= v3.7.0</Badge>.
 
 This component represents a set of option tags. It can be used with [Select](#select), [Select2](#select2) or [SelectBs](/sections/components/advanced_forms_components#selectbs) components. The following attributes are available:
 
@@ -369,7 +369,7 @@ Attribute | Description | Type | Default | Required
 enable-old-support | Enable the auto retrievement and selection of the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `>= 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 ### Examples
 
@@ -431,7 +431,7 @@ config | Array with the `select2` plugin configuration parameters | array | `[]`
 enable-old-support | Enable the auto retrievement and selection of the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `>= 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration options are those explained on the [plugin documentation](https://select2.org/sections/configuration/options-api). All other attributes you define will be inserted directly on the underlying `select` element, so you can also use the [data-* attributes](https://select2.org/sections/configuration/data-attributes) to configure the plugin.
 
@@ -544,7 +544,7 @@ Attribute | Description | Type | Default | Required
 enable-old-support | Enable the auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `>= 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 ### Examples
 

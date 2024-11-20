@@ -1,5 +1,5 @@
 > [!Important]
-> The ability to publish the components resources was introduced in version `v3.13.0`.
+> The ability to publish the components resources was introduced in version <Badge type="tip">v3.13.0</Badge>.
 
 In the particular case that you need full control or customization over the available blade components of the package, you can publish them with the next command:
 

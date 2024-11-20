@@ -64,7 +64,7 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 
 For backward compatibility, we still support the old **Laravel Mix** configuration in newest version, however we recommend migrating to the new one as explained below.
 
-To use **Laravel Mix** assets bundling tool after `v3.14.0`, set the `laravel_asset_bundling` configuration option to `'mix'` to enable the load of `css/app.css` & `js/app.js` files that are located in the public folder.
+To use **Laravel Mix** assets bundling tool after <Badge type="tip">v3.14.0</Badge>, set the `laravel_asset_bundling` configuration option to `'mix'` to enable the load of `css/app.css` & `js/app.js` files that are located in the public folder.
 
 Also, you can change the paths used to lookup for the compiled `JS` and `CSS` files using the next configuration options.
 
@@ -82,7 +82,7 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 > Please, be sure you're familiar with [Laravel Vite](https://laravel.com/docs/vite) before changing or using this configuration.
 
 > [!Important]
-> Native support to **Laravel Vite** was added on version `v3.14.0`, so avoid using the options explained below on old package versions.
+> Native support to **Laravel Vite** was added on version <Badge type="tip">v3.14.0</Badge>, so avoid using the options explained below on old package versions.
 
 To use the **Laravel Vite** assets bundling tool with this package, set the `laravel_asset_bundling` configuration option to `'vite'` or `'vite-js-only'` (if you expect to import your `CSS` via `JavaScript`) to enable the load of your bundled assets in the master layout.
 

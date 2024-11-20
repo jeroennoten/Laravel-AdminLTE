@@ -25,7 +25,7 @@ It's possible to place a custom search input in your **sidebar** menu using an i
 ```
 
 > [!Important]
-> For package versions under `v3.6.0` you need to use the legacy configuration by replacing `type => 'sidebar-custom-search'` by `search => true`. However, you should note that the legacy support will be discarded in the future.
+> For package versions under <Badge type="tip">v3.6.0</Badge> you need to use the legacy configuration by replacing `type => 'sidebar-custom-search'` by `search => true`. However, you should note that the legacy support will be discarded in the future.
 
 For the previous definition, you may now define a route and a controller to catch the submitted keywords as explained on the [navbar search](#navbar-search) example. At next you can see an overview of the rendered search input item:
 
@@ -34,7 +34,7 @@ For the previous definition, you may now define a route and a controller to catc
 ## Sidebar Search Over Menu Items
 
 > [!Important]
-> This item is only available for package versions `>= v3.6.0`.
+> This item is only available for package versions <Badge type="tip">>= v3.6.0</Badge>.
 
 It's also possible to place a search input in your **sidebar** menu that will automatically search over the available menu items using the following configuration of attributes:
 
@@ -67,7 +67,7 @@ It's possible to add a search input in the **top navbar** using a menu item with
 ```
 
 > [!Important]
-> For package versions under `v3.6.0` you need to use the legacy configuration by replacing `type => 'navbar-search'` by `search => true`. However, you should note that the legacy support will be discarded on the future.
+> For package versions under <Badge type="tip">v3.6.0</Badge> you need to use the legacy configuration by replacing `type => 'navbar-search'` by `search => true`. However, you should note that the legacy support will be discarded on the future.
 
 The item will be rendered with a predefined icon, when you click on the icon the search bar will expand all over the **top navbar**. Check next image for an overview when it is expanded:
 
@@ -124,7 +124,7 @@ class SearchController extends Controller
 ## Navbar Fullscreen Widget
 
 > [!Important]
-> This item is only available for package versions `>= v3.6.0`.
+> This item is only available for package versions <Badge type="tip">>= v3.6.0</Badge>.
 
 It's possible to place a full screen widget button in your **top navbar** using the following configuration of attributes:
 
@@ -140,7 +140,7 @@ You should note that the widget is automatically handled by the underlying **Adm
 ## Navbar Notification
 
 > [!Important]
-> This item is only available for package versions `>= v3.6.0` and `Laravel >= 7.x` (because the item is implemented with an underlying blade component).
+> This item is only available for package versions <Badge type="tip">>= v3.6.0</Badge> and <Badge type="tip">Laravel >= 7.x</Badge> (because the item is implemented with an underlying blade component).
 
 It's possible to place a notification icon in your **top navbar**. This item will be rendered as an icon with a notification badge. The item supports two modes: a **default mode** and a **dropdown mode**. On the **default mode**, a click on the icon will redirect you to the configured `url` or `route` attribute. On the **dropdown mode** a click on the icon will open a dropdown with a footer link to the configured `url` or `route`, and whose main content may be obtained from an external source when fetching data using an AJAX request. The item supports periodically updates of the _badge_, the _badge color_, the _icon color_ and the _dropdown main content_ using an AJAX request to another configurable `url` or `route`. The summary of the configuration options are the next ones:
 
@@ -291,7 +291,7 @@ The result would be like the one shown below:
 ## Navbar Darkmode Widget
 
 > [!Important]
-> This item is only available for package versions `>= v3.7.0` and `Laravel >= 7.x` (because the item is implemented with an underlying blade component).
+> This item is only available for package versions <Badge type="tip">>= v3.7.0</Badge> and <Badge type="tip">Laravel >= 7.x</Badge> (because the item is implemented with an underlying blade component).
 
 It's possible to place a dark mode widget in your **top navbar** to enable/disable dark mode on the layout using the following configuration of attributes:
 

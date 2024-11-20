@@ -1,5 +1,5 @@
 > [!Caution]
-> Before proceeding take note that the **blade-x components** are only available and supported for **Laravel >= 7.X** versions.
+> Before proceeding take note that the **blade-x components** are only available and supported for <Badge type="tip">Laravel >= 7.X</Badge> versions.
 
 This package provides some useful [blade-x components](https://laravel.com/docs/blade#components) with `AdminLTE` style that you can use to improve the speed of the **front end** development. The components are classified into the following categories:
 

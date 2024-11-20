@@ -32,7 +32,7 @@ This command will install:
 
 ### 3. Install the legacy authentication scaffolding (optional)
 
-Optionally, and for **Laravel 7+ only versions**, this package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding. If you are planning to use these views, then first require the **laravel/ui** package using composer and install the `bootstrap` scaffolding:
+Optionally, and only for **Laravel 7+ versions**, this package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding. If you are planning to use these views, then first require the **laravel/ui** package using composer and install the `bootstrap` scaffolding:
 
 ```sh
 composer require laravel/ui

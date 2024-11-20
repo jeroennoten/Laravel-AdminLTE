@@ -18,7 +18,7 @@ enable-default-ranges | Enables a default set of ranges option. The string value
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 By using the `enable-default-ranges` property you can configure the initial date range by assigning a string to the option. The current set of accepted values are: `'Today'`, `'Yesterday'`, `'Last 7 Days'`, `'Last 30 Days'`, `'This Month'` or `'Last Month'`.
 
@@ -171,7 +171,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration are those explained on the [plugin documentation](https://itsjavi.com/bootstrap-colorpicker/module-options.html). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use the `data-*` attributes to configure the plugin.
 
@@ -308,7 +308,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration (for the `config` option) are those explained on the [plugin documentation](https://tempusdominus.github.io/bootstrap-4/Options/). You can assign a `javascript` expression to a particular configuration prepending the `js:` string token. All other attributes you define will be inserted directly on the underlying `input` element.
 
@@ -446,7 +446,7 @@ Finally, you need to use the `@section('plugins.TempusDominusBs4', true)` senten
 # InputFileKrajee
 
 > [!Important]
-> This component is only available from `v3.9.0` and requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can use its `CDN` files (read the instructions on the plugin site).
+> This component is only available from <Badge type="tip">v3.9.0</Badge> and requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can use its `CDN` files (read the instructions on the plugin site).
 
 This component represents an advanced **file-input** component with file preview and other features. The component extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines the next additional attributes:
 
@@ -564,7 +564,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration (for `config` attribute) are those explained on the [plugin documentation](https://github.com/seiyria/bootstrap-slider#options). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use the `data-slider-*` attributes to configure the plugin. Also, the standard `value`, `min`, `max`, `step` and `disabled` attributes are mapped as shortcuts of the respective plugin options: `data-slider-value`, `data-slider-min`, `data-slider-max`, `data-slider-step` and `data-slider-enabled`.
 
@@ -673,10 +673,10 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
-is-checked | To specify whether the switch should be active or not (from `v3.14.2`) | bool | `null` | no
+is-checked | To specify whether the switch should be active or not (from <Badge type="tip">v3.14.2</Badge>) | bool | `null` | no
 
 > [!Important]
-> Plase, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own. Also, the `is-checked` property is only available from package version `v3.14.2` and may be used as an alternative to the **HTML checked attribute**.
+> Plase, note the `enable-old-support` property is only available for package version <Badge type="tip">> 3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own. Also, the `is-checked` property is only available from package version <Badge type="tip">v3.14.2</Badge> and may be used as an alternative to the **HTML checked attribute**.
 
 The available plugin configuration are those explained on the [plugin documentation](https://bttstrp.github.io/bootstrap-switch/options.html). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use the `data-*` attributes to configure the plugin.
 
@@ -790,7 +790,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration are those explained on the [plugin documentation](https://developer.snapappointments.com/bootstrap-select/options/#core-options). All other attributes you define will be inserted directly on the underlying `select` element, so you can also use the `data-* attributes` to configure the plugin (as explained on the site).
 
@@ -902,7 +902,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version `> 3.7.2` and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration are those explained on the [plugin documentation](https://summernote.org/deep-dive/). All other attributes you define will be inserted directly on the underlying `textarea` element (`disabled` and `placeholder` attributes are supported).
 
