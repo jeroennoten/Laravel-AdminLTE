@@ -44,7 +44,7 @@ export default {
                 ]
             }, {
                 text: 'Contribution & Extras',
-                collapsed: false,
+                collapsed: true,
                 items: [
                     { text: 'Issues & Pull Request', link: '/sections/contribution_and_extras/issues_questions_and_pull_requests' },
                     { text: 'Related Packages', link: '/sections/contribution_and_extras/related_packages' }
@@ -59,5 +59,9 @@ export default {
         }
     },
     head: [
+        [
+            'link',
+            { rel: 'icon', href: '/Laravel-AdminLTE/imgs/AdminLTELogo.ico' }
+        ]
     ]
 };
