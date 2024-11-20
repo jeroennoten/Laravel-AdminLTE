@@ -4,6 +4,7 @@ export default {
     lastUpdated: true,
     base: '/Laravel-AdminLTE',
     themeConfig: {
+        logo: '/imgs/AdminLTELogo.ico',
         sidebar: [
             {
                 text: 'Overview',
