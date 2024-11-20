@@ -12,7 +12,7 @@ This package provides some artisan commands in order to manage and publish its r
 
 - __`translations`__: The set of translations files used by the package.
 
-  **Target:** The translations files will be published in the `resources/lang/vendor/adminlte/` folder of your Laravel project, or in `lang/vendor/adminlte` folder for Laravel version `>= 9.x`.
+  **Target:** The translations files will be published in the `resources/lang/vendor/adminlte/` folder of your Laravel project, or in `lang/vendor/adminlte` folder for `Laravel 9+` versions.
 
 ### Optional Resources:
 
@@ -82,7 +82,7 @@ php artisan adminlte:remove main_views auth_views components
 ## The `adminlte:plugins` Command
 
 If you won't use the content delivery network (`CDN`) to include new plugins, then you are able to manage some optional plugins that already comes with the underlying **AdminLTE** package with the `php artisan adminlte:plugins` command.
-You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check which plugins are available by executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#the-adminltestatus-command)). Note that after a plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](/sections/configuration/plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
+You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check which plugins are available by executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#the-adminlte-status-command)). Note that after a plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](/sections/configuration/plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
   ```sh

@@ -55,20 +55,20 @@ Attribute                                   | Description
 [classes](#the-classes-attribute)           | To add custom classes to a menu item.
 [data](#the-data-attribute)                 | An array with `data-*` attributes for the item.
 [header](#the-header-attribute)             | Text representing the name of a header (only for headers).
-[icon](#the-icon-and-icon_color-attributes) | A font awesome icon for the item.
-[icon_color](#the-icon-and-icon_color-attributes) | An AdminLTE color for the icon (info, primary, etc).
+[icon](#the-icon-and-icon-color-attributes) | A font awesome icon for the item.
+[icon_color](#the-icon-and-icon-color-attributes) | An AdminLTE color for the icon (info, primary, etc).
 [id](#the-id-attribute)                     | To define an `id` for the menu item.
 [key](#the-key-attribute)                   | An unique identifier key for reference the item.
-[label](#the-label-and-label_color-attributes) | Text for a badge associated with the item.
-[label_color](#the-label-and-label_color-attributes) | An AdminLTE color for the badge (info, primary, etc).
+[label](#the-label-and-label-color-attributes) | Text for a badge associated with the item.
+[label_color](#the-label-and-label-color-attributes) | An AdminLTE color for the badge (info, primary, etc).
 [route](#the-route-attribute)               | A route name, usually used on link items.
 [shift](#the-shift-attribute)               | **[Deprecated]** Classes to append to the list item (for shifting submenu items)
 [submenu](#the-submenu-attribute)           | Array with child items that enables nested menus definition.
 [target](#the-target-attribute)             | The underlying target attribute for link items.
 [text](#the-text-attribute)                 | Text representing the name of the item.
-[topnav](#the-topnav-topnav_right-and-topnav_user-attributes) | Bool to place the item on the top navbar.
-[topnav_right](#the-topnav-topnav_right-and-topnav_user-attributes) | Bool to place the item in the right section of top navbar.
-[topnav_user](#the-topnav-topnav_right-and-topnav_user-attributes) | Bool to place the item in the user menu.
+[topnav](#the-topnav-topnav-right-and-topnav-user-attributes) | Bool to place the item on the top navbar.
+[topnav_right](#the-topnav-topnav-right-and-topnav-user-attributes) | Bool to place the item in the right section of top navbar.
+[topnav_user](#the-topnav-topnav-right-and-topnav-user-attributes) | Bool to place the item in the user menu.
 [url](#the-url-attribute) | An URL path, normally used on link items.
 
 Now, we're going to review all of these attributes with more detail:
@@ -178,7 +178,7 @@ This attribute is exclusive for header items, and the value is just his descript
 
 A header item can also be represented with a single string, for example `"REPORTS"`, but the array format provides a way to combine it with other attributes, like the `can` one. The `header` attribute supports translations, as explained on the [Translations](/sections/configuration/translations) section.
 
-#### The __`icon`__ and `icon_color` Attributes:
+#### The __`icon`__ and __`icon_color`__ Attributes:
 
 The `icon` attribute is optional, and you will get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out. The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons). Just specify the name of the icon and it will appear in front of your menu item. The `ìcon_color` attribute provides a way to setup an [AdminLTE color](https://adminlte.io/themes/v3/pages/UI/general.html) for the icon. Example:
 
@@ -207,7 +207,7 @@ This attribute is optional, and just provide a way to add an `id` to the element
 
 In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier for the item. Then, you can use this identifier later to add new items before or after the item represented by this `key` identifier. For more details, checkout the section [Dynamic Menu Config](#dynamic-menu-config).
 
-#### The __`label`__ and `label_color` Attributes:
+#### The __`label`__ and __`label_color`__ Attributes:
 
 The `label` attribute provides a way to setup a right aligned [badge](https://getbootstrap.com/docs/4.0/components/badge/) for the menu item. The `label_color` is used to configure the badge color, example:
 
