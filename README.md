@@ -19,7 +19,7 @@ If you want to use an older **Laravel** or **AdminLTE** version, review the foll
 
 ## Documentation
 
-All documentation is available on the [Wiki Pages](https://github.com/jeroennoten/Laravel-AdminLTE/wiki), we encourage you to read it. If you are new start with the [Installation Guide](https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Installation). To update the package consult the [Updating Guide](https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Updating).
+All documentation is available at [Laravel-AdminLTE Documentation](https://jeroennoten.github.io/Laravel-AdminLTE) site, we encourage you to read it. If you are new start with the [Installation Guide](https://jeroennoten.github.io/Laravel-AdminLTE/sections/overview/installation.html). To update the package consult the [Updating Guide](https://jeroennoten.github.io/Laravel-AdminLTE/sections/overview/updating.html).
 
 
 ## Requirements
