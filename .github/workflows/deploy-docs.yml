@@ -1,0 +1,82 @@
+# A workflow for building the documentation with VitePress and deploying it on
+# GitHub Pages.
+#
+name: Build and Deploy Documentation
+
+on:
+  # Triggers the workflow on push events for the "master" branch.
+  push:
+    branches: [master]
+
+  # Allows you to run this workflow manually from the Actions tab.
+  workflow_dispatch:
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allows only one concurrent deployment, skipping runs queued between the run
+# in-progress and latest queued. However, do NOT cancel in-progress runs as we
+# want to allow these production deployments to complete.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # Job for build the documentation with VitePress.
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out the source code.
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Not needed if lastUpdated is not enabled
+
+      # Setup Node.js JavaScript runtime.
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # Setup Github Pages.
+      - name: Setup Github Pages
+        uses: actions/configure-pages@v4
+
+      # Install Node.js dependencies.
+      - name: Install Node.js Dependencies
+        run: npm ci
+
+      # Build documentation with VitePress
+      - name: Build Docs
+        run: npm run docs:build
+
+      # Package and upload the website documentation as an artifact (named
+      # github-pages by default) to be used on the deployment job. An artifact
+      # allows you to persist data after a job has completed, and share that
+      # data with another job in the same workflow.
+      - name: Upload Docs Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/.vitepress/dist
+
+  # Job for deploy the documentation to Github Pages.
+  deploy:
+    runs-on: ubuntu-latest
+
+    # This job requires the build job to be executed first.
+    needs: build
+
+    # Deploy to the github-pages environment.
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # Deploy documentation (github-pages artifact by default) to Github Pages.
+      - name: Deploy Docs Artifact to Github Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

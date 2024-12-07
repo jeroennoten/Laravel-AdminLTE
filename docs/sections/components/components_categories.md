@@ -1,0 +1,13 @@
+> [!Caution]
+> Before proceeding take note that the **blade-x components** are only available and supported for <Badge type="tip">Laravel >= 7.X</Badge> versions.
+
+This package provides some useful [blade-x components](https://laravel.com/docs/blade#components) with `AdminLTE` style that you can use to improve the speed of the **front end** development. The components are classified into the following categories:
+
+Category | Components
+---------|-----------
+[Forms Basic](/sections/components/basic_forms_components) | [InputGroup](/sections/components/basic_forms_components#input-group-component), [Button](/sections/components/basic_forms_components#button), [Input](/sections/components/basic_forms_components#input), [InputFile](/sections/components/basic_forms_components#inputfile), [Options](/sections/components/basic_forms_components#options), [Select](/sections/components/basic_forms_components#select), [Select2](/sections/components/basic_forms_components#select2), [Textarea](/sections/components/basic_forms_components#textarea)
+[Forms Advanced](/sections/components/advanced_forms_components) | [DateRange](/sections/components/advanced_forms_components#daterange), [InputColor](/sections/components/advanced_forms_components#inputcolor), [InputDate](/sections/components/advanced_forms_components#inputdate), [InputFileKrajee](/sections/components/advanced_forms_components#inputfilekrajee), [InputSlider](/sections/components/advanced_forms_components#inputslider), [InputSwitch](/sections/components/advanced_forms_components#inputswitch), [SelectBs](/sections/components/advanced_forms_components#selectbs), [TextEditor](/sections/components/advanced_forms_components#texteditor)
+[Tools](/sections/components/tool_components) | [Datatables](/sections/components/tool_components#datatables), [Modal](/sections/components/tool_components#modal)
+[Widgets](/sections/components/widget_components) | [Alert](/sections/components/widget_components#alert), [Callout](/sections/components/widget_components#callout), [Card](/sections/components/widget_components#card), [Info Box](/sections/components/widget_components#info-box), [ProfileColItem](/sections/components/widget_components#profile-col-item-profile-row-item), [ProfileRowItem](/sections/components/widget_components#profile-col-item-profile-row-item), [ProfileWidget](/sections/components/widget_components#profile-widget), [Progress](/sections/components/widget_components#progress), [Small Box](/sections/components/widget_components#small-box)
+
+Each link will redirect you to the corresponding component documentation.
