@@ -1,12 +1,14 @@
-@extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
+@extends('adminlte::auth.auth-page', ['authType' => 'login'])
 
-@php( $password_email_url = View::getSection('password_email_url') ?? config('adminlte.password_email_url', 'password/email') )
+@php
+    $passEmailUrl = View::getSection('password_email_url') ?? config('adminlte.password_email_url', 'password/email');
 
-@if (config('adminlte.use_route_url', false))
-    @php( $password_email_url = $password_email_url ? route($password_email_url) : '' )
-@else
-    @php( $password_email_url = $password_email_url ? url($password_email_url) : '' )
-@endif
+    if (config('adminlte.use_route_url', false)) {
+        $passEmailUrl = $passEmailUrl ? route($passEmailUrl) : '';
+    } else {
+        $passEmailUrl = $passEmailUrl ? url($passEmailUrl) : '';
+    }
+@endphp
 
 @section('auth_header', __('adminlte::adminlte.password_reset_message'))
 
@@ -18,13 +20,13 @@
         </div>
     @endif
 
-    <form action="{{ $password_email_url }}" method="post">
+    <form action="{{ $passEmailUrl }}" method="post">
         @csrf
 
         {{-- Email field --}}
         <div class="input-group mb-3">
             <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
-                   value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
+                value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
 
             <div class="input-group-append">
                 <div class="input-group-text">
@@ -44,7 +46,6 @@
             <span class="fas fa-share-square"></span>
             {{ __('adminlte::adminlte.send_password_reset_link') }}
         </button>
-
     </form>
 
 @stop
