@@ -26,8 +26,8 @@ All documentation is available at [Laravel-AdminLTE Documentation](https://jeroe
 
 The current package requirements are:
 
-- Laravel >= 7.x
-- PHP >= 7.2.5
+- Laravel >= 9.x
+- PHP >= 8.0
 
 
 ## Issues, Questions and Pull Requests
