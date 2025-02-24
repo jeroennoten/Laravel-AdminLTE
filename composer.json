@@ -28,12 +28,12 @@
       }
   },
   "require": {
-    "laravel/framework": ">=7.0",
-    "php": ">=7.2.5",
+    "laravel/framework": ">=8.0",
+    "php": ">=7.3",
     "almasaeed2010/adminlte": "3.2.*"
   },
   "require-dev": {
     "phpunit/phpunit": ">=9.1",
-    "orchestra/testbench": ">=4.0"
+    "orchestra/testbench": ">=6.0"
   }
 }
