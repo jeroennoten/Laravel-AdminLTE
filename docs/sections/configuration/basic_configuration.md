@@ -197,7 +197,7 @@ The next configuration options provides a way to setup the urls for the login, r
   Whether to use `route()` instead of the `url()` Laravel method when internally generating the urls.
 
 > [!Caution]
-> Note that when set to `true`, the next set of URLs should be defined by using route names. For example: `password.email` on __`password_email_url`__, `password.update` on __`password_reset_url`__.
+> When set to `true`, the next set of URLs should be defined by using route names. For example: `password.email` on __`password_email_url`__, `password.update` on __`password_reset_url`__, etc.
 
 - __`dashboard_url`__
 
@@ -223,13 +223,9 @@ The next configuration options provides a way to setup the urls for the login, r
 
   Changes the password reset URL. This url should point to the view that displays the password reset form. Set this option to `false` or `null` to hide the password reset link shown on the login view.
 
-  Note that when `use_route_url` is set to `true` this value must be changed to `password.update`.
-
 - __`password_email_url`__
 
   Changes the password email URL. This url should point to the view that displays the send reset link form.
-
-  Note that when `use_route_url` is set to `true` this value must be changed to `password.email`.
 
 - __`profile_url`__
 
