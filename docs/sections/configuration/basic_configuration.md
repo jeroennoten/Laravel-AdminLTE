@@ -196,6 +196,9 @@ The next configuration options provides a way to setup the urls for the login, r
 
   Whether to use `route()` instead of the `url()` Laravel method when internally generating the urls.
 
+> [!Caution]
+> Note that when set to `true`, the next set of URLs should be defined by using route names. For example: `password.email` on __`password_email_url`__, `password.update` on __`password_reset_url`__.
+
 - __`dashboard_url`__
 
   Changes the dashboard/logo URL. This URL will be used, for example, when clicking on the upper left logo.
