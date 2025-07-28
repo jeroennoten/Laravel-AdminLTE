@@ -35,11 +35,11 @@ Favicons could be used easily. There are two different ways to do this. Take in 
 
 - __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
-  Whit the previous configuration, the file `public/favicons/favicon.ico` will be used.
+  With the previous configuration, the file `public/favicons/favicon.ico` will be used.
 
 - __`['use_ico_only' => false, 'use_full_favicon' => true]`__
 
-  Whit the previous configuration, multiple favicon files located on the `public/favicons/` folder will be used. The current code to use multiple favicons is the next one:
+  With the previous configuration, multiple favicon files located on the `public/favicons/` folder will be used. The current code to use multiple favicons is the next one:
 
   ```blade
   <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
