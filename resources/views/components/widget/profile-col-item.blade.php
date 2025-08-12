@@ -21,7 +21,8 @@
         {{-- Text --}}
         @isset($text)
             <p class="description-text">
-                <span class="{{ $makeTextWrapperClass() }}">
+                <span class="{{ $makeTextWrapperClass() }}"
+                    @isset($textTooltip) title="{{ $textTooltip }}" style="cursor:help;" @endisset>
                     @if(! empty($url) && $urlTarget === 'text')
                         <a href="{{ $url }}">{{ $text }}</a>
                     @else
