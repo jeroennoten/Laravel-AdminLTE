@@ -1,7 +1,14 @@
 build:
     environment:
         php: 7.3.0
-        composer: 2
+
+    dependencies:
+        before:
+            - mkdir -p $HOME/bin
+            - curl -sS https://getcomposer.org/composer-2.phar -o $HOME/bin/composer
+            - chmod +x $HOME/bin/composer
+        install:
+            - php $HOME/bin/composer install --no-interaction --prefer-dist --optimize-autoloader
 
     nodes:
         analysis:
