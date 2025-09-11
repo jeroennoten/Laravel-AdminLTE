@@ -7,7 +7,7 @@ build:
             - mkdir -p $HOME/bin
             - curl -sS https://getcomposer.org/composer-2.phar -o $HOME/bin/composer
             - chmod +x $HOME/bin/composer
-        install:
+        override:
             - php $HOME/bin/composer install --no-interaction --prefer-dist --optimize-autoloader
 
     nodes:
