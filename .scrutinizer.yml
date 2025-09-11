@@ -3,12 +3,15 @@ build:
         php: 7.3.0
 
     dependencies:
-        before:
-            - mkdir -p $HOME/bin
-            - curl -sS https://getcomposer.org/composer-2.phar -o $HOME/bin/composer
-            - chmod +x $HOME/bin/composer
+         before:
+            # Download and verify latest Composer installer
+            - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+            - php -r "if (hash_file('sha384', 'composer-setup.php') === 'dac665fdc30fdd8ec78b38b9800061b4150413ff2e3b6f88543c636f7cd84f6db9189d43a81e5503cda447da73c7e5b6') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+            - php composer-setup.php --install-dir=$HOME/bin --filename=composer
+            - php -r "unlink('composer-setup.php');"
+            - $HOME/bin/composer --version
         override:
-            - php $HOME/bin/composer install --no-interaction --prefer-dist --optimize-autoloader
+            - $HOME/bin/composer install --no-interaction --prefer-dist --optimize-autoloader
 
     nodes:
         analysis:
