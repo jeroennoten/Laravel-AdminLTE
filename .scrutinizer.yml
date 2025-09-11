@@ -2,6 +2,10 @@ build:
     environment:
         php: 7.3.0
 
+    dependencies:
+        before:
+            - composer self-update --2
+
     nodes:
         analysis:
             tests:
