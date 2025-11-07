@@ -1,6 +1,6 @@
 {
-    "name": "laravel-adminlte",
-    "description": "Easy AdminLTE integration with Laravel - Documentation",
+    "name": "laravel-adminlte-docs",
+    "description": "Documentation site for the Laravel-AdminLTE package (built with VitePress)",
     "version": "1.0.0",
     "private": true,
     "directories": {
