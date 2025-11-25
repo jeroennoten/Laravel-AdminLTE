@@ -31,7 +31,6 @@ The current package requirements are:
 
 
 ## Issues, Questions and Pull Requests
-Seb===Test
 You can report issues or ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please, start your issue with `[BUG]` and your question with `[QUESTION]` in the subject.
 
 If you have a question, it is recommended to make a search over the closed issues first.
