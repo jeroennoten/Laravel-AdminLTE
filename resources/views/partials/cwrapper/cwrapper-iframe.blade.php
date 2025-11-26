@@ -1,8 +1,28 @@
+@inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\PreloaderHelper')
+
 {{-- IFrame Content Wrapper --}}
-<div class="content-wrapper iframe-mode {{ config('adminlte.classes_content_wrapper', '') }}" data-widget="iframe"
+<div class="content-wrapper iframe-mode {{ config('adminlte.classes_content_wrapper', '') }} {{ $preloaderHelper->isPreloaderEnabled('cwrapper') ? 'position-relative' : '' }}" data-widget="iframe"
      data-auto-show-new-tab="{{ config('adminlte.iframe.options.auto_show_new_tab', true) }}"
      data-loading-screen="{{ config('adminlte.iframe.options.loading_screen', true) }}"
      data-use-navbar-items="{{ config('adminlte.iframe.options.use_navbar_items', true) }}">
+
+    {{-- Preloader Animation (cwrapper mode) - Fullscreen in iFrame mode --}}
+    @if($preloaderHelper->isPreloaderEnabled('cwrapper'))
+        <div class="preloader flex-column justify-content-center align-items-center" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background-color: rgba(255, 255, 255, 0.9);">
+            @hasSection('preloader')
+                {{-- Use a custom preloader content --}}
+                @yield('preloader')
+            @else
+                {{-- Use the default preloader content --}}
+                <img src="{{ asset(config('adminlte.preloader.img.path', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
+                     class="img-circle {{ config('adminlte.preloader.img.effect', 'animation__shake') }}"
+                     alt="{{ config('adminlte.preloader.img.alt', 'AdminLTE Preloader Image') }}"
+                     width="{{ config('adminlte.preloader.img.width', 60) }}"
+                     height="{{ config('adminlte.preloader.img.height', 60) }}"
+                     style="animation-iteration-count:infinite;">
+            @endif
+        </div>
+    @endif
 
     {{-- IFrame Navbar --}}
     <div class="nav navbar navbar-expand navbar-white navbar-light border-bottom p-0">
