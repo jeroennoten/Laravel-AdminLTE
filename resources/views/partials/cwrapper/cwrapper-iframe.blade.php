@@ -6,9 +6,9 @@
      data-loading-screen="{{ config('adminlte.iframe.options.loading_screen', true) }}"
      data-use-navbar-items="{{ config('adminlte.iframe.options.use_navbar_items', true) }}">
 
-    {{-- Preloader Animation (cwrapper mode) - Fullscreen in iFrame mode --}}
+    {{-- Preloader Animation (cwrapper mode) - Only for iframe-mode content-wrapper --}}
     @if($preloaderHelper->isPreloaderEnabled('cwrapper'))
-        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background-color: rgba(255, 255, 255, 0.9);">
+        <div class="preloader-wrapper-iframe" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; background-color: rgba(255, 255, 255, 0.9);">
             @include('adminlte::partials.common.preloader')
         </div>
     @endif
@@ -124,3 +124,45 @@
     </div>
 
 </div>
+
+{{-- JavaScript to handle preloader in IFrame mode --}}
+@if($preloaderHelper->isPreloaderEnabled('cwrapper'))
+@push('adminlte_js')
+<script>
+    (function() {
+        // Hide preloader only on initial page load for iframe-mode
+        // This ensures it only hides for the main page load, not when loading new tabs
+        // We use a more specific selector to target only the iframe-mode preloader
+        var hideIframePreloader = function() {
+            var $iframePreloader = $('.content-wrapper.iframe-mode .preloader-wrapper-iframe');
+            
+            if ($iframePreloader.length) {
+                $iframePreloader.fadeOut('slow', function() {
+                    $(this).remove();
+                });
+            }
+        };
+        
+        // Hide preloader when page is fully loaded (only for initial page load)
+        $(window).on('load', function() {
+            hideIframePreloader();
+        });
+        
+        // Also hide immediately if page is already loaded (for cases where script runs after load)
+        if (document.readyState === 'complete') {
+            hideIframePreloader();
+        } else {
+            // Fallback: hide when DOM is ready
+            $(document).ready(function() {
+                // Use a small delay to ensure this only runs on initial load, not on tab changes
+                setTimeout(function() {
+                    if (document.readyState === 'complete') {
+                        hideIframePreloader();
+                    }
+                }, 100);
+            });
+        }
+    })();
+</script>
+@endpush
+@endif
