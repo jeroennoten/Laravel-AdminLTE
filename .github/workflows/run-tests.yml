@@ -90,6 +90,7 @@ jobs:
       # Install the package dependencies.
       - name: Install dependencies
         run: |
+          composer config --no-interaction audit.block-insecure false
           composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 

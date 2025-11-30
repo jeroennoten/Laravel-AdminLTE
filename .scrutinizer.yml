@@ -1,16 +1,6 @@
 build:
     environment:
-        php: 7.3.0
-
-    dependencies:
-        before:
-            # Download latest Composer installer
-            - php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-            - php composer-setup.php --install-dir=$HOME/bin --filename=composer
-            - php -r "unlink('composer-setup.php');"
-            - $HOME/bin/composer --version
-        override:
-            - $HOME/bin/composer install --no-interaction --prefer-dist --optimize-autoloader
+        php: 8.2
 
     nodes:
         analysis:
