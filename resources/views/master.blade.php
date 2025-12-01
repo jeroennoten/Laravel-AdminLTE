@@ -19,6 +19,14 @@
         @yield('title_postfix', config('adminlte.title_postfix', ''))
     </title>
 
+    {{-- IFrame Preloader Removal Workaround --}}
+    <!-- IFrame Preloader Removal Workaround -->
+    <style type="text/css">
+        body.iframe-mode .preloader {
+            display: none !important;
+        }
+    </style>
+
     {{-- Custom stylesheets (pre AdminLTE) --}}
     @yield('adminlte_css_pre')
 
