@@ -35,7 +35,7 @@ jobs:
           - laravel: 9.*
             php: 7.4
           - laravel: 9.*
-            php: 8.4          
+            php: 8.4
           - laravel: 10.*
             php: 7.3
           - laravel: 10.*
@@ -67,14 +67,14 @@ jobs:
 
       # Checkout the package code.
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       # Cache dependencies and build outputs to improve workflow execution time.
       - name: Cache dependencies
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ~/.composer/cache/files
           key: dependencies-laravel-${{ matrix.laravel }}-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
