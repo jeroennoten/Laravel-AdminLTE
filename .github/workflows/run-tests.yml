@@ -9,8 +9,8 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4]
-        laravel: [8.*, 9.*, 10.*, 11.*, 12.*]
+        php: [7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5]
+        laravel: [8.*, 9.*, 10.*, 11.*, 12.*, 13.*]
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 8.*
@@ -23,6 +23,8 @@ jobs:
             testbench: 9.*
           - laravel: 12.*
             testbench: 10.*
+          - laravel: 13.*
+            testbench: 11.*
         exclude:
           - laravel: 8.*
             php: 8.2
@@ -30,12 +32,18 @@ jobs:
             php: 8.3
           - laravel: 8.*
             php: 8.4
+          - laravel: 8.*
+            php: 8.5
           - laravel: 9.*
             php: 7.3
           - laravel: 9.*
             php: 7.4
           - laravel: 9.*
+            php: 8.3
+          - laravel: 9.*
             php: 8.4
+          - laravel: 9.*
+            php: 8.5
           - laravel: 10.*
             php: 7.3
           - laravel: 10.*
@@ -44,6 +52,8 @@ jobs:
             php: 8.0
           - laravel: 10.*
             php: 8.4
+          - laravel: 10.*
+            php: 8.5
           - laravel: 11.*
             php: 7.3
           - laravel: 11.*
@@ -52,6 +62,8 @@ jobs:
             php: 8.0
           - laravel: 11.*
             php: 8.1
+          - laravel: 11.*
+            php: 8.5
           - laravel: 12.*
             php: 7.3
           - laravel: 12.*
@@ -60,6 +72,16 @@ jobs:
             php: 8.0
           - laravel: 12.*
             php: 8.1
+          - laravel: 13.*
+            php: 7.3
+          - laravel: 13.*
+            php: 7.4
+          - laravel: 13.*
+            php: 8.0
+          - laravel: 13.*
+            php: 8.1
+          - laravel: 13.*
+            php: 8.2
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
