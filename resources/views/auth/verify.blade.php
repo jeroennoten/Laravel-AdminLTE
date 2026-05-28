@@ -1,4 +1,4 @@
-@extends('adminlte::auth.auth-page', ['auth_type' => 'login'])
+@extends('adminlte::auth.auth-page', ['authType' => 'login'])
 
 @section('auth_header', __('adminlte::adminlte.verify_message'))
 
@@ -17,7 +17,7 @@
         @csrf
         <button type="submit" class="btn btn-link p-0 m-0 align-baseline">
             {{ __('adminlte::adminlte.verify_request_another') }}
-        </button>.
+        </button>
     </form>
 
 @stop

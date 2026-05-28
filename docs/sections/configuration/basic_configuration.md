@@ -35,11 +35,11 @@ Favicons could be used easily. There are two different ways to do this. Take in 
 
 - __`['use_ico_only' => true, 'use_full_favicon' => false]`__
 
-  Whit the previous configuration, the file `public/favicons/favicon.ico` will be used.
+  With the previous configuration, the file `public/favicons/favicon.ico` will be used.
 
 - __`['use_ico_only' => false, 'use_full_favicon' => true]`__
 
-  Whit the previous configuration, multiple favicon files located on the `public/favicons/` folder will be used. The current code to use multiple favicons is the next one:
+  With the previous configuration, multiple favicon files located on the `public/favicons/` folder will be used. The current code to use multiple favicons is the next one:
 
   ```blade
   <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}"/>
@@ -195,6 +195,9 @@ The next configuration options provides a way to setup the urls for the login, r
 - __`use_route_url`__
 
   Whether to use `route()` instead of the `url()` Laravel method when internally generating the urls.
+
+> [!Caution]
+> When set to `true`, the next set of URLs should be defined by using route names. For example: `password.email` on __`password_email_url`__, `password.update` on __`password_reset_url`__, etc.
 
 - __`dashboard_url`__
 

@@ -31,20 +31,20 @@ jobs:
     steps:
       # Checks-out the source code.
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Not needed if lastUpdated is not enabled
 
       # Setup Node.js JavaScript runtime.
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       # Setup Github Pages.
       - name: Setup Github Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       # Install Node.js dependencies.
       - name: Install Node.js Dependencies
@@ -59,7 +59,7 @@ jobs:
       # allows you to persist data after a job has completed, and share that
       # data with another job in the same workflow.
       - name: Upload Docs Artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs/.vitepress/dist
 

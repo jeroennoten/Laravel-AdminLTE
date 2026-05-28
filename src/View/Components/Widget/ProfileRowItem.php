@@ -22,6 +22,13 @@ class ProfileRowItem extends Component
     public $text;
 
     /**
+     * An extra tooltip for the text of the item.
+     *
+     * @var string
+     */
+    public $textTooltip;
+
+    /**
      * A Font Awesome icon for the item.
      *
      * @var string
@@ -68,10 +75,12 @@ class ProfileRowItem extends Component
      */
     public function __construct(
         $title = null, $text = null, $icon = null, $size = 12,
-        $badge = null, $url = null, $urlTarget = 'title'
+        $badge = null, $url = null, $urlTarget = 'title',
+        $textTooltip = null
     ) {
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
+        $this->textTooltip = UtilsHelper::applyHtmlEntityDecoder($textTooltip);
         $this->icon = $icon;
         $this->size = $size;
         $this->badge = $badge;

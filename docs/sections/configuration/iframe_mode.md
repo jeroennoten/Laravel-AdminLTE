@@ -19,3 +19,6 @@ options.use_navbar_items | bool | `true` | Whether to also open the top navbar m
 
 > [!Note]
 > Default values are only used when the related configuration option do not exists in the configuration file.
+
+> [!Tip]
+> You can tune the `loading_screen` value enough to hide visual anomalies that happens then loading a new **iframe tab**.

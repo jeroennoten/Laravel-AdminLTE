@@ -1,8 +1,17 @@
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+@inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\preloaderHelper')
+
 {{-- IFrame Content Wrapper --}}
-<div class="content-wrapper iframe-mode {{ config('adminlte.classes_content_wrapper', '') }}" data-widget="iframe"
+<div class="{{ $layoutHelper->makeContentWrapperClasses() }} iframe-mode"
+     data-widget="iframe"
      data-auto-show-new-tab="{{ config('adminlte.iframe.options.auto_show_new_tab', true) }}"
      data-loading-screen="{{ config('adminlte.iframe.options.loading_screen', true) }}"
      data-use-navbar-items="{{ config('adminlte.iframe.options.use_navbar_items', true) }}">
+
+    {{-- Preloader Animation (cwrapper mode) --}}
+    @if($preloaderHelper->isPreloaderEnabled('cwrapper'))
+        @include('adminlte::partials.common.preloader')
+    @endif
 
     {{-- IFrame Navbar --}}
     <div class="nav navbar navbar-expand navbar-white navbar-light border-bottom p-0">
