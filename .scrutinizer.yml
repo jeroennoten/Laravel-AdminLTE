@@ -5,7 +5,9 @@
 # waits for a coverage report that is never sent.
 build:
     environment:
-        php: 8.3
+        # Keep the environment that the Scrutinizer build image provides, the
+        # analysis only parses the sources.
+        php: 8.2
 
     nodes:
         analysis:

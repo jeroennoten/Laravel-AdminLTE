@@ -1,6 +1,12 @@
 name: run-tests
 
-on: [push, pull_request]
+# The branches are tested through their pull request, so the push event is
+# only used for the default branch. Otherwise, every commit of a branch with
+# an open pull request runs the whole matrix twice.
+on:
+  push:
+    branches: [master]
+  pull_request:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
