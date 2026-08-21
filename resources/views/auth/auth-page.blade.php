@@ -10,11 +10,11 @@
         $dashboardUrl = $dashboardUrl ? url($dashboardUrl) : '';
     }
 
-    $bodyClasses = "{$authType}-page";
+    // The AdminLTE v4 authentication pages center their content by using the
+    // '{login,register}-page' body class. The RTL direction and the color mode
+    // are already setup on the <html> tag by the master layout.
 
-    if (! empty(config('adminlte.layout_dark_mode', null))) {
-        $bodyClasses .= ' dark-mode';
-    }
+    $bodyClasses = "{$authType}-page bg-body-secondary";
 @endphp
 
 @section('adminlte_css')
@@ -25,10 +25,10 @@
 @section('classes_body'){{ $bodyClasses }}@stop
 
 @section('body')
-    <div class="{{ $authType }}-box">
+    <main class="{{ $authType }}-box">
 
         {{-- Logo --}}
-        <div class="{{ $authType }}-logo">
+        <h1 class="{{ $authType }}-logo">
             <a href="{{ $dashboardUrl }}">
 
                 {{-- Logo Image --}}
@@ -53,7 +53,7 @@
                 {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
 
             </a>
-        </div>
+        </h1>
 
         {{-- Card Box --}}
         <div class="card {{ config('adminlte.classes_auth_card', 'card-outline card-primary') }}">
@@ -81,7 +81,7 @@
 
         </div>
 
-    </div>
+    </main>
 @stop
 
 @section('adminlte_js')

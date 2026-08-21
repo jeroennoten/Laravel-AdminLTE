@@ -18,6 +18,9 @@
     "author": "Jeroen Noten <jeroennoten@me.com>",
     "license": "MIT",
     "devDependencies": {
+        "bootstrap": "^5.3.8",
+        "bootstrap-icons": "^1.13.1",
+        "overlayscrollbars": "^2.11.0",
         "vitepress": "^1.6.0"
     }
 }

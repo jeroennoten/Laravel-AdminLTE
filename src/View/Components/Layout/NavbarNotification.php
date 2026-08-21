@@ -116,7 +116,7 @@ class NavbarNotification extends Component
         $attrs = ['class' => 'nav-link'];
 
         if ($this->enableDropdownMode) {
-            $attrs['data-toggle'] = 'dropdown';
+            $attrs['data-bs-toggle'] = 'dropdown';
         }
 
         return $attrs;
@@ -145,10 +145,10 @@ class NavbarNotification extends Component
      */
     public function makeBadgeClass()
     {
-        $classes = ['badge navbar-badge text-bold text-xs badge-pill'];
+        $classes = ['badge navbar-badge fw-bold fs-7 rounded-pill'];
 
         if (! empty($this->badgeColor)) {
-            $classes[] = "badge-{$this->badgeColor}";
+            $classes[] = "text-bg-{$this->badgeColor}";
         }
 
         return implode(' ', $classes);

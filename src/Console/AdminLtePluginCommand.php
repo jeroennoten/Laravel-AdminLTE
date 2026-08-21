@@ -182,7 +182,7 @@ class AdminLtePluginCommand extends Command
 
             if (empty($pluginData)) {
                 $this->line('');
-                $this->error("The plugin key: {$key} is not valid!");
+                $this->reportInvalidPlugin($key);
                 $bar->advance();
                 continue;
             }
@@ -314,8 +314,12 @@ class AdminLtePluginCommand extends Command
 
             if (empty($this->plugins->getSourceData($pluginKey))) {
                 $this->line('');
-                $this->error("The plugin key: {$pluginKey} is not valid!");
+                $this->reportInvalidPlugin($pluginKey);
                 $status = $this->styleOutput('Invalid', 'red');
+            } elseif (! $this->plugins->pluginAvailable($pluginKey)) {
+                $this->line('');
+                $this->reportMissingPackage($pluginKey);
+                $status = $this->styleOutput('Not Available', 'yellow');
             } elseif ($this->installPlugin($pluginKey)) {
                 $status = $this->styleOutput('Installed', 'green');
             } else {
@@ -336,6 +340,53 @@ class AdminLtePluginCommand extends Command
         // Show summary of installed plugins.
 
         $this->showSummaryTable($summary);
+    }
+
+    /**
+     * Reports an invalid plugin key. When the key belongs to a plugin of the
+     * AdminLTE v3 era, the AdminLTE v4 replacement is suggested.
+     *
+     * @param  string  $pluginKey  The plugin string key
+     * @return void
+     */
+    protected function reportInvalidPlugin($pluginKey)
+    {
+        $replacement = $this->plugins->getLegacyPluginReplacement($pluginKey);
+
+        if ($replacement === false) {
+            $this->error("The plugin key: {$pluginKey} is not valid!");
+
+            return;
+        }
+
+        $this->error("The plugin: {$pluginKey} is not available on AdminLTE v4!");
+
+        if (isset($replacement)) {
+            $this->line("Use the '{$replacement}' plugin instead.");
+        } else {
+            $this->line('There is no direct replacement, check the plugins documentation.');
+        }
+    }
+
+    /**
+     * Reports that the npm package required by a plugin is not available on
+     * the application, and how to install it.
+     *
+     * @param  string  $pluginKey  The plugin string key
+     * @return void
+     */
+    protected function reportMissingPackage($pluginKey)
+    {
+        $pluginData = $this->plugins->getSourceData($pluginKey);
+        $name = $pluginData['name'] ?? $pluginKey;
+
+        $this->warn("The {$name} plugin files are not available on your application.");
+
+        $cmd = $this->plugins->getInstallPackageCommand($pluginKey);
+
+        if (isset($cmd)) {
+            $this->line("Install them first with: {$cmd}");
+        }
     }
 
     /**
@@ -401,7 +452,7 @@ class AdminLtePluginCommand extends Command
 
             if (empty($this->plugins->getSourceData($pluginKey))) {
                 $this->line('');
-                $this->error("The plugin key: {$pluginKey} is not valid!");
+                $this->reportInvalidPlugin($pluginKey);
                 $status = $this->styleOutput('Invalid', 'red');
             } elseif ($this->removePlugin($pluginKey)) {
                 $status = $this->styleOutput('Removed', 'green');

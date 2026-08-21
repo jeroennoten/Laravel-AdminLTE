@@ -68,7 +68,7 @@ Favicons could be used easily. There are two different ways to do this. Take in 
 
 By default, the provided admin panel layout includes some **google fonts**, and you should note that they are an external resource. However, this may introduce performance issues in environments where the internet access is restricted somehow. For those scenarios, you may use the next option to disable the usage of the external **google fonts**.
 
-- __`google_fonts.allowed`__: Whether to allow the inclusion of external google fonts.
+- __`google_fonts.allowed`__: Whether to allow the inclusion of the external web font used by AdminLTE v4 (`Source Sans 3`). The font source can be changed on the [assets](/sections/configuration/other#assets) configuration.
 
 ## Admin Panel Logo
 
@@ -103,7 +103,7 @@ The next options allows you to enable, disable and/or configure the authenticati
 The next options allows you to enable, disable and configure the preloader animation. The preloader animation, when enabled, will be shown while a page is loading, and then will be hidden automatically.
 
 - __`preloader.enabled`__: Whether to enable the preloader animation.
-- __`preloader.mode`__: The preloader animantion mode: `fullscreen` or `cwrapper`. On `fullscreen` mode (the default), the preloader animation will cover the entire page. When using `cwrapper` mode, the preloader animation will be attached into the `content-wrapper` element to avoid covering the sidebars and navbars.
+- __`preloader.mode`__: The preloader animantion mode: `fullscreen` or `cwrapper`. On `fullscreen` mode (the default), the preloader animation will cover the entire page. When using `cwrapper` mode, the preloader animation will be attached into the content wrapper (`main.app-main`) element to avoid covering the sidebars and navbars.
 - __`preloader.img.path`__: The path to the logo image that will be used on the preloader animation. This image should be available somewhere inside the `public` folder of your Laravel project (if you did not change the `asset_url` config).
 - __`preloader.img.alt`__: The alternative text to use when the image can't be found or isn't available.
 - __`preloader.img.effect`__: The animation effect to use on the image, the available values are: `animation__shake` or `animation__wobble`.
@@ -120,8 +120,8 @@ If you don't want an image logo in your preloader (the one allowed by the config
 {{-- Setup Custom Preloader Content --}}
 
 @section('preloader')
-    <i class="fas fa-4x fa-spin fa-spinner text-secondary"></i>
-    <h4 class="mt-4 text-dark">Loading</h4>
+    <div class="spinner-border text-secondary" style="width: 4rem; height: 4rem;" role="status"></div>
+    <h4 class="mt-4">Loading</h4>
 @stop
 ```
 

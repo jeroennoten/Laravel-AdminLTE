@@ -110,7 +110,7 @@ class ToolComponentsTest extends TestCase
         $this->assertStringContainsString('modal-header', $mhClass);
 
         $cbClass = $component->makeCloseButtonClass();
-        $this->assertStringContainsString('bg-secondary', $cbClass);
+        $this->assertStringContainsString('btn-secondary', $cbClass);
     }
 
     public function testModalComponentWithAdvancedOptions()
@@ -132,9 +132,9 @@ class ToolComponentsTest extends TestCase
         $this->assertStringContainsString('modal-lg', $mdClass);
 
         $mhClass = $component->makeModalHeaderClass();
-        $this->assertStringContainsString('bg-info', $mhClass);
+        $this->assertStringContainsString('text-bg-info', $mhClass);
 
         $cbClass = $component->makeCloseButtonClass();
-        $this->assertStringContainsString('bg-info', $cbClass);
+        $this->assertStringContainsString('btn-info', $cbClass);
     }
 }

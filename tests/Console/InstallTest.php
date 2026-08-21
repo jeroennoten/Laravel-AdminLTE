@@ -58,15 +58,6 @@ class InstallTest extends CommandTestCase
 
     public function testInstallOnlyWithInteractiveFlag()
     {
-        // We can't perfom these tests on old Laravel versions. We need support
-        // for the expect confirmation method.
-
-        if (! $this->canExpectsConfirmation()) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         // Test installation of the resources when using --interactive.
 
         foreach ($this->getResources() as $name => $res) {
@@ -105,15 +96,6 @@ class InstallTest extends CommandTestCase
 
     public function testInstallOnlyWithOverwriteWarning()
     {
-        // We can't perfom these tests on old Laravel versions. We need support
-        // for the expect confirmation method.
-
-        if (! $this->canExpectsConfirmation()) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         // Test installation of the resources when an overwrite event occurs.
 
         foreach ($this->getResources() as $name => $res) {

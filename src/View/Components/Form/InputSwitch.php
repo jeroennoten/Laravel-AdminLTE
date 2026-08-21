@@ -2,14 +2,28 @@
 
 namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
+
 class InputSwitch extends InputGroupComponent
 {
     use Traits\OldValueSupportTrait;
 
     /**
-     * The Bootstrap Switch plugin configuration parameters. Array with
-     * 'key => value' pairs, where the key should be an existing configuration
-     * property of the plugin.
+     * The legacy 'Bootstrap Switch' plugin configuration parameters. Array with
+     * 'key => value' pairs.
+     *
+     * On AdminLTE v4 the switch is rendered with the native Bootstrap 5.3
+     * 'form-check form-switch' markup, so most of the legacy properties have no
+     * effect anymore. The properties that are still honoured are:
+     * - 'state'    => the initial checked state of the switch.
+     * - 'disabled' => whether the switch is disabled.
+     * - 'readonly' => whether the switch is readonly.
+     * - 'onColor'  => a Bootstrap theme name used for the checked state color.
+     * - 'labelText', 'onText' => the visible label next to the switch.
+     *
+     * Any other legacy property ('size', 'animate', 'handleWidth', 'inverse',
+     * 'offColor', 'offText', 'wrapperClass', etc.) is still accepted for
+     * backward compatibility and silently ignored.
      *
      * @var array
      */
@@ -17,7 +31,7 @@ class InputSwitch extends InputGroupComponent
 
     /**
      * Create a new component instance.
-     * Note this component requires the 'Bootstrap Switch' plugin.
+     * Note this component does not require any plugin anymore.
      *
      * @return void
      */
@@ -68,19 +82,80 @@ class InputSwitch extends InputGroupComponent
 
     /**
      * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class.
+     * the method of the parent class. Bootstrap 5.3 requires the
+     * 'form-check-input' class on the switch control.
      *
      * @return string
      */
     public function makeItemClass()
     {
-        $classes = [];
+        $classes = ['form-check-input'];
 
         if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for the wrapper of the native Bootstrap 5.3
+     * switch control.
+     *
+     * @return string
+     */
+    public function makeSwitchWrapperClass()
+    {
+        return 'form-check form-switch d-flex align-items-center ps-0 gap-2';
+    }
+
+    /**
+     * Determine whether the switch should be rendered on the checked state.
+     * The previously submitted value takes precedence when the old value
+     * support is enabled.
+     *
+     * @return bool
+     */
+    public function isChecked()
+    {
+        $errors = $this->errorsBag ?? session()->get('errors');
+
+        if ($this->enableOldSupport && ! empty($errors) && $errors->isNotEmpty()) {
+            return ! empty($this->getOldValue($this->errorKey));
+        }
+
+        return ! empty($this->config['state']);
+    }
+
+    /**
+     * Get the visible label to display next to the switch, if any. The legacy
+     * 'labelText' and 'onText' plugin properties are used as the source.
+     *
+     * @return string|null
+     */
+    public function getSwitchLabel()
+    {
+        $text = $this->config['labelText'] ?? $this->config['onText'] ?? null;
+
+        return isset($text) ? UtilsHelper::applyHtmlEntityDecoder($text) : null;
+    }
+
+    /**
+     * Get the Bootstrap theme name to use for the checked state of the switch.
+     * The legacy 'onColor' plugin property is used as the source.
+     *
+     * @return string|null
+     */
+    public function getSwitchColor()
+    {
+        $themes = [
+            'primary', 'secondary', 'success', 'info', 'warning', 'danger',
+            'light', 'dark',
+        ];
+
+        $color = $this->config['onColor'] ?? null;
+
+        return in_array($color, $themes, true) ? $color : null;
     }
 
     /**

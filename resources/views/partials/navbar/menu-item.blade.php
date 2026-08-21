@@ -33,6 +33,9 @@
         :color-enabled="$item['color_enabled'] ?? null"
         :icon-disabled="$item['icon_disabled'] ?? null"
         :color-disabled="$item['color_disabled'] ?? null"
+        :icon-auto="$item['icon_auto'] ?? null"
+        :color-auto="$item['color_auto'] ?? null"
+        :dropdown-mode="$item['dropdown_mode'] ?? null"
     />
 
 @elseif ($navbarItemHelper->isSubmenu($item))

@@ -26,4 +26,12 @@ return [
     'verify_request_another' => 'click here to request another',
     'confirm_password_message' => 'Please, confirm your password to continue.',
     'remember_me_hint' => 'Keep me authenticated indefinitely or until I manually logout',
+    'search' => 'Search',
+    'toggle_fullscreen' => 'Toggle fullscreen',
+    'toggle_right_sidebar' => 'Toggle right sidebar',
+    'toggle_color_mode' => 'Toggle color mode',
+    'color_mode_light' => 'Light',
+    'color_mode_dark' => 'Dark',
+    'color_mode_auto' => 'Auto',
+    'close' => 'Close',
 ];

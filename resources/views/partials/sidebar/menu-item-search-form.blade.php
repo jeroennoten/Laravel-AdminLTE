@@ -1,25 +1,29 @@
-<li>
+@php
+    // The search input needs an id, so the related label can target it.
+    $searchInputId = $item['id'] ?? 'adminlte-sidebar-search-form-input';
+@endphp
 
-    <form class="form-inline my-2" action="{{ $item['href'] }}" method="{{ $item['method'] }}">
-        {{ csrf_field() }}
+<div class="sidebar-search" role="search">
 
-        <div class="input-group">
+    <form action="{{ $item['href'] }}" method="{{ $item['method'] }}">
 
-            {{-- Search input --}}
-            <input class="form-control form-control-sidebar" type="search"
-                @isset($item['id']) id="{{ $item['id'] }}" @endisset
-                name="{{ $item['input_name'] }}"
-                placeholder="{{ $item['text'] }}"
-                aria-label="{{ $item['text'] }}">
+        @if(strtolower($item['method']) === 'post')
+            {{ csrf_field() }}
+        @endif
 
-            {{-- Search button --}}
-            <div class="input-group-append">
-                <button class="btn btn-sidebar" type="submit">
-                    <i class="fas fa-fw fa-search"></i>
-                </button>
-            </div>
+        {{-- Search input --}}
+        <label for="{{ $searchInputId }}" class="visually-hidden">{{ $item['text'] }}</label>
 
-        </div>
+        <input class="form-control form-control-sm" type="search"
+               id="{{ $searchInputId }}"
+               name="{{ $item['input_name'] }}"
+               placeholder="{{ $item['text'] }}"
+               aria-label="{{ $item['text'] }}"
+               autocomplete="off">
+
+        {{-- Search submit (visually hidden, the input already submits on enter) --}}
+        <button type="submit" class="visually-hidden">{{ $item['text'] }}</button>
+
     </form>
 
-</li>
+</div>

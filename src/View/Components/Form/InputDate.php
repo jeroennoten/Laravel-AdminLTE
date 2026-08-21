@@ -7,24 +7,24 @@ class InputDate extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
-     * The default set of icons for the Tempus Dominus plugin configuration.
+     * The default set of icons for the date picker configuration.
      *
      * @var array
      */
     protected $icons = [
-        'time' => 'fas fa-clock',
-        'date' => 'fas fa-calendar-alt',
-        'up' => 'fas fa-arrow-up',
-        'down' => 'fas fa-arrow-down',
-        'previous' => 'fas fa-chevron-left',
-        'next' => 'fas fa-chevron-right',
-        'today' => 'fas fa-calendar-check-o',
-        'clear' => 'fas fa-trash',
-        'close' => 'fas fa-times',
+        'time' => 'bi bi-clock',
+        'date' => 'bi bi-calendar',
+        'up' => 'bi bi-arrow-up',
+        'down' => 'bi bi-arrow-down',
+        'previous' => 'bi bi-chevron-left',
+        'next' => 'bi bi-chevron-right',
+        'today' => 'bi bi-calendar-check',
+        'clear' => 'bi bi-trash',
+        'close' => 'bi bi-x-lg',
     ];
 
     /**
-     * The default set of buttons for the Tempus Dominus plugin configuration.
+     * The default set of buttons for the date picker configuration.
      *
      * @var array
      */
@@ -33,9 +33,46 @@ class InputDate extends InputGroupComponent
     ];
 
     /**
-     * The Tempus Dominus plugin configuration parameters. Array with
-     * 'key => value' pairs, where the key should be an existing configuration
-     * property of the plugin.
+     * The set of legacy 'Tempus Dominus' configuration properties that became
+     * meaningless on AdminLTE v4, where the vanilla Javascript 'Flatpickr'
+     * plugin is used instead. They are accepted for backward compatibility and
+     * dropped before the configuration is handed over to the plugin.
+     *
+     * @var array
+     */
+    protected $legacyCfgNoop = [
+        'icons', 'buttons', 'collapse', 'sideBySide', 'toolbarPlacement',
+        'widgetPositioning', 'widgetParent', 'useCurrent', 'calendarWeeks',
+        'viewMode', 'keepOpen', 'focusOnShow', 'debug', 'allowInputToggle',
+        'extraFormats', 'keepInvalid', 'ignoreReadonly', 'tooltips',
+        'useStrict', 'daysOfWeekDisabled', 'stepping', 'timeZone',
+    ];
+
+    /**
+     * The set of legacy 'Tempus Dominus' configuration properties that have a
+     * 'Flatpickr' counterpart with a different name.
+     *
+     * @var array
+     */
+    protected $legacyCfgMap = [
+        'format' => 'dateFormat',
+        'defaultDate' => 'defaultDate',
+        'minDate' => 'minDate',
+        'maxDate' => 'maxDate',
+        'disabledDates' => 'disable',
+        'enabledDates' => 'enable',
+        'inline' => 'inline',
+    ];
+
+    /**
+     * The date picker configuration parameters. Array with 'key => value'
+     * pairs, where the key should be an existing configuration property of
+     * the 'Flatpickr' plugin.
+     *
+     * Note the legacy 'Tempus Dominus' properties are still accepted. The
+     * 'icons' and 'buttons' properties are kept (with Bootstrap Icons based
+     * defaults) for backward compatibility, but they are not used by the
+     * 'Flatpickr' plugin.
      *
      * @var array
      */
@@ -43,7 +80,7 @@ class InputDate extends InputGroupComponent
 
     /**
      * Create a new component instance.
-     * Note this component requires the 'Tempus Dominus' plugin.
+     * Note this component requires the 'Flatpickr' plugin.
      *
      * @return void
      */
@@ -70,6 +107,33 @@ class InputDate extends InputGroupComponent
     }
 
     /**
+     * Get the configuration that will be handed over to the 'Flatpickr'
+     * plugin. The legacy properties are translated when possible and dropped
+     * when they became meaningless.
+     *
+     * @return array
+     */
+    public function makePluginConfig()
+    {
+        $pluginCfg = [];
+
+        foreach ($this->config as $key => $value) {
+            if (isset($this->legacyCfgMap[$key])) {
+                $pluginCfg[$this->legacyCfgMap[$key]] = $value;
+            } elseif (! in_array($key, $this->legacyCfgNoop, true)) {
+                $pluginCfg[$key] = $value;
+            }
+        }
+
+        // The 'allowInput' option lets the user type the date manually, which
+        // matches the behavior of the legacy plugin.
+
+        $pluginCfg['allowInput'] = $pluginCfg['allowInput'] ?? true;
+
+        return $pluginCfg;
+    }
+
+    /**
      * Make the class attribute for the input group item. Note we overwrite
      * the method of the parent class.
      *
@@ -77,7 +141,7 @@ class InputDate extends InputGroupComponent
      */
     public function makeItemClass()
     {
-        $classes = ['form-control', 'datetimepicker'];
+        $classes = ['form-control'];
 
         if ($this->isInvalid()) {
             $classes[] = 'is-invalid';

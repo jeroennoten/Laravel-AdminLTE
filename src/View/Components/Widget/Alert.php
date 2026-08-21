@@ -7,24 +7,26 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Alert extends Component
 {
+    use HandlesThemeColors;
+
     /**
-     * The default icon for each alert theme.
+     * The default icon for each alert theme (Bootstrap Icons).
      *
      * @var array
      */
     protected $icons = [
-        'dark' => 'fas fa-bolt',
-        'light' => 'far fa-lightbulb',
-        'primary' => 'fas fa-bell',
-        'secondary' => 'fas fa-tag',
-        'info' => 'fas fa-info-circle',
-        'success' => 'fas fa-check-circle',
-        'warning' => 'fas fa-exclamation-triangle',
-        'danger' => 'fas fa-ban',
+        'dark' => 'bi bi-lightning-fill',
+        'light' => 'bi bi-lightbulb',
+        'primary' => 'bi bi-bell-fill',
+        'secondary' => 'bi bi-tag-fill',
+        'info' => 'bi bi-info-circle-fill',
+        'success' => 'bi bi-check-circle-fill',
+        'warning' => 'bi bi-exclamation-triangle-fill',
+        'danger' => 'bi bi-x-octagon-fill',
     ];
 
     /**
-     * The alert icon (a Font Awesome icon).
+     * The alert icon (a Bootstrap Icon).
      *
      * @var string
      */
@@ -69,7 +71,7 @@ class Alert extends Component
         // icon is provided.
 
         if (! isset($icon) && ! empty($theme)) {
-            $this->icon = $this->icons[$theme];
+            $this->icon = $this->icons[$theme] ?? null;
         }
     }
 
@@ -81,15 +83,21 @@ class Alert extends Component
     public function makeAlertClass()
     {
         $classes = ['alert'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (! empty($this->theme)) {
-            $classes[] = "alert-{$this->theme}";
+        if (! empty($theme)) {
+            $classes[] = "alert-{$theme}";
         } else {
             $classes[] = 'border';
         }
 
+        // Note the Bootstrap v5 markup requires the 'fade' and 'show' classes
+        // in order to animate the dismiss of the alert.
+
         if (! empty($this->dismissable)) {
-            $classes[] = 'alert-dismissable';
+            $classes[] = 'alert-dismissible';
+            $classes[] = 'fade';
+            $classes[] = 'show';
         }
 
         return implode(' ', $classes);

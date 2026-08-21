@@ -8,80 +8,23 @@ jobs:
 
     strategy:
       fail-fast: true
+
+      # Only the currently supported Laravel and PHP versions are tested.
+      # Laravel 12 (security fixes until Feb 2027) is the minimum supported
+      # release, and Laravel 13 requires PHP 8.3 or higher. The lowest
+      # dependencies are only verified on the minimum supported PHP version of
+      # every Laravel release, the remaining jobs use the stable ones.
       matrix:
-        php: [7.3, 7.4, 8.0, 8.1, 8.2, 8.3, 8.4, 8.5]
-        laravel: [8.*, 9.*, 10.*, 11.*, 12.*, 13.*]
-        stability: [prefer-lowest, prefer-stable]
         include:
-          - laravel: 8.*
-            testbench: 6.22.*
-          - laravel: 9.*
-            testbench: 7.*
-          - laravel: 10.*
-            testbench: 8.*
-          - laravel: 11.*
-            testbench: 9.*
-          - laravel: 12.*
-            testbench: 10.*
-          - laravel: 13.*
-            testbench: 11.*
-        exclude:
-          - laravel: 8.*
-            php: 8.2
-          - laravel: 8.*
-            php: 8.3
-          - laravel: 8.*
-            php: 8.4
-          - laravel: 8.*
-            php: 8.5
-          - laravel: 9.*
-            php: 7.3
-          - laravel: 9.*
-            php: 7.4
-          - laravel: 9.*
-            php: 8.3
-          - laravel: 9.*
-            php: 8.4
-          - laravel: 9.*
-            php: 8.5
-          - laravel: 10.*
-            php: 7.3
-          - laravel: 10.*
-            php: 7.4
-          - laravel: 10.*
-            php: 8.0
-          - laravel: 10.*
-            php: 8.4
-          - laravel: 10.*
-            php: 8.5
-          - laravel: 11.*
-            php: 7.3
-          - laravel: 11.*
-            php: 7.4
-          - laravel: 11.*
-            php: 8.0
-          - laravel: 11.*
-            php: 8.1
-          - laravel: 11.*
-            php: 8.5
-          - laravel: 12.*
-            php: 7.3
-          - laravel: 12.*
-            php: 7.4
-          - laravel: 12.*
-            php: 8.0
-          - laravel: 12.*
-            php: 8.1
-          - laravel: 13.*
-            php: 7.3
-          - laravel: 13.*
-            php: 7.4
-          - laravel: 13.*
-            php: 8.0
-          - laravel: 13.*
-            php: 8.1
-          - laravel: 13.*
-            php: 8.2
+          - { php: 8.2, laravel: '12.*', testbench: '10.*', stability: prefer-lowest }
+          - { php: 8.2, laravel: '12.*', testbench: '10.*', stability: prefer-stable }
+          - { php: 8.3, laravel: '12.*', testbench: '10.*', stability: prefer-stable }
+          - { php: 8.4, laravel: '12.*', testbench: '10.*', stability: prefer-stable }
+          - { php: 8.5, laravel: '12.*', testbench: '10.*', stability: prefer-stable }
+          - { php: 8.3, laravel: '13.*', testbench: '11.*', stability: prefer-lowest }
+          - { php: 8.3, laravel: '13.*', testbench: '11.*', stability: prefer-stable }
+          - { php: 8.4, laravel: '13.*', testbench: '11.*', stability: prefer-stable }
+          - { php: 8.5, laravel: '13.*', testbench: '11.*', stability: prefer-stable }
 
     name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
 
@@ -107,25 +50,14 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
-          coverage: xdebug
+          coverage: none
 
       # Install the package dependencies.
       - name: Install dependencies
         run: |
-          composer config --no-interaction audit.block-insecure false
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:>=2.62.1" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       # Execute the test suite for Laravel.
       - name: Execute Laravel tests
         run: vendor/bin/phpunit --testsuite Laravel
-
-      # Upload code coverage to Scrutinizer CI, only for specific version.
-      - name: Upload coverage to scrutinizer-ci
-        if: matrix.php == '8.2' && matrix.laravel == '10.*' && matrix.stability == 'prefer-stable'
-        run: |
-          composer require scrutinizer/ocular
-          cp phpunit.xml.dist phpunit.xml
-          vendor/bin/phpunit --migrate-configuration
-          vendor/bin/phpunit --testsuite Laravel --coverage-clover=coverage.clover
-          vendor/bin/ocular code-coverage:upload --format=php-clover coverage.clover

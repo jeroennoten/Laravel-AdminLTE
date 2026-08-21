@@ -7,6 +7,8 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class SmallBox extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The title/header for the box.
      *
@@ -22,7 +24,7 @@ class SmallBox extends Component
     public $text;
 
     /**
-     * A Font Awesome icon for the box.
+     * A Bootstrap Icon for the box.
      *
      * @var string
      */
@@ -30,7 +32,7 @@ class SmallBox extends Component
 
     /**
      * The box theme (light, dark, primary, secondary, info, success, warning,
-     * danger or any other AdminLTE color like lighblue or teal).
+     * danger or any color of the AdminLTE extended palette like sky or teal).
      *
      * @var string
      */
@@ -85,9 +87,26 @@ class SmallBox extends Component
     public function makeBoxClass()
     {
         $classes = ['small-box'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (isset($this->theme)) {
-            $classes[] = "bg-{$this->theme}";
+        if (! empty($theme)) {
+            $classes[] = "text-bg-{$theme}";
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for the box icon.
+     *
+     * @return string
+     */
+    public function makeIconClass()
+    {
+        $classes = ['small-box-icon'];
+
+        if (! empty($this->icon)) {
+            $classes[] = $this->icon;
         }
 
         return implode(' ', $classes);
@@ -100,7 +119,15 @@ class SmallBox extends Component
      */
     public function makeOverlayClass()
     {
-        $classes = ['overlay'];
+        // Note the AdminLTE v3 '.overlay' class no longer exists on v4, the
+        // overlay is built with Bootstrap utilities. The 'small-box-overlay'
+        // class is only kept as a hook for the javascript helper.
+
+        $classes = [
+            'small-box-overlay', 'position-absolute', 'top-0', 'start-0',
+            'w-100', 'h-100', 'd-flex', 'align-items-center',
+            'justify-content-center', 'bg-body', 'bg-opacity-75', 'rounded',
+        ];
 
         if (! isset($this->loading)) {
             $classes[] = 'd-none';

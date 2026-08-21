@@ -1,9 +1,5 @@
 @extends('adminlte::auth.auth-page', ['authType' => 'login'])
 
-@section('adminlte_css_pre')
-    <link rel="stylesheet" href="{{ asset('vendor/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-@stop
-
 @php
     $loginUrl = View::getSection('login_url') ?? config('adminlte.login_url', 'login');
     $registerUrl = View::getSection('register_url') ?? config('adminlte.register_url', 'register');
@@ -27,14 +23,15 @@
         @csrf
 
         {{-- Email field --}}
+        <label for="email" class="visually-hidden">{{ __('adminlte::adminlte.email') }}</label>
+
         <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+            <input type="email" name="email" id="email"
+                class="form-control @error('email') is-invalid @enderror"
                 value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="bi bi-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
 
             @error('email')
@@ -45,14 +42,15 @@
         </div>
 
         {{-- Password field --}}
+        <label for="password" class="visually-hidden">{{ __('adminlte::adminlte.password') }}</label>
+
         <div class="input-group mb-3">
-            <input type="password" name="password" class="form-control @error('password') is-invalid @enderror"
+            <input type="password" name="password" id="password"
+                class="form-control @error('password') is-invalid @enderror"
                 placeholder="{{ __('adminlte::adminlte.password') }}">
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-lock {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="bi bi-lock-fill {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
 
             @error('password')
@@ -65,20 +63,22 @@
         {{-- Login field --}}
         <div class="row">
             <div class="col-7">
-                <div class="icheck-primary" title="{{ __('adminlte::adminlte.remember_me_hint') }}">
-                    <input type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-
-                    <label for="remember">
+                <div class="form-check" title="{{ __('adminlte::adminlte.remember_me_hint') }}">
+                    <input class="form-check-input" type="checkbox" name="remember"
+                           id="remember" {{ old('remember') ? 'checked' : '' }}>
+                    <label class="form-check-label" for="remember">
                         {{ __('adminlte::adminlte.remember_me') }}
                     </label>
                 </div>
             </div>
 
             <div class="col-5">
-                <button type=submit class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
-                    <span class="fas fa-sign-in-alt"></span>
-                    {{ __('adminlte::adminlte.sign_in') }}
-                </button>
+                <div class="d-grid">
+                    <button type="submit" class="btn {{ config('adminlte.classes_auth_btn', 'btn-primary') }}">
+                        <i class="bi bi-box-arrow-in-right me-1"></i>
+                        {{ __('adminlte::adminlte.sign_in') }}
+                    </button>
+                </div>
             </div>
         </div>
     </form>

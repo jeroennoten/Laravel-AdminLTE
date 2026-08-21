@@ -5,7 +5,7 @@
 <table id="{{ $id }}" style="width:100%" {{ $attributes->merge(['class' => $makeTableClass()]) }}>
 
     {{-- Table head --}}
-    <thead @isset($headTheme) class="thead-{{ $headTheme }}" @endisset>
+    <thead @isset($headTheme) class="table-{{ $headTheme }}" @endisset>
         <tr>
             @foreach($heads as $th)
                 <th @isset($th['classes']) class="{{ $th['classes'] }}" @endisset
@@ -22,7 +22,7 @@
 
     {{-- Table footer --}}
     @isset($withFooter)
-        <tfoot @isset($footerTheme) class="thead-{{ $footerTheme }}" @endisset>
+        <tfoot @isset($footerTheme) class="table-{{ $footerTheme }}" @endisset>
             <tr>
                 @foreach($heads as $th)
                     <th>{{ is_array($th) ? ($th['label'] ?? '') : $th }}</th>
@@ -40,9 +40,20 @@
 @push('js')
 <script>
 
-    $(() => {
-        $('#{{ $id }}').DataTable( @json($config) );
-    })
+    // The DataTables plugin still requires jQuery, so the initialization is
+    // guarded in order to not break a jQuery free application. Note the
+    // vanilla javascript alternative recommended by AdminLTE v4 is Tabulator.
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        if (typeof window.jQuery === 'undefined' || typeof window.jQuery.fn.DataTable === 'undefined') {
+            console.warn('The datatable component requires the jQuery based Datatables plugin.');
+
+            return;
+        }
+
+        window.jQuery('#{{ $id }}').DataTable(@json($config));
+    });
 
 </script>
 @endpush
@@ -70,7 +81,7 @@
             width: 100%;
         }
         .dataTable .child .dtr-data {
-            float: right;
+            float: inline-end;
         }
     </style>
     @endpush

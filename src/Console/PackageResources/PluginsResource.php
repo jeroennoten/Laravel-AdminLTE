@@ -24,178 +24,225 @@ class PluginsResource extends PackageResource
      * @var array
      */
     protected $plugins = [
-        'bootstrap4DualListbox' => [
-            'name' => 'Bootstrap4 Dual Listbox',
-            'source' => 'bootstrap4-duallistbox',
-        ],
-        'bootstrapColorpicker' => [
-            'name' => 'Bootstrap Colorpicker',
-            'source' => 'bootstrap-colorpicker',
-        ],
-        'bootstrapSlider' => [
-            'name' => 'Bootstrap Slider',
-            'source' => 'bootstrap-slider',
-        ],
-        'bootstrapSwitch' => [
-            'name' => 'Bootstrap Switch',
-            'source' => 'bootstrap-switch',
-        ],
-        'bsCustomFileInput' => [
-            'name' => 'bs-custom-file-input',
-            'source' => 'bs-custom-file-input',
+        'apexcharts' => [
+            'name' => 'ApexCharts',
+            'package' => 'apexcharts',
+            'version' => '^4.3',
+            'source' => 'apexcharts/dist',
+            'target' => 'apexcharts',
+            'recursive' => false,
+            'ignore' => ['*.map', '*.esm.js'],
         ],
         'chartJs' => [
             'name' => 'Chart.js',
-            'source' => 'chart.js',
+            'package' => 'chart.js',
+            'version' => '^4.4',
+            'source' => 'chart.js/dist',
+            'target' => 'chart.js',
+            'recursive' => false,
+            'ignore' => ['*.map', '*.d.ts'],
         ],
         'datatables' => [
-            'name' => 'Datatables',
+            'name' => 'Datatables (requires jQuery)',
+            'package' => 'datatables.net',
+            'version' => '^2.1',
             'resources' => [
-                ['source' => 'datatables', 'target' => 'datatables/js'],
-                ['source' => 'datatables-bs4', 'target' => 'datatables'],
+                ['source' => 'datatables.net/js', 'target' => 'datatables/js'],
+                ['source' => 'datatables.net-bs5/js', 'target' => 'datatables/js'],
+                ['source' => 'datatables.net-bs5/css', 'target' => 'datatables/css'],
             ],
-        ],
-        'datatablesPlugins' => [
-            'name' => 'Datatables Plugins',
-            'resources' => [
-                ['source' => 'datatables-autofill', 'target' => 'datatables-plugins/autofill'],
-                ['source' => 'datatables-buttons', 'target' => 'datatables-plugins/buttons'],
-                ['source' => 'datatables-colreorder', 'target' => 'datatables-plugins/colreorder'],
-                ['source' => 'datatables-fixedcolumns', 'target' => 'datatables-plugins/fixedcolumns'],
-                ['source' => 'datatables-fixedheader', 'target' => 'datatables-plugins/fixedheader'],
-                ['source' => 'datatables-keytable', 'target' => 'datatables-plugins/keytable'],
-                ['source' => 'datatables-responsive', 'target' => 'datatables-plugins/responsive'],
-                ['source' => 'datatables-rowgroup', 'target' => 'datatables-plugins/rowgroup'],
-                ['source' => 'datatables-rowreorder', 'target' => 'datatables-plugins/rowreorder'],
-                ['source' => 'datatables-scroller', 'target' => 'datatables-plugins/scroller'],
-                ['source' => 'datatables-select', 'target' => 'datatables-plugins/select'],
-                ['source' => 'pdfmake', 'target' => 'datatables-plugins/pdfmake'],
-                ['source' => 'jszip', 'target' => 'datatables-plugins/jszip'],
-            ],
-        ],
-        'daterangepicker' => [
-            'name' => 'Date Range Picker',
-            'source' => 'daterangepicker',
-            'dependencies' => ['moment'],
-        ],
-        'ekkoLightbox' => [
-            'name' => 'Ekko Lightbox',
-            'source' => 'ekko-lightbox',
-        ],
-        'fastclick' => [
-            'name' => 'FastClick',
-            'source' => 'fastclick',
-        ],
-        'filterizr' => [
-            'name' => 'Filterizr',
-            'source' => 'filterizr',
-            'ignore' => ['*.d.ts'],
             'recursive' => false,
+            'ignore' => ['*.map', '*.d.ts', '*.mjs'],
         ],
-        'flagIconCss' => [
-            'name' => 'Flag Icon Css',
-            'source' => 'flag-icon-css',
+        'dropzone' => [
+            'name' => 'Dropzone',
+            'package' => 'dropzone',
+            'version' => '^6.0',
+            'source' => 'dropzone/dist',
+            'target' => 'dropzone',
+            'recursive' => false,
+            'ignore' => ['*.map'],
         ],
-        'flot' => [
-            'name' => 'Flot',
-            'source' => 'flot',
+        'easymde' => [
+            'name' => 'EasyMDE (Markdown editor)',
+            'package' => 'easymde',
+            'version' => '^2.18',
+            'source' => 'easymde/dist',
+            'target' => 'easymde',
+            'recursive' => false,
+            'ignore' => ['*.map'],
+        ],
+        'filepond' => [
+            'name' => 'FilePond',
+            'package' => 'filepond',
+            'version' => '^4.32',
+            'source' => 'filepond/dist',
+            'target' => 'filepond',
+            'recursive' => false,
+            'ignore' => ['*.map', '*.esm.js'],
+        ],
+        'flatpickr' => [
+            'name' => 'Flatpickr (date, time and range picker)',
+            'package' => 'flatpickr',
+            'version' => '^4.6',
+            'source' => 'flatpickr/dist',
+            'target' => 'flatpickr',
+            'recursive' => false,
+            'ignore' => ['*.map'],
         ],
         'fullcalendar' => [
-            'name' => 'Fullcalendar',
-            'source' => 'fullcalendar',
-            'ignore' => ['*.d.ts', '*.json', '*.md'],
+            'name' => 'FullCalendar',
+            'package' => 'fullcalendar',
+            'version' => '^6.1',
+            'source' => 'fullcalendar/index.global.min.js',
+            'target' => 'fullcalendar/index.global.min.js',
         ],
-        'icheckBootstrap' => [
-            'name' => 'iCheck Bootstrap',
-            'source' => 'icheck-bootstrap',
-            'ignore' => ['*.json', '*.md'],
+        'glightbox' => [
+            'name' => 'GLightbox',
+            'package' => 'glightbox',
+            'version' => '^3.3',
+            'source' => 'glightbox/dist',
+            'target' => 'glightbox',
+            'recursive' => true,
+            'ignore' => ['*.map'],
         ],
-        'inputmask' => [
-            'name' => 'InputMask',
-            'source' => 'inputmask',
-        ],
-        'ionRangslider' => [
-            'name' => 'Ion.RangeSlider',
-            'source' => 'ion-rangeslider',
-            'ignore' => ['*.json', '*.md', '.editorconfig'],
-        ],
-        'jqueryKnob' => [
-            'name' => 'jQuery Knob',
-            'source' => 'jquery-knob',
-        ],
-        'jqueryMapael' => [
-            'name' => 'jQuery Mapael',
-            'resources' => [
-                ['source' => 'jquery-mapael'],
-                ['source' => 'raphael'],
-                ['source' => 'jquery-mousewheel'],
-            ],
-            'ignore' => ['*.json', '*.md', '.editorconfig'],
-        ],
-        'jqueryUi' => [
-            'name' => 'jQuery UI',
-            'resources' => [
-                ['source' => 'jquery-ui'],
-                ['source' => 'jquery-ui/images'],
-            ],
+        'imask' => [
+            'name' => 'IMask (input masks)',
+            'package' => 'imask',
+            'version' => '^7.6',
+            'source' => 'imask/dist',
+            'target' => 'imask',
             'recursive' => false,
+            'ignore' => ['*.map', '*.d.ts'],
         ],
-        'jqueryValidation' => [
-            'name' => 'jQuery Validation',
-            'source' => 'jquery-validation',
+        'jsvectormap' => [
+            'name' => 'jsVectorMap',
+            'package' => 'jsvectormap',
+            'version' => '^1.6',
+            'source' => 'jsvectormap/dist',
+            'target' => 'jsvectormap',
+            'recursive' => true,
+            'ignore' => ['*.map'],
         ],
-        'jqvmap' => [
-            'name' => 'jQVMap',
-            'source' => 'jqvmap',
-        ],
-        'jsgrid' => [
-            'name' => 'jsGrid',
-            'resources' => [
-                ['source' => 'jsgrid'],
-                ['source' => 'jsgrid/i18n'],
-            ],
+        'noUiSlider' => [
+            'name' => 'noUiSlider',
+            'package' => 'nouislider',
+            'version' => '^15.8',
+            'source' => 'nouislider/dist',
+            'target' => 'nouislider',
             'recursive' => false,
+            'ignore' => ['*.map', '*.mjs'],
         ],
-        'moment' => [
-            'name' => 'Moment.js',
-            'source' => 'moment',
+        'pickr' => [
+            'name' => 'Pickr (color picker)',
+            'package' => '@simonwep/pickr',
+            'version' => '^1.9',
+            'source' => '@simonwep/pickr/dist',
+            'target' => 'pickr',
+            'recursive' => true,
+            'ignore' => ['*.map', '*.es5.min.js.map'],
         ],
-        'paceProgress' => [
-            'name' => 'Pace Progress',
-            'source' => 'pace-progress',
+        'quill' => [
+            'name' => 'Quill (rich text editor)',
+            'package' => 'quill',
+            'version' => '^2.0',
+            'source' => 'quill/dist',
+            'target' => 'quill',
+            'recursive' => false,
+            'ignore' => ['*.map'],
         ],
         'select2' => [
-            'name' => 'Select 2 with Bootstrap 4 Theme',
+            'name' => 'Select2 (requires jQuery)',
+            'package' => 'select2',
+            'version' => '^4.1',
+            'source' => 'select2/dist',
+            'target' => 'select2',
+            'recursive' => true,
+            'ignore' => ['*.map'],
+        ],
+        'sortablejs' => [
+            'name' => 'SortableJS',
+            'package' => 'sortablejs',
+            'version' => '^1.15',
             'resources' => [
-                ['source' => 'select2'],
-                ['source' => 'select2-bootstrap4-theme'],
+                ['source' => 'sortablejs/Sortable.min.js', 'target' => 'Sortable.min.js'],
             ],
-            'ignore' => ['*.json', '*.md'],
-        ],
-        'sparklines' => [
-            'name' => 'Sparklines',
-            'source' => 'sparklines',
-        ],
-        'summernote' => [
-            'name' => 'Summernote',
-            'source' => 'summernote',
+            'target' => 'sortablejs',
         ],
         'sweetalert2' => [
-            'name' => 'Sweetalert 2 with Bootstrap 4 Theme',
+            'name' => 'SweetAlert2',
+            'package' => 'sweetalert2',
+            'version' => '^11.14',
+            'source' => 'sweetalert2/dist',
+            'target' => 'sweetalert2',
+            'recursive' => false,
+            'ignore' => ['*.map'],
+        ],
+        'tabulator' => [
+            'name' => 'Tabulator (data tables)',
+            'package' => 'tabulator-tables',
+            'version' => '^6.3',
             'resources' => [
-                ['source' => 'sweetalert2'],
-                ['source' => 'sweetalert2-theme-bootstrap-4'],
+                ['source' => 'tabulator-tables/dist/js', 'target' => 'js'],
+                ['source' => 'tabulator-tables/dist/css', 'target' => 'css'],
             ],
+            'target' => 'tabulator',
+            'recursive' => false,
+            'ignore' => ['*.map'],
         ],
-        'tempusdominusBootstrap4' => [
-            'name' => 'Tempus Dominus for Bootstrap 4',
-            'source' => 'tempusdominus-bootstrap-4',
-            'dependencies' => ['moment'],
+        'tomSelect' => [
+            'name' => 'Tom Select',
+            'package' => 'tom-select',
+            'version' => '^2.3',
+            'source' => 'tom-select/dist',
+            'target' => 'tom-select',
+            'recursive' => true,
+            'ignore' => ['*.map', '*.scss', '*.ts'],
         ],
-        'toastr' => [
-            'name' => 'Toastr',
-            'source' => 'toastr',
-        ],
+    ];
+
+    /**
+     * The set of AdminLTE v3 plugin keys that are not available anymore, with
+     * the AdminLTE v4 replacement suggested for each one. A null replacement
+     * means the plugin has no direct replacement (usually because Bootstrap
+     * 5.3 or AdminLTE v4 covers the feature natively).
+     *
+     * @var array
+     */
+    protected $legacyPlugins = [
+        'bootstrap4DualListbox' => 'tomSelect',
+        'bootstrapColorpicker' => 'pickr',
+        'bootstrapSlider' => 'noUiSlider',
+        'bootstrapSwitch' => null,
+        'bsCustomFileInput' => null,
+        'datatablesPlugins' => 'datatables',
+        'daterangepicker' => 'flatpickr',
+        'ekkoLightbox' => 'glightbox',
+        'fastclick' => null,
+        'filterizr' => null,
+        'flagIconCss' => null,
+        'flot' => 'apexcharts',
+        'icheckBootstrap' => null,
+        'inputmask' => 'imask',
+        'ionRangslider' => 'noUiSlider',
+        'jqueryKnob' => 'apexcharts',
+        'jqueryMapael' => 'jsvectormap',
+        'jqueryMousewheel' => null,
+        'jqueryUiTouchPunch' => null,
+        'jqvmap' => 'jsvectormap',
+        'jquery' => null,
+        'jqueryUi' => null,
+        'jsgrid' => 'tabulator',
+        'moment' => null,
+        'overlayScrollbars' => null,
+        'pace-progress' => null,
+        'raphael' => null,
+        'simplemde' => 'easymde',
+        'sparklines' => 'apexcharts',
+        'summernote' => 'quill',
+        'tempusdominusBs4' => 'flatpickr',
+        'toastr' => 'sweetalert2',
+        'uplot' => 'apexcharts',
     ];
 
     /**
@@ -207,12 +254,14 @@ class PluginsResource extends PackageResource
     {
         // Fill the basic resource data.
 
-        $this->description = 'The set of extra plugins available with AdminLTE';
+        $this->description = 'The set of extra plugins recommended for AdminLTE v4';
         $this->required = false;
 
-        // Define the base source folder of the plugins.
+        // Define the base source folder of the plugins. Note AdminLTE v4 does
+        // not bundle any third party plugin anymore, so the plugins are
+        // published from the node modules folder of the application.
 
-        $this->source = base_path('vendor/almasaeed2010/adminlte/plugins');
+        $this->source = base_path('node_modules');
 
         // Define the base target destination for the plugins.
 
@@ -258,6 +307,70 @@ class PluginsResource extends PackageResource
             $plugin = $this->preparePlugin($this->plugins[$pluginKey]);
             $this->installPlugin($plugin);
         }
+    }
+
+    /**
+     * Checks whether the npm package that provides the specified plugin is
+     * available on the application node modules folder.
+     *
+     * @param  string  $pluginKey  A plugin key
+     * @return bool
+     */
+    public function pluginAvailable($pluginKey)
+    {
+        $plugin = $this->plugins[$pluginKey] ?? null;
+
+        if (! isset($plugin)) {
+            return false;
+        }
+
+        $package = $plugin['package'] ?? null;
+
+        if (! isset($package)) {
+            return false;
+        }
+
+        $path = $this->source.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $package);
+
+        return File::isDirectory($path);
+    }
+
+    /**
+     * Gets the npm command required to install the package that provides the
+     * specified plugin.
+     *
+     * @param  string  $pluginKey  A plugin key
+     * @return string|null
+     */
+    public function getInstallPackageCommand($pluginKey)
+    {
+        $plugin = $this->plugins[$pluginKey] ?? null;
+
+        if (! isset($plugin['package'])) {
+            return null;
+        }
+
+        $version = $plugin['version'] ?? null;
+        $package = isset($version) ? "{$plugin['package']}@{$version}" : $plugin['package'];
+
+        return "npm i {$package}";
+    }
+
+    /**
+     * Gets the AdminLTE v4 replacement of a legacy (AdminLTE v3) plugin key.
+     * It returns null when the plugin has no replacement, and false when the
+     * specified key is not a legacy plugin key.
+     *
+     * @param  string  $pluginKey  A plugin key
+     * @return string|null|false
+     */
+    public function getLegacyPluginReplacement($pluginKey)
+    {
+        if (! array_key_exists($pluginKey, $this->legacyPlugins)) {
+            return false;
+        }
+
+        return $this->legacyPlugins[$pluginKey];
     }
 
     /**
@@ -506,12 +619,14 @@ class PluginsResource extends PackageResource
     {
         $target = $res['target'];
 
-        // Uninstall the specified resource. Note the target location is always
-        // a folder. When the target folder does not exists, we consider the
-        // resource as uninstalled.
+        // Uninstall the specified resource. When the target location does not
+        // exists, we consider the resource as uninstalled. Note a resource may
+        // be published as a single file too.
 
         if (File::isDirectory($target)) {
             File::deleteDirectory($target);
+        } elseif (File::exists($target)) {
+            File::delete($target);
         }
     }
 }

@@ -11,7 +11,7 @@ Section | Type | Description
 `content_header` | **main** | To fill the header element of the page (will be placed above the main content)
 `content` | **main** | To fill all of the main content of the page
 `footer` | **main** | To fill the content of the footer section
-`right_sidebar` | **main** | To fill the content of the right sidebar (or control sidebar)
+`right_sidebar` | **main** | To fill the content of the right sidebar. On **AdminLTE v4** the right sidebar is a [Bootstrap offcanvas](https://getbootstrap.com/docs/5.3/components/offcanvas/) panel (the v3 _control sidebar_ does not exist anymore)
 `css` | **main** | To add extra style sheets (inside the `<head>` tag)
 `js` | **main** | To add extra scripts or javascript code (just before the closing `</body>` tag)
 `adminlte_css_pre` | misc | To add custom style sheets before the style sheets required by AdminLTE
@@ -53,10 +53,10 @@ All the previously described sections are optional. As a basic example, your mos
 > [!Tip]
 > On a fresh **Laravel** installation, and after installing this package, you can replace the `resources/views/welcome.blade.php` file with the previous code for a fast template review.
 
-Now, and as usual, you just return this view from a controller. It's a recommendation to check out [AdminLTE v3](https://adminlte.io/themes/v3/) to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade file definition:
+Now, and as usual, you just return this view from a controller. It's a recommendation to check out the [AdminLTE v4](https://adminlte.io/) demo and the [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/) documentation to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade file definition:
 
 > [!Note]
-> Screenshot was taken from package version <Badge type="tip">v3.9.4</Badge>.
+> The screenshot below was taken from an older package version, the layout markup was rebuilt for **AdminLTE v4**.
 
 ![laravel-adminlte-layout-example](/imgs/overview/usage/laravel-adminlte-layout-example.png)
 
@@ -65,9 +65,9 @@ More over, this package also provides defaults template views for login and regi
 ## Tabbed IFrame Mode
 
 > [!Important]
-> The **Tabbed IFrame mode** is only available from version <Badge type="tip">v3.7.0</Badge> of this package.
+> The **Tabbed IFrame mode** is only available from version <Badge type="tip">v3.7.0</Badge> of this package. Since **AdminLTE v4** removed the `IFrame` plugin, the mode is now implemented by the package itself with a jQuery free helper.
 
-The **IFrame mode** provides the functionality to open the sidebar and top navbar links in a tabbed `iframe` view. You can try this feature on the [AdminLTE demo site](https://adminlte.io/themes/v3/iframe.html) to see what you can get. To use the `IFrame` mode, you should define your main/welcome/root view as just:
+The **IFrame mode** provides the functionality to open the sidebar and top navbar links in a tabbed `iframe` view. To use the `IFrame` mode, you should define your main/welcome/root view as just:
 
 ```blade
 @extends('adminlte::page', ['iFrameEnabled' => true])
@@ -100,12 +100,12 @@ Normally, you will likely be extending the provided **AdminLTE blade layout** mu
 
 @section('content_header')
     @hasSection('content_header_title')
-        <h1 class="text-muted">
+        <h1 class="text-body-secondary">
             @yield('content_header_title')
 
             @hasSection('content_header_subtitle')
-                <small class="text-dark">
-                    <i class="fas fa-xs fa-angle-right text-muted"></i>
+                <small class="text-body">
+                    <i class="bi bi-chevron-right text-body-secondary"></i>
                     @yield('content_header_subtitle')
                 </small>
             @endif
@@ -122,7 +122,7 @@ Normally, you will likely be extending the provided **AdminLTE blade layout** mu
 {{-- Create a common footer --}}
 
 @section('footer')
-    <div class="float-right">
+    <div class="float-end">
         Version: {{ config('app.version', '1.0.0') }}
     </div>
 
@@ -133,12 +133,12 @@ Normally, you will likely be extending the provided **AdminLTE blade layout** mu
     </strong>
 @stop
 
-{{-- Add common Javascript/Jquery code --}}
+{{-- Add common Javascript code (AdminLTE v4 does not load jQuery) --}}
 
 @push('js')
 <script>
 
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Add your common script logic here...
     });
 
@@ -203,3 +203,6 @@ Then use your new defined layout for your views, for example:
 That will be rendered like next...
 
 ![laravel-adminlte-v3 9 4-app-layout-example](/imgs/overview/usage/laravel-adminlte-v3-9-4-app-layout-example.png)
+
+> [!Tip]
+> **AdminLTE v4** does not bundle **jQuery** anymore and its own Javascript plugins are driven by `data-lte-toggle="..."` attributes. If your application still needs jQuery (for example, for the [Select2](/sections/components/basic_forms_components#select2) or the [Datatables](/sections/components/tool_components#datatables) components), you have to load it on your own through the `plugins` configuration or your asset bundling setup.

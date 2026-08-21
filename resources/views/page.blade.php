@@ -12,8 +12,15 @@
 
 @section('body_data', $layoutHelper->makeBodyData())
 
+@php
+    // The footer is rendered when a 'footer' section is available, or when the
+    // fixed footer layout is enabled (the layout reserves the related space).
+
+    $fixedFooter = $layoutHelper->isFixedFooterEnabled();
+@endphp
+
 @section('body')
-    <div class="wrapper">
+    <div class="app-wrapper">
 
         {{-- Preloader Animation (fullscreen mode) --}}
         @if($preloaderHelper->isPreloaderEnabled())
@@ -40,11 +47,11 @@
         @endempty
 
         {{-- Footer --}}
-        @hasSection('footer')
+        @if($fixedFooter || View::hasSection('footer'))
             @include('adminlte::partials.footer.footer')
         @endif
 
-        {{-- Right Control Sidebar --}}
+        {{-- Right Sidebar (Bootstrap offcanvas) --}}
         @if($layoutHelper->isRightSidebarEnabled())
             @include('adminlte::partials.sidebar.right-sidebar')
         @endif

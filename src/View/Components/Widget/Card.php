@@ -7,6 +7,8 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Card extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The title for the card header.
      *
@@ -15,15 +17,18 @@ class Card extends Component
     public $title;
 
     /**
-     * A Font Awesome icon for the card header.
+     * A Bootstrap Icon for the card header.
      *
      * @var string
      */
     public $icon;
 
     /**
-     * The card theme (light, dark, primary, secondary, info, success,
-     * warning, danger or any other AdminLTE color like lighblue or teal).
+     * The card theme (light, dark, primary, secondary, info, success, warning
+     * or danger). Any color of the AdminLTE extended palette (navy, sky, teal,
+     * ...) is also supported when the 'adminlte.assets.extended_colors' option
+     * is enabled. The AdminLTE v3 color names (lightblue, maroon, ...) are
+     * still accepted and translated to their v4 equivalent.
      *
      * @var string
      */
@@ -125,13 +130,22 @@ class Card extends Component
     public function makeCardClass()
     {
         $classes = ['card'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (isset($this->theme)) {
-            $base = $this->themeMode === 'full' ? 'bg-gradient' : 'card';
-            $classes[] = "{$base}-{$this->theme}";
+        if (! empty($theme)) {
+            if ($this->themeMode === 'full') {
+                // On AdminLTE v4 there are no 'bg-gradient-{color}' classes
+                // on the core stylesheet. A fully colored card is made with
+                // the Bootstrap 'text-bg-{color}' plus 'bg-gradient' helpers.
 
-            if ($this->themeMode === 'outline') {
-                $classes[] = 'card-outline';
+                $classes[] = "text-bg-{$theme}";
+                $classes[] = 'bg-gradient';
+            } else {
+                $classes[] = "card-{$theme}";
+
+                if ($this->themeMode === 'outline') {
+                    $classes[] = 'card-outline';
+                }
             }
         }
 
@@ -198,9 +212,10 @@ class Card extends Component
     public function makeCardTitleClass()
     {
         $classes = ['card-title'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (isset($this->theme) && $this->themeMode === 'outline') {
-            $classes[] = "text-{$this->theme}";
+        if (! empty($theme) && $this->themeMode === 'outline') {
+            $classes[] = "text-{$theme}";
         }
 
         return implode(' ', $classes);

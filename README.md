@@ -3,11 +3,9 @@
 [![Latest Packagist Version](https://img.shields.io/packagist/v/jeroennoten/Laravel-AdminLTE?logo=github&logoColor=white&style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 [![Total Downloads](https://img.shields.io/packagist/dt/jeroennoten/Laravel-AdminLTE.svg?logo=github&logoColor=white&style=flat-square)](https://packagist.org/packages/jeroennoten/Laravel-AdminLTE)
 [![GitHub Checks Status](https://img.shields.io/github/checks-status/jeroennoten/Laravel-AdminLTE/master?logo=github-actions&logoColor=white&style=flat-square)](https://github.com/jeroennoten/Laravel-AdminLTE/actions)
-[![Quality Score](https://img.shields.io/scrutinizer/quality/g/jeroennoten/Laravel-AdminLTE.svg?logo=scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/jeroennoten/Laravel-AdminLTE.svg?logo=scrutinizer&style=flat-square)](https://scrutinizer-ci.com/g/jeroennoten/Laravel-AdminLTE)
 [![StyleCI](https://styleci.io/repos/38200433/shield?branch=master)](https://styleci.io/repos/38200433)
 
-This package provides an easy way to quickly set up [AdminLTE v3](https://adminlte.io/themes/v3/) with [Laravel](https://laravel.com/) (7 or higher). It has no others requirements and dependencies besides **Laravel**, so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/blade) that you can extend and an advanced menu configuration system. Also, and optionally, the package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
+This package provides an easy way to quickly set up [AdminLTE v4](https://adminlte.io/) with [Laravel](https://laravel.com/) (12 or higher). It has no others requirements and dependencies besides **Laravel**, so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/blade) that you can extend and an advanced menu configuration system. Also, and optionally, the package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
 
 If you want to use an older **Laravel** or **AdminLTE** version, review the following package releases:
 - **Releases 1.x**:
@@ -16,6 +14,8 @@ If you want to use an older **Laravel** or **AdminLTE** version, review the foll
   These releases supports Laravel 6 and include AdminLTE v2
 - **Releases 3.x (<=3.8.6)**:
   These releases supports Laravel 6 and include AdminLTE v3
+- **Releases 3.x (>3.8.6)**:
+  These releases supports Laravel 8 to 13 and include AdminLTE v3
 
 ## Documentation
 
@@ -26,8 +26,9 @@ All documentation is available at [Laravel-AdminLTE Documentation](https://jeroe
 
 The current package requirements are:
 
-- Laravel >= 8.x
-- PHP >= 7.3
+- Laravel >= 12.x
+- PHP >= 8.2
+- AdminLTE 4.x (installed as a composer dependency)
 
 
 ## Issues, Questions and Pull Requests

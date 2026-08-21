@@ -25,7 +25,7 @@ Translation strings with parameters are supported using an array on the menu att
     // Example using translation key with parameters.
     'text' => ['profile_key', ['name' => 'User']],
     'url' => 'user/profile',
-    'icon' => 'fas fa-fw fa-user',
+    'icon' => 'bi bi-person',
 ],
 ```
 

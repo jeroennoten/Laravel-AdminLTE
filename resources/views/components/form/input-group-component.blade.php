@@ -4,7 +4,7 @@
 
     {{-- Input label --}}
     @isset($label)
-        <label for="{{ $id }}" @isset($labelClass) class="{{ $labelClass }}" @endisset>
+        <label for="{{ $id }}" class="{{ $makeLabelClass() }}">
             {{ $label }}
         </label>
     @endisset
@@ -12,24 +12,28 @@
     {{-- Input group --}}
     <div class="{{ $makeInputGroupClass() }}">
 
-        {{-- Input prepend slot --}}
+        {{-- Input prepend slot. Note that Bootstrap 5 dropped the
+             'input-group-prepend' wrapper, the addons are now direct
+             children of the 'input-group' element. --}}
         @isset($prependSlot)
-            <div class="input-group-prepend">{{ $prependSlot }}</div>
+            {{ $prependSlot }}
         @endisset
 
         {{-- Input group item --}}
         @yield('input_group_item')
 
-        {{-- Input append slot --}}
+        {{-- Input append slot. Note that Bootstrap 5 dropped the
+             'input-group-append' wrapper, the addons are now direct
+             children of the 'input-group' element. --}}
         @isset($appendSlot)
-            <div class="input-group-append">{{ $appendSlot }}</div>
+            {{ $appendSlot }}
         @endisset
 
     </div>
 
     {{-- Error feedback --}}
     @if($isInvalid())
-        <span class="invalid-feedback d-block" role="alert">
+        <span class="{{ $makeInvalidFeedbackClass() }}" role="alert">
             <strong>{{ $errors->first($errorKey) }}</strong>
         </span>
     @endif
@@ -47,17 +51,13 @@
 @push('css')
 <style type="text/css">
 
-    {{-- Highlight invalid input groups with a box-shadow --}}
-
     .adminlte-invalid-igroup {
-        box-shadow: 0 .25rem 0.5rem rgba(0,0,0,.1);
+        box-shadow: 0 .25rem 0.5rem rgba(0, 0, 0, .1);
     }
 
-    {{-- Setup a red border on elements inside prepend/append add-ons --}}
-
-    .adminlte-invalid-igroup > .input-group-prepend > *,
-    .adminlte-invalid-igroup > .input-group-append > * {
-        border-color: #dc3545 !important;
+    .adminlte-invalid-igroup > .input-group-text,
+    .adminlte-invalid-igroup > .btn {
+        border-color: var(--bs-danger, #dc3545) !important;
     }
 
 </style>

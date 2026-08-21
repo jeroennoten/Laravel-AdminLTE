@@ -17,8 +17,11 @@ class Select2 extends InputGroupComponent
 
     /**
      * Create a new component instance.
-     * Note this component requires the 'select2' plugin and the 'bootstrap4'
-     * css theme.
+     * Note this component requires the 'Select2' plugin (which still depends
+     * on jQuery) together with the AdminLTE v4 compatibility stylesheet
+     * ('adminlte-select2.min.css'). That stylesheet styles the plugin
+     * 'default' theme, so the 'default' theme is used unless the user
+     * explicitly configures another one.
      *
      * @return void
      */
@@ -33,8 +36,26 @@ class Select2 extends InputGroupComponent
         );
 
         $this->config = is_array($config) ? $config : [];
-        $this->config['theme'] = 'bootstrap4';
+        $this->config['theme'] = $this->config['theme'] ?? 'default';
         $this->enableOldSupport = isset($enableOldSupport);
+    }
+
+    /**
+     * Make the class attribute for the input group item. Note we overwrite
+     * the method of the parent class. Bootstrap 5 requires the "form-select"
+     * class on the select elements.
+     *
+     * @return string
+     */
+    public function makeItemClass()
+    {
+        $classes = ['form-select'];
+
+        if ($this->isInvalid()) {
+            $classes[] = 'is-invalid';
+        }
+
+        return implode(' ', $classes);
     }
 
     /**

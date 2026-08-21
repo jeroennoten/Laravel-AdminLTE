@@ -17,7 +17,7 @@ php artisan adminlte:update
 ```
 
 > [!Note]
-> This command will only update the underlying **AdminLTE distribution files** and its dependencies (`Bootstrap`, `jQuery`, etc.) that were installed in your `public/vendor` folder.
+> This command will only update the underlying **AdminLTE v4 distribution files** that were installed in your `public/vendor/adminlte` folder. When the third party assets (`Bootstrap`, `Bootstrap Icons` and `OverlayScrollbars`) were published too, they are refreshed as well.
 
 ### 3. Review the package published views (optional)
 

@@ -6,7 +6,7 @@
 
             {{-- Title --}}
             <h3 class="{{ $makeCardTitleClass() }}">
-                @isset($icon)<i class="{{ $icon }} mr-1"></i>@endisset
+                @isset($icon)<i class="{{ $icon }} me-1" aria-hidden="true"></i>@endisset
                 @isset($title){{ $title }}@endisset
             </h3>
 
@@ -18,19 +18,30 @@
                     {{ $toolsSlot }}
                 @endisset
 
-                {{-- Default tools --}}
+                {{-- Maximize tool --}}
                 @isset($maximizable)
-                    <x-adminlte-button theme="tool" data-card-widget="maximize" icon="fas fa-lg fa-expand"/>
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-maximize"
+                        aria-label="Maximize card">
+                        <i data-lte-icon="maximize" class="bi bi-fullscreen"></i>
+                        <i data-lte-icon="minimize" class="bi bi-fullscreen-exit"></i>
+                    </button>
                 @endisset
 
-                @if($collapsible === 'collapsed')
-                    <x-adminlte-button theme="tool" data-card-widget="collapse" icon="fas fa-lg fa-plus"/>
-                @elseif(isset($collapsible))
-                    <x-adminlte-button theme="tool" data-card-widget="collapse" icon="fas fa-lg fa-minus"/>
-                @endif
+                {{-- Collapse tool (the icon visibility is handled by AdminLTE) --}}
+                @isset($collapsible)
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-collapse"
+                        aria-label="Collapse card">
+                        <i data-lte-icon="expand" class="bi bi-plus-lg"></i>
+                        <i data-lte-icon="collapse" class="bi bi-dash-lg"></i>
+                    </button>
+                @endisset
 
+                {{-- Remove tool --}}
                 @isset($removable)
-                    <x-adminlte-button theme="tool" data-card-widget="remove" icon="fas fa-lg fa-times"/>
+                    <button type="button" class="btn btn-tool" data-lte-toggle="card-remove"
+                        aria-label="Remove card">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
                 @endisset
 
             </div>
@@ -52,10 +63,12 @@
         </div>
     @endisset
 
-    {{-- Card overlay --}}
+    {{-- Card overlay (shown when the card is disabled) --}}
     @if($disabled)
-        <div class="overlay">
-            <i class="fas fa-2x fa-ban text-gray"></i>
+        <div class="card-overlay position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center bg-body bg-opacity-75 rounded"
+            style="z-index:20;">
+            <i class="bi bi-slash-circle fs-2 text-body-secondary" aria-hidden="true"></i>
+            <span class="visually-hidden">Disabled</span>
         </div>
     @endif
 

@@ -8,9 +8,13 @@
 
 @section('input_group_item')
 
-    {{-- Input Slider --}}
-    <input id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
+    {{-- Input Slider. The 'noUiSlider' plugin renders into a plain DOM
+         element, so the submitted value is held by a hidden input. --}}
+    <input type="hidden" id="{{ $id }}" name="{{ $name }}"
+        value="{{ implode(',', $makeStartValue()) }}"
+        {{ $attributes->except(['value', 'class', 'type', 'min', 'max', 'step', 'disabled']) }}>
+
+    <div id="{{ $config['id'] }}" class="{{ $makeSliderClass() }}"></div>
 
 @overwrite
 
@@ -19,63 +23,81 @@
 @push('js')
 <script>
 
-    $(() => {
-        let usrCfg = @json($config);
+    document.addEventListener('DOMContentLoaded', function () {
 
-        // Check for disabled attribute (alternative to data-slider-enable).
+        const input = document.getElementById(@json($id));
+        const target = document.getElementById(@json($config['id']));
 
-        @if($attributes->has('disabled'))
-            usrCfg.enabled = false;
-        @endif
+        if (! input || ! target || typeof window.noUiSlider === 'undefined') {
+            return;
+        }
 
-        // Check for min, max and step attributes (alternatives to
-        // data-slider-min, data-slider-max and data-slider-step).
+        const usrCfg = @json((object) $makePluginConfig());
+
+        {{-- Check for the min, max and step attributes (alternatives to the
+             related plugin configuration properties). --}}
 
         @if($attributes->has('min'))
-            usrCfg.min = Number( @json($attributes['min']) );
+            usrCfg.range = usrCfg.range || {};
+            usrCfg.range.min = Number( @json($attributes->get('min')) );
         @endif
 
         @if($attributes->has('max'))
-            usrCfg.max = Number( @json($attributes['max']) );
+            usrCfg.range = usrCfg.range || {};
+            usrCfg.range.max = Number( @json($attributes->get('max')) );
         @endif
 
         @if($attributes->has('step'))
-            usrCfg.step = Number( @json($attributes['step']) );
+            usrCfg.step = Number( @json($attributes->get('step')) );
         @endif
 
-        // Check for value attribute (alternative to data-slider-value).
-        // Also, add support to auto select the previous submitted value.
+        {{-- Check for the value attribute (alternative to the plugin 'start'
+             property). Note the old submitted value has precedence and is
+             already resolved on the php side. --}}
 
-        @if($attributes->has('value') || ($errors->any() && $enableOldSupport))
+        @if($attributes->has('value') && ! ($errors->any() && $enableOldSupport))
 
-            let value = @json($getOldValue($errorKey, $attributes['value']));
+            const attrValue = String( @json($attributes->get('value')) )
+                .split(',')
+                .map(Number)
+                .filter(function (n) { return ! isNaN(n); });
 
-            if (value) {
-                value = value.split(",").map(Number);
-                usrCfg.value = value.length > 1 ? value : value[0];
+            if (attrValue.length > 0) {
+                usrCfg.start = attrValue;
             }
 
         @endif
 
-        // Initialize the plugin.
+        {{-- Keep the connect option consistent with the number of handles. --}}
 
-        let slider = $('#{{ $id }}').bootstrapSlider(usrCfg);
-
-        // Fix height conflict when orientation is vertical.
-
-        let or = slider.bootstrapSlider('getAttribute', 'orientation');
-
-        if (or == 'vertical') {
-            $('#' + usrCfg.id).css('height', '210px');
-            slider.bootstrapSlider('relayout');
+        if (Array.isArray(usrCfg.start) && usrCfg.start.length > 1
+            && ! Array.isArray(usrCfg.connect)) {
+            usrCfg.connect = [false, true, false];
         }
-    })
+
+        {{-- Initialize the plugin. --}}
+
+        window.noUiSlider.create(target, usrCfg);
+
+        {{-- Keep the hidden input in sync with the slider. --}}
+
+        target.noUiSlider.on('update', function (values) {
+            input.value = values.join(',');
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+
+        {{-- Check for the disabled attribute (alternative to the legacy
+             'enabled' plugin property). --}}
+
+        @if($attributes->has('disabled') || (isset($config['enabled']) && ! $config['enabled']))
+            target.setAttribute('disabled', true);
+        @endif
+    });
 
 </script>
 @endpush
 
-{{-- Add CSS workarounds for the plugin --}}
-{{-- NOTE: this may change with newer plugin versions --}}
+{{-- Add the style customizations for this particular slider --}}
 
 @push('css')
 <style type="text/css">
@@ -84,29 +106,22 @@
 
     @isset($color)
 
-        #{{ $config['id'] }} .slider-handle {
+        #{{ $config['id'] }} .noUi-connect {
             background: {{ $color }};
         }
-        #{{ $config['id'] }} .slider-selection {
-            background: {{ $color }};
-            opacity: 0.5;
-        }
-        #{{ $config['id'] }} .slider-tick.in-selection {
-            background: {{ $color }};
-            opacity: 0.9;
+        #{{ $config['id'] }} .noUi-handle {
+            border-color: {{ $color }};
         }
 
     @endisset
 
-    {{-- Set flex property when using addons slots --}}
+    {{-- Add some spacing when using the addons slots --}}
 
     @if(isset($appendSlot) || isset($prependSlot))
 
         #{{ $config['id'] }} {
-            flex: 1 1 0;
-            align-self: center;
-            @isset($appendSlot) margin-right: 5px; @endisset
-            @isset($prependSlot) margin-left: 5px; @endisset
+            @isset($appendSlot) margin-inline-end: .5rem; @endisset
+            @isset($prependSlot) margin-inline-start: .5rem; @endisset
         }
 
     @endif
@@ -114,21 +129,30 @@
 </style>
 @endpush
 
-{{-- Setup custom invalid style  --}}
-{{-- NOTE: this may change with newer plugin versions --}}
+{{-- Setup the base and the custom invalid style for the slider --}}
 
 @once
 @push('css')
 <style type="text/css">
 
-    .adminlte-invalid-islgroup .slider-track,
-    .adminlte-invalid-islgroup > .input-group-prepend > *,
-    .adminlte-invalid-islgroup > .input-group-append > * {
-        box-shadow: 0 .25rem 0.5rem rgba(255,0,0,.25);
+    .adminlte-slider {
+        margin: .75rem .5rem;
     }
 
-    .adminlte-invalid-islgroup .slider-vertical {
-        margin-bottom: 1rem;
+    .adminlte-slider.adminlte-slider-vertical {
+        height: 210px;
+        flex: 0 0 auto;
+        margin: .5rem auto 1.5rem auto;
+    }
+
+    .adminlte-slider[disabled] {
+        opacity: .5;
+    }
+
+    .adminlte-invalid-islgroup .noUi-target,
+    .adminlte-invalid-islgroup > .input-group-text,
+    .adminlte-invalid-islgroup > .btn {
+        box-shadow: 0 .25rem 0.5rem rgba(var(--bs-danger-rgb, 220, 53, 69), .25);
     }
 
 </style>

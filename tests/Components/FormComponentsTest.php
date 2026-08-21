@@ -96,7 +96,7 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('input-group-lg', $iGroupClass);
         $this->assertStringContainsString('igroup-class', $iGroupClass);
         $this->assertStringContainsString('adminlte-invalid-igroup', $iGroupClass);
-        $this->assertStringContainsString('form-group', $fGroupClass);
+        $this->assertStringContainsString('mb-3', $fGroupClass);
         $this->assertStringContainsString('fgroup-class', $fGroupClass);
         $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
@@ -127,7 +127,7 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('input-group-sm', $iGroupClass);
         $this->assertStringContainsString('igroup-class', $iGroupClass);
         $this->assertStringContainsString('adminlte-invalid-igroup', $iGroupClass);
-        $this->assertStringContainsString('form-group', $fGroupClass);
+        $this->assertStringContainsString('mb-3', $fGroupClass);
         $this->assertStringContainsString('fgroup-class', $fGroupClass);
     }
 
@@ -224,7 +224,7 @@ class FormComponentsTest extends TestCase
 
         $iClass = $component->makeItemClass();
 
-        $this->assertStringContainsString('datetimepicker', $iClass);
+        $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
@@ -262,7 +262,7 @@ class FormComponentsTest extends TestCase
 
         $iClass = $component->makeItemClass();
 
-        $this->assertStringContainsString('custom-file-input', $iClass);
+        $this->assertStringContainsString('form-control', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
@@ -279,7 +279,7 @@ class FormComponentsTest extends TestCase
 
         // Test default values for the plugin configuration.
 
-        $this->assertEquals('fa5', $component->config['theme']);
+        $this->assertEquals('bs5', $component->config['theme']);
         $this->assertEquals('es', $component->config['language']);
 
         $this->assertStringNotContainsString(
@@ -557,7 +557,7 @@ class FormComponentsTest extends TestCase
 
         $iClass = $component->makeItemClass();
 
-        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('form-select', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
@@ -596,7 +596,7 @@ class FormComponentsTest extends TestCase
 
         $iClass = $component->makeItemClass();
 
-        $this->assertStringContainsString('form-control', $iClass);
+        $this->assertStringContainsString('form-select', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 
@@ -635,8 +635,8 @@ class FormComponentsTest extends TestCase
 
         $iClass = $component->makeItemClass();
 
-        $this->assertStringContainsString('form-control', $iClass);
-        $this->assertStringContainsString('form-control-lg', $iClass);
+        $this->assertStringContainsString('form-select', $iClass);
+        $this->assertStringContainsString('form-select-lg', $iClass);
         $this->assertStringContainsString('is-invalid', $iClass);
     }
 

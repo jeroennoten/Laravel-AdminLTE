@@ -8,47 +8,47 @@
 
 @section('input_group_item')
 
-    {{-- Input Color --}}
+    {{-- Input Color. Bootstrap 5 provides a native color control, so the
+         legacy 'Bootstrap Colorpicker' jQuery plugin is not required. --}}
     <input id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
+        value="{{ $makeColorValue($attributes->get('value')) }}"
+        {{ $attributes->except('value')->merge([
+            'class' => $makeItemClass(),
+            'type' => 'color',
+        ]) }}>
 
 @overwrite
 
-{{-- Add plugin initialization and configuration code --}}
+{{-- Keep the color of the addon icons in sync with the selected color --}}
 
 @push('js')
 <script>
 
-    $(() => {
+    document.addEventListener('DOMContentLoaded', function () {
 
-        // Create a method to set the addon color.
+        const el = document.getElementById(@json($id));
 
-        let setAddonColor = function()
-        {
-            let color = $('#{{ $id }}').data('colorpicker').getValue();
-
-            $('#{{ $id }}').closest('.input-group')
-                .find('.input-group-text > i')
-                .css('color', color);
+        if (! el) {
+            return;
         }
 
-        // Init the plugin and register the change event listener.
+        const group = el.closest('.input-group');
 
-        $('#{{ $id }}').colorpicker( @json($config) )
-            .on('change', setAddonColor);
+        const setAddonColor = function () {
+            if (! group) {
+                return;
+            }
 
-        // Add support to auto select the previous submitted value in case
-        // of validation errors.
+            group.querySelectorAll('.input-group-text > i').forEach(function (icon) {
+                icon.style.color = el.value;
+            });
+        };
 
-        @if($errors->any() && $enableOldSupport)
-            let oldColor = @json($getOldValue($errorKey, ""));
-            $('#{{ $id }}').val(oldColor).change();
-        @endif
-
-        // Set the initial color for the addon.
+        el.addEventListener('input', setAddonColor);
+        el.addEventListener('change', setAddonColor);
 
         setAddonColor();
-    })
+    });
 
 </script>
 @endpush

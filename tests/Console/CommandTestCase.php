@@ -137,19 +137,4 @@ class CommandTestCase extends TestCase
 
         File::link($resource, $target);
     }
-
-    /**
-     * Returns whether the expectsConfirmation() method is supported by the
-     * underlying Laravel framework.
-     *
-     * @return bool
-     */
-    protected function canExpectsConfirmation()
-    {
-        return class_exists('Illuminate\Testing\PendingCommand')
-            && method_exists(
-                'Illuminate\Testing\PendingCommand',
-                'expectsConfirmation'
-            );
-    }
 }

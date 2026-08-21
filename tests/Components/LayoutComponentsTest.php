@@ -69,11 +69,11 @@ class LayoutComponentsTest extends TestCase
         $uUrl = $component->makeUpdateUrl();
 
         $this->assertStringContainsString('text-danger', $iClass);
-        $this->assertStringContainsString('badge-primary', $bClass);
+        $this->assertStringContainsString('text-bg-primary', $bClass);
         $this->assertStringContainsString('nav-item', $liClass);
         $this->assertStringContainsString('dropdown', $liClass);
         $this->assertStringContainsString('nav-link', $aAttrs['class']);
-        $this->assertStringContainsString('dropdown', $aAttrs['data-toggle']);
+        $this->assertStringContainsString('dropdown', $aAttrs['data-bs-toggle']);
         $this->assertEquals(null, $uUrl);
     }
 
@@ -159,23 +159,27 @@ class LayoutComponentsTest extends TestCase
 
     public function testNavbarDarkmodeWidgetClasses()
     {
-        // Test basic component with darkmode config disabled.
+        // Test the default icons with the light color mode. On AdminLTE v4 the
+        // default icons are Bootstrap Icons.
 
-        config(['adminlte.layout_dark_mode' => null]);
+        config([
+            'adminlte.layout_dark_mode' => null,
+            'adminlte.color_mode.default' => 'light',
+        ]);
 
         $component = new Components\Layout\NavbarDarkmodeWidget(
-            null, null, 'color-off', 'color-on'
+            null, null, null, 'color-off', 'color-on', 'color-auto'
         );
 
         $iClass = $component->makeIconClass();
 
-        $this->assertStringContainsString('far fa-moon', $iClass);
+        $this->assertStringContainsString('bi bi-sun-fill', $iClass);
         $this->assertStringContainsString('text-color-off', $iClass);
 
-        // Test advanced component with darkmode config disabled.
+        // Test the custom icons with the light color mode.
 
         $component = new Components\Layout\NavbarDarkmodeWidget(
-            'icon-off', 'icon-on', 'color-off', 'color-on'
+            'icon-off', 'icon-on', 'icon-auto', 'color-off', 'color-on', 'color-auto'
         );
 
         $iClass = $component->makeIconClass();
@@ -183,28 +187,66 @@ class LayoutComponentsTest extends TestCase
         $this->assertStringContainsString('icon-off', $iClass);
         $this->assertStringContainsString('text-color-off', $iClass);
 
-        // Test basic component with darkmode config enabled.
+        // Test the icon of the automatic color mode.
 
-        config(['adminlte.layout_dark_mode' => true]);
+        $iAutoClass = implode(' ', $component->makeIconAutoClass());
+
+        $this->assertStringContainsString('icon-auto', $iAutoClass);
+        $this->assertStringContainsString('text-color-auto', $iAutoClass);
+
+        // Test the default icons with the dark color mode.
+
+        config(['adminlte.color_mode.default' => 'dark']);
 
         $component = new Components\Layout\NavbarDarkmodeWidget(
-            null, null, 'color-off', 'color-on'
+            null, null, null, 'color-off', 'color-on', 'color-auto'
         );
 
         $iClass = $component->makeIconClass();
 
-        $this->assertStringContainsString('fas fa-moon', $iClass);
+        $this->assertStringContainsString('bi bi-moon-fill', $iClass);
         $this->assertStringContainsString('text-color-on', $iClass);
 
-        // Test advanced component with darkmode config enabled.
+        // Test the legacy 'layout_dark_mode' configuration.
+
+        config([
+            'adminlte.color_mode.default' => 'light',
+            'adminlte.layout_dark_mode' => true,
+        ]);
 
         $component = new Components\Layout\NavbarDarkmodeWidget(
-            'icon-off', 'icon-on', 'color-off', 'color-on'
+            'icon-off', 'icon-on', 'icon-auto', 'color-off', 'color-on', 'color-auto'
         );
 
         $iClass = $component->makeIconClass();
 
         $this->assertStringContainsString('icon-on', $iClass);
         $this->assertStringContainsString('text-color-on', $iClass);
+    }
+
+    public function testNavbarDarkmodeWidgetMode()
+    {
+        // The color mode selector is used when the client side persistence is
+        // enabled (the AdminLTE v4 default behavior).
+
+        config(['adminlte.color_mode.remember' => true]);
+
+        $component = new Components\Layout\NavbarDarkmodeWidget();
+        $this->assertTrue($component->dropdownMode);
+
+        // Otherwise, the legacy toggle is used.
+
+        config(['adminlte.color_mode.remember' => false]);
+
+        $component = new Components\Layout\NavbarDarkmodeWidget();
+        $this->assertFalse($component->dropdownMode);
+
+        // The mode can be forced through the component attribute.
+
+        $component = new Components\Layout\NavbarDarkmodeWidget(
+            null, null, null, null, null, null, true
+        );
+
+        $this->assertTrue($component->dropdownMode);
     }
 }

@@ -7,32 +7,33 @@
         @endisset
 
         @isset($text)
-            <h5>{{ $text }}</h5>
+            <p>{{ $text }}</p>
         @endisset
     </div>
 
     {{-- Box icon --}}
     @isset($icon)
-        <div class="icon">
-            <i class="{{ $icon }}"></i>
-        </div>
+        <i class="{{ $makeIconClass() }}" aria-hidden="true"></i>
     @endisset
 
     {{-- Box link --}}
     @isset($url)
-        <a href="{{ $url }}" class="small-box-footer">
+        <a href="{{ $url }}"
+            class="small-box-footer text-reset link-underline-opacity-0 link-underline-opacity-50-hover">
 
             @if(! empty($urlText))
                 {{ $urlText }}
             @endif
 
-            <i class="fas fa-lg fa-arrow-circle-right"></i>
+            <i class="bi bi-arrow-right-circle" aria-hidden="true"></i>
         </a>
     @endisset
 
-    {{-- Box overlay --}}
-    <div class="{{ $makeOverlayClass() }}">
-        <i class="fas fa-2x fa-spin fa-sync-alt text-gray"></i>
+    {{-- Box loading overlay --}}
+    <div class="{{ $makeOverlayClass() }}" style="z-index:20;">
+        <div class="spinner-border text-body-secondary" role="status">
+            <span class="visually-hidden">Loading</span>
+        </div>
     </div>
 
 </div>
@@ -62,49 +63,45 @@
          */
         update(data)
         {
-            // Check if target and data exists.
+            const t = document.getElementById(this.target);
 
-            let t = $(`#${this.target}`);
-
-            if (t.length <= 0 || ! data) {
+            if (! t || ! data) {
                 return;
             }
 
-            // Update available data.
-
             if (data.title) {
-                t.find('.inner h3').html(data.title);
+                t.querySelector('.inner h3').innerHTML = data.title;
             }
 
             if (data.text) {
-                t.find('.inner h5').html(data.text);
+                t.querySelector('.inner p').innerHTML = data.text;
             }
 
             if (data.icon) {
-                t.find('.icon i').attr('class', data.icon);
+                const icon = t.querySelector('.small-box-icon');
+
+                if (icon) {
+                    icon.className = 'small-box-icon ' + data.icon;
+                }
             }
 
             if (data.url) {
-                t.find('.small-box-footer').attr('href', data.url);
+                t.querySelector('.small-box-footer').href = data.url;
             }
         }
 
         /**
-         * Toggle the loading animation of the small box.
+         * Toggle the loading overlay of the small box.
          */
         toggleLoading()
         {
-            // Check if target exists.
+            const t = document.getElementById(this.target);
 
-            let t = $(`#${this.target}`);
-
-            if (t.length <= 0) {
+            if (! t) {
                 return;
             }
 
-            // Toggle the loading overlay.
-
-            t.find('.overlay').toggleClass('d-none');
+            t.querySelector('.small-box-overlay').classList.toggle('d-none');
         }
     }
 

@@ -1,22 +1,23 @@
-<li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item has-treeview {{ $item['submenu_class'] }}">
+<li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="nav-item {{ $item['submenu_class'] }}">
 
     {{-- Menu toggler --}}
     <a class="nav-link {{ $item['class'] }} @isset($item['shift']) {{ $item['shift'] }} @endisset"
-       href="" {!! $item['data-compiled'] ?? '' !!}>
+       href="#" {!! $item['data-compiled'] ?? '' !!}>
 
-        <i class="nav-icon {{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
+        <i class="nav-icon {{ $item['icon'] ?? 'bi bi-circle' }} {{
             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
         }}"></i>
 
         <p>
             {{ $item['text'] }}
-            <i class="fas fa-angle-left right"></i>
 
             @isset($item['label'])
-                <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} right">
+                <span class="nav-badge badge text-bg-{{ $item['label_color'] ?? 'primary' }} me-3">
                     {{ $item['label'] }}
                 </span>
             @endisset
+
+            <i class="nav-arrow bi bi-chevron-right"></i>
         </p>
 
     </a>

@@ -7,6 +7,8 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class ProfileWidget extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The user name of the profile widget.
      *
@@ -29,7 +31,8 @@ class ProfileWidget extends Component
     public $img;
 
     /**
-     * The default icon that will be used when no image is provided.
+     * The default icon (a Bootstrap Icon) that will be used when no image is
+     * provided.
      *
      * @var string
      */
@@ -37,7 +40,8 @@ class ProfileWidget extends Component
 
     /**
      * The profile header theme (light, dark, primary, secondary, info, success,
-     * warning, danger or any other AdminLTE color like lighblue or teal).
+     * warning, danger or any color of the AdminLTE extended palette like sky
+     * or teal).
      *
      * @var string
      */
@@ -81,7 +85,7 @@ class ProfileWidget extends Component
     public function __construct(
         $name = null, $desc = null, $img = null, $theme = null, $cover = null,
         $headerClass = null, $footerClass = null, $layoutType = 'modern',
-        $icon = 'fas fa-user'
+        $icon = 'bi bi-person-fill'
     ) {
         $this->name = UtilsHelper::applyHtmlEntityDecoder($name);
         $this->desc = UtilsHelper::applyHtmlEntityDecoder($desc);
@@ -108,7 +112,7 @@ class ProfileWidget extends Component
      */
     public function makeCardClass()
     {
-        $classes = ['card', 'card-widget'];
+        $classes = ['card'];
 
         if ($this->layoutType === 'modern') {
             $classes[] = 'widget-user';
@@ -127,9 +131,10 @@ class ProfileWidget extends Component
     public function makeHeaderClass()
     {
         $classes = ['widget-user-header'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (isset($this->theme) && empty($this->cover)) {
-            $classes[] = "bg-gradient-{$this->theme}";
+        if (! empty($theme) && empty($this->cover)) {
+            $classes[] = "text-bg-{$theme}";
         }
 
         if (! empty($this->headerClass)) {

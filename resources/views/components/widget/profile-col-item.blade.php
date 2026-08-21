@@ -4,23 +4,23 @@
 
         {{-- Icon --}}
         @isset($icon)
-            <i class="{{ $icon }}"></i>
+            <i class="{{ $icon }}" aria-hidden="true"></i>
         @endisset
 
         {{-- Header --}}
         @isset($title)
-            <h5 class="description-header">
+            <p class="description-header">
                 @if(! empty($url) && $urlTarget === 'title')
                     <a href="{{ $url }}">{{ $title }}</a>
                 @else
                     {{ $title }}
                 @endif
-            </h5>
+            </p>
         @endisset
 
         {{-- Text --}}
         @isset($text)
-            <p class="description-text">
+            <span class="description-text">
                 <span class="{{ $makeTextWrapperClass() }}"
                     @isset($textTooltip) title="{{ $textTooltip }}" style="cursor:help;" @endisset>
                     @if(! empty($url) && $urlTarget === 'text')
@@ -29,7 +29,7 @@
                         {{ $text }}
                     @endif
                 </span>
-            </p>
+            </span>
         @endisset
 
     </div>

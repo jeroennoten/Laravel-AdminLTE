@@ -15,7 +15,7 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 disable-feedback | Disables the invalid feedback notification for the input group | any | `null` | no
 error-key | The lookup key to use when searching for validation errors | string | `null` | no
-fgroup-class | Additional classes for the `form-group` container (to customize the main container) | string | `null` | no
+fgroup-class | Additional classes for the main container (to customize it) | string | `null` | no
 id | The `id` attribute for the underlying input group item | string | `null` | no
 igroup-class | Additional classes for the `input-group` container | string | `null` | no
 igroup-size | The input group size (you can specify `sm` or `lg` values only) | string | `null` | no
@@ -24,6 +24,12 @@ label-class | Classes for the label container (to customize the label) | string 
 name | The `name` and default `id` attribute for the underlying input group item | string | - | **yes**
 
 The `name` attribute is the only required property and will be used as the default `id` property when no other is provided. Also, the lookup key for validation errors will be automatically generated from the `name` property if no `error-key` is specified. For example, when you want to submit multiple files from a file input field, you can setup `name` property as `files[]` in order to submit the file names inside an array called `files`, in this case the auto-generated lookup key for validation errors will be `files`.
+
+> [!Important]
+> **Bootstrap 5.3** dropped the `form-group` class in favour of the spacing utilities, so the main container of the component is rendered with the `mb-3` class (the same one used by the **AdminLTE v4** form pages). The classes you pass with `fgroup-class` are appended to it. The label is rendered with the Bootstrap 5.3 `form-label` class, and the classes given with `label-class` are appended to it.
+
+> [!Note]
+> **Bootstrap 5.3** also removed the `input-group-prepend` and `input-group-append` wrappers: the add-ons are now direct children of the `.input-group` element. The `prependSlot` and `appendSlot` slots below already emit the correct markup, so your add-ons only need the `input-group-text` (or a button) element.
 
 You should note that all the others components that extends from this one will have the previous set of attributes available on their interface. This component also defines some **slots** that can be used to push `add-ons` into the input group:
 
@@ -39,12 +45,15 @@ This component represents an `AdminLTE` styled button. The following attributes 
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
-icon | A `fontawesome` icon for the button | string | `null` | no
+icon | An icon for the button (Bootstrap Icons by default) | string | `null` | no
 label | The visible label (text) for the button | string | `null` | no
-theme | The `AdminLTE` button style theme: primary, info, success, warning, danger, etc. | string | `'default'` | no
+theme | The button style theme: primary, secondary, info, success, warning, danger, light, dark, or any `outline-*` variant | string | `'default'` | no
 type | The button type (`button`, `submit` or `reset`) | string | `'button'` | no
 
 Any other attribute you define will be directly inserted into the underlying `button` tag. You can, for example, define a `class`, `onclick`, `title` or any other attribute you may need.
+
+> [!Important]
+> **Bootstrap 5** removed the `btn-default` class, so the legacy `'default'` theme is mapped to the Bootstrap 5 `secondary` theme. The `btn-flat` class of **AdminLTE v3** does not exist anymore either.
 
 ### Examples
 
@@ -56,22 +65,22 @@ Any other attribute you define will be directly inserted into the underlying `bu
 <x-adminlte-button label="Disabled" theme="dark" disabled/>
 
 {{-- Button with themes and icons --}}
-<x-adminlte-button label="Primary" theme="primary" icon="fas fa-key"/>
-<x-adminlte-button label="Secondary" theme="secondary" icon="fas fa-hashtag"/>
-<x-adminlte-button label="Info" theme="info" icon="fas fa-info-circle"/>
-<x-adminlte-button label="Warning" theme="warning" icon="fas fa-exclamation-triangle"/>
-<x-adminlte-button label="Danger" theme="danger" icon="fas fa-ban"/>
-<x-adminlte-button label="Success" theme="success" icon="fas fa-thumbs-up"/>
-<x-adminlte-button label="Dark" theme="dark" icon="fas fa-adjust"/>
+<x-adminlte-button label="Primary" theme="primary" icon="bi bi-key"/>
+<x-adminlte-button label="Secondary" theme="secondary" icon="bi bi-hash"/>
+<x-adminlte-button label="Info" theme="info" icon="bi bi-info-circle"/>
+<x-adminlte-button label="Warning" theme="warning" icon="bi bi-exclamation-triangle"/>
+<x-adminlte-button label="Danger" theme="danger" icon="bi bi-slash-circle"/>
+<x-adminlte-button label="Success" theme="success" icon="bi bi-hand-thumbs-up"/>
+<x-adminlte-button label="Dark" theme="dark" icon="bi bi-circle-half"/>
 
 {{-- Button with types --}}
-<x-adminlte-button class="btn-flat" type="submit" label="Submit" theme="success" icon="fas fa-lg fa-save"/>
-<x-adminlte-button class="btn-lg" type="reset" label="Reset" theme="outline-danger" icon="fas fa-lg fa-trash"/>
-<x-adminlte-button class="btn-sm bg-gradient-info" type="button" label="Help" icon="fas fa-lg fa-question"/>
+<x-adminlte-button type="submit" label="Submit" theme="success" icon="bi bi-save"/>
+<x-adminlte-button class="btn-lg" type="reset" label="Reset" theme="outline-danger" icon="bi bi-trash"/>
+<x-adminlte-button class="btn-sm bg-gradient" type="button" theme="info" label="Help" icon="bi bi-question-lg"/>
 
 {{-- Icons only buttons --}}
-<x-adminlte-button theme="primary" icon="fab fa-fw fa-lg fa-facebook-f"/>
-<x-adminlte-button theme="info" icon="fab fa-fw fa-lg fa-twitter"/>
+<x-adminlte-button theme="primary" icon="bi bi-facebook"/>
+<x-adminlte-button theme="info" icon="bi bi-twitter-x"/>
 ```
 
 At next you can check how the previous set of defined buttons are rendered:
@@ -105,10 +114,10 @@ enable-old-support | Enable the auto retrievement and filling with the submitted
 </div>
 
 {{-- With prepend slot --}}
-<x-adminlte-input name="iUser" label="User" placeholder="username" label-class="text-lightblue">
+<x-adminlte-input name="iUser" label="User" placeholder="username" label-class="text-info">
     <x-slot name="prependSlot">
         <div class="input-group-text">
-            <i class="fas fa-user text-lightblue"></i>
+            <i class="bi bi-person text-info"></i>
         </div>
     </x-slot>
 </x-adminlte-input>
@@ -118,7 +127,7 @@ enable-old-support | Enable the auto retrievement and filling with the submitted
     igroup-size="sm" min=1 max=10>
     <x-slot name="appendSlot">
         <div class="input-group-text bg-dark">
-            <i class="fas fa-hashtag"></i>
+            <i class="bi bi-hash"></i>
         </div>
     </x-slot>
 </x-adminlte-input>
@@ -127,8 +136,8 @@ enable-old-support | Enable the auto retrievement and filling with the submitted
 <x-adminlte-input name="iPostalCode" label="Postal Code" placeholder="postal code"
     enable-old-support>
     <x-slot name="prependSlot">
-        <div class="input-group-text text-olive">
-            <i class="fas fa-map-marked-alt"></i>
+        <div class="input-group-text text-success">
+            <i class="bi bi-map"></i>
         </div>
     </x-slot>
     <x-slot name="bottomSlot">
@@ -139,12 +148,12 @@ enable-old-support | Enable the auto retrievement and filling with the submitted
 {{-- With extra information on the bottom slot --}}
 <x-adminlte-input name="iExtraAddress" label="Other Address Data">
     <x-slot name="prependSlot">
-        <div class="input-group-text text-purple">
-            <i class="fas fa-address-card"></i>
+        <div class="input-group-text text-primary">
+            <i class="bi bi-person-vcard"></i>
         </div>
     </x-slot>
     <x-slot name="bottomSlot">
-        <span class="text-sm text-gray">
+        <span class="small text-body-secondary">
             [Add other address information you may consider important]
         </span>
     </x-slot>
@@ -157,30 +166,33 @@ enable-old-support | Enable the auto retrievement and filling with the submitted
     </x-slot>
     <x-slot name="prependSlot">
         <div class="input-group-text text-danger">
-            <i class="fas fa-search"></i>
+            <i class="bi bi-search"></i>
         </div>
     </x-slot>
 </x-adminlte-input>
 ```
 
-Use the next image as reference to check how every input example is rendered. Please, note in the image the inputs were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every input example is rendered. Please, note in the image the inputs were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Input Component](/imgs/components/basic_forms_components/input-component.png)
 
 # InputFile
 
 > [!Important]
-> This component requires the [bs-custom-file-input](https://github.com/Johann-S/bs-custom-file-input) plugin, so be sure to first setup it on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed locally using `php artisan adminlte:plugins install --plugin=bsCustomFileInput` command.
+> **No plugin is required anymore.** **Bootstrap 5** styles the browser's native file input with the plain `form-control` class, so the `custom-file` structure and the `bs-custom-file-input` plugin that were needed on **AdminLTE v3** were dropped.
 
 This component represents a file input element. This component extends from the base [Input Group Component](#input-group-component), so all the attributes from it will be inherited. The component also defines the next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
-legend | A legend to replace the default `Browse` text | string | `null` | no
-placeholder | The placeholder for the input file box | string | `''` | no
+legend | A label rendered as an `input-group-text` add-on attached to the file input | string | `null` | no
+placeholder | **[Deprecated]** The placeholder for the input file box. A native file input does not support a placeholder, so the value is accepted and ignored | string | `''` | no
 
 > [!Note]
 > Please, note the `enable-old-support` attribute is not supported here, due to security reasons related to the file inputs fields.
+
+> [!Warning]
+> The **Browse** button of a native file input is rendered by the browser itself and can't be relabeled. Because of that, the `legend` attribute is no longer a replacement of the _Browse_ text: it is rendered as an `input-group-text` label placed right after the file input. The `placeholder` attribute has no visual effect at all, it is only kept so that the **AdminLTE v3** markup keeps working.
 
 All other attributes you define on the component will be inserted directly on the underlying `input[type='file']` element, so you can use the standard attributes too (like `accept` or `multiple`).
 
@@ -190,65 +202,38 @@ All other attributes you define on the component will be inserted directly on th
 {{-- Minimal --}}
 <x-adminlte-input-file name="ifMin"/>
 
-{{-- Placeholder, sm size, and prepend icon --}}
-<x-adminlte-input-file name="ifPholder" igroup-size="sm" placeholder="Choose a file...">
+{{-- SM size, and prepend icon --}}
+<x-adminlte-input-file name="ifPholder" igroup-size="sm">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-lightblue">
-            <i class="fas fa-upload"></i>
+        <div class="input-group-text text-bg-info">
+            <i class="bi bi-upload"></i>
         </div>
     </x-slot>
 </x-adminlte-input-file>
 
 {{-- With label and feedback disabled --}}
-<x-adminlte-input-file name="ifLabel" label="Upload file" placeholder="Choose a file..."
-    disable-feedback/>
+<x-adminlte-input-file name="ifLabel" label="Upload file" disable-feedback/>
 
 {{-- With multiple slots and multiple files --}}
 <x-adminlte-input-file id="ifMultiple" name="ifMultiple[]" label="Upload files"
-    placeholder="Choose multiple files..." igroup-size="lg" legend="Choose" multiple>
+    igroup-size="lg" legend="Choose" multiple>
     <x-slot name="appendSlot">
         <x-adminlte-button theme="primary" label="Upload"/>
     </x-slot>
     <x-slot name="prependSlot">
         <div class="input-group-text text-primary">
-            <i class="fas fa-file-upload"></i>
+            <i class="bi bi-file-earmark-arrow-up"></i>
         </div>
     </x-slot>
 </x-adminlte-input-file>
 ```
 
-Use the next image as reference to check how every input example is rendered. Please, note in the image the inputs were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every input example is rendered. Please, note the image was taken with an older package version, the file input now uses the native **Bootstrap 5** control.
 
 ![Input File Component](/imgs/components/basic_forms_components/input-file-component.png)
 
-### Required Plugin Configuration
-
-To use this component you need to install and enable the required [bs-custom-file-input](https://github.com/Johann-S/bs-custom-file-input) plugin. You can install the plugin locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=bsCustomFileInput
-```
-
-After installed, you can use the next plugin configuration inside the `config/adminlte.php` file as a reference:
-
-```php
-'plugins' => [
-    ...
-    'BsCustomFileInput' => [
-        'active' => false,
-        'files' => [
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
-            ],
-        ],
-    ],
-    ...
-],
-```
-
-Finally, you need to use the `@section('plugins.BsCustomFileInput', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+> [!Tip]
+> If you need a rich file input (drag and drop, previews, chunked uploads, ...), use the [InputFileKrajee](/sections/components/advanced_forms_components#inputfilekrajee) component, or wire up one of the jQuery free plugins recommended by **AdminLTE v4** (for example `filepond` or `dropzone`, both installable through `php artisan adminlte:plugins install`).
 
 # Options
 
@@ -310,11 +295,11 @@ They will be rendered as:
 </x-adminlte-select>
 
 {{-- Example with empty option (for Select2) --}}
-<x-adminlte-select2 name="optionsVehicles" igroup-size="lg" label-class="text-lightblue"
+<x-adminlte-select2 name="optionsVehicles" igroup-size="lg" label-class="text-info"
     data-placeholder="Select an option...">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-info">
-            <i class="fas fa-car-side"></i>
+        <div class="input-group-text text-bg-info bg-gradient">
+            <i class="bi bi-car-front"></i>
         </div>
     </x-slot>
     <x-adminlte-options :options="['Car', 'Truck', 'Motorcycle']" empty-option/>
@@ -328,8 +313,8 @@ They will be rendered as:
 <x-adminlte-select id="optionsLangs" name="optionsLangs[]" label="Languages"
     label-class="text-danger" multiple>
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-red">
-            <i class="fas fa-lg fa-language"></i>
+        <div class="input-group-text text-bg-danger bg-gradient">
+            <i class="bi bi-translate"></i>
         </div>
     </x-slot>
     <x-adminlte-options :options="$options" :selected="$selected"/>
@@ -338,25 +323,22 @@ They will be rendered as:
 {{-- Example with multiple selections (for SelectBs) --}}
 @php
     $config = [
-        "title" => "Select multiple options...",
-        "liveSearch" => true,
-        "liveSearchPlaceholder" => "Search...",
-        "showTick" => true,
-        "actionsBox" => true,
+        "placeholder" => "Select multiple options...",
+        "maxItems" => 3,
     ];
 @endphp
 <x-adminlte-select-bs id="optionsCategory" name="optionsCategory[]" label="Categories"
     label-class="text-danger" :config="$config" multiple>
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-red">
-            <i class="fas fa-tag"></i>
+        <div class="input-group-text text-bg-danger bg-gradient">
+            <i class="bi bi-tag"></i>
         </div>
     </x-slot>
     <x-adminlte-options :options="['News', 'Sports', 'Science', 'Games']"/>
 </x-adminlte-select-bs>
 ```
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the selection fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every example is rendered. Please, note in the image the selection fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Options Component](/imgs/components/basic_forms_components/options-component.png)
 
@@ -388,11 +370,11 @@ enable-old-support | Enable the auto retrievement and selection of the submitted
 </x-adminlte-select>
 
 {{-- With prepend slot, lg size, and label --}}
-<x-adminlte-select name="selVehicle" label="Vehicle" label-class="text-lightblue"
+<x-adminlte-select name="selVehicle" label="Vehicle" label-class="text-info"
     igroup-size="lg">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-info">
-            <i class="fas fa-car-side"></i>
+        <div class="input-group-text text-bg-info bg-gradient">
+            <i class="bi bi-car-front"></i>
         </div>
     </x-slot>
     <option>Vehicle 1</option>
@@ -402,26 +384,29 @@ enable-old-support | Enable the auto retrievement and selection of the submitted
 {{-- With multiple slots and multiple options --}}
 <x-adminlte-select id="selUser" name="selUser[]" label="User" label-class="text-danger" multiple>
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-red">
-            <i class="fas fa-lg fa-user"></i>
+        <div class="input-group-text text-bg-danger bg-gradient">
+            <i class="bi bi-person"></i>
         </div>
     </x-slot>
     <x-slot name="appendSlot">
-        <x-adminlte-button theme="outline-dark" label="Clear" icon="fas fa-lg fa-ban text-danger"/>
+        <x-adminlte-button theme="outline-dark" label="Clear" icon="bi bi-slash-circle text-danger"/>
     </x-slot>
     <option>Admin</option>
     <option>Guest</option>
 </x-adminlte-select>
 ```
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the selection fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every example is rendered. Please, note in the image the selection fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Select Component](/imgs/components/basic_forms_components/select-component.png)
 
 # Select2
 
 > [!Important]
-> This component requires the [select2](https://select2.org/) and [select2-bootstrap4-theme](https://github.com/ttskch/select2-bootstrap4-theme) plugins, so be sure to first setup these plugins on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). Both plugins can be installed locally using `php artisan adminlte:plugins install --plugin=select2` command, after that you will need to include the plugins files on the configuration file.
+> This component requires the `Select2` plugin to be enabled on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins), and use the `@section('plugins.Select2', true)` sentence on the blade file where you expect to use the component.
+
+> [!Warning]
+> The [select2](https://select2.org/) plugin **still requires jQuery**, which **AdminLTE v4** does not bundle anymore. The component initialization code is guarded: when neither jQuery nor the plugin are present, the element stays a plain **Bootstrap 5** `form-select` and nothing breaks. If you want a jQuery free alternative with the same feature set (search, tagging, multiple selection, remote data, ...), use the [SelectBs](/sections/components/advanced_forms_components#selectbs) component, which is backed by **Tom Select**.
 
 This component represents a **select2** option selector and includes features like option search and placeholder. The component extends from the base [Input Group Component](#input-group-component), so all the attributes from it will be inherited. The component also defines next additional attributes:
 
@@ -455,11 +440,11 @@ The available plugin configuration options are those explained on the [plugin do
 </x-adminlte-select2>
 
 {{-- With prepend slot, label, and data-placeholder config --}}
-<x-adminlte-select2 name="sel2Vehicle" label="Vehicle" label-class="text-lightblue"
+<x-adminlte-select2 name="sel2Vehicle" label="Vehicle" label-class="text-info"
     igroup-size="lg" data-placeholder="Select an option...">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-info">
-            <i class="fas fa-car-side"></i>
+        <div class="input-group-text text-bg-info bg-gradient">
+            <i class="bi bi-car-front"></i>
         </div>
     </x-slot>
     <option/>
@@ -477,12 +462,12 @@ The available plugin configuration options are those explained on the [plugin do
 <x-adminlte-select2 id="sel2Category" name="sel2Category[]" label="Categories"
     label-class="text-danger" igroup-size="sm" :config="$config" multiple>
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-red">
-            <i class="fas fa-tag"></i>
+        <div class="input-group-text text-bg-danger bg-gradient">
+            <i class="bi bi-tag"></i>
         </div>
     </x-slot>
     <x-slot name="appendSlot">
-        <x-adminlte-button theme="outline-dark" label="Clear" icon="fas fa-lg fa-ban text-danger"/>
+        <x-adminlte-button theme="outline-dark" label="Clear" icon="bi bi-slash-circle text-danger"/>
     </x-slot>
     <option>Sports</option>
     <option>News</option>
@@ -492,19 +477,13 @@ The available plugin configuration options are those explained on the [plugin do
 </x-adminlte-select2>
 ```
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the selection fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every example is rendered. Please, note in the image the selection fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Select2 Component](/imgs/components/basic_forms_components/select2-component.png)
 
 ### Required Plugin Configuration
 
-To use this component you need to install and enable the required [select2](https://select2.org/) and [select2-bootstrap4-theme](https://github.com/ttskch/select2-bootstrap4-theme) plugins. You can install both plugins locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=select2
-```
-
-After installed, you can use the next plugin configuration as a reference:
+The `Select2` entry is already present on the `plugins` section of the configuration file published by the package, and it points to a `CDN`. It contains the plugin files plus the **AdminLTE v4 compatibility stylesheet** (`adminlte-select2.min.css`), which restyles the plugin `default` theme for Bootstrap 5.3. Because of that, the component forces the `default` theme unless you explicitly configure another one on the `config` attribute.
 
 ```php
 'plugins' => [
@@ -514,18 +493,22 @@ After installed, you can use the next plugin configuration as a reference:
         'files' => [
             [
                 'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/select2/js/select2.full.min.js',
+                'asset' => false,
+                'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/js/select2.min.js',
             ],
             [
                 'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/select2/css/select2.min.css',
+                'asset' => false,
+                'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css',
             ],
+
+            // The AdminLTE v4 compatibility theme for Select2. Replace it
+            // by the 'adminlte-select2.rtl.min.css' file on RTL mode.
+
             [
                 'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-select2.min.css',
             ],
         ],
     ],
@@ -533,7 +516,17 @@ After installed, you can use the next plugin configuration as a reference:
 ],
 ```
 
-Finally, you need to use the `@section('plugins.Select2', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+If you prefer to serve the files locally, first install the npm package and then publish it into the `public/vendor` folder:
+
+```sh
+npm i select2@^4.1
+php artisan adminlte:plugins install --plugin=select2
+```
+
+Remember that you also have to make **jQuery** available on the page (the package does not provide it), and finally use the `@section('plugins.Select2', true)` sentence on the blade file where you expect to use the component.
+
+> [!Note]
+> The `select2-bootstrap4-theme` plugin that was used on **AdminLTE v3** is not needed (nor compatible) anymore, it was replaced by the `adminlte-select2.min.css` stylesheet shipped with AdminLTE v4.
 
 # Textarea
 
@@ -562,7 +555,7 @@ enable-old-support | Enable the auto retrievement and filling with the submitted
     igroup-size="sm" placeholder="Insert description...">
     <x-slot name="prependSlot">
         <div class="input-group-text bg-dark">
-            <i class="fas fa-lg fa-file-alt text-warning"></i>
+            <i class="bi bi-file-text text-warning"></i>
         </div>
     </x-slot>
 </x-adminlte-textarea>
@@ -572,15 +565,15 @@ enable-old-support | Enable the auto retrievement and filling with the submitted
     label-class="text-primary" placeholder="Write your message..." disable-feedback>
     <x-slot name="prependSlot">
         <div class="input-group-text">
-            <i class="fas fa-lg fa-comment-dots text-primary"></i>
+            <i class="bi bi-chat-dots text-primary"></i>
         </div>
     </x-slot>
     <x-slot name="appendSlot">
-        <x-adminlte-button theme="primary" icon="fas fa-paper-plane" label="Send"/>
+        <x-adminlte-button theme="primary" icon="bi bi-send" label="Send"/>
     </x-slot>
 </x-adminlte-textarea>
 ```
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the textarea fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every example is rendered. Please, note in the image the textarea fields were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Textarea Component](/imgs/components/basic_forms_components/textarea-component.png)

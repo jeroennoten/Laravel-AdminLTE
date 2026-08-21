@@ -9,7 +9,7 @@ In this section we'll explain how to configure the menu items that will be avail
 
 ## Static Menu Config
 
-You can specify (in a static way) the set of menu items to display in the left **sidebar** and/or the **top navbar**. A menu item representing a **link** should have a `text` attribute and an `url` (or `route`) attribute. Also, and optionally, you can use the `icon` attribute to specify an icon from [Font Awesome](https://fontawesome.com) for every menu item. A single string instead of an array represents a **header** in the sidebar, a **header** is used to group items under a label. However, a **header** may also be represented by an array containing the `header` attribute. There is also a `can` attribute that may be used as a filter with the Laravel's built in [Gate](https://laravel.com/docs/authorization#gates) functionality. Even more, you can create a nested menu using the `submenu` attribute. Also, there are other options and attributes available that will be explained later.
+You can specify (in a static way) the set of menu items to display in the left **sidebar** and/or the **top navbar**. A menu item representing a **link** should have a `text` attribute and an `url` (or `route`) attribute. Also, and optionally, you can use the `icon` attribute to specify an icon for every menu item ([Bootstrap Icons](https://icons.getbootstrap.com/) by default). A single string instead of an array represents a **header** in the sidebar, a **header** is used to group items under a label. However, a **header** may also be represented by an array containing the `header` attribute. There is also a `can` attribute that may be used as a filter with the Laravel's built in [Gate](https://laravel.com/docs/authorization#gates) functionality. Even more, you can create a nested menu using the `submenu` attribute. Also, there are other options and attributes available that will be explained later.
 
 Here is a basic example that will give you a quick overview of a menu configuration:
 
@@ -23,7 +23,7 @@ Here is a basic example that will give you a quick overview of a menu configurat
     [
         'text' => 'Pages',
         'url' => 'admin/pages',
-        'icon' => 'fas fa-fw fa-file',
+        'icon' => 'bi bi-file-earmark',
     ],
     [
         'text' => 'Show my website',
@@ -36,12 +36,12 @@ Here is a basic example that will give you a quick overview of a menu configurat
     [
         'text' => 'Profile',
         'route' => 'admin.profile',
-        'icon' => 'fas fa-fw fa-user',
+        'icon' => 'bi bi-person',
     ],
     [
         'text' => 'Change Password',
         'route' => 'admin.password',
-        'icon' => 'fas fa-fw fa-lock',
+        'icon' => 'bi bi-lock',
     ],
 ],
 ```
@@ -55,7 +55,7 @@ Attribute                                   | Description
 [classes](#the-classes-attribute)           | To add custom classes to a menu item.
 [data](#the-data-attribute)                 | An array with `data-*` attributes for the item.
 [header](#the-header-attribute)             | Text representing the name of a header (only for headers).
-[icon](#the-icon-and-icon-color-attributes) | A font awesome icon for the item.
+[icon](#the-icon-and-icon-color-attributes) | An icon for the item (Bootstrap Icons by default).
 [icon_color](#the-icon-and-icon-color-attributes) | An AdminLTE color for the icon (info, primary, etc).
 [id](#the-id-attribute)                     | To define an `id` for the menu item.
 [key](#the-key-attribute)                   | An unique identifier key for reference the item.
@@ -125,7 +125,7 @@ This attribute provides a way to add custom classes to a particular menu item. T
 ```php
 [
     'header' => 'account_settings',
-    'classes' => 'text-yellow text-bold text-center',
+    'classes' => 'text-warning fw-bold text-center',
 ]
 ```
 
@@ -135,10 +135,13 @@ Or you can highlight an important link item with something like this:
 [
     'text' => 'Important Link',
     'url' => 'important/link',
-    'icon' => 'fas fa-fw fa-exclamation-triangle',
+    'icon' => 'bi bi-exclamation-triangle',
     'classes' => 'text-danger text-uppercase',
 ]
 ```
+
+> [!Note]
+> Use the **Bootstrap 5.3** utility class names here. The **Bootstrap 4** helpers that were valid on **AdminLTE v3** were renamed: `text-bold` is now `fw-bold`, `text-left` / `text-right` are now `text-start` / `text-end`, `ml-*` / `mr-*` are now `ms-*` / `me-*`, and so on.
 
 #### The __`data`__ Attribute:
 
@@ -161,7 +164,7 @@ Then, the previous menu item will be rendered as this:
 <a class="nav-link" href="http://<domain>/admin/blog/new"
    data-test-one="content-one"
    data-test-two="content-two">
-    <i class="far fa-fw fa-circle"></i>
+    <i class="nav-icon bi bi-circle"></i>
     <p>New post</p>
 </a>
 ```
@@ -180,16 +183,22 @@ A header item can also be represented with a single string, for example `"REPORT
 
 #### The __`icon`__ and __`icon_color`__ Attributes:
 
-The `icon` attribute is optional, and you will get an [open circle](https://fontawesome.com/icons/circle?style=regular&from=io) if you leave it out. The available icons that you can use are those from [Font Awesome](https://fontawesome.com/icons). Just specify the name of the icon and it will appear in front of your menu item. The `ìcon_color` attribute provides a way to setup an [AdminLTE color](https://adminlte.io/themes/v3/pages/UI/general.html) for the icon. Example:
+The `icon` attribute is optional, and the sidebar items will fall back to an open circle (`bi bi-circle`) if you leave it out. **AdminLTE v4** ships [Bootstrap Icons](https://icons.getbootstrap.com/), so the available icons that you can use are those from that set. Just specify the class name of the icon and it will appear in front of your menu item. The `ìcon_color` attribute provides a way to setup an **AdminLTE color** for the icon (it is rendered as a `text-{color}` class). Example:
 
 ```php
 [
     'text' => 'profile',
     'url' => 'user/profile',
-    'icon' => 'fas fa-fw fa-user',
+    'icon' => 'bi bi-person',
     'icon_color' => 'primary',
 ]
 ```
+
+> [!Note]
+> The value of the `icon` attribute is copied verbatim into the `class` attribute of an `<i>` element, so you are free to use a different icon font. If you want to keep using, for example, **Font Awesome**, just load its stylesheet on your layout and write `'icon' => 'fas fa-fw fa-user'` as usual. Only the defaults provided by the package are **Bootstrap Icons** based.
+
+> [!Tip]
+> The `icon_color` attribute accepts the eight **Bootstrap 5.3** theme colors (`primary`, `secondary`, `success`, `danger`, `warning`, `info`, `light` and `dark`). Any color of the **AdminLTE v4** extended palette (`navy`, `olive`, `sky`, `teal`, ...) requires the `assets.extended_colors` option to be enabled on the `config/adminlte.php` file.
 
 #### The __`id`__ Attribute:
 
@@ -209,13 +218,13 @@ In order to place an item dynamically you can use the `key` attribute, with this
 
 #### The __`label`__ and __`label_color`__ Attributes:
 
-The `label` attribute provides a way to setup a right aligned [badge](https://getbootstrap.com/docs/4.0/components/badge/) for the menu item. The `label_color` is used to configure the badge color, example:
+The `label` attribute provides a way to setup a right aligned [badge](https://getbootstrap.com/docs/5.3/components/badge/) for the menu item. The `label_color` is used to configure the badge color (it is rendered as a **Bootstrap 5.3** `text-bg-{color}` class, `primary` when not defined), example:
 
 ```php
 [
     'text' => 'pages',
     'url' => 'admin/pages',
-    'icon' => 'far fa-fw fa-file',
+    'icon' => 'bi bi-file-earmark',
     'label' => 4,
     'label_color' => 'success',
 ]
@@ -229,7 +238,7 @@ You can use this attribute to assign a Laravel route name to a link item, if you
 [
     'text' => 'Profile',
     'route' => 'admin.profile',
-    'icon' => 'fas fa-fw fa-user',
+    'icon' => 'bi bi-person',
 ]
 ```
 
@@ -239,7 +248,7 @@ Even more, you can define a route with parameters using an array where the first
 [
     'text' => 'Profile',
     'route' => ['admin.profile', ['userID' => '673']],
-    'icon' => 'fas fa-fw fa-user',
+    'icon' => 'bi bi-person',
 ]
 ```
 
@@ -256,13 +265,13 @@ This attribute provides a way to inject classes into the list item for a given m
     'submenu' => [
         [
             'text' => 'Invites',
-            'shift' => 'ml-3',
+            'shift' => 'ms-3',
             'submenu' => [
                 [
                     'text' => 'View Invites',
                     'route' => 'invite.index',
-                    'icon' => 'fas  fa-users',
-                    'shift' => 'ml-4',
+                    'icon' => 'bi bi-people',
+                    'shift' => 'ms-4',
                 ],
             ],
         ],
@@ -277,7 +286,7 @@ This attribute provides a way to create a menu item containing child items. With
 ```php
 [
     'text' => 'menu',
-    'icon' => 'fas fa-fw fa-share',
+    'icon' => 'bi bi-share',
     'submenu' => [
         [
             'text' => 'child 1',
@@ -314,12 +323,12 @@ The value of this attribute should be the URL for a link item. You can use a ful
 [
     'text' => 'profile',
     'url' => 'http://my.domain.com/user/profile',
-    'icon' => 'fas fa-fw fa-user',
+    'icon' => 'bi bi-person',
 ],
 [
     'text' => 'change_password',
     'url' => 'admin/settings',
-    'icon' => 'fas fa-fw fa-lock',
+    'icon' => 'bi bi-lock',
 ],
 ```
 
@@ -418,7 +427,7 @@ In the next example we give a basic overview of how to use the methods. First, w
     'key' => 'pages',
     'text' => 'Pages',
     'url' => 'admin/pages',
-    'icon' => 'far fa-fw fa-file',
+    'icon' => 'bi bi-file-earmark',
 ],
 ```
 

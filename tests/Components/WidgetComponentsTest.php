@@ -62,7 +62,7 @@ class WidgetComponentsTest extends TestCase
 
         $this->assertStringContainsString('alert', $aClass);
         $this->assertStringContainsString('alert-danger', $aClass);
-        $this->assertStringContainsString('alert-dismissable', $aClass);
+        $this->assertStringContainsString('alert-dismissible', $aClass);
     }
 
     /*
@@ -136,7 +136,7 @@ class WidgetComponentsTest extends TestCase
         );
 
         $cClass = $component->makeCardClass();
-        $this->assertStringContainsString('bg-gradient-success', $cClass);
+        $this->assertStringContainsString('text-bg-success', $cClass);
         $this->assertStringContainsString('collapsed-card', $cClass);
 
         $hClass = $component->makeCardHeaderClass();
@@ -249,7 +249,7 @@ class WidgetComponentsTest extends TestCase
         );
 
         $twClass = $component->makeTextWrapperClass();
-        $this->assertStringContainsString('badge-pill', $twClass);
+        $this->assertStringContainsString('rounded-pill', $twClass);
         $this->assertStringContainsString('bg-b-theme', $twClass);
     }
 
@@ -278,7 +278,7 @@ class WidgetComponentsTest extends TestCase
         );
 
         $twClass = $component->makeTextWrapperClass();
-        $this->assertStringContainsString('badge-pill', $twClass);
+        $this->assertStringContainsString('rounded-pill', $twClass);
         $this->assertStringContainsString('bg-b-theme', $twClass);
     }
 
@@ -301,12 +301,11 @@ class WidgetComponentsTest extends TestCase
 
         $cClass = $component->makeCardClass();
         $this->assertStringContainsString('card', $cClass);
-        $this->assertStringContainsString('card-widget', $cClass);
         $this->assertStringContainsString('widget-user', $cClass);
 
         $hClass = $component->makeHeaderClass();
         $this->assertStringContainsString('widget-user-header', $hClass);
-        $this->assertStringContainsString('bg-gradient-danger', $hClass);
+        $this->assertStringContainsString('text-bg-danger', $hClass);
         $this->assertStringContainsString('h-class', $hClass);
 
         $fClass = $component->makeFooterClass();
@@ -330,7 +329,7 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('widget-user-2', $cClass);
 
         $hClass = $component->makeHeaderClass();
-        $this->assertStringNotContainsString('bg-gradient-danger', $hClass);
+        $this->assertStringNotContainsString('text-bg-danger', $hClass);
 
         $hStyle = $component->makeHeaderStyle();
         $this->assertStringContainsString("background: url('img.png')", $hStyle);

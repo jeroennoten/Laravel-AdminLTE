@@ -7,7 +7,10 @@ These components are classified under the **Tool** category. At next you can see
 # Datatables
 
 > [!Important]
-> This component requires the [Datatables](https://datatables.net/) plugin, so be sure to first setup the plugin on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/other#plugins). The plugin can be installed locally using `php artisan adminlte:plugins install --plugin=datatables --plugin=datatablesPlugins` command. The `datatablesPlugins` provides the files for the tool buttons that are used for the data export feature, so you can avoid its installation if you won't use them. After installing the plugins, you will need to include the related plugins files on the configuration file, example of this configuration will be provided later.
+> This component requires the `Datatables` plugin to be enabled on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins), and use the `@section('plugins.Datatables', true)` sentence on the blade file where you expect to use the component.
+
+> [!Warning]
+> The [Datatables](https://datatables.net/) plugin **still requires jQuery**, which **AdminLTE v4** does not bundle anymore. The component initialization code is guarded: when neither jQuery nor the plugin are present, a warning is written to the browser console and the element stays a plain **Bootstrap 5** table. The jQuery free alternative recommended by AdminLTE v4 is [Tabulator](https://tabulator.info/), which is already available as the `Tabulator` plugin key on the configuration file (this package does not provide a blade component for it yet, you have to initialize it on your own).
 
 This component represents a wrapper around the well known **Datatables** plugin. The component defines the next set of attributes:
 
@@ -23,7 +26,7 @@ head-theme | The table head theme (light or dark) | string | `null` | no
 hoverable | When enabled, a hover effect will be available for the table rows | any | `null` | no
 id | The table identification (`id`) attribute | string | - | **yes**
 striped | When enabled, a striped effect will be available for the table rows | any | `null` | no
-theme | The table theme (light, dark, primary, secondary, info, warning or danger) | string | `null` | no
+theme | The table theme, rendered as a Bootstrap 5 `table-{theme}` class (light, dark, primary, secondary, success, info, warning or danger) | string | `null` | no
 with-buttons | When enabled, a set of tool buttons for exporting the data of the table will be available | any | `null` | no
 with-footer | Enables a footer with header cells. The footer can be fully customized using the [footerCallback](https://datatables.net/reference/option/footerCallback) option | any | `null` | no
 
@@ -34,7 +37,13 @@ The available options for the `config` attribute are those explained on the [plu
 - `no-export`: to disable data export for the column (useful for columns with buttons or actions).
 - `classes`: to add extra classes for the column title (only for versions <Badge type="tip">>= v3.8.6</Badge>).
 
-All other extra attributes you define will be inserted directly on the underlying `table` element.
+All other extra attributes you define will be inserted directly on the underlying `table` element. The whole table is wrapped inside a `div.table-responsive` element.
+
+> [!Note]
+> The `head-theme` and `footer-theme` attributes are rendered as the Bootstrap 5 `table-{theme}` class on the `<thead>` / `<tfoot>` elements (the Bootstrap 4 `thead-light` / `thead-dark` classes do not exist anymore).
+
+> [!Note]
+> When the `with-buttons` attribute is enabled, the export buttons are rendered with **Bootstrap Icons**: `bi bi-printer` (print), `bi bi-filetype-csv` (CSV), `bi bi-file-earmark-excel` (Excel) and `bi bi-file-earmark-pdf` (PDF).
 
 > [!Note]
 > You can always do all the plugin configuration from `Javascript/jQuery` using the `id` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://datatables.net/reference/api/destroy()) method first.
@@ -51,14 +60,14 @@ $heads = [
     ['label' => 'Actions', 'no-export' => true, 'width' => 5],
 ];
 
-$btnEdit = '<button class="btn btn-xs btn-default text-primary mx-1 shadow" title="Edit">
-                <i class="fa fa-lg fa-fw fa-pen"></i>
+$btnEdit = '<button class="btn btn-sm btn-secondary text-primary mx-1 shadow" title="Edit">
+                <i class="bi bi-pencil"></i>
             </button>';
-$btnDelete = '<button class="btn btn-xs btn-default text-danger mx-1 shadow" title="Delete">
-                  <i class="fa fa-lg fa-fw fa-trash"></i>
+$btnDelete = '<button class="btn btn-sm btn-secondary text-danger mx-1 shadow" title="Delete">
+                  <i class="bi bi-trash"></i>
               </button>';
-$btnDetails = '<button class="btn btn-xs btn-default text-teal mx-1 shadow" title="Details">
-                   <i class="fa fa-lg fa-fw fa-eye"></i>
+$btnDetails = '<button class="btn btn-sm btn-secondary text-info mx-1 shadow" title="Details">
+                   <i class="bi bi-eye"></i>
                </button>';
 
 $config = [
@@ -91,7 +100,7 @@ $config = [
 > [!Important]
 > Please, note the differences between the previous two examples, on the first one the rows and cells were manually constructed using loops over they available dataset. On the second example, the dataset is passed directly to the underlying plugin using the `$config['data']` property. You can't mix both strategies, use one or another.
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the tables were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them. This same consideration is valid for all the other examples below.
+Use the next image as reference to check how every example is rendered. Please, note in the image the tables were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them. This same consideration is valid for all the other examples below.
 
 ![Datatables Component Example 1](/imgs/components/tool_components/datatables-component-example-1.png)
 
@@ -124,7 +133,7 @@ $config['paging'] = false;
 $config["lengthMenu"] = [ 10, 50, 100, 500];
 @endphp
 
-<x-adminlte-datatable id="table8" :heads="$heads" head-theme="dark" class="bg-teal" :config="$config"
+<x-adminlte-datatable id="table8" :heads="$heads" head-theme="dark" :config="$config"
     striped hoverable with-buttons/>
 ```
 
@@ -132,88 +141,48 @@ $config["lengthMenu"] = [ 10, 50, 100, 500];
 
 ### Required Plugin Configuration
 
-To use this component you need to install and enable the required **Datatables** plugins. You can install the plugins locally using the next command:
+The `Datatables` entry is already available on the `plugins` section of the configuration file published by the package, and it points to a `CDN`. Note it uses the **Bootstrap 5** integration files of the plugin:
+
+```php
+'plugins' => [
+    ...
+    'Datatables' => [
+        'active' => false,
+        'files' => [
+            [
+                'type' => 'js',
+                'asset' => false,
+                'location' => '//cdn.datatables.net/2.1.8/js/dataTables.min.js',
+            ],
+            [
+                'type' => 'js',
+                'asset' => false,
+                'location' => '//cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js',
+            ],
+            [
+                'type' => 'css',
+                'asset' => false,
+                'location' => '//cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css',
+            ],
+        ],
+    ],
+    ...
+],
+```
+
+Remember that you also have to make **jQuery** available on the page before those files (the package does not provide it).
+
+If you prefer to serve the plugin files locally, install the npm package and publish it into the `public/vendor` folder, then point the `location` values to the published files and set `'asset' => true`:
 
 ```sh
-php artisan adminlte:plugins install --plugin=datatables --plugin=datatablesPlugins
+npm i datatables.net@^2.1 datatables.net-bs5
+php artisan adminlte:plugins install --plugin=datatables
 ```
 
-Then, the plugin configuration to use `Datatables` without the set of `export` buttons may look like this:
+> [!Warning]
+> The `datatablesPlugins` key of **AdminLTE v3**, which provided the **Buttons** extension files used by the `with-buttons` attribute, is **not available anymore**. To use the export buttons you have to add the files of the [Buttons extension](https://datatables.net/extensions/buttons/) (plus `jszip` and `pdfmake` for the Excel and PDF exports) to the `files` array of the `Datatables` entry by yourself, using their own CDN or a local copy.
 
-```php
-'Datatables' => [
-    'active' => false,
-    'files' => [
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables/js/jquery.dataTables.min.js',
-        ],
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables/js/dataTables.bootstrap4.min.js',
-        ],
-        [
-            'type' => 'css',
-            'asset' => true,
-            'location' => 'vendor/datatables/css/dataTables.bootstrap4.min.css',
-        ],
-    ],
-],
-```
-
-To use the export buttons (refer to `with-buttons` attribute), you will need also next configuration:
-
-```php
-'DatatablesPlugins' => [
-    'active' => false,
-    'files' => [
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/buttons/js/dataTables.buttons.min.js',
-        ],
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
-        ],
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/buttons/js/buttons.html5.min.js',
-        ],
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/buttons/js/buttons.print.min.js',
-        ],
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/jszip/jszip.min.js',
-        ],
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/pdfmake/pdfmake.min.js',
-        ],
-        [
-            'type' => 'js',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/pdfmake/vfs_fonts.js',
-        ],
-        [
-            'type' => 'css',
-            'asset' => true,
-            'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
-        ],
-    ],
-],
-```
-
-Finally, you need to use the `@section('plugins.Datatables', true)` and/or `@section('plugins.DatatablesPlugin', true)` sentences on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+Finally, you need to use the `@section('plugins.Datatables', true)` sentence on the blade file where you expect to use the component.
 
 # Modal
 
@@ -222,12 +191,12 @@ This component represents an `AdminLTE` modal notification. The following attrib
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 disable-animations | Disables the show/hide modal fade animations | any | `null` | no
-icon | A `fontawesome` icon for the modal header | string | `null` | no
+icon | An icon for the modal header (Bootstrap Icons by default) | string | `null` | no
 id | The modal `id` attribute, used to target the modal and show it | string | - | **yes**
 scrollable | Enables a scrollable modal. Use this when the modal content is large | any | `null` | no
 size | The modal size (`sm`, `lg` or `xl`). | string | `null` | no
 static-backdrop | Enables a static backdrop. The modal will not close when clicking outside it | any | `null` | no
-theme | The modal theme: light, dark, primary, secondary, info, success, warning, danger or any other `AdminLTE` color like lightblue or teal | string | `null` | no
+theme | The modal theme, rendered as a `text-bg-{theme}` class on the modal header: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal | string | `null` | no
 title | The title for the modal header | string | `null` | no
 v-centered | Enables a vertically centered modal | any | `null` | no
 
@@ -236,38 +205,49 @@ Any other attribute you define will be directly inserted into the underlying `di
 The modal also defines the next extra **slot** (the main slot is used for the modal body content):
 - **footerSlot**: Use this slot to customize the modal footer.
 
+> [!Important]
+> The modal is built with the **Bootstrap 5** markup and data attributes: use `data-bs-toggle="modal"` and `data-bs-target="#id"` to open it, and `data-bs-dismiss="modal"` to close it (the Bootstrap 4 `data-toggle`, `data-target` and `data-dismiss` attributes do not work anymore). The close control of the header is a `button.btn-close`, and the `static-backdrop` attribute emits `data-bs-backdrop="static"` together with `data-bs-keyboard="false"`.
+
+> [!Note]
+> Bootstrap 5.3 resolves the color of the `btn-close` control from the active color mode, so when the theme paints a dark header (`primary`, `secondary`, `success`, `danger`, `dark`, `indigo`, `navy`, `purple`, `violet`, `fuchsia`, `pink`, `maroon`, `olive`, `lime`, `teal`, `blue`, `green`, `red` or `gray-dark`) the component adds `data-bs-theme="dark"` to the header, so that the close icon keeps enough contrast.
+
+> [!Warning]
+> Unlike the widget components, this component does **not** map the **AdminLTE v3** color names. A `theme="lightblue"` value renders a literal `text-bg-lightblue` class, which only exists when the `assets.extended_colors_v3_aliases` option is enabled. Prefer the v4 names (`sky` instead of `lightblue`, `pink` instead of `maroon`) with `assets.extended_colors` enabled.
+
 ### Examples
 
 ```blade
 {{-- Minimal --}}
 <x-adminlte-modal id="modalMin" title="Minimal"/>
 {{-- Example button to open modal --}}
-<x-adminlte-button label="Open Modal" data-toggle="modal" data-target="#modalMin"/>
+<x-adminlte-button label="Open Modal" data-bs-toggle="modal" data-bs-target="#modalMin"/>
 ```
 ![Minimal Modal Component](/imgs/components/tool_components/minimal-modal-component.png)
 
 ```blade
 {{-- Themed --}}
-<x-adminlte-modal id="modalPurple" title="Theme Purple" theme="purple"
-    icon="fas fa-bolt" size='lg' disable-animations>
-    This is a purple theme modal without animations.
+<x-adminlte-modal id="modalViolet" title="Theme Violet" theme="violet"
+    icon="bi bi-lightning-charge-fill" size='lg' disable-animations>
+    This is a violet theme modal without animations.
 </x-adminlte-modal>
 {{-- Example button to open modal --}}
-<x-adminlte-button label="Open Modal" data-toggle="modal" data-target="#modalPurple" class="bg-purple"/>
+<x-adminlte-button label="Open Modal" data-bs-toggle="modal" data-bs-target="#modalViolet"
+    class="text-bg-violet"/>
 ```
 ![Themed Modal Component](/imgs/components/tool_components/themed-modal-component.png)
 
 ```blade
 {{-- Custom --}}
 <x-adminlte-modal id="modalCustom" title="Account Policy" size="lg" theme="teal"
-    icon="fas fa-bell" v-centered static-backdrop scrollable>
+    icon="bi bi-bell" v-centered static-backdrop scrollable>
     <div style="height:800px;">Read the account policies...</div>
     <x-slot name="footerSlot">
-        <x-adminlte-button class="mr-auto" theme="success" label="Accept"/>
-        <x-adminlte-button theme="danger" label="Dismiss" data-dismiss="modal"/>
+        <x-adminlte-button class="me-auto" theme="success" label="Accept"/>
+        <x-adminlte-button theme="danger" label="Dismiss" data-bs-dismiss="modal"/>
     </x-slot>
 </x-adminlte-modal>
 {{-- Example button to open modal --}}
-<x-adminlte-button label="Open Modal" data-toggle="modal" data-target="#modalCustom" class="bg-teal"/>
+<x-adminlte-button label="Open Modal" data-bs-toggle="modal" data-bs-target="#modalCustom"
+    class="text-bg-teal"/>
 ```
 ![Custom Modal Component](/imgs/components/tool_components/custom-modal-component.png)

@@ -1,29 +1,49 @@
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 
-@php( $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home') )
+@php
+    $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home');
 
-@if (config('adminlte.use_route_url', false))
-    @php( $dashboard_url = $dashboard_url ? route($dashboard_url) : '' )
+    if (config('adminlte.use_route_url', false)) {
+        $dashboard_url = $dashboard_url ? route($dashboard_url) : '';
+    } else {
+        $dashboard_url = $dashboard_url ? url($dashboard_url) : '';
+    }
+
+    $logoImg = asset(config('adminlte.logo_img', 'vendor/adminlte/dist/assets/img/AdminLTELogo.png'));
+    $logoImgAlt = config('adminlte.logo_img_alt', 'AdminLTE');
+    $logoImgClass = config('adminlte.logo_img_class', 'brand-image opacity-75 shadow');
+    $logoText = config('adminlte.logo', '<b>Admin</b>LTE');
+    $brandClass = config('adminlte.classes_brand', '');
+    $brandTextClass = config('adminlte.classes_brand_text', 'fw-light');
+@endphp
+
+@if($layoutHelper->isLayoutTopnavEnabled())
+
+    {{-- Navbar Brand (topnav layout) --}}
+    <a href="{{ $dashboard_url }}" class="navbar-brand d-flex align-items-center {{ $brandClass }}">
+
+        {{-- Brand logo --}}
+        <img src="{{ $logoImg }}" alt="{{ $logoImgAlt }}" width="30" height="30"
+             class="{{ $logoImgClass }} me-2">
+
+        {{-- Brand text --}}
+        <span class="{{ $brandTextClass }}">{!! $logoText !!}</span>
+
+    </a>
+
 @else
-    @php( $dashboard_url = $dashboard_url ? url($dashboard_url) : '' )
+
+    {{-- Sidebar Brand --}}
+    <div class="sidebar-brand">
+        <a href="{{ $dashboard_url }}" class="brand-link {{ $brandClass }}">
+
+            {{-- Brand logo --}}
+            <img src="{{ $logoImg }}" alt="{{ $logoImgAlt }}" class="{{ $logoImgClass }}">
+
+            {{-- Brand text --}}
+            <span class="brand-text {{ $brandTextClass }}">{!! $logoText !!}</span>
+
+        </a>
+    </div>
+
 @endif
-
-<a href="{{ $dashboard_url }}"
-    @if($layoutHelper->isLayoutTopnavEnabled())
-        class="navbar-brand {{ config('adminlte.classes_brand') }}"
-    @else
-        class="brand-link {{ config('adminlte.classes_brand') }}"
-    @endif>
-
-    {{-- Small brand logo --}}
-    <img src="{{ asset(config('adminlte.logo_img', 'vendor/adminlte/dist/img/AdminLTELogo.png')) }}"
-         alt="{{ config('adminlte.logo_img_alt', 'AdminLTE') }}"
-         class="{{ config('adminlte.logo_img_class', 'brand-image img-circle elevation-3') }}"
-         style="opacity:.8">
-
-    {{-- Brand text --}}
-    <span class="brand-text font-weight-light {{ config('adminlte.classes_brand_text') }}">
-        {!! config('adminlte.logo', '<b>Admin</b>LTE') !!}
-    </span>
-
-</a>

@@ -15,6 +15,19 @@ class Modal extends Component
     protected $mSizes = ['sm', 'lg', 'xl'];
 
     /**
+     * The set of themes that provide a dark background. On these themes, the
+     * close button of the modal header requires the dark color mode in order
+     * to get enough contrast.
+     *
+     * @var array
+     */
+    protected $darkThemes = [
+        'primary', 'secondary', 'success', 'danger', 'dark', 'indigo',
+        'navy', 'purple', 'violet', 'fuchsia', 'pink', 'maroon', 'olive',
+        'lime', 'teal', 'blue', 'green', 'red', 'gray-dark',
+    ];
+
+    /**
      * The modal ID attribute, used to target the modal and show it.
      *
      * @var string
@@ -29,7 +42,7 @@ class Modal extends Component
     public $title;
 
     /**
-     * A Font Awesome icon for the modal header.
+     * An icon for the modal header (a Bootstrap Icon by default).
      *
      * @var string
      */
@@ -151,10 +164,26 @@ class Modal extends Component
         $classes = ['modal-header'];
 
         if (isset($this->theme)) {
-            $classes[] = "bg-{$this->theme}";
+            $classes[] = "text-bg-{$this->theme}";
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the data attributes for the modal header. Bootstrap 5.3 resolves
+     * the close button color from the active color mode, so a dark themed
+     * header needs to declare the dark color mode explicitly.
+     *
+     * @return string
+     */
+    public function makeModalHeaderData()
+    {
+        if (isset($this->theme) && in_array($this->theme, $this->darkThemes)) {
+            return 'data-bs-theme="dark"';
+        }
+
+        return '';
     }
 
     /**
@@ -164,13 +193,9 @@ class Modal extends Component
      */
     public function makeCloseButtonClass()
     {
-        $classes = ['bg-secondary'];
+        $theme = $this->theme ?? 'secondary';
 
-        if (isset($this->theme)) {
-            $classes = ["bg-{$this->theme}"];
-        }
-
-        return implode(' ', $classes);
+        return "btn-{$theme}";
     }
 
     /**

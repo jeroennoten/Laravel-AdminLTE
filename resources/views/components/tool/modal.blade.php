@@ -1,18 +1,18 @@
 <div {{ $attributes->merge(['class' => $makeModalClass(), 'id' => $id]) }}
-     @isset($staticBackdrop) data-backdrop="static" data-keyboard="false" @endisset>
+     tabindex="-1" aria-labelledby="{{ $id }}-title" aria-hidden="true"
+     @isset($staticBackdrop) data-bs-backdrop="static" data-bs-keyboard="false" @endisset>
 
     <div class="{{ $makeModalDialogClass() }}">
     <div class="modal-content">
 
         {{--Modal header --}}
-        <div class="{{ $makeModalHeaderClass() }}">
-            <h4 class="modal-title">
-                @isset($icon)<i class="{{ $icon }} mr-2"></i>@endisset
+        <div class="{{ $makeModalHeaderClass() }}" {!! $makeModalHeaderData() !!}>
+            <h4 class="modal-title" id="{{ $id }}-title">
+                @isset($icon)<i class="{{ $icon }} me-2"></i>@endisset
                 @isset($title){{ $title }}@endisset
             </h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="{{ __('adminlte::adminlte.close') }}"></button>
         </div>
 
         {{-- Modal body --}}
@@ -26,7 +26,7 @@
                 {{ $footerSlot }}
             @else
                 <x-adminlte-button class="{{ $makeCloseButtonClass }}"
-                    data-dismiss="modal" label="Close"/>
+                    data-bs-dismiss="modal" :label="__('adminlte::adminlte.close')"/>
             @endisset
         </div>
 

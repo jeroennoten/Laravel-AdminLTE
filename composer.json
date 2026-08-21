@@ -1,7 +1,12 @@
 {
   "name": "jeroennoten/laravel-adminlte",
   "description": "Easy AdminLTE integration with Laravel",
-  "keywords": ["laravel", "adminlte", "admin", "administrator"],
+  "keywords": [
+    "laravel",
+    "adminlte",
+    "admin",
+    "administrator"
+  ],
   "license": "MIT",
   "authors": [
     {
@@ -21,19 +26,19 @@
     ]
   },
   "extra": {
-      "laravel": {
-          "providers": [
-              "JeroenNoten\\LaravelAdminLte\\AdminLteServiceProvider"
-          ]
-      }
+    "laravel": {
+      "providers": [
+        "JeroenNoten\\LaravelAdminLte\\AdminLteServiceProvider"
+      ]
+    }
   },
   "require": {
-    "laravel/framework": ">=8.0",
-    "php": ">=7.3",
-    "almasaeed2010/adminlte": "3.2.*"
+    "php": "^8.2",
+    "laravel/framework": "^12.0|^13.0",
+    "almasaeed2010/adminlte": "^4.0"
   },
   "require-dev": {
-    "phpunit/phpunit": ">=9.1",
-    "orchestra/testbench": ">=6.0"
+    "phpunit/phpunit": "^11.0|^12.0",
+    "orchestra/testbench": "^10.0|^11.0"
   }
 }

@@ -4,6 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\VendorAssetsResource;
 
 class AdminLteUpdateCommand extends Command
 {
@@ -44,7 +45,17 @@ class AdminLteUpdateCommand extends Command
      */
     public function handle()
     {
-        $options = ['--force' => true, '--only' => ['assets']];
+        // Update the AdminLTE assets. The third party assets are only updated
+        // when they were previously published, since they are optional (the
+        // package provides a CDN fallback for all of them).
+
+        $resources = ['assets'];
+
+        if ((new VendorAssetsResource())->exists()) {
+            $resources[] = 'vendor_assets';
+        }
+
+        $options = ['--force' => true, '--only' => $resources];
 
         $this->call('adminlte:install', $options);
 

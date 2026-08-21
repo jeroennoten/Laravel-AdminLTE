@@ -2,9 +2,9 @@ This package provides some artisan commands in order to manage and publish its r
 
 ### Required Resources:
 
-- __`assets`__: The set of assets required by the AdminLTE package, including the AdminLTE package distribution files and its dependencies, like `Bootstrap`, `jQuery` and `Font Awesome`.
+- __`assets`__: The AdminLTE v4 distribution files: the stylesheets (including the RTL and the extended colors variants), the scripts and the default logo image.
 
-  **Target:** The assets will be installed inside the `public/vendor` folder of your Laravel project.
+  **Target:** The assets will be installed inside the `public/vendor/adminlte` folder of your Laravel project.
 
 - __`config`__: The package configuration file.
 
@@ -15,6 +15,10 @@ This package provides some artisan commands in order to manage and publish its r
   **Target:** The translations files will be published in the `resources/lang/vendor/adminlte/` folder of your Laravel project, or in `lang/vendor/adminlte` folder for `Laravel 9+` versions.
 
 ### Optional Resources:
+
+- __`vendor_assets`__: The third party assets that AdminLTE v4 requires at runtime but does not distribute: the `Bootstrap` JavaScript bundle, the `Bootstrap Icons` font and `OverlayScrollbars`. They are published from the `node_modules` folder of your project, so install them first with `npm i bootstrap bootstrap-icons overlayscrollbars`. When they are not available, the resource is skipped and the package falls back to the CDN locations defined on the [assets configuration](/sections/configuration/other#assets).
+
+  **Target:** The assets will be installed inside the `public/vendor/bootstrap`, `public/vendor/bootstrap-icons` and `public/vendor/overlayscrollbars` folders of your Laravel project.
 
 - __`auth_views`__: A set of AdminLTE styled authentication views to replace the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) package.
 
@@ -42,12 +46,12 @@ You can install all the required and some additional package resources using the
 
 - `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (all resources).
 
-- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views** or **components**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
+- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views** or **components**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
   ```sh
   php artisan adminlte:install --only=config --only=main_views
   ```
 
-- `--with=*`: Use this option to install with additional resources, the available resources are: **main_views**, **auth_views**, **auth_routes** or **components**. This option can be used multiple times, examples:
+- `--with=*`: Use this option to install with additional resources, the available resources are: **vendor_assets**, **main_views**, **auth_views**, **auth_routes** or **components**. This option can be used multiple times, examples:
   ```sh
   php artisan adminlte:install --with=auth_views --with=auth_routes
   php artisan adminlte:install --with=main_views
@@ -81,7 +85,10 @@ php artisan adminlte:remove main_views auth_views components
 
 ## The `adminlte:plugins` Command
 
-If you won't use the content delivery network (`CDN`) to include new plugins, then you are able to manage some optional plugins that already comes with the underlying **AdminLTE** package with the `php artisan adminlte:plugins` command.
+If you won't use a content delivery network (`CDN`) to include the extra plugins, you can manage them locally with the `php artisan adminlte:plugins` command.
+
+> [!Important]
+> AdminLTE v4 does not bundle any third party plugin any more (the AdminLTE v3 `plugins/` folder is gone). The plugins catalogue of this command now publishes the AdminLTE v4 recommended, jQuery free libraries from the `node_modules` folder of your project, so you have to install the related npm package first. When a package is missing, the command tells you the exact `npm i` command to run. The AdminLTE v3 plugin keys are still recognized and the command reports their v4 replacement.
 You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check which plugins are available by executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#the-adminlte-status-command)). Note that after a plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](/sections/configuration/plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
@@ -91,7 +98,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
   ```
 - List the status of the specified plugins:
   ```sh
-  php artisan adminlte:plugins --plugin=datatables --plugin=select2
+  php artisan adminlte:plugins --plugin=flatpickr --plugin=tomSelect
   ```
 - Install all the available plugins:
   ```sh
@@ -99,7 +106,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
   ```
 - Install only Pace Progress & Select2 plugins:
   ```sh
-  php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2
+  php artisan adminlte:plugins install --plugin=flatpickr --plugin=quill
   ```
 - Remove all the available plugins:
   ```sh
@@ -107,7 +114,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
   ```
 - Remove only Select2 plugin:
   ```sh
-  php artisan adminlte:plugins remove --plugin=select2
+  php artisan adminlte:plugins remove --plugin=quill
   ```
 
 ### Command Arguments

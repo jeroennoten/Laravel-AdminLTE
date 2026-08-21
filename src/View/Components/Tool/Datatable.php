@@ -227,7 +227,7 @@ class Datatable extends Component
         $printBtn = [
             'extend' => 'print',
             'className' => 'btn-default',
-            'text' => '<i class="fas fa-fw fa-lg fa-print"></i>',
+            'text' => '<i class="bi bi-printer"></i>',
             'titleAttr' => 'Print',
             'exportOptions' => ['columns' => $colSelector],
         ];
@@ -237,7 +237,7 @@ class Datatable extends Component
         $csvBtn = [
             'extend' => 'csv',
             'className' => 'btn-default',
-            'text' => '<i class="fas fa-fw fa-lg fa-file-csv text-primary"></i>',
+            'text' => '<i class="bi bi-filetype-csv text-primary"></i>',
             'titleAttr' => 'Export to CSV',
             'exportOptions' => ['columns' => $colSelector],
         ];
@@ -247,7 +247,7 @@ class Datatable extends Component
         $excelBtn = [
             'extend' => 'excel',
             'className' => 'btn-default',
-            'text' => '<i class="fas fa-fw fa-lg fa-file-excel text-success"></i>',
+            'text' => '<i class="bi bi-file-earmark-excel text-success"></i>',
             'titleAttr' => 'Export to Excel',
             'exportOptions' => ['columns' => $colSelector],
         ];
@@ -257,7 +257,7 @@ class Datatable extends Component
         $pdfBtn = [
             'extend' => 'pdf',
             'className' => 'btn-default',
-            'text' => '<i class="fas fa-fw fa-lg fa-file-pdf text-danger"></i>',
+            'text' => '<i class="bi bi-file-earmark-pdf text-danger"></i>',
             'titleAttr' => 'Export to PDF',
             'exportOptions' => ['columns' => $colSelector],
         ];

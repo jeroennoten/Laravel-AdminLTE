@@ -8,7 +8,7 @@
 
 @section('input_group_item')
 
-    {{-- Select --}}
+    {{-- Select (Bootstrap 5 uses the 'form-select' class) --}}
     <select id="{{ $id }}" name="{{ $name }}"
         {{ $attributes->merge(['class' => $makeItemClass()]) }}>
         {{ $slot }}
@@ -22,14 +22,19 @@
 @push('js')
 <script>
 
-    $(() => {
+    document.addEventListener('DOMContentLoaded', function () {
 
-        let oldOptions = @json(collect($getOldValue($errorKey)));
+        const el = document.getElementById(@json($id));
 
-        $('#{{ $id }} option').each(function()
-        {
-            let value = $(this).val() || $(this).text();
-            $(this).prop('selected', oldOptions.includes(value));
+        if (! el) {
+            return;
+        }
+
+        const oldOptions = @json(array_values((array) $getOldValue($errorKey, [])));
+
+        Array.from(el.options).forEach(function (opt) {
+            const value = opt.value || opt.text;
+            opt.selected = oldOptions.map(String).includes(String(value));
         });
     });
 

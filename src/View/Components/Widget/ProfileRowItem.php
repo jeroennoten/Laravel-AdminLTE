@@ -7,6 +7,8 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class ProfileRowItem extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The title/header for the item.
      *
@@ -29,7 +31,7 @@ class ProfileRowItem extends Component
     public $textTooltip;
 
     /**
-     * A Font Awesome icon for the item.
+     * A Bootstrap Icon for the item.
      *
      * @var string
      */
@@ -46,8 +48,8 @@ class ProfileRowItem extends Component
      * The badge theme for the text attribute. When used, the text attribute
      * will be wrapped inside a badge of the configured theme. Available themes
      * are: light, dark, primary, secondary, info, success, warning, danger or
-     * any other AdminLTE color like lighblue or teal. You can also prepend
-     * the 'pill-' token for a pill badge, for example: 'pill-info'.
+     * any color of the AdminLTE extended palette like sky or teal. You can
+     * also prepend the 'pill-' token for a pill badge, e.g: 'pill-info'.
      *
      * @var string
      */
@@ -95,15 +97,20 @@ class ProfileRowItem extends Component
      */
     public function makeTextWrapperClass()
     {
-        $classes = ['float-right'];
+        $classes = ['float-end'];
 
         if (isset($this->badge)) {
-            $badgeMode = str_starts_with($this->badge, 'pill-')
-                ? 'badge-pill'
-                : 'badge';
+            $isPill = str_starts_with($this->badge, 'pill-');
+            $badgeTheme = $this->resolveThemeColor(
+                str_replace('pill-', '', $this->badge)
+            );
 
-            $badgeTheme = str_replace('pill-', '', $this->badge);
-            $classes[] = "{$badgeMode} bg-{$badgeTheme}";
+            $classes[] = 'badge';
+            $classes[] = "text-bg-{$badgeTheme}";
+
+            if ($isPill) {
+                $classes[] = 'rounded-pill';
+            }
         }
 
         return implode(' ', $classes);

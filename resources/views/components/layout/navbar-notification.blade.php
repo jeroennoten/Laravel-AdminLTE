@@ -16,7 +16,7 @@
     {{-- Dropdown Menu --}}
     @if($enableDropdownMode)
 
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-end">
 
             {{-- Custom dropdown content provided by external source --}}
             <div class="adminlte-dropdown-content"></div>
@@ -29,7 +29,7 @@
                 @isset($dropdownFooterLabel)
                     {{ $dropdownFooterLabel }}
                 @else
-                    <i class="fas fa-lg fa-search-plus"></i>
+                    <i class="bi bi-search"></i>
                 @endisset
             </a>
 
@@ -45,36 +45,21 @@
 @push('js')
 <script>
 
-    $(() => {
+    document.addEventListener('DOMContentLoaded', () => {
 
-        // Method to get new notification data from the configured url.
-
-        let updateNotification = (nLink) =>
-        {
-            // Make an ajax call to the configured url. The response should be
-            // an object with the new data. The supported properties are:
-            // 'label', 'label_color', 'icon_color' and 'dropdown'.
-
-            $.ajax({
-                url: "{{ $makeUpdateUrl() }}"
-            })
-            .done((data) => {
-                nLink.update(data);
-            })
-            .fail(function(jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR, textStatus, errorThrown);
-            });
+        const updateNotification = (nLink) => {
+            fetch("{{ $makeUpdateUrl() }}")
+                .then((response) => response.json())
+                .then((data) => nLink.update(data))
+                .catch((err) => console.log(err));
         };
 
-        // First load of the notification data.
-
-        let nLink = new _AdminLTE_NavbarNotification("{{ $id }}");
+        const nLink = new _AdminLTE_NavbarNotification("{{ $id }}");
         updateNotification(nLink);
 
-        // Periodically update the notification.
-
         setInterval(updateNotification, {{ $makeUpdatePeriod() }}, nLink);
-    })
+
+    });
 
 </script>
 @endpush
@@ -88,63 +73,49 @@
 
     class _AdminLTE_NavbarNotification {
 
-        /**
-         * Constructor.
-         *
-         * target: The id of the target notification link.
-         */
         constructor(target)
         {
             this.target = target;
         }
 
-        /**
-         * Update the notification link.
-         *
-         * data: An object with the new data.
-         */
         update(data)
         {
-            // Check if target and data exists.
+            const t = document.querySelector(`li#${this.target}`);
 
-            let t = $(`li#${this.target}`);
-
-            if (t.length <= 0 || ! data) {
+            if (! t || ! data) {
                 return;
             }
 
-            let badge = t.find(".navbar-badge");
-            let icon = t.find(".nav-link > i");
-            let dropdown = t.find(".adminlte-dropdown-content");
+            const badge = t.querySelector('.navbar-badge');
+            const icon = t.querySelector('.nav-link > i');
+            const dropdown = t.querySelector('.adminlte-dropdown-content');
 
             // Update the badge label.
 
             if (data.label && data.label > 0) {
-                badge.html(data.label);
+                badge.innerHTML = data.label;
             } else {
-                badge.empty();
+                badge.innerHTML = '';
             }
 
-            // Update the badge color.
+            // Update the badge color (Bootstrap 5: bg-* instead of badge-*).
 
             if (data.label_color) {
-                badge.removeClass((idx, classes) => {
-                    return (classes.match(/(^|\s)badge-\S+/g) || []).join(' ');
-                }).addClass(`badge-${data.label_color} badge-pill`);
+                badge.className = badge.className.replace(/\bbg-\S+/g, '');
+                badge.classList.add(`bg-${data.label_color}`);
             }
 
             // Update the icon color.
 
             if (data.icon_color) {
-                icon.removeClass((idx, classes) => {
-                    return (classes.match(/(^|\s)text-\S+/g) || []).join(' ');
-                }).addClass(`text-${data.icon_color}`);
+                icon.className = icon.className.replace(/\btext-\S+/g, '');
+                icon.classList.add(`text-${data.icon_color}`);
             }
 
             // Update the dropdown content.
 
-            if (data.dropdown && dropdown.length > 0) {
-                dropdown.html(data.dropdown);
+            if (data.dropdown && dropdown) {
+                dropdown.innerHTML = data.dropdown;
             }
         }
     }
