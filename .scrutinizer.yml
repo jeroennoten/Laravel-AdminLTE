@@ -1,0 +1,36 @@
+# The test suite runs on GitHub Actions, this configuration only keeps the
+# static analysis of Scrutinizer. Note the code coverage upload was removed
+# together with the support for the unmaintained Laravel versions, so the
+# external code coverage must stay disabled here, otherwise every inspection
+# waits for a coverage report that is never sent.
+build:
+    environment:
+        php: 8.3
+
+    nodes:
+        analysis:
+            tests:
+                override:
+                    - php-scrutinizer-run
+
+filter:
+    excluded_paths: [tests/*, docs/*]
+
+checks:
+    php:
+        remove_extra_empty_lines: true
+        remove_php_closing_tag: true
+        remove_trailing_whitespace: true
+        fix_use_statements:
+            remove_unused: true
+            preserve_multiple: false
+            preserve_blanklines: true
+            order_alphabetically: true
+        fix_php_opening_tag: true
+        fix_linefeed: true
+        fix_line_ending: true
+        fix_identation_4spaces: true
+        fix_doc_comments: true
+
+tools:
+    external_code_coverage: false

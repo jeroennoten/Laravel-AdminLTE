@@ -2,12 +2,16 @@ name: run-tests
 
 on: [push, pull_request]
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   tests:
     runs-on: ubuntu-latest
 
     strategy:
-      fail-fast: true
+      fail-fast: false
 
       # Only the currently supported Laravel and PHP versions are tested.
       # Laravel 12 (security fixes until Feb 2027) is the minimum supported
