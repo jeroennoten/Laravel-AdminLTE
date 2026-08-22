@@ -9,6 +9,14 @@ build:
         # analysis only parses the sources.
         php: 8.2
 
+    # The build image defaults to a composer version that can not resolve the
+    # current requirements of the package (Laravel 12/13), so the dependency
+    # installation is defined explicitly here.
+    dependencies:
+        override:
+            - composer self-update --2
+            - composer install --no-interaction --no-progress --prefer-dist
+
     nodes:
         analysis:
             tests:
