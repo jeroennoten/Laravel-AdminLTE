@@ -61,11 +61,11 @@
 
     @endif
 
-    {{-- Profile footer / Profile Items --}}
-    @if(! $slot->isEmpty())
-        <div class="{{ $makeFooterClass() }}">
-            <div class="row">{{ $slot }}</div>
-        </div>
-    @endif
+    {{-- Profile footer / Profile Items. Note the footer is always rendered,
+         since it reserves the space of the (absolutely positioned) user image
+         on the AdminLTE v4 widget. --}}
+    <div class="{{ $makeFooterClass() }}">
+        <div class="row">{{ $slot }}</div>
+    </div>
 
 </div>

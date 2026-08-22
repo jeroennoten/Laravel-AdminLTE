@@ -115,8 +115,12 @@ class NavbarNotification extends Component
     {
         $attrs = ['class' => 'nav-link'];
 
+        // On the dropdown mode, the anchor only toggles the dropdown. Note a
+        // href provided by the user always takes precedence over this default.
+
         if ($this->enableDropdownMode) {
             $attrs['data-bs-toggle'] = 'dropdown';
+            $attrs['href'] = '#';
         }
 
         return $attrs;
@@ -145,7 +149,10 @@ class NavbarNotification extends Component
      */
     public function makeBadgeClass()
     {
-        $classes = ['badge navbar-badge fw-bold fs-7 rounded-pill'];
+        // Note the '.navbar-badge' class already provides the size, the
+        // weight and the position of the badge on AdminLTE v4.
+
+        $classes = ['navbar-badge badge'];
 
         if (! empty($this->badgeColor)) {
             $classes[] = "text-bg-{$this->badgeColor}";

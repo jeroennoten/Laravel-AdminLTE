@@ -166,8 +166,10 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('card-teal', $cClass);
         $this->assertStringContainsString('card-outline', $cClass);
 
+        // The AdminLTE v4 outline cards keep a plain title.
+
         $ctClass = $component->makeCardTitleClass();
-        $this->assertStringContainsString('text-teal', $ctClass);
+        $this->assertEquals('card-title', $ctClass);
     }
 
     /*

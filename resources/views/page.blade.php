@@ -3,11 +3,6 @@
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
 @inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\PreloaderHelper')
 
-@section('adminlte_css')
-    @stack('css')
-    @yield('css')
-@stop
-
 @section('classes_body', $layoutHelper->makeBodyClasses())
 
 @section('body_data', $layoutHelper->makeBodyData())
@@ -57,6 +52,15 @@
         @endif
 
     </div>
+@stop
+
+{{-- Note the stacks are yielded after the body section, otherwise the
+     content pushed from the body (for example by the iframe mode) would be
+     snapshotted before it exists. --}}
+
+@section('adminlte_css')
+    @stack('css')
+    @yield('css')
 @stop
 
 @section('adminlte_js')

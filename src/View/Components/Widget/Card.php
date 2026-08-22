@@ -211,14 +211,10 @@ class Card extends Component
      */
     public function makeCardTitleClass()
     {
-        $classes = ['card-title'];
-        $theme = $this->resolveThemeColor($this->theme);
+        // Note the AdminLTE v4 outline cards keep a plain title, the theme
+        // color is only applied to the top border of the card.
 
-        if (! empty($theme) && $this->themeMode === 'outline') {
-            $classes[] = "text-{$theme}";
-        }
-
-        return implode(' ', $classes);
+        return 'card-title';
     }
 
     /**

@@ -639,6 +639,7 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-select2.min.css',
+                    'rtl' => '//cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-select2.rtl.min.css',
                 ],
             ],
         ],

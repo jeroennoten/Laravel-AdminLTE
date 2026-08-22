@@ -345,7 +345,10 @@
                 tab.classList.toggle('active', isActive);
                 tab.setAttribute('aria-selected', isActive ? 'true' : 'false');
                 tab.closest('.nav-item')?.classList.toggle('active', isActive);
-                tab.scrollIntoView?.({block: 'nearest', inline: 'nearest'});
+
+                if (isActive) {
+                    tab.scrollIntoView?.({block: 'nearest', inline: 'nearest'});
+                }
             });
 
             panel.classList.add('active', 'show');

@@ -255,13 +255,24 @@ class LayoutHelper
      */
     public static function makeSidebarData()
     {
+        $attrs = [];
+
+        // Add the color mode of the sidebar.
+
         $theme = config('adminlte.sidebar_theme', 'dark');
 
-        if (! in_array($theme, ['light', 'dark'])) {
-            return '';
+        if (in_array($theme, ['light', 'dark'])) {
+            $attrs[] = "data-bs-theme=\"{$theme}\"";
         }
 
-        return "data-bs-theme=\"{$theme}\"";
+        // Add the attribute that makes the AdminLTE v4 PushMenu plugin to
+        // remember the collapsed state of the sidebar between page loads.
+
+        if (config('adminlte.sidebar_collapse_remember', false)) {
+            $attrs[] = 'data-enable-persistence="true"';
+        }
+
+        return trim(implode(' ', $attrs));
     }
 
     /**

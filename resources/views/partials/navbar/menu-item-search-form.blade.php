@@ -3,9 +3,9 @@
 @php($searchId = $item['id'] ?? 'navbar-search-input')
 @php($searchLabel = Lang::has('adminlte::adminlte.search') ? __('adminlte::adminlte.search') : 'Search')
 
-<li class="nav-item d-flex align-items-center">
+<li class="nav-item d-none d-md-flex align-items-center">
 
-    <form class="navbar-search" role="search" action="{{ $item['href'] }}"
+    <form class="navbar-search ms-md-3" role="search" action="{{ $item['href'] }}"
           method="{{ $item['method'] }}">
 
         @if(strtolower($item['method']) === 'post')
@@ -36,4 +36,11 @@
 
     </form>
 
+</li>
+
+{{-- On small screens the field above is hidden, so link to the search page --}}
+<li class="nav-item d-md-none">
+    <a class="nav-link" href="{{ $item['href'] }}" aria-label="{{ $searchLabel }}">
+        <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
 </li>

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -261,6 +262,43 @@ class LayoutRenderTest extends TestCase
         $this->assertStringContainsString('iframe-mode', $html);
         $this->assertStringContainsString('data-lte-toggle="iframe"', $html);
         $this->assertStringNotContainsString('data-widget=', $html);
+    }
+
+    public function testRenderIframeModeShipsItsAssets()
+    {
+        $html = View::make('adminlte::page', ['iFrameEnabled' => true])->render();
+
+        // The iframe mode is implemented by the package, so its styles and its
+        // script must reach the document. Note the styles are pushed from the
+        // body, so this also covers the order in which the stacks are yielded.
+
+        $head = explode('</head>', $html)[0];
+
+        $this->assertStringContainsString('.iframe-mode', $head);
+        $this->assertStringContainsString('adminlte-iframe-spin', $head);
+        $this->assertStringContainsString('data-lte-toggle="iframe-tab"', $html);
+        $this->assertStringContainsString('AdminLteIFrame', $html);
+    }
+
+    public function testRenderComponentAssetsReachTheHead()
+    {
+        // Render a page whose content uses a component that pushes styles.
+        // Note the component has to be rendered inside the page render, which
+        // is what an application does when it extends the layout.
+
+        View::flushSections();
+
+        $html = Blade::render(
+            "@extends('adminlte::page')\n"
+            ."@section('content')<x-adminlte-input-color name=\"color\" label=\"Color\"/>@endsection"
+        );
+
+        $head = explode('</head>', $html)[0];
+
+        $this->assertStringContainsString('.input-group > .form-control-color', $head);
+        $this->assertStringContainsString('form-control-color', $html);
+
+        View::flushSections();
     }
 
     public function testRenderAuthViews()

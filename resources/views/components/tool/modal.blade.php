@@ -25,7 +25,7 @@
             @isset($footerSlot)
                 {{ $footerSlot }}
             @else
-                <x-adminlte-button class="{{ $makeCloseButtonClass }}"
+                <x-adminlte-button :theme="$theme ?? 'secondary'"
                     data-bs-dismiss="modal" :label="__('adminlte::adminlte.close')"/>
             @endisset
         </div>

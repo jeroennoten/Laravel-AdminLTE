@@ -26,8 +26,10 @@
         </div>
     @endif
 
-    {{-- Main Content --}}
-    <div class="app-content">
+    {{-- Main Content. Note the AdminLTE v4 reference layouts always provide a
+         content header, and the top spacing of the content comes from it. So,
+         when there is no content header, the spacing is added here. --}}
+    <div class="app-content @unless(View::hasSection('content_header')) pt-3 @endunless">
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
             @stack('content')
             @yield('content')

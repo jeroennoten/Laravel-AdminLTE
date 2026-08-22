@@ -3,13 +3,15 @@
 <li class="{{ $makeListItemClass() }}" id="{{ $id }}">
 
     {{-- Link --}}
-    <a @if($enableDropdownMode) href="" @endif {{ $attributes->merge($makeAnchorDefaultAttrs()) }}>
+    <a {{ $attributes->merge($makeAnchorDefaultAttrs()) }}>
 
         {{-- Icon --}}
-        <i class="{{ $makeIconClass() }}"></i>
+        <i class="{{ $makeIconClass() }}" aria-hidden="true"></i>
 
         {{-- Badge --}}
-        <span class="{{ $makeBadgeClass() }}">{{ $badgeLabel }}</span>
+        @isset($badgeLabel)
+            <span class="{{ $makeBadgeClass() }}">{{ $badgeLabel }}</span>
+        @endisset
 
     </a>
 

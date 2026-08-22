@@ -106,7 +106,10 @@ class InputSwitch extends InputGroupComponent
      */
     public function makeSwitchWrapperClass()
     {
-        return 'form-check form-switch d-flex align-items-center ps-0 gap-2';
+        // Note the Bootstrap 5.3 switch pairs a left padding on the wrapper
+        // with a negative margin on the input, so the padding must be kept.
+
+        return 'form-check form-switch';
     }
 
     /**

@@ -35,7 +35,9 @@
     </a>
 
     {{-- Menu items --}}
-    <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+    {{-- Note only the dropdowns of the right side of the navbar are aligned
+         to the end, as on the AdminLTE v4 reference layouts. --}}
+    <ul class="dropdown-menu @if(! empty($item['topnav_right'])) dropdown-menu-end @endif shadow">
         @each('adminlte::partials.navbar.dropdown-item', $item['submenu'], 'item')
     </ul>
 

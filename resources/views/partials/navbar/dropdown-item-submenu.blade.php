@@ -6,6 +6,19 @@
     the CSS placement of the nested menu is preserved.
 --}}
 
+@once
+@push('css')
+<style>
+    /* AdminLTE v4 sets 'overflow: hidden' on every dropdown menu, which clips
+       the nested submenus (they are placed at 'left: 100%' of their parent).
+       So, the clipping is lifted on the menus that contain a submenu. */
+    .dropdown-menu:has(> .dropdown-submenu) {
+        overflow: visible;
+    }
+</style>
+@endpush
+@endonce
+
 <li @isset($item['id']) id="{{ $item['id'] }}" @endisset class="dropdown-submenu dropdown-hover">
 
     {{-- Menu toggler --}}
@@ -33,7 +46,7 @@
     </a>
 
     {{-- Menu items --}}
-    <ul class="dropdown-menu border-0 shadow">
+    <ul class="dropdown-menu shadow">
         @each('adminlte::partials.navbar.dropdown-item', $item['submenu'], 'item')
     </ul>
 

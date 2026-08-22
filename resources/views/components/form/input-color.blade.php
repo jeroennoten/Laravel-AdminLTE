@@ -19,6 +19,20 @@
 
 @overwrite
 
+@once
+@push('css')
+<style>
+    /* The input group rules of Bootstrap ('flex: 1 1 auto; width: 1%') beat
+       the 3rem swatch width of '.form-control-color', so it is restored here.
+       Otherwise the color swatch stretches over the whole row. */
+    .input-group > .form-control-color {
+        flex: 0 0 auto;
+        width: 3rem;
+    }
+</style>
+@endpush
+@endonce
+
 {{-- Keep the color of the addon icons in sync with the selected color --}}
 
 @push('js')
