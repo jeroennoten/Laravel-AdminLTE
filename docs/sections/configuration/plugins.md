@@ -8,7 +8,7 @@ The `plugins` configuration allows you to setup which additional plugins should 
 - `active`: Boolean to enable/disable the plugin injection on every blade file. When configured to `false` you will need to manually include the plugin on your blade files by using the directive `@section('plugins.PluginName', true)`.
 
 > [!Tip]
-> From package version <Badge type="tip">v3.8.5</Badge> and over, when a plugin is `active` by default, you can disable the injection of the plugin on a particular blade file using the directive `@section('plugins.PluginName', false)`.
+> When a plugin is `active` by default, you can disable the injection of the plugin on a particular blade file using the directive `@section('plugins.PluginName', false)`.
 
 - `files`: An array specifying the plugin files to be included. Each file should be described with another array that can have the next properties:
 
@@ -21,7 +21,10 @@ The `plugins` configuration allows you to setup which additional plugins should 
 The plugin **active** status and the **files** array (even empty) are always required attributes for a plugin. The **files**, when added, need to have a **type** attribute (`'js'` or `'css'` string), an **asset** attribute (`true` or `false`) and also a **location** (`string`) specifying the path or url of the file. When the **asset** attribute is set to `true`, the **location** will be output using the Laravel's `asset()` helper function.
 
 > [!Note]
-> For package versions greater than <Badge type="tip">v3.5.0</Badge>, the **asset** attribute is optional. There is no need to define it when you expect to setup it to the `false` value.
+> The **asset** attribute is optional. There is no need to define it when you expect to setup it to the `false` value.
+
+> [!Warning]
+> A `{version}` placeholder inside a plugin **location** (or inside its `rtl` counterpart) is substituted by the installed **AdminLTE** version, exactly as on the [assets](./other.md#the-adminlte-version-of-the-cdn-locations) configuration. This is useful for the plugins that point to an asset of the AdminLTE distribution, like the shipped `Select2` compatibility theme.
 
 By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [Tom Select](https://tom-select.js.org/), [Tabulator](https://tabulator.info/), [Flatpickr](https://flatpickr.js.org/), [Quill](https://quilljs.com/), [noUiSlider](https://refreshless.com/nouislider/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are configured out-of-the-box with `CDN` files but they are not active. You can activate them by changing the `active` attribute to load it on every page, or instead by adding a `@section(...)` directive in some specific blade file to automatically inject their files. For example, to inject the **Datatables** plugin you can use the following code at the begin of your blade template:
 
@@ -40,17 +43,17 @@ As an example, the current **Datatables** configuration for the package is:
             [
                 'type' => 'js',
                 'asset' => false,
-                'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                'location' => '//cdn.datatables.net/2.1.8/js/dataTables.min.js',
             ],
             [
                 'type' => 'js',
                 'asset' => false,
-                'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                'location' => '//cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js',
             ],
             [
                 'type' => 'css',
                 'asset' => false,
-                'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                'location' => '//cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css',
             ],
         ],
     ],
@@ -88,7 +91,7 @@ In the previous example, the plugin will be injected on every blade file. The ne
 You can change the Pace plugin theme by modifying the `css` file location when using the `CDN` injection.
 
 ```php
-'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/themes/{{color}}/pace-theme-{{theme}}.min.css',
+'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.2.4/themes/{{color}}/pace-theme-{{theme}}.min.css',
 ```
 
 - __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow

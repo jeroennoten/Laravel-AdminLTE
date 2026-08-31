@@ -3,9 +3,12 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Layout;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget\HandlesThemeColors;
 
 class NavbarNotification extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * Constants to define the available url configuration types.
      */
@@ -136,7 +139,7 @@ class NavbarNotification extends Component
         $classes = [$this->icon];
 
         if (! empty($this->iconColor)) {
-            $classes[] = "text-{$this->iconColor}";
+            $classes[] = "text-{$this->resolveThemeColor($this->iconColor)}";
         }
 
         return implode(' ', $classes);
@@ -155,7 +158,7 @@ class NavbarNotification extends Component
         $classes = ['navbar-badge badge'];
 
         if (! empty($this->badgeColor)) {
-            $classes[] = "text-bg-{$this->badgeColor}";
+            $classes[] = "text-bg-{$this->resolveThemeColor($this->badgeColor)}";
         }
 
         return implode(' ', $classes);

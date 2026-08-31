@@ -17,8 +17,6 @@ Now, you will be able to edit the `config/adminlte.php` file and setup the title
 | [User Menu](#user-menu)
 | [URLs](#urls)
 
-
-
 ## Title
 
 This is the default title for your admin panel, and goes into the title tag of your page. However, you can override it per page with the available title section. Optionally, you can also specify a title prefix and/or postfix.
@@ -63,9 +61,6 @@ Favicons could be used easily. There are two different ways to do this. Take in 
 
 ## Google Fonts
 
-> [!Important]
-> The next configuration is only available for package versions greater than <Badge type="tip">v3.8.2</Badge>.
-
 By default, the provided admin panel layout includes some **google fonts**, and you should note that they are an external resource. However, this may introduce performance issues in environments where the internet access is restricted somehow. For those scenarios, you may use the next option to disable the usage of the external **google fonts**.
 
 - __`google_fonts.allowed`__: Whether to allow the inclusion of the external web font used by AdminLTE v4 (`Source Sans 3`). The font source can be changed on the [assets](/sections/configuration/other#assets) configuration.
@@ -83,9 +78,6 @@ The logo is displayed at the upper left corner of your admin panel. You can use 
 
 ## Authentication Logo
 
-> [!Important]
-> The next configuration is only available for package versions greater than <Badge type="tip">v3.8.3</Badge>.
-
 The next options allows you to enable, disable and/or configure the authentication logo. The authentication logo, when enabled, will be shown on the login and register pages as a replacement for the standard logo. When disabled, the standard admin panel logo will be shown on those pages instead.
 
 - __`auth_logo.enabled`__: Whether to enable the authentication logo.
@@ -96,9 +88,6 @@ The next options allows you to enable, disable and/or configure the authenticati
 - __`auth_logo.img.height`__: The height (on pixels) to use for the image.
 
 ## Preloader Animation
-
-> [!Important]
-> The next configuration is only available for package versions greater than <Badge type="tip">v3.8.2</Badge>. The `preloader.mode` configuration is only available for package versions greater than <Badge type="tip">v3.9.4</Badge>.
 
 The next options allows you to enable, disable and configure the preloader animation. The preloader animation, when enabled, will be shown while a page is loading, and then will be hidden automatically.
 
@@ -233,4 +222,4 @@ The next configuration options provides a way to setup the urls for the login, r
 
 - __`disable_darkmode_routes`__
 
-  [**Only from <Badge type="tip">v3.14.0</Badge>**] When set to `true` the dark mode routes won't be registered in your Laravel's application. Please note dark mode routes are needed if you're planning to use the special menu item [Navbar Darkmode Widget](/sections/configuration/special_menu_items#navbar-darkmode-widget).
+  When set to `true` the dark mode routes won't be registered in your Laravel's application. Please note these routes are needed when [`color_mode.remember`](/sections/configuration/layout_and_styling#color-mode) is disabled, since the package then drives the color mode with its own server side toggle, and also by the special menu item [Navbar Darkmode Widget](/sections/configuration/special_menu_items#navbar-darkmode-widget).

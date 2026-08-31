@@ -193,8 +193,12 @@ class LayoutHelper
         // provides its own (server side) toggle. So, the AdminLTE color mode
         // plugin is disabled, otherwise it would restore its stored value and
         // fight with the preference resolved on the server.
+        //
+        // Note the automatic mode is the exception: it has to be resolved on
+        // the client side from the operating system preference, so the plugin
+        // (and the no flash script) must stay enabled for it.
 
-        if (! config('adminlte.color_mode.remember', true)) {
+        if ($colorMode !== 'auto' && ! config('adminlte.color_mode.remember', true)) {
             $attrs[] = 'data-lte-color-mode="off"';
         }
 

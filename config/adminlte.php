@@ -172,6 +172,12 @@ return [
         'mode' => 'local',
         'cdn_fallback' => true,
 
+        // The AdminLTE version used on the CDN locations below. When left as
+        // null, the version installed by composer is detected and used, so
+        // the assets served from the CDN always match the local ones.
+
+        'adminlte_version' => null,
+
         // Load the optional extended color palette (adminlte-colors.css). It
         // provides the .bg-*, .text-bg-*, .card-* and .callout-* classes for
         // the extended set of AdminLTE colors (navy, olive, sky, ...).
@@ -211,13 +217,13 @@ return [
         // Locations used on the 'cdn' mode and as fallback of missing assets.
 
         'cdn' => [
-            'adminlte_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte.min.css',
-            'adminlte_rtl_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte.rtl.min.css',
-            'adminlte_js' => 'https://cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/js/adminlte.min.js',
-            'colors_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-colors.min.css',
-            'colors_rtl_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-colors.rtl.min.css',
-            'colors_v3_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-colors-v3.min.css',
-            'colors_v3_rtl_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-colors-v3.rtl.min.css',
+            'adminlte_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte.min.css',
+            'adminlte_rtl_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte.rtl.min.css',
+            'adminlte_js' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/js/adminlte.min.js',
+            'colors_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-colors.min.css',
+            'colors_rtl_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-colors.rtl.min.css',
+            'colors_v3_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-colors-v3.min.css',
+            'colors_v3_rtl_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-colors-v3.rtl.min.css',
             'bootstrap_js' => 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js',
             'bootstrap_icons_css' => 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css',
             'overlayscrollbars_css' => 'https://cdn.jsdelivr.net/npm/overlayscrollbars@2.11.0/styles/overlayscrollbars.min.css',
@@ -638,8 +644,8 @@ return [
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-select2.min.css',
-                    'rtl' => '//cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-select2.rtl.min.css',
+                    'location' => '//cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-select2.min.css',
+                    'rtl' => '//cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-select2.rtl.min.css',
                 ],
             ],
         ],

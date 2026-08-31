@@ -92,4 +92,74 @@ class PreloaderHelperTest extends TestCase
         $data = PreloaderHelper::makePreloaderStyle();
         $this->assertStringContainsString('z-index:', $data);
     }
+
+    public function testPreloaderIsDisabledByDefault()
+    {
+        // Without any configuration, the preloader is disabled.
+
+        config(['adminlte' => []]);
+
+        $this->assertFalse(PreloaderHelper::isPreloaderEnabled());
+        $this->assertFalse(PreloaderHelper::isPreloaderEnabled('cwrapper'));
+
+        // So, the class and style builders return the base values.
+
+        $this->assertEquals(
+            'preloader flex-column justify-content-center align-items-center',
+            PreloaderHelper::makePreloaderClasses()
+        );
+
+        $this->assertEquals('', PreloaderHelper::makePreloaderStyle());
+    }
+
+    public function testPreloaderWithAnUnknownMode()
+    {
+        // An unknown mode does not match any of the supported ones.
+
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'dummy',
+        ]);
+
+        $this->assertFalse(PreloaderHelper::isPreloaderEnabled());
+        $this->assertFalse(PreloaderHelper::isPreloaderEnabled('fullscreen'));
+        $this->assertFalse(PreloaderHelper::isPreloaderEnabled('cwrapper'));
+
+        // But the mode may be checked explicitly.
+
+        $this->assertTrue(PreloaderHelper::isPreloaderEnabled('dummy'));
+
+        // The style and classes of an unknown mode are the base ones.
+
+        $this->assertStringNotContainsString(
+            'position-absolute',
+            PreloaderHelper::makePreloaderClasses()
+        );
+
+        $this->assertEquals('', PreloaderHelper::makePreloaderStyle());
+    }
+
+    public function testPreloaderModeDefaultsToFullscreen()
+    {
+        // Without an explicit mode, the fullscreen one is used.
+
+        config(['adminlte.preloader' => ['enabled' => true]]);
+
+        $this->assertTrue(PreloaderHelper::isPreloaderEnabled());
+        $this->assertTrue(PreloaderHelper::isPreloaderEnabled('fullscreen'));
+        $this->assertFalse(PreloaderHelper::isPreloaderEnabled('cwrapper'));
+    }
+
+    public function testMakePreloaderStyleOnTheCWrapperMode()
+    {
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'cwrapper',
+        ]);
+
+        // The z-index must be below the one of the sidebars, the navbar and
+        // the footer (they are between 1030 and 1040).
+
+        $this->assertEquals('z-index:1000', PreloaderHelper::makePreloaderStyle());
+    }
 }

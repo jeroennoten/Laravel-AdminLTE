@@ -126,7 +126,11 @@ class LayoutRenderTest extends TestCase
         // Note the attribute is checked on the html element only, since the
         // no flash script mentions it too.
 
-        config(['adminlte.color_mode.remember' => false]);
+        config([
+            'adminlte.color_mode.remember' => false,
+            'adminlte.color_mode.default' => 'light',
+        ]);
+
         $this->assertMatchesRegularExpression(
             '/<html[^>]*data-lte-color-mode="off"/', $this->renderPage()
         );
@@ -135,6 +139,19 @@ class LayoutRenderTest extends TestCase
         $this->assertDoesNotMatchRegularExpression(
             '/<html[^>]*data-lte-color-mode/', $this->renderPage()
         );
+
+        // The automatic mode has to be resolved on the client side, so the
+        // plugin must stay enabled even without the persistence.
+
+        config([
+            'adminlte.color_mode.remember' => false,
+            'adminlte.color_mode.default' => 'auto',
+        ]);
+
+        $html = $this->renderPage();
+
+        $this->assertDoesNotMatchRegularExpression('/<html[^>]*data-lte-color-mode/', $html);
+        $this->assertStringContainsString('prefers-color-scheme: dark', $html);
     }
 
     public function testRenderWithRightSidebar()
@@ -171,6 +188,29 @@ class LayoutRenderTest extends TestCase
 
         $this->assertStringContainsString('cdn.jsdelivr.net/npm/admin-lte', $html);
         $this->assertStringContainsString('bootstrap-icons', $html);
+    }
+
+    public function testRenderResolvesTheVersionPlaceholderOfThePlugins()
+    {
+        // A plugin may point to an asset of the AdminLTE distribution, whose
+        // location carries the version placeholder.
+
+        config([
+            'adminlte.plugins.Select2.active' => true,
+            'adminlte.plugins.Select2.files' => [[
+                'type' => 'css',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-select2.min.css',
+            ]],
+        ]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringNotContainsString('{version}', $html);
+        $this->assertStringContainsString(
+            'admin-lte@'.\JeroenNoten\LaravelAdminLte\Helpers\AssetHelper::adminlteVersion(),
+            $html
+        );
     }
 
     public function testRenderWithExtendedColors()

@@ -1,5 +1,5 @@
 > [!Important]
-> From **Laravel 7+** versions, the authentication views that belonged to the framework are now part of the legacy [laravel/ui](https://github.com/laravel/ui) package. Also, **Laravel 8+** versions offers some news [starter kits](https://laravel.com/docs/starter-kits) for the authentication scaffolding besides the legacy `laravel/ui` package. So, it is always a recommendation to read [Laravel Authentication Documentation](https://laravel.com/docs/authentication) before proceeding.
+> The authentication views no longer belong to the framework itself, they are part of the legacy [laravel/ui](https://github.com/laravel/ui) package. Laravel also offers several [starter kits](https://laravel.com/docs/starter-kits) for the authentication scaffolding besides the legacy `laravel/ui` package. So, it is always a recommendation to read the [Laravel Authentication Documentation](https://laravel.com/docs/authentication) before proceeding.
 
 In case you still choose to use the legacy [laravel/ui](https://github.com/laravel/ui) package for the authentication scaffolding, this package provides the following command to replace the authentication views (those inside the folder `resources/views/auth`) with a set of **AdminLTE** styled views:
 

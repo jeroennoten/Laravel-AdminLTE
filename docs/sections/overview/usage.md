@@ -18,12 +18,12 @@ Section | Type | Description
 `content_top_nav_left` | misc | To add custom elements in the left section of the top navbar.
 `content_top_nav_right` | misc | To add custom elements in the right section of the top navbar.
 `meta_tags` | misc | To add extra meta tags inside the `<head>` tag
-`preloader` | misc | To allow the replacement of the preloader animation default content. Requires package version <Badge type="tip">v3.9.5</Badge> or greater and the preloader animation enabled by configuration
+`preloader` | misc | To allow the replacement of the preloader animation default content. Requires the preloader animation to be enabled by configuration
 `usermenu_header` | misc | To allow the replacement of the header in the usermenu dropdown by a custom version. Requires an authentication scaffolding and the usermenu enabled by configuration
 `usermenu_body` | misc | To add a custom body element into the usermenu dropdown. Requires an authentication scaffolding and the usermenu enabled by configuration
 
 > [!IMPORTANT]
-> The `right_sidebar` section was named `right-sidebar` before version <Badge type="tip">v3.14.0</Badge>. So be sure to use the correct name depending on the package version you're using.
+> Compared to the `3.x` releases, note the `right_sidebar` section is spelled with an underscore. The old `right-sidebar` (hyphenated) name is not recognized.
 
 All the previously described sections are optional. As a basic example, your most common blade file extending the provided template could look like the following one:
 
@@ -65,7 +65,7 @@ More over, this package also provides defaults template views for login and regi
 ## Tabbed IFrame Mode
 
 > [!Important]
-> The **Tabbed IFrame mode** is only available from version <Badge type="tip">v3.7.0</Badge> of this package. Since **AdminLTE v4** removed the `IFrame` plugin, the mode is now implemented by the package itself with a jQuery free helper.
+> Since **AdminLTE v4** removed the `IFrame` plugin, the mode is now implemented by the package itself with a jQuery free helper.
 
 The **IFrame mode** provides the functionality to open the sidebar and top navbar links in a tabbed `iframe` view. To use the `IFrame` mode, you should define your main/welcome/root view as just:
 

@@ -60,6 +60,24 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(Arr::has($commands, 'adminlte:status'));
         $this->assertTrue(Arr::has($commands, 'adminlte:update'));
         $this->assertTrue(Arr::has($commands, 'adminlte:plugins'));
+        $this->assertTrue(Arr::has($commands, 'adminlte:remove'));
+    }
+
+    public function testBootRegisterMenuFilters()
+    {
+        // The default set of menu filters must be available.
+
+        $filters = Config::get('adminlte.filters');
+
+        $this->assertIsArray($filters);
+        $this->assertNotEmpty($filters);
+
+        foreach ($filters as $filter) {
+            $this->assertInstanceOf(
+                \JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface::class,
+                $this->app->make($filter)
+            );
+        }
     }
 
     public function testBootRegisterViewComposers()

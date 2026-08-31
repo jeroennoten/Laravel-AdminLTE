@@ -21,7 +21,7 @@ This command will install:
 
 - The underlying **AdminLTE v4 distribution files** (stylesheets, scripts and the default logo, including the RTL variants) in your `public/vendor/adminlte` folder.
 - The package configuration at the `config/adminlte.php` file.
-- The package translations in the `lang/vendor/adminlte/` folder (or `resources/lang/vendor/adminlte/` on older Laravel versions).
+- The package translations in the `lang/vendor/adminlte/` folder.
 
 ### 3. Publish the third party assets (optional)
 

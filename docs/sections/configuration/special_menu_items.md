@@ -24,17 +24,11 @@ It's possible to place a custom search input in your **sidebar** menu using an i
 ]
 ```
 
-> [!Important]
-> For package versions under <Badge type="tip">v3.6.0</Badge> you need to use the legacy configuration by replacing `type => 'sidebar-custom-search'` by `search => true`. However, you should note that the legacy support will be discarded in the future.
-
 For the previous definition, you may now define a route and a controller to catch the submitted keywords as explained on the [navbar search](#navbar-search) example. At next you can see an overview of the rendered search input item:
 
 ![Sidebar Search Example](/imgs/configuration/special_menu_items/sidebar-search-example.png)
 
 ## Sidebar Search Over Menu Items
-
-> [!Important]
-> This item is only available for package versions <Badge type="tip">>= v3.6.0</Badge>.
 
 It's also possible to place a search input in your **sidebar** menu that will automatically search over the available menu items using the following configuration of attributes:
 
@@ -71,9 +65,6 @@ It's possible to add a search input in the **top navbar** using a menu item with
     'id' => 'navbarSearch'       // ID attribute for the underlying input (optional).
 ]
 ```
-
-> [!Important]
-> For package versions under <Badge type="tip">v3.6.0</Badge> you need to use the legacy configuration by replacing `type => 'navbar-search'` by `search => true`. However, you should note that the legacy support will be discarded on the future.
 
 On **AdminLTE v4** the item is rendered as a `navbar-search` form placed inside the **top navbar**, with the input field and a submit button carrying a `bi bi-search` icon. Check next image for an overview:
 
@@ -129,9 +120,6 @@ class SearchController extends Controller
 
 ## Navbar Fullscreen Widget
 
-> [!Important]
-> This item is only available for package versions <Badge type="tip">>= v3.6.0</Badge>.
-
 It's possible to place a full screen widget button in your **top navbar** using the following configuration of attributes:
 
 ```php
@@ -144,9 +132,6 @@ It's possible to place a full screen widget button in your **top navbar** using 
 You should note that the widget is automatically handled by the underlying **AdminLTE** template and there is no extra configuration for it. On **AdminLTE v4** the item is rendered as a link with the `data-lte-toggle="fullscreen"` attribute and it swaps between the `bi bi-arrows-fullscreen` and the `bi bi-fullscreen-exit` icons.
 
 ## Navbar Notification
-
-> [!Important]
-> This item is only available for package versions <Badge type="tip">>= v3.6.0</Badge> and <Badge type="tip">Laravel >= 7.x</Badge> (because the item is implemented with an underlying blade component).
 
 It's possible to place a notification icon in your **top navbar**. This item will be rendered as an icon with a notification badge. The item supports two modes: a **default mode** and a **dropdown mode**. On the **default mode**, a click on the icon will redirect you to the configured `url` or `route` attribute. On the **dropdown mode** a click on the icon will open a dropdown with a footer link to the configured `url` or `route`, and whose main content may be obtained from an external source when fetching data using an AJAX request. The item supports periodically updates of the _badge_, the _badge color_, the _icon color_ and the _dropdown main content_ using an AJAX request to another configurable `url` or `route`. The summary of the configuration options are the next ones:
 
@@ -297,7 +282,9 @@ The result would be like the one shown below:
 ## Navbar Darkmode Widget
 
 > [!Important]
-> This item is only available for package versions <Badge type="tip">>= v3.7.0</Badge>. From <Badge type="tip">v4</Badge> the item is not a simple _dark mode toggle_ anymore, it is the **AdminLTE v4 color mode selector**, which supports three states: **light**, **dark** and **auto** (follow the operating system preference). The color mode is applied through the `data-bs-theme` attribute of the `<html>` element, as defined by [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/customize/color-modes/).
+> Compared to the `3.x` releases, this item is not a simple _dark mode toggle_ anymore. By default it is the **AdminLTE v4 color mode selector**, a dropdown with three states: **light**, **dark** and **auto** (follow the operating system preference). The color mode is applied through the `data-bs-theme` attribute of the `<html>` element, as defined by [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/customize/color-modes/).
+>
+> The widget follows the [`color_mode.remember`](/sections/configuration/layout_and_styling#color-mode) option: with it enabled (the default) you get the three-state selector, and with it disabled you get the legacy two-state toggle driven by the server side route of the package. You can force either shape with the `dropdown_mode` attribute.
 
 It's possible to place the color mode widget in your **top navbar** using the following configuration of attributes:
 
@@ -312,8 +299,11 @@ Also, you can setup the next optional properties to customize the icons and the 
 
 - `'icon_disabled'`: The icon to use for the **light** color mode (`'bi bi-sun-fill'` by default). It is also the icon of the widget when dark mode is disabled on the legacy toggle.
 - `'icon_enabled'`: The icon to use for the **dark** color mode (`'bi bi-moon-fill'` by default). It is also the icon of the widget when dark mode is enabled on the legacy toggle.
-- `'color_disabled'`: The AdminLTE color to use for the light mode icon (for example `'warning'`).
-- `'color_enabled'`: The AdminLTE color to use for the dark mode icon (for example `'primary'`).
+- `'icon_auto'`: The icon to use for the **auto** color mode (`'bi bi-circle-half'` by default). Only used on the color mode selector.
+- `'color_disabled'`: The color to use for the light mode icon (for example `'warning'`). It is emitted as a `text-{color}` class.
+- `'color_enabled'`: The color to use for the dark mode icon (for example `'primary'`).
+- `'color_auto'`: The color to use for the auto mode icon.
+- `'dropdown_mode'`: Force the shape of the widget instead of deriving it from `color_mode.remember`. Use `true` for the three-state color mode selector, or `false` for the legacy two-state toggle. Left as `null` (the default) it follows the configuration.
 
 The default widget button will look like next one:
 
@@ -326,7 +316,7 @@ The widget renders one of two different markups, and the decision is taken from 
 Value of `color_mode.remember` | Rendered widget
 -------------------------------|----------------
 `true` (default) | The **color mode selector**: a dropdown with the _light_, _dark_ and _auto_ entries. The click handling, the icon swapping and the persistence on the browser are done by the AdminLTE v4 color mode plugin, through the `data-bs-theme-value` and `data-lte-theme-icon` attributes.
-`false` | The **legacy two-states toggle**: a single button that switches between light and dark and notifies the server, so the preference is stored on the **server side** (see below).
+`false` | The **legacy two-states toggle**: a single button that switches between light and dark and notifies the server, so the preference is stored on the **server side** (see below). In this case the package also adds `data-lte-color-mode="off"` to the `<html>` element, which **switches the AdminLTE v4 color mode plugin off entirely** so that it cannot restore its own stored value and fight with the preference resolved on the server. Note this only applies when `color_mode.default` is `'light'` or `'dark'`: the `'auto'` mode needs the plugin in order to follow the operating system preference, so it is never switched off.
 
 The relevant options of the `color_mode` section are:
 
@@ -343,17 +333,11 @@ The relevant options of the `color_mode` section are:
 ],
 ```
 
-### Extra Attributes of the Underlying Component
+### Using the Underlying Component Directly
 
-The widget is implemented by the `<x-adminlte-navbar-darkmode-widget>` blade component, which accepts three additional attributes that the menu item configuration does not forward:
+The widget is implemented by the `<x-adminlte-navbar-darkmode-widget>` blade component. Every attribute of the menu item configuration listed above is forwarded to it, using the kebab-case attribute name (`icon_disabled` becomes `icon-disabled`, `dropdown_mode` becomes `dropdown-mode`, and so on).
 
-Attribute | Description | Default
-----------|-------------|---------
-`icon-auto` | The icon to use for the **auto** color mode | `'bi bi-circle-half'`
-`color-auto` | The AdminLTE color to use for the auto mode icon | `null`
-`dropdown-mode` | Force the color mode selector (`true`) or the legacy toggle (`false`) | The value of `color_mode.remember`
-
-So, if you need to customize the _auto_ entry or to force one of the two widget modes, place the component yourself on the `content_top_nav_right` section instead of using a menu item:
+So, you can also place the component yourself on the `content_top_nav_right` section instead of using a menu item:
 
 ```blade
 @section('content_top_nav_right')

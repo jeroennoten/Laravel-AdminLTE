@@ -27,7 +27,7 @@
             <div class="dropdown-divider"></div>
 
             {{-- Dropdown footer with link --}}
-            <a href="{{ $attributes->get('href') }}" class="dropdown-item dropdown-footer">
+            <a href="{{ $attributes->get('href') ?: '#' }}" class="dropdown-item dropdown-footer">
                 @isset($dropdownFooterLabel)
                     {{ $dropdownFooterLabel }}
                 @else

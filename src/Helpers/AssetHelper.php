@@ -2,6 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
+use Composer\InstalledVersions;
+
 class AssetHelper
 {
     /**
@@ -14,6 +16,55 @@ class AssetHelper
     protected static $rtlAwareAssets = [
         'adminlte_css', 'colors_css', 'colors_v3_css',
     ];
+
+    /**
+     * The AdminLTE version to use on the CDN locations when the installed
+     * version can not be detected.
+     *
+     * @var string
+     */
+    protected static $fallbackVersion = '4.8';
+
+    /**
+     * Gets the version of the installed AdminLTE package, which is used to
+     * build the CDN locations. This way the assets served from the CDN always
+     * match the ones provided by the composer dependency.
+     *
+     * @return string
+     */
+    public static function adminlteVersion()
+    {
+        // A version configured by the user always takes precedence.
+
+        $cfgVersion = config('adminlte.assets.adminlte_version');
+
+        if (is_string($cfgVersion) && $cfgVersion !== '') {
+            return $cfgVersion;
+        }
+
+        // Otherwise, read the version that composer installed.
+
+        $version = null;
+
+        if (class_exists(InstalledVersions::class)) {
+            try {
+                $version = InstalledVersions::getPrettyVersion('almasaeed2010/adminlte');
+            } catch (\Throwable $e) {
+                $version = null;
+            }
+        }
+
+        $version = is_string($version) ? ltrim($version, 'v') : null;
+
+        // Guard against the development versions (for example 'dev-master'),
+        // which are not resolvable on the CDN.
+
+        if (! isset($version) || ! preg_match('/^\d+\.\d+(\.\d+)?/', $version)) {
+            $version = self::$fallbackVersion;
+        }
+
+        return $version;
+    }
 
     /**
      * Gets the configured assets delivery mode.
@@ -154,6 +205,8 @@ class AssetHelper
         $local = config("adminlte.assets.local.{$key}");
         $cdn = config("adminlte.assets.cdn.{$key}");
 
+        $cdn = self::applyVersion($cdn);
+
         // On the CDN mode, always prefer the configured CDN location.
 
         if (self::mode() === 'cdn' && is_string($cdn) && $cdn !== '') {
@@ -173,6 +226,24 @@ class AssetHelper
         }
 
         return asset($local);
+    }
+
+    /**
+     * Replaces the version placeholder of a location by the version of the
+     * installed AdminLTE package. Note this is also used by the plugins view,
+     * since a plugin may point to an asset of the AdminLTE distribution (for
+     * example the Select2 compatibility theme).
+     *
+     * @param  string|null  $location  The location of an asset
+     * @return string|null
+     */
+    public static function applyVersion($location)
+    {
+        if (! is_string($location) || ! str_contains($location, '{version}')) {
+            return $location;
+        }
+
+        return str_replace('{version}', self::adminlteVersion(), $location);
     }
 
     /**

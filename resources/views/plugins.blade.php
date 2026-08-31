@@ -1,4 +1,5 @@
 @inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+@inject('assetHelper', 'JeroenNoten\LaravelAdminLte\Helpers\AssetHelper')
 
 @php
     $isRtlEnabled = $layoutHelper->isRtlEnabled();
@@ -33,6 +34,11 @@
                 if (! empty($file['asset'])) {
                     $location = asset($location);
                 }
+
+                // A plugin may point to an asset of the AdminLTE distribution,
+                // so the version placeholder is resolved here too.
+
+                $location = $assetHelper->applyVersion($location);
             @endphp
 
             {{-- Check the requested file type --}}

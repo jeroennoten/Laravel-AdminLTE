@@ -12,7 +12,7 @@ This package provides some artisan commands in order to manage and publish its r
 
 - __`translations`__: The set of translations files used by the package.
 
-  **Target:** The translations files will be published in the `resources/lang/vendor/adminlte/` folder of your Laravel project, or in `lang/vendor/adminlte` folder for `Laravel 9+` versions.
+  **Target:** The translations files will be published in the `lang/vendor/adminlte/` folder of your Laravel project.
 
 ### Optional Resources:
 
@@ -32,7 +32,7 @@ This package provides some artisan commands in order to manage and publish its r
 
   **Target:** The main views will be published in the `resources/views/vendor/adminlte/` folder of your Laravel project.
 
-- __`components`__: (Only from <Badge type="tip">v3.13.0</Badge>) The set of blade components provided by this package. You may publish this resource if you need to make a customization in any of the available components.
+- __`components`__: The set of blade components provided by this package. You may publish this resource if you need to make a customization in any of the available components.
 
   **Target:** The components views will be published in the `resources/views/vendor/adminlte/components/` folder of your Laravel project, and the components classes will be published in the `app/View/Components/Adminlte/` folder.
 
@@ -59,13 +59,10 @@ You can install all the required and some additional package resources using the
 
 - `--interactive`: Use this option to allow be guided through the installation process and choose what you want to install.
 
-> [!IMPORTANT]
-> Prior to version <Badge type="tip">v3.12.0</Badge> the resource **`auth_routes`** was named **`basic_routes`**, and the available installation types were: **basic**, **enhanced** (a basic installation plus the `auth_views` resource) and **full** (all resources except the `main_views`). Also, the **`components`** resource was introduced in version <Badge type="tip">v3.13.0</Badge>.
+> [!Important]
+> When you are upgrading an existing project from a `3.x` release, the `main_views`, `auth_views` and `components` resources **must be re-published with `--force`**. Their AdminLTE v3 (Bootstrap 4) markup does not render correctly on AdminLTE v4. See the [Upgrading from 3.x](/sections/overview/upgrading_from_3x) page.
 
 ## The `adminlte:remove` Command
-
-> [!IMPORTANT]
-> This command was introduced in version <Badge type="tip">v3.13.0</Badge>.
 
 You can uninstall or remove an already published package resource using the `php artisan adminlte:remove {resource}...` command. The command will accept one or more resource names as its arguments. Examples:
 
@@ -89,6 +86,7 @@ If you won't use a content delivery network (`CDN`) to include the extra plugins
 
 > [!Important]
 > AdminLTE v4 does not bundle any third party plugin any more (the AdminLTE v3 `plugins/` folder is gone). The plugins catalogue of this command now publishes the AdminLTE v4 recommended, jQuery free libraries from the `node_modules` folder of your project, so you have to install the related npm package first. When a package is missing, the command tells you the exact `npm i` command to run. The AdminLTE v3 plugin keys are still recognized and the command reports their v4 replacement.
+
 You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check which plugins are available by executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#the-adminlte-status-command)). Note that after a plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](/sections/configuration/plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
@@ -104,7 +102,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
   ```sh
   php artisan adminlte:plugins install
   ```
-- Install only Pace Progress & Select2 plugins:
+- Install only the Flatpickr & Quill plugins:
   ```sh
   php artisan adminlte:plugins install --plugin=flatpickr --plugin=quill
   ```
@@ -112,7 +110,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
   ```sh
   php artisan adminlte:plugins remove
   ```
-- Remove only Select2 plugin:
+- Remove only the Quill plugin:
   ```sh
   php artisan adminlte:plugins remove --plugin=quill
   ```

@@ -26,7 +26,20 @@ name | The `name` and default `id` attribute for the underlying input group item
 The `name` attribute is the only required property and will be used as the default `id` property when no other is provided. Also, the lookup key for validation errors will be automatically generated from the `name` property if no `error-key` is specified. For example, when you want to submit multiple files from a file input field, you can setup `name` property as `files[]` in order to submit the file names inside an array called `files`, in this case the auto-generated lookup key for validation errors will be `files`.
 
 > [!Important]
-> **Bootstrap 5.3** dropped the `form-group` class in favour of the spacing utilities, so the main container of the component is rendered with the `mb-3` class (the same one used by the **AdminLTE v4** form pages). The classes you pass with `fgroup-class` are appended to it. The label is rendered with the Bootstrap 5.3 `form-label` class, and the classes given with `label-class` are appended to it.
+> **Bootstrap 5.3** dropped the `form-group` class in favour of the spacing utilities, so the main container of the component is rendered with the `mb-3` class (the same one used by the **AdminLTE v4** form pages). The label is rendered with the Bootstrap 5.3 `form-label` class, and the classes given with `label-class` are appended to it.
+
+> [!Note]
+> **Default spacing.** The `mb-3` on the form group is only added when **you do not provide a bottom margin yourself** through `fgroup-class`. A `mb-*` or `my-*` class (values `0` to `5`, or `auto`) in `fgroup-class` **wins** and suppresses the default:
+>
+> ```blade
+> <x-adminlte-input name="a"/>                        {{-- class="mb-3" --}}
+> <x-adminlte-input name="b" fgroup-class="mb-0"/>    {{-- class="mb-0" --}}
+> <x-adminlte-input name="c" fgroup-class="my-4 px-2"/> {{-- class="my-4 px-2" --}}
+> ```
+>
+> Any other class you pass in `fgroup-class` (a grid column, a padding utility, …) is simply appended and the `mb-3` default still applies. This check exists because the Bootstrap spacing utilities are all declared with `!important` at the same specificity, so simply adding a second margin class would not reliably override the first one — the winner would be decided by the order of the rules in the stylesheet, not by the order you wrote them.
+>
+> The [Card](/sections/components/widget_components#card) (`mb-4`) and [Progress](/sections/components/widget_components#progress) (`mb-2`) widgets follow the same rule, but they read the margin from their plain `class` attribute instead.
 
 > [!Note]
 > **Bootstrap 5.3** also removed the `input-group-prepend` and `input-group-append` wrappers: the add-ons are now direct children of the `.input-group` element. The `prependSlot` and `appendSlot` slots below already emit the correct markup, so your add-ons only need the `input-group-text` (or a button) element.
@@ -37,7 +50,7 @@ You should note that all the others components that extends from this one will h
 
 - **prependSlot**: Use this slot to prepend an add-on in the input group item.
 - **appendSlot**: Use this slot to append an add-on in the input group item.
-- **bottomSlot**: Use this slot to add extra information or markup below the input group item (only available for versions greater than <Badge type="tip">v3.7.2</Badge>).
+- **bottomSlot**: Use this slot to add extra information or markup below the input group item.
 
 # Button
 
@@ -96,7 +109,7 @@ Attribute | Description | Type | Default | Required
 enable-old-support | Enable the auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 ### Examples
 
@@ -237,9 +250,6 @@ Use the next image as reference to check how every input example is rendered. Pl
 
 # Options
 
-> [!Important]
-> This component is only available from package version <Badge type="tip">>= v3.7.0</Badge>.
-
 This component represents a set of option tags. It can be used with [Select](#select), [Select2](#select2) or [SelectBs](/sections/components/advanced_forms_components#selectbs) components. The following attributes are available:
 
 Attribute | Description | Type | Default | Required
@@ -351,7 +361,7 @@ Attribute | Description | Type | Default | Required
 enable-old-support | Enable the auto retrievement and selection of the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 ### Examples
 
@@ -416,7 +426,7 @@ config | Array with the `select2` plugin configuration parameters | array | `[]`
 enable-old-support | Enable the auto retrievement and selection of the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration options are those explained on the [plugin documentation](https://select2.org/sections/configuration/options-api). All other attributes you define will be inserted directly on the underlying `select` element, so you can also use the [data-* attributes](https://select2.org/sections/configuration/data-attributes) to configure the plugin.
 
@@ -537,7 +547,7 @@ Attribute | Description | Type | Default | Required
 enable-old-support | Enable the auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">>= v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 ### Examples
 

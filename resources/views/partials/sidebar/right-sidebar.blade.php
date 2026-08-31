@@ -35,7 +35,7 @@
         </h5>
 
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
-                aria-label="Close"></button>
+                aria-label="{{ __('adminlte::adminlte.close') }}"></button>
 
     </div>
 

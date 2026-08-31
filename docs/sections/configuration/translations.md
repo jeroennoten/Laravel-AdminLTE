@@ -4,7 +4,7 @@ At the moment, English, German, French, Dutch, Portuguese, Spanish, Turkish, and
 php artisan adminlte:install --only=translations
 ```
 
-Now, you will able to edit the translations files or add support for new languages inside the `resources/lang/vendor/adminlte` folder, or `lang/vendor/adminlte` from Laravel `9.x` versions.
+Now, you will able to edit the translations files or add support for new languages inside the `lang/vendor/adminlte` folder of your Laravel project.
 
 ## Menu Translations
 
@@ -31,7 +31,7 @@ Translation strings with parameters are supported using an array on the menu att
 
 ### Setup Lang Files
 
-All the translation keys configured on the menu items must be added in the `menu.php` file of each locale that will be used. So, you will need to declare a `key` for each one of the menu items you want to translate. At next, we show an example of the `resources/lang/vendor/adminlte/en/menu.php` language file for the previous sample of configuration:
+All the translation keys configured on the menu items must be added in the `menu.php` file of each locale that will be used. So, you will need to declare a `key` for each one of the menu items you want to translate. At next, we show an example of the `lang/vendor/adminlte/en/menu.php` language file for the previous sample of configuration:
 
 ```php
 return [

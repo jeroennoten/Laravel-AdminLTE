@@ -61,7 +61,15 @@ The following configuration options are available:
 
 - __`color_mode.remember`__
 
-  When enabled (the default), the color mode widget stores the choice of the visitor on the browser local storage, which is the standard AdminLTE v4 behavior. When disabled, the widget falls back to the legacy server side toggle of the package (the `adminlte.darkmode.toggle` route together with the `ReadingDarkModePreference` and `DarkModeWasToggled` events).
+  When enabled (the default), the **AdminLTE v4 color mode plugin** stores the choice of the visitor on the browser local storage and restores it on the next page load, which is the standard AdminLTE v4 behavior.
+
+  When set to `false`, the **AdminLTE color mode plugin is switched off entirely**: the package adds `data-lte-color-mode="off"` to the `<html>` element and uses its own **server side toggle** instead (the `adminlte.darkmode.toggle` route together with the `ReadingDarkModePreference` and `DarkModeWasToggled` events). This is the mode to pick when you want to persist the preference of a logged in user in your database rather than in their browser, or when the panel must always start on the configured `color_mode.default`.
+
+> [!Important]
+> The `'auto'` default is the exception: it can only be resolved on the client side, from the operating system preference of the visitor. So with `color_mode.default => 'auto'` the plugin is **not** switched off, even when `color_mode.remember` is disabled. Combine `remember => false` with an explicit `'light'` or `'dark'` default.
+
+> [!Note]
+> The plugin has to be turned off in that case, otherwise it would restore its own stored value on load and fight with the preference your application resolved on the server.
 
 - __`color_mode.no_flash_script`__
 
@@ -123,7 +131,7 @@ You can change the look and behavior of the authentication views (login, registe
 
 - __`classes_auth_icon`__
 
-  Extra classes for the icons (Font Awesome icons) used on the input fields.
+  Extra classes for the icons ([Bootstrap Icons](https://icons.getbootstrap.com/)) used on the input fields.
 
 - __`classes_auth_btn`__
 
@@ -187,7 +195,7 @@ The following config options are available:
 
 - __`classes_body`__
 
-  Extra classes for the body. From version <Badge type="tip">v3.8.0</Badge> you may use the experimental `sidebar-hidden` class to hide the sidebar.
+  Extra classes for the body. The default value is `bg-body-tertiary`. You may also use the experimental `sidebar-hidden` class to hide the sidebar.
 
 - __`classes_brand`__
 
@@ -199,7 +207,7 @@ The following config options are available:
 
 - __`classes_content_header`__
 
-  Classes for the content header container. Classes will be added to the container of the element `div.app-content-header`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+  Classes for the content header container. Classes will be added to the container of the element `div.app-content-header`. If you left this empty, the default is `container-fluid`, except on the `layout_topnav` layout, where the value of the `classes_topnav_container` option is used instead.
 
 - __`classes_content_wrapper`__
 
@@ -207,7 +215,7 @@ The following config options are available:
 
 - __`classes_content`__
 
-  Classes for the content container. Classes will be added to the container of the element `div.app-content`. If you left this empty, a default class `container` will be used when `layout_topnav` is used, otherwise `container-fluid` will be used as default.
+  Classes for the content container. Classes will be added to the container of the element `div.app-content`. If you left this empty, the default is `container-fluid`, except on the `layout_topnav` layout, where the value of the `classes_topnav_container` option is used instead.
 
 - __`classes_footer`__
 
@@ -243,9 +251,12 @@ The following config options are available:
 
   Extra classes for the top navigation bar container. Classes will be added to the `div` wrapper inside the element `nav.app-header.navbar`. The default value is `container-fluid`.
 
+> [!Important]
+> On the **`layout_topnav` layout the navbar and the content share this container**. The content header and the content fall back to `classes_topnav_container` (instead of the plain `container-fluid` used on the sidebar layout) whenever `classes_content_header` and `classes_content` are left empty. This is what keeps the brand in the navbar and the content below it aligned on the same left edge. So, if you switch `classes_topnav_container` to a centered `container`, the whole topnav layout is centered in one go — and if you want the navbar and the content to differ, set `classes_content_header` and `classes_content` explicitly.
+
 ## Sidebar
 
-You can modify the sidebar properties, for example you can disable the collapsed mini sidebar mode, start with a collapsed sidebar, enable sidebar auto collapse on a specific screen size, enable sidebar collapse remember option, change the scrollbar theme or auto hide option, disable the sidebar navigation accordion and change the sidebar animation speed.
+You can modify the sidebar properties, for example you can disable the collapsed mini sidebar mode, start with a collapsed sidebar, choose the breakpoint where the sidebar expands, remember the collapsed state between page loads, change the scrollbar theme or auto hide option, disable the sidebar navigation accordion and change the sidebar animation speed.
 
 The following configuration options are available:
 
@@ -268,17 +279,17 @@ The following configuration options are available:
 
   Enables/Disables the sidebar collapsed mode by default. If you set this option to `true` the sidebar will start on the collapsed mode.
 
-- __`sidebar_collapse_auto_size`__
-
-  Enables/Disables auto collapse of the sidebar by setting a minimum width bound that will be used to trigger the collapsed mode when reaching this bound or a lower size. The accepted values are: `false` to disable the feature or a positive `integer` value representing the minimum width bound.
-
 - __`sidebar_collapse_remember`__
 
-  Enables/Disables the collapsed remember script. If you set this option to `true` the state of the sidebar will be keep between page reloads.
+  Enables/Disables the remembering of the collapsed state of the sidebar between page loads. When set to `true`, the package adds the `data-enable-persistence="true"` attribute to the `aside.app-sidebar` element, which is the switch of the **AdminLTE v4 PushMenu plugin** for its own persistence feature. The plugin then stores the state in the browser and restores it on the next page load, all on the client side.
 
-- __`sidebar_collapse_remember_no_transition`__
+- __`sidebar_collapse_auto_size`__ <Badge type="warning">no-op</Badge>
 
-  Enables/Disables the transition animation effect for the sidebar after a page reload. This option will only have effect if `sidebar_collapse_remember` option is enabled.
+  Kept for backward compatibility only, the option is not read any more. The **AdminLTE v4 PushMenu plugin** collapses the sidebar on its own below the breakpoint configured through `sidebar_expand`, so there is no separate width bound to set. Use `sidebar_expand` instead.
+
+- __`sidebar_collapse_remember_no_transition`__ <Badge type="warning">no-op</Badge>
+
+  Kept for backward compatibility only, the option is not read any more. The **AdminLTE v4 PushMenu plugin** suppresses the transition on the restored state by itself, so the flicker this option used to work around no longer happens.
 
 - __`sidebar_scrollbar_theme`__
 

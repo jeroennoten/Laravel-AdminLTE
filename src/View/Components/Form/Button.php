@@ -4,9 +4,12 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
 use Illuminate\View\Component;
 use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget\HandlesThemeColors;
 
 class Button extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The visible label (text) for the button.
      *
@@ -61,7 +64,14 @@ class Button extends Component
      */
     protected function normalizeTheme($theme)
     {
-        return $theme === 'default' ? 'secondary' : $theme;
+        if ($theme === 'default') {
+            return 'secondary';
+        }
+
+        // Resolve the legacy AdminLTE v3 color names, so a button themed with
+        // one of them keeps working with the v4 palette.
+
+        return $this->resolveThemeColor($theme);
     }
 
     /**

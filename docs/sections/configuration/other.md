@@ -19,13 +19,17 @@ The following configuration options are available:
 
   When enabled (the default) and a local asset is not published yet, its CDN location is used instead. This keeps a fresh installation working before running `php artisan adminlte:install`.
 
+- __`assets.adminlte_version`__
+
+  The **AdminLTE** version substituted into the `{version}` placeholder of the CDN locations. See [The AdminLTE version of the CDN locations](#the-adminlte-version-of-the-cdn-locations) below.
+
 - __`assets.extended_colors`__
 
-  Loads the optional `adminlte-colors.css` stylesheet, which provides the extended AdminLTE color palette (`navy`, `olive`, `sky`, …) as `bg-*`, `text-bg-*`, `bg-gradient-*`, `card-*` and `callout-*` classes. The AdminLTE v4 core stylesheet only knows the Bootstrap theme colors.
+  Loads the optional AdminLTE palette stylesheet and generates the missing component families on top of it. See [The extended color palette](#the-extended-color-palette) below.
 
 - __`assets.extended_colors_v3_aliases`__
 
-  Loads `adminlte-colors-v3.css` instead, which keeps the AdminLTE v3 color names (for example `lightblue` and `maroon`, renamed to `sky` and `pink` in v4).
+  Loads `adminlte-colors-v3.css` instead of `adminlte-colors.css`, which keeps the AdminLTE v3 color names (for example `lightblue` and `maroon`, renamed to `sky` and `pink` in v4). Only has an effect when `assets.extended_colors` is enabled.
 
 - __`assets.bootstrap_js`__, __`assets.bootstrap_icons`__, __`assets.overlayscrollbars`__
 
@@ -42,6 +46,67 @@ npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11
 php artisan adminlte:install --only=vendor_assets
 ```
 
+### The AdminLTE version of the CDN locations
+
+Every AdminLTE CDN location in the `assets.cdn` array carries a **`{version}` placeholder** instead of a hard coded version number:
+
+```php
+'cdn' => [
+    'adminlte_css' => 'https://cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte.min.css',
+    ...
+],
+```
+
+The placeholder is replaced at render time with the **version of `almasaeed2010/adminlte` that composer actually installed** in your project, read from the composer runtime metadata. So the CDN fallback follows your composer dependency automatically: when you bump the AdminLTE constraint in your `composer.json`, the CDN URLs move to the new version on their own and can never drift out of sync with the files published in `public/vendor/adminlte`.
+
+The `assets.adminlte_version` option lets you override that:
+
+- __`null`__ (the default): detect the composer installed version. This is what you want in almost every case.
+- __a version string__ (for example `'4.9.0'`): always use that version on the CDN locations, whatever composer installed. Useful when you deliberately want to pin the CDN to a version, or when you removed the composer dependency and only rely on the CDN.
+
+> [!Note]
+> When the installed version cannot be detected, or when it is a development version such as `dev-master` (which is not resolvable on a CDN), the package falls back to a built-in version.
+
+> [!Warning]
+> The `{version}` placeholder is substituted inside the **`assets.cdn`** array and inside the file locations of the [plugins](./plugins.md) configuration, so a plugin pointing to an asset of the AdminLTE distribution stays in sync too.
+
+### The extended color palette
+
+The AdminLTE v4 core stylesheet only knows the **Bootstrap theme colors** (`primary`, `secondary`, `success`, `info`, `warning`, `danger`, `light`, `dark`). Enabling `assets.extended_colors` loads the optional AdminLTE palette stylesheet and unlocks the **extended AdminLTE colors**:
+
+```php
+'assets' => [
+    ...
+    'extended_colors' => true,
+],
+```
+
+The available colors depend on which palette you load:
+
+| `extended_colors_v3_aliases` | Stylesheet | Colors |
+| ---------------------------- | ---------- | ------ |
+| `false` (the default) | `adminlte-colors.css` | `amber`, `fuchsia`, `graphite`, `indigo`, `midnight`, `navy`, `olive`, `orange`, `pink`, `sky`, `slate`, `steel`, `teal`, `violet` |
+| `true` | `adminlte-colors-v3.css` | `blue`, `cyan`, `fuchsia`, `gray`, `gray-dark`, `green`, `indigo`, `lightblue`, `lime`, `maroon`, `navy`, `olive`, `orange`, `pink`, `purple`, `red`, `teal`, `yellow` |
+
+The palette stylesheet itself provides the `bg-*`, `text-bg-*`, `text-*`, `border-*`, `link-*`, `bg-gradient-*`, `card-*`, `callout-*` and `direct-chat-*` families. It does **not** ship the `alert-*`, `btn-*` and `btn-outline-*` families, which is a problem for the blade components of this package, since a `theme` such as `teal` on an [Alert](/sections/components/widget_components#alert) or a [Button](/sections/components/basic_forms_components#button) would render unstyled.
+
+So, when the extended colors are enabled, this package **generates those three missing families itself**, for every color of the active palette, from the custom properties the palette stylesheet already defines. The generated rules are emitted as a small inline `<style>` block in the page head.
+
+The practical consequence:
+
+```blade
+{{-- These only work with 'assets.extended_colors' enabled --}}
+<x-adminlte-alert theme="teal" title="Note">A teal alert.</x-adminlte-alert>
+<x-adminlte-button theme="navy" label="Save"/>
+<x-adminlte-button theme="outline-olive" label="Cancel"/>
+```
+
+> [!Warning]
+> With `assets.extended_colors` left at its default `false`, an extended color name on the `theme` attribute of any component silently produces an **unstyled element** (there is no `btn-teal` or `alert-teal` class to match). If a themed component looks wrong, this option is the first thing to check.
+
+> [!Tip]
+> The generated `btn-*` rules assume a **white foreground** on the solid variant, which is the right choice for the saturated colors of both palettes. If you enable the v3 aliases and use a light color such as `yellow` or `lime` on a solid button, add your own `text-dark` class to keep the label readable.
+
 ## Laravel Mix
 
 > [!Important]
@@ -50,7 +115,7 @@ php artisan adminlte:install --only=vendor_assets
 If you want to use **Laravel Mix** to compile the assets into single files instead of publishing them in the `/public/vendor` folder, start by installing the required `NPM` packages:
 
 ```sh
-npm i admin-lte@^4.0 bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11
+npm i admin-lte@^4.8 bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11
 ```
 
 Now, add the following to your `resources/js/app.js` file:

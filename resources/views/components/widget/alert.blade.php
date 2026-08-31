@@ -1,9 +1,9 @@
 <div {{ $attributes->merge(['class' => $makeAlertClass(), 'role' => 'alert']) }}>
 
     {{-- Dismiss button (Bootstrap v5 markup) --}}
-    @isset($dismissable)
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    @endisset
+    @if(! empty($dismissable))
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ __('adminlte::adminlte.close') }}"></button>
+    @endif
 
     {{-- Alert header --}}
     @if(! empty($title) || ! empty($icon))

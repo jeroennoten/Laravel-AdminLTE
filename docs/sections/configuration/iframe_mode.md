@@ -1,5 +1,5 @@
 > [!Important]
-> **AdminLTE v4** dropped the `IFrame` plugin that was bundled with **AdminLTE v3**. From the <Badge type="tip">v4</Badge> releases of this package, the **Tabbed IFrame Mode** is implemented by the package itself, with a small **vanilla Javascript** helper (no jQuery) and a stylesheet that are pushed into the page only when the mode is enabled.
+> **AdminLTE v4** dropped the `IFrame` plugin that was bundled with **AdminLTE v3**. From the `4.x` releases of this package, the **Tabbed IFrame Mode** is implemented by the package itself, with a small **vanilla Javascript** helper (no jQuery) and a stylesheet that are pushed into the page only when the mode is enabled.
 
 At next you can see the list of configuration options for the **Tabbed IFrame Mode** that you will find on the package configuration file (`config/adminlte.php`). See [Usage/Tabbed IFrame Mode](/sections/overview/usage#tabbed-iframe-mode) to known how to enable this mode.
 

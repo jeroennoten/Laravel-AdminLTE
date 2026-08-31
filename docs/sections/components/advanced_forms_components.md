@@ -6,7 +6,7 @@ These components are expected to be used within a `form` element. They can be us
 
 ## Underlying Plugins on AdminLTE v4
 
-**AdminLTE v4** is **jQuery free**, so on the <Badge type="tip">v4</Badge> releases of this package every advanced form component was moved to the vanilla Javascript plugin recommended by AdminLTE v4. The next table summarizes what backs each component now:
+**AdminLTE v4** is **jQuery free**, so on the `4.x` releases of this package every advanced form component was moved to the vanilla Javascript plugin recommended by AdminLTE v4. The next table summarizes what backs each component now:
 
 Component | Plugin | Plugin key | Requires jQuery
 ----------|--------|------------|----------------
@@ -39,7 +39,7 @@ enable-default-ranges | Preselects one of the predefined ranges. The accepted st
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available configuration (for the `config` option) are those explained on the [Flatpickr options documentation](https://flatpickr.js.org/options/). You can also assign a `javascript` expression to a particular configuration option by prepending the `js:` string token. All other attributes you define will be inserted directly on the underlying `input` element.
 
@@ -203,7 +203,7 @@ config | **[Deprecated]** Array with the legacy plugin configuration parameters.
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 > [!Warning]
 > A native color input only understands a **6 digits hexadecimal notation**. The component validates the `value` attribute (and the old submitted value) against the `#rrggbb` pattern, lowercases it, and falls back to `#000000` when it does not match. So, values like `rgb(50, 100, 50)` or a named color, which were valid on **AdminLTE v3**, will be discarded. The same applies to the legacy `data-color`, `data-format` and `data-horizontal` attributes: they are just forwarded to the input element and have no effect.
@@ -277,7 +277,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration (for the `config` option) are those explained on the [Flatpickr options documentation](https://flatpickr.js.org/options/). You can assign a `javascript` expression to a particular configuration prepending the `js:` string token. All other attributes you define will be inserted directly on the underlying `input` element.
 
@@ -404,7 +404,7 @@ The plugin setup is exactly the same one described for the [DateRange](#daterang
 # InputFileKrajee
 
 > [!Important]
-> This component is only available from <Badge type="tip">v3.9.0</Badge> and requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can use its `CDN` files (read the instructions on the plugin site).
+> This component requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can use its `CDN` files (read the instructions on the plugin site).
 
 > [!Warning]
 > The Krajee file input plugin **still requires jQuery**, which **AdminLTE v4** does not bundle anymore. The component initialization code is guarded: when neither jQuery nor the plugin are present, the element stays a plain **Bootstrap 5** file input and nothing breaks. If you want a jQuery free alternative, **AdminLTE v4** recommends [FilePond](https://pqina.nl/filepond/) or [Dropzone](https://www.dropzone.dev/), both installable with `php artisan adminlte:plugins install --plugin=filepond` (or `--plugin=dropzone`).
@@ -523,7 +523,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration (for the `config` attribute) are those explained on the [noUiSlider options documentation](https://refreshless.com/nouislider/slider-options/).
 
@@ -665,10 +665,10 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 config | Array with the legacy plugin configuration parameters. Only a few of them are still honoured (see below) | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
-is-checked | To specify whether the switch should be active or not (from <Badge type="tip">v3.14.2</Badge>) | bool | `null` | no
+is-checked | To specify whether the switch should be active or not | bool | `null` | no
 
 > [!Important]
-> Plase, note the `enable-old-support` property is only available for package version <Badge type="tip">> 3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own. Also, the `is-checked` property is only available from package version <Badge type="tip">v3.14.2</Badge> and may be used as an alternative to the **HTML checked attribute**.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own. The `is-checked` property may be used as an alternative to the **HTML checked attribute**.
 
 ### Legacy Bootstrap Switch Properties
 
@@ -766,7 +766,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 > [!Tip]
 > This component **degrades gracefully**: when the Tom Select plugin is not loaded, the element stays a native **Bootstrap 5** `form-select` and keeps working as a normal select.
@@ -903,7 +903,7 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 The available plugin configuration are those explained on the [Quill configuration documentation](https://quilljs.com/docs/configuration) (`theme`, `modules`, `formats`, `placeholder`, `readOnly`, `bounds`, `debug`, ...). The `disabled`, `readonly` and `placeholder` HTML attributes are supported and mapped to the plugin `readOnly` and `placeholder` options.
 

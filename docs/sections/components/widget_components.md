@@ -166,11 +166,11 @@ This component represents an `AdminLTE` card box. The following attributes are a
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
-body-class | Additional classes for the `card-body` container (only from <Badge type="tip">v3.6.2</Badge>) | string | `null` | no
+body-class | Additional classes for the `card-body` container | string | `null` | no
 collapsible | Enables a collapsible card with a button to collapse/expand it. Use the `'collapsed'` string value to initiate the card on collapsed mode | any | `null` | no
 disabled | Disables the card (an overlay will show over the card) | any | `null` | no
-footer-class | Additional classes for the `card-footer` container (only from <Badge type="tip">v3.8.1</Badge>) | string | `null` | no
-header-class | Additional classes for the `card-header` container (only from <Badge type="tip">v3.8.1</Badge>) | string | `null` | no
+footer-class | Additional classes for the `card-footer` container | string | `null` | no
+header-class | Additional classes for the `card-header` container | string | `null` | no
 icon | An icon for the card header (Bootstrap Icons by default) | string | `null` | no
 maximizable | Enables a maximizable card with a button to maximize it | any | `null` | no
 removable | Enables a removable card with a button to remove it | any | `null` | no
@@ -179,6 +179,21 @@ theme-mode | The theme mode (`full` or `outline`) | string | `null` | no
 title | The title for the card header | string | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.card` element. So, for example, you can define extra classes on the card by using `class`, or use `onclick`, `id` or any other attribute you may need.
+
+> [!Note]
+> **Default spacing.** The AdminLTE v4 stylesheet gives the cards no bottom margin of their own, so the component adds a **`mb-4`** utility to the `div.card` element, which is what every card of the AdminLTE reference layouts carries.
+>
+> The default is only added when **you do not provide a bottom margin yourself**. A `mb-*` or `my-*` class (values `0` to `5`, or `auto`) on the `class` attribute **wins** and suppresses the default:
+>
+> ```blade
+> <x-adminlte-card title="Spaced"/>             {{-- class="card mb-4" --}}
+> <x-adminlte-card title="Flush" class="mb-0"/> {{-- class="card mb-0" --}}
+> <x-adminlte-card title="Roomy" class="my-5"/> {{-- class="card my-5" --}}
+> ```
+>
+> This check exists because the Bootstrap spacing utilities are all declared with `!important` at the same specificity, so simply adding a second margin class would not reliably override the first one — the winner would be decided by the order of the rules in the stylesheet, not by the order you wrote them.
+>
+> Note the [ProfileWidget](#profile-widget) component is **not** covered by this: although it is also a card, it adds no default margin, so give it a `mb-*` class of your own when you stack several of them.
 
 > [!Note]
 > The `theme-mode` values render as follows on **AdminLTE v4**:
@@ -203,8 +218,8 @@ If you add your own card tool buttons through the `toolsSlot`, use those attribu
 
 ### Slots
 
-- **toolsSlot**: Use this slot to add extra elements on the card header (only from <Badge type="tip">v3.8.1</Badge>).
-- **footerSlot**: Use this slot to fill the card footer (only from <Badge type="tip">v3.8.1</Badge>).
+- **toolsSlot**: Use this slot to add extra elements on the card header.
+- **footerSlot**: Use this slot to fill the card footer.
 
 ### Examples
 
@@ -281,8 +296,8 @@ progress-theme | The progress bar theme (same values as `theme` property). When 
 text | A short text/description for the info box | string | `null` | no
 theme | The info box theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
 title | A title/header for the info box | string | `null` | no
-url | An url for the info box. By default, will be placed on the `title` (only from <Badge type="tip">v3.9.1</Badge>) | string | `null` | no
-url-target | The target element where to place the url: `title` (default) or `text` (only from <Badge type="tip">v3.9.1</Badge>) | string | `null` | no
+url | An url for the info box. By default, will be placed on the `title` | string | `null` | no
+url-target | The target element where to place the url: `title` or `text` | string | `'title'` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.info-box` element. So, for example, you can define extra classes using the `class` attribute, use the `onclick`, the `id` or any other attribute you may need.
 
@@ -305,7 +320,7 @@ let myInfoBox = new _AdminLTE_InfoBox("myInfoBox");
 
 Then you can use the next methods from the instantiated object:
 
-- **`myInfoBox.update(data)`**: To update the data of the info box element. The **data** should be an object with the new attributes, the supported object keys are: `title`, `text`, `description`, `icon` and `progress` (see examples for more details). The `url` attribute may be also updated from version <Badge type="tip">v3.9.1</Badge>.
+- **`myInfoBox.update(data)`**: To update the data of the info box element. The **data** should be an object with the new attributes, the supported object keys are: `title`, `text`, `description`, `icon` and `progress` (see examples for more details). The `url` attribute may be updated too.
 
 ### Examples
 
@@ -375,12 +390,12 @@ text-tooltip | An extra tooltip (the HTML `title` attribute) for the text of the
 title | The title/header for the item | string | `null` | no
 size | The item size. Used to wrap the item inside a `col-size` div | integer | `4` (col item) / `12` (row item) | no
 url | An url for the item. By default, it'll be placed on the title attribute | string | `null` | no
-url-target | The target element where to place the url: `title` (default) or `text` (only from <Badge type="tip">v3.12.0</Badge>) | string | `'title'` | no
+url-target | The target element where to place the url: `title` (default) or `text` | string | `'title'` | no
 
 The available themes for the badge are: light, dark, primary, secondary, info, success, warning, danger or any color of the **AdminLTE v4** extended palette like `sky` or `teal`. See [About the `theme` Attribute](#about-the-theme-attribute) for the details, the badge is rendered with the Bootstrap 5 `badge text-bg-{theme}` classes.
 
 > [!TIP]
-> From version <Badge type="tip">v3.12.0</Badge> you may prepend the `pill-` token to a theme (for example, `pill-primary`) to get a pill badge instead of a normal badge (it adds the Bootstrap 5 `rounded-pill` class).
+> You may prepend the `pill-` token to a theme (for example, `pill-primary`) to get a pill badge instead of a normal badge (it adds the Bootstrap 5 `rounded-pill` class).
 
 > [!Note]
 > On the **profile-row-item** the text is right aligned with the Bootstrap 5 `float-end` class (the Bootstrap 4 `float-right` class does not exist anymore).
@@ -396,7 +411,7 @@ Attribute | Description | Type | Default | Required
 cover | A cover image url for the profile header section (overlays the theme) | string | `null` | no
 desc | A description for the user profile | string | `null` | no
 footer-class | Extra classes for the profile footer (to customize the footer section) | string | `null` | no
-icon | To setup the default icon that will be used when no image is provided (only from <Badge type="tip">v3.12.0</Badge>) | string | `'bi bi-person-fill'` | no
+icon | To setup the default icon that will be used when no image is provided | string | `'bi bi-person-fill'` | no
 img | An image url for the user profile | string | `null` | no
 header-class | Extra classes for the profile header (to customize the header section) | string | `null` | no
 layout-type | The profile header layout type (`modern` or `classic`). | string | `'modern'` | no
@@ -521,6 +536,19 @@ vertical | Enables vertical mode on the progress bar | any | `null` | no
 with-label | Enables a percentage label on the progress bar | any | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.progress` element. So, for example, you can define a `class`, `onclick`, `id` or any other attribute you may need.
+
+> [!Note]
+> **Default spacing.** The AdminLTE v4 stylesheet gives the progress bars no margin of their own, so the component adds a **`mb-2`** utility to the `.progress` element, which is what the AdminLTE reference layouts use to separate stacked progress bars.
+>
+> The default is only added when **you do not provide a bottom margin yourself**. A `mb-*` or `my-*` class (values `0` to `5`, or `auto`) on the `class` attribute **wins** and suppresses the default:
+>
+> ```blade
+> <x-adminlte-progress value="40"/>            {{-- class="progress mb-2" --}}
+> <x-adminlte-progress value="40" class="mb-0"/> {{-- class="progress mb-0" --}}
+> <x-adminlte-progress value="40" class="my-4"/> {{-- class="progress my-4" --}}
+> ```
+>
+> This check exists because the Bootstrap spacing utilities are all declared with `!important` at the same specificity, so simply adding a second margin class would not reliably override the first one — the winner would be decided by the order of the rules in the stylesheet, not by the order you wrote them.
 
 > [!Note]
 > The component emits the **Bootstrap 5.3** progress markup: the `role="progressbar"` and the `aria-value*` attributes live on the `.progress` wrapper (not on the inner `.progress-bar` element as on Bootstrap 4). The theme is rendered as a `bg-{theme}` class on the inner bar.

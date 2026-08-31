@@ -202,7 +202,7 @@ The `icon` attribute is optional, and the sidebar items will fall back to an ope
 
 #### The __`id`__ Attribute:
 
-This attribute is optional, and just provide a way to add an `id` to the element that wraps the menu item, generally a `<li>` tag. This can be useful when you need to target the menu item from `Javascript` or `jQuery` in order to perform updates on it.
+This attribute is optional, and just provide a way to add an `id` to the element that wraps the menu item, generally a `<li>` tag. This can be useful when you need to target the menu item from `Javascript` in order to perform updates on it.
 
 ```php
 [

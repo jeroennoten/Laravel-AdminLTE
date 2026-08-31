@@ -169,6 +169,10 @@
             {{-- Optional AdminLTE extended colors --}}
             @isset($colorsCss)
                 <link rel="stylesheet" href="{{ $colorsCss }}">
+
+                {{-- The palette stylesheet provides no alert and no button
+                     families, so they are generated from its own tokens. --}}
+                @include('adminlte::partials.common.extended-colors')
             @endisset
     @endswitch
 
