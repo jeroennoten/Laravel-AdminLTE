@@ -4,9 +4,12 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Tool;
 
 use Illuminate\View\Component;
 use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget\HandlesThemeColors;
 
 class Modal extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The available modal sizes.
      *
@@ -23,8 +26,8 @@ class Modal extends Component
      */
     protected $darkThemes = [
         'primary', 'secondary', 'success', 'danger', 'dark', 'indigo',
-        'navy', 'purple', 'violet', 'fuchsia', 'pink', 'maroon', 'olive',
-        'lime', 'teal', 'blue', 'green', 'red', 'gray-dark',
+        'navy', 'violet', 'fuchsia', 'pink', 'olive', 'teal', 'steel',
+        'slate', 'graphite', 'midnight',
     ];
 
     /**
@@ -162,9 +165,10 @@ class Modal extends Component
     public function makeModalHeaderClass()
     {
         $classes = ['modal-header'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (isset($this->theme)) {
-            $classes[] = "text-bg-{$this->theme}";
+        if (! empty($theme)) {
+            $classes[] = "text-bg-{$theme}";
         }
 
         return implode(' ', $classes);
@@ -179,7 +183,9 @@ class Modal extends Component
      */
     public function makeModalHeaderData()
     {
-        if (isset($this->theme) && in_array($this->theme, $this->darkThemes)) {
+        $theme = $this->resolveThemeColor($this->theme);
+
+        if (! empty($theme) && in_array($theme, $this->darkThemes)) {
             return 'data-bs-theme="dark"';
         }
 
@@ -187,15 +193,15 @@ class Modal extends Component
     }
 
     /**
-     * Make the class attribute for the close button.
+     * Make the class attribute for the close button of the modal footer. Note
+     * the AdminLTE v4 modals always use a neutral dismiss button, the themed
+     * colors are reserved for the affirmative actions.
      *
      * @return string
      */
     public function makeCloseButtonClass()
     {
-        $theme = $this->theme ?? 'secondary';
-
-        return "btn-{$theme}";
+        return 'btn btn-secondary';
     }
 
     /**

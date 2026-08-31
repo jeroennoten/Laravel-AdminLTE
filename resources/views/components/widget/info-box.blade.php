@@ -15,7 +15,7 @@
             <span class="info-box-text">
 
                 @if(isset($url) && $urlTarget == 'title')
-                    <a class="info-box-url link-underline-opacity-25 link-underline-opacity-100-hover text-reset"
+                    <a class="info-box-url link-underline link-underline-opacity-25 link-underline-opacity-100-hover text-reset"
                         href="{{ $url }}">{{ $title }}</a>
                 @else
                     {{ $title }}
@@ -29,7 +29,7 @@
             <span class="info-box-number">
 
                 @if(isset($url) && $urlTarget == 'text')
-                    <a class="info-box-url link-underline-opacity-25 link-underline-opacity-100-hover text-reset"
+                    <a class="info-box-url link-underline link-underline-opacity-25 link-underline-opacity-100-hover text-reset"
                         href="{{ $url }}">{{ $text }}</a>
                 @else
                     {{ $text }}

@@ -7,10 +7,10 @@
 
         {{--Modal header --}}
         <div class="{{ $makeModalHeaderClass() }}" {!! $makeModalHeaderData() !!}>
-            <h4 class="modal-title" id="{{ $id }}-title">
+            <h1 class="modal-title fs-5" id="{{ $id }}-title">
                 @isset($icon)<i class="{{ $icon }} me-2"></i>@endisset
                 @isset($title){{ $title }}@endisset
-            </h4>
+            </h1>
             <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="{{ __('adminlte::adminlte.close') }}"></button>
         </div>
@@ -25,8 +25,9 @@
             @isset($footerSlot)
                 {{ $footerSlot }}
             @else
-                <x-adminlte-button :theme="$theme ?? 'secondary'"
-                    data-bs-dismiss="modal" :label="__('adminlte::adminlte.close')"/>
+                <button type="button" class="{{ $makeCloseButtonClass }}" data-bs-dismiss="modal">
+                    {{ __('adminlte::adminlte.close') }}
+                </button>
             @endisset
         </div>
 

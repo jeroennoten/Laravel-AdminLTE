@@ -103,7 +103,10 @@ class SmallBox extends Component
      */
     public function makeIconClass()
     {
-        $classes = ['small-box-icon'];
+        // Note the reference uses an svg of exactly 70px, while an icon font
+        // inherits the line height of the body and would overflow that box.
+
+        $classes = ['small-box-icon', 'lh-1'];
 
         if (! empty($this->icon)) {
             $classes[] = $this->icon;

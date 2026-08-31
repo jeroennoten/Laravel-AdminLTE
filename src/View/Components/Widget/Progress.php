@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Progress extends Component
 {
@@ -97,6 +98,14 @@ class Progress extends Component
     public function makeProgressClass()
     {
         $classes = ['progress'];
+
+        // The AdminLTE v4 stylesheet gives the progress bars no margin, the
+        // reference layouts separate the stacked ones with a 'mb-2' utility.
+        // It is only added when the caller provides no margin of its own.
+
+        if (! UtilsHelper::hasBottomMarginClass($this->attributes?->get('class'))) {
+            $classes[] = 'mb-2';
+        }
 
         if (isset($this->size) && in_array($this->size, $this->pSizes)) {
             $classes[] = "progress-{$this->size}";

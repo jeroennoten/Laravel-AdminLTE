@@ -123,10 +123,19 @@ class InputGroupComponent extends Component
      */
     public function makeFormGroupClass()
     {
-        $classes = ['mb-3'];
+        $classes = [];
 
         if (isset($this->fgroupClass)) {
             $classes[] = $this->fgroupClass;
+        }
+
+        // Add the default bottom margin, unless the caller already provides a
+        // margin utility. Note the Bootstrap spacing utilities are declared
+        // with '!important' and the same specificity, so the winner is decided
+        // by the order of the stylesheet and not by the order of the classes.
+
+        if (! UtilsHelper::hasBottomMarginClass(implode(' ', $classes))) {
+            array_unshift($classes, 'mb-3');
         }
 
         return implode(' ', $classes);

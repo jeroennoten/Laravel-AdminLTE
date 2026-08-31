@@ -2,10 +2,11 @@
 @inject('preloaderHelper', 'JeroenNoten\LaravelAdminLte\Helpers\PreloaderHelper')
 
 @php
-    // On the topnav layout the content is centered on a fixed width container.
+    // On the topnav layout the content uses the same container as the navbar,
+    // otherwise the brand and the content would not share their left edge.
 
     $def_container_class = $layoutHelper->isLayoutTopnavEnabled()
-        ? 'container'
+        ? config('adminlte.classes_topnav_container', 'container-fluid')
         : 'container-fluid';
 @endphp
 

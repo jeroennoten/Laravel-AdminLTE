@@ -102,6 +102,41 @@ class LayoutRenderTest extends TestCase
         $this->assertStringNotContainsString('lte-theme', $html);
     }
 
+    public function testRenderTopnavUsesOneContainer()
+    {
+        config([
+            'adminlte.layout_topnav' => true,
+            'adminlte.classes_topnav_container' => 'container-fluid',
+        ]);
+
+        $html = $this->renderPage();
+
+        // The navbar and the content must share the same container, so the
+        // brand and the content keep the same left edge.
+
+        $this->assertStringNotContainsString('<div class="container">', $html);
+        $this->assertGreaterThanOrEqual(2, substr_count($html, 'container-fluid'));
+    }
+
+    public function testRenderDisablesTheColorModePluginWithoutPersistence()
+    {
+        // With the client side persistence disabled the package uses its own
+        // toggle, so the AdminLTE color mode plugin must be switched off.
+
+        // Note the attribute is checked on the html element only, since the
+        // no flash script mentions it too.
+
+        config(['adminlte.color_mode.remember' => false]);
+        $this->assertMatchesRegularExpression(
+            '/<html[^>]*data-lte-color-mode="off"/', $this->renderPage()
+        );
+
+        config(['adminlte.color_mode.remember' => true]);
+        $this->assertDoesNotMatchRegularExpression(
+            '/<html[^>]*data-lte-color-mode/', $this->renderPage()
+        );
+    }
+
     public function testRenderWithRightSidebar()
     {
         config(['adminlte.right_sidebar' => true]);

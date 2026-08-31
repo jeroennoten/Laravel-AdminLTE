@@ -110,7 +110,7 @@ class ToolComponentsTest extends TestCase
         $this->assertStringContainsString('modal-header', $mhClass);
 
         $cbClass = $component->makeCloseButtonClass();
-        $this->assertStringContainsString('btn-secondary', $cbClass);
+        $this->assertEquals('btn btn-secondary', $cbClass);
     }
 
     public function testModalComponentWithAdvancedOptions()
@@ -134,7 +134,10 @@ class ToolComponentsTest extends TestCase
         $mhClass = $component->makeModalHeaderClass();
         $this->assertStringContainsString('text-bg-info', $mhClass);
 
+        // The dismiss button of the modal footer is always neutral, the theme
+        // colors are reserved for the affirmative actions.
+
         $cbClass = $component->makeCloseButtonClass();
-        $this->assertStringContainsString('btn-info', $cbClass);
+        $this->assertEquals('btn btn-secondary', $cbClass);
     }
 }

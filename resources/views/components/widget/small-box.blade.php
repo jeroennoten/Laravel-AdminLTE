@@ -19,7 +19,7 @@
     {{-- Box link --}}
     @isset($url)
         <a href="{{ $url }}"
-            class="small-box-footer text-reset link-underline-opacity-0 link-underline-opacity-50-hover">
+            class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
 
             @if(! empty($urlText))
                 {{ $urlText }}
@@ -81,7 +81,7 @@
                 const icon = t.querySelector('.small-box-icon');
 
                 if (icon) {
-                    icon.className = 'small-box-icon ' + data.icon;
+                    icon.className = 'small-box-icon lh-1 ' + data.icon;
                 }
             }
 

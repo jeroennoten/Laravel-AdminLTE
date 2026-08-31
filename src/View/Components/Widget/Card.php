@@ -130,16 +130,24 @@ class Card extends Component
     public function makeCardClass()
     {
         $classes = ['card'];
+
+        // The AdminLTE v4 stylesheet gives the cards no bottom margin, every
+        // card of the reference layouts carries a 'mb-4' utility. It is only
+        // added when the caller does not provide a margin of its own.
+
+        if (! UtilsHelper::hasBottomMarginClass($this->attributes?->get('class'))) {
+            $classes[] = 'mb-4';
+        }
+
         $theme = $this->resolveThemeColor($this->theme);
 
         if (! empty($theme)) {
             if ($this->themeMode === 'full') {
                 // On AdminLTE v4 there are no 'bg-gradient-{color}' classes
-                // on the core stylesheet. A fully colored card is made with
-                // the Bootstrap 'text-bg-{color}' plus 'bg-gradient' helpers.
+                // on the core stylesheet, a fully colored card is made with
+                // the Bootstrap 'text-bg-{color}' helper.
 
                 $classes[] = "text-bg-{$theme}";
-                $classes[] = 'bg-gradient';
             } else {
                 $classes[] = "card-{$theme}";
 

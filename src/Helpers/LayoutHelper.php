@@ -189,6 +189,15 @@ class LayoutHelper
             $attrs[] = "data-bs-theme=\"{$colorMode}\"";
         }
 
+        // When the color mode is not remembered on the browser, the package
+        // provides its own (server side) toggle. So, the AdminLTE color mode
+        // plugin is disabled, otherwise it would restore its stored value and
+        // fight with the preference resolved on the server.
+
+        if (! config('adminlte.color_mode.remember', true)) {
+            $attrs[] = 'data-lte-color-mode="off"';
+        }
+
         return trim(implode(' ', $attrs));
     }
 
