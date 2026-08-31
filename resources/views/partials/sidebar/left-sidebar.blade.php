@@ -1,4 +1,24 @@
-<aside class="main-sidebar {{ config('adminlte.classes_sidebar', 'sidebar-dark-primary elevation-4') }}">
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+@inject('sidebarItemHelper', 'JeroenNoten\LaravelAdminLte\Helpers\SidebarItemHelper')
+
+@php
+    // The HTML id of the sidebar menu. The sidebar search box targets it.
+    $sidebarMenuId = 'adminlte-sidebar-menu';
+
+    // In AdminLTE v4, the search box lives outside of the scrollable menu
+    // wrapper. So, we split the search items from the regular menu items.
+    $sidebarMenu = $adminlte->menu('sidebar');
+
+    $sidebarSearchItems = array_filter($sidebarMenu, function ($item) use ($sidebarItemHelper) {
+        return $sidebarItemHelper->isSearch($item);
+    });
+
+    $sidebarMenuItems = array_filter($sidebarMenu, function ($item) use ($sidebarItemHelper) {
+        return ! $sidebarItemHelper->isSearch($item);
+    });
+@endphp
+
+<aside class="{{ $layoutHelper->makeSidebarWrapperClasses() }}" {!! $layoutHelper->makeSidebarData() !!}>
 
     {{-- Sidebar brand logo --}}
     @if(config('adminlte.logo_img_xl'))
@@ -7,19 +27,25 @@
         @include('adminlte::partials.common.brand-logo-xs')
     @endif
 
+    {{-- Sidebar search box (kept outside of the sidebar wrapper) --}}
+    @foreach($sidebarSearchItems as $item)
+        @include('adminlte::partials.sidebar.menu-item')
+    @endforeach
+
     {{-- Sidebar menu --}}
-    <div class="sidebar">
-        <nav class="pt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column {{ config('adminlte.classes_sidebar_nav', '') }}"
-                data-widget="treeview" role="menu"
+    <div class="sidebar-wrapper">
+        <nav class="mt-2" aria-label="{{ config('adminlte.sidebar_nav_aria_label', 'Main navigation') }}">
+            <ul class="nav sidebar-menu flex-column {{ config('adminlte.classes_sidebar_nav', '') }}"
+                id="{{ $sidebarMenuId }}"
+                data-lte-toggle="treeview"
                 @if(config('adminlte.sidebar_nav_animation_speed') != 300)
                     data-animation-speed="{{ config('adminlte.sidebar_nav_animation_speed') }}"
                 @endif
-                @if(!config('adminlte.sidebar_nav_accordion'))
+                @if(! config('adminlte.sidebar_nav_accordion'))
                     data-accordion="false"
                 @endif>
                 {{-- Configured sidebar links --}}
-                @each('adminlte::partials.sidebar.menu-item', $adminlte->menu('sidebar'), 'item')
+                @each('adminlte::partials.sidebar.menu-item', $sidebarMenuItems, 'item')
             </ul>
         </nav>
     </div>

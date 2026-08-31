@@ -4,15 +4,31 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Tool;
 
 use Illuminate\View\Component;
 use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget\HandlesThemeColors;
 
 class Modal extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The available modal sizes.
      *
      * @var array
      */
     protected $mSizes = ['sm', 'lg', 'xl'];
+
+    /**
+     * The set of themes that provide a dark background. On these themes, the
+     * close button of the modal header requires the dark color mode in order
+     * to get enough contrast.
+     *
+     * @var array
+     */
+    protected $darkThemes = [
+        'primary', 'secondary', 'success', 'danger', 'dark', 'indigo',
+        'navy', 'violet', 'fuchsia', 'pink', 'olive', 'teal', 'steel',
+        'slate', 'graphite', 'midnight',
+    ];
 
     /**
      * The modal ID attribute, used to target the modal and show it.
@@ -29,7 +45,7 @@ class Modal extends Component
     public $title;
 
     /**
-     * A Font Awesome icon for the modal header.
+     * An icon for the modal header (a Bootstrap Icon by default).
      *
      * @var string
      */
@@ -149,28 +165,43 @@ class Modal extends Component
     public function makeModalHeaderClass()
     {
         $classes = ['modal-header'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (isset($this->theme)) {
-            $classes[] = "bg-{$this->theme}";
+        if (! empty($theme)) {
+            $classes[] = "text-bg-{$theme}";
         }
 
         return implode(' ', $classes);
     }
 
     /**
-     * Make the class attribute for the close button.
+     * Make the data attributes for the modal header. Bootstrap 5.3 resolves
+     * the close button color from the active color mode, so a dark themed
+     * header needs to declare the dark color mode explicitly.
+     *
+     * @return string
+     */
+    public function makeModalHeaderData()
+    {
+        $theme = $this->resolveThemeColor($this->theme);
+
+        if (! empty($theme) && in_array($theme, $this->darkThemes)) {
+            return 'data-bs-theme="dark"';
+        }
+
+        return '';
+    }
+
+    /**
+     * Make the class attribute for the close button of the modal footer. Note
+     * the AdminLTE v4 modals always use a neutral dismiss button, the themed
+     * colors are reserved for the affirmative actions.
      *
      * @return string
      */
     public function makeCloseButtonClass()
     {
-        $classes = ['bg-secondary'];
-
-        if (isset($this->theme)) {
-            $classes = ["bg-{$this->theme}"];
-        }
-
-        return implode(' ', $classes);
+        return 'btn btn-secondary';
     }
 
     /**

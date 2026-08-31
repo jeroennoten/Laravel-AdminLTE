@@ -8,195 +8,11 @@ use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 class PluginsResource extends PackageResource
 {
     /**
-     * The available plugins data. A plugin can contain next data keys:
-     * - name: The name of the plugin.
-     * - source: The source of the plugin (relative to base source).
-     * - target: The target of the plugin (relative to base target).
-     * - resources: An array with resources data items.
-     * - ignore: A list of file patterns to ignore.
-     * - recursive: Whether to copy files recursively (default is true).
-     * - dependencies: A list of plugin keys that are required as dependencies.
+     * The catalogue of the available plugins.
      *
-     * When the target is not specified, the source will be used as the
-     * relative path to the base target destination. A resource can contain the
-     * same keys that are availables for a plugin.
-     *
-     * @var array
+     * @var PluginsCatalog
      */
-    protected $plugins = [
-        'bootstrap4DualListbox' => [
-            'name' => 'Bootstrap4 Dual Listbox',
-            'source' => 'bootstrap4-duallistbox',
-        ],
-        'bootstrapColorpicker' => [
-            'name' => 'Bootstrap Colorpicker',
-            'source' => 'bootstrap-colorpicker',
-        ],
-        'bootstrapSlider' => [
-            'name' => 'Bootstrap Slider',
-            'source' => 'bootstrap-slider',
-        ],
-        'bootstrapSwitch' => [
-            'name' => 'Bootstrap Switch',
-            'source' => 'bootstrap-switch',
-        ],
-        'bsCustomFileInput' => [
-            'name' => 'bs-custom-file-input',
-            'source' => 'bs-custom-file-input',
-        ],
-        'chartJs' => [
-            'name' => 'Chart.js',
-            'source' => 'chart.js',
-        ],
-        'datatables' => [
-            'name' => 'Datatables',
-            'resources' => [
-                ['source' => 'datatables', 'target' => 'datatables/js'],
-                ['source' => 'datatables-bs4', 'target' => 'datatables'],
-            ],
-        ],
-        'datatablesPlugins' => [
-            'name' => 'Datatables Plugins',
-            'resources' => [
-                ['source' => 'datatables-autofill', 'target' => 'datatables-plugins/autofill'],
-                ['source' => 'datatables-buttons', 'target' => 'datatables-plugins/buttons'],
-                ['source' => 'datatables-colreorder', 'target' => 'datatables-plugins/colreorder'],
-                ['source' => 'datatables-fixedcolumns', 'target' => 'datatables-plugins/fixedcolumns'],
-                ['source' => 'datatables-fixedheader', 'target' => 'datatables-plugins/fixedheader'],
-                ['source' => 'datatables-keytable', 'target' => 'datatables-plugins/keytable'],
-                ['source' => 'datatables-responsive', 'target' => 'datatables-plugins/responsive'],
-                ['source' => 'datatables-rowgroup', 'target' => 'datatables-plugins/rowgroup'],
-                ['source' => 'datatables-rowreorder', 'target' => 'datatables-plugins/rowreorder'],
-                ['source' => 'datatables-scroller', 'target' => 'datatables-plugins/scroller'],
-                ['source' => 'datatables-select', 'target' => 'datatables-plugins/select'],
-                ['source' => 'pdfmake', 'target' => 'datatables-plugins/pdfmake'],
-                ['source' => 'jszip', 'target' => 'datatables-plugins/jszip'],
-            ],
-        ],
-        'daterangepicker' => [
-            'name' => 'Date Range Picker',
-            'source' => 'daterangepicker',
-            'dependencies' => ['moment'],
-        ],
-        'ekkoLightbox' => [
-            'name' => 'Ekko Lightbox',
-            'source' => 'ekko-lightbox',
-        ],
-        'fastclick' => [
-            'name' => 'FastClick',
-            'source' => 'fastclick',
-        ],
-        'filterizr' => [
-            'name' => 'Filterizr',
-            'source' => 'filterizr',
-            'ignore' => ['*.d.ts'],
-            'recursive' => false,
-        ],
-        'flagIconCss' => [
-            'name' => 'Flag Icon Css',
-            'source' => 'flag-icon-css',
-        ],
-        'flot' => [
-            'name' => 'Flot',
-            'source' => 'flot',
-        ],
-        'fullcalendar' => [
-            'name' => 'Fullcalendar',
-            'source' => 'fullcalendar',
-            'ignore' => ['*.d.ts', '*.json', '*.md'],
-        ],
-        'icheckBootstrap' => [
-            'name' => 'iCheck Bootstrap',
-            'source' => 'icheck-bootstrap',
-            'ignore' => ['*.json', '*.md'],
-        ],
-        'inputmask' => [
-            'name' => 'InputMask',
-            'source' => 'inputmask',
-        ],
-        'ionRangslider' => [
-            'name' => 'Ion.RangeSlider',
-            'source' => 'ion-rangeslider',
-            'ignore' => ['*.json', '*.md', '.editorconfig'],
-        ],
-        'jqueryKnob' => [
-            'name' => 'jQuery Knob',
-            'source' => 'jquery-knob',
-        ],
-        'jqueryMapael' => [
-            'name' => 'jQuery Mapael',
-            'resources' => [
-                ['source' => 'jquery-mapael'],
-                ['source' => 'raphael'],
-                ['source' => 'jquery-mousewheel'],
-            ],
-            'ignore' => ['*.json', '*.md', '.editorconfig'],
-        ],
-        'jqueryUi' => [
-            'name' => 'jQuery UI',
-            'resources' => [
-                ['source' => 'jquery-ui'],
-                ['source' => 'jquery-ui/images'],
-            ],
-            'recursive' => false,
-        ],
-        'jqueryValidation' => [
-            'name' => 'jQuery Validation',
-            'source' => 'jquery-validation',
-        ],
-        'jqvmap' => [
-            'name' => 'jQVMap',
-            'source' => 'jqvmap',
-        ],
-        'jsgrid' => [
-            'name' => 'jsGrid',
-            'resources' => [
-                ['source' => 'jsgrid'],
-                ['source' => 'jsgrid/i18n'],
-            ],
-            'recursive' => false,
-        ],
-        'moment' => [
-            'name' => 'Moment.js',
-            'source' => 'moment',
-        ],
-        'paceProgress' => [
-            'name' => 'Pace Progress',
-            'source' => 'pace-progress',
-        ],
-        'select2' => [
-            'name' => 'Select 2 with Bootstrap 4 Theme',
-            'resources' => [
-                ['source' => 'select2'],
-                ['source' => 'select2-bootstrap4-theme'],
-            ],
-            'ignore' => ['*.json', '*.md'],
-        ],
-        'sparklines' => [
-            'name' => 'Sparklines',
-            'source' => 'sparklines',
-        ],
-        'summernote' => [
-            'name' => 'Summernote',
-            'source' => 'summernote',
-        ],
-        'sweetalert2' => [
-            'name' => 'Sweetalert 2 with Bootstrap 4 Theme',
-            'resources' => [
-                ['source' => 'sweetalert2'],
-                ['source' => 'sweetalert2-theme-bootstrap-4'],
-            ],
-        ],
-        'tempusdominusBootstrap4' => [
-            'name' => 'Tempus Dominus for Bootstrap 4',
-            'source' => 'tempusdominus-bootstrap-4',
-            'dependencies' => ['moment'],
-        ],
-        'toastr' => [
-            'name' => 'Toastr',
-            'source' => 'toastr',
-        ],
-    ];
+    protected $catalog;
 
     /**
      * Create a new resource instance.
@@ -205,14 +21,18 @@ class PluginsResource extends PackageResource
      */
     public function __construct()
     {
+        $this->catalog = new PluginsCatalog();
+
         // Fill the basic resource data.
 
-        $this->description = 'The set of extra plugins available with AdminLTE';
+        $this->description = 'The set of extra plugins recommended for AdminLTE v4';
         $this->required = false;
 
-        // Define the base source folder of the plugins.
+        // Define the base source folder of the plugins. Note AdminLTE v4 does
+        // not bundle any third party plugin anymore, so the plugins are
+        // published from the node modules folder of the application.
 
-        $this->source = base_path('vendor/almasaeed2010/adminlte/plugins');
+        $this->source = base_path('node_modules');
 
         // Define the base target destination for the plugins.
 
@@ -235,15 +55,7 @@ class PluginsResource extends PackageResource
      */
     public function getSourceData($pluginKey = null)
     {
-        // Check if we need to get data of a specific AdminLTE plugin.
-
-        if (! empty($pluginKey)) {
-            return $this->plugins[$pluginKey] ?? [];
-        }
-
-        // Otherwise, return all the AdminLTE plugins data.
-
-        return $this->plugins;
+        return $this->catalog->get($pluginKey);
     }
 
     /**
@@ -254,10 +66,70 @@ class PluginsResource extends PackageResource
      */
     public function install($pluginKey = null)
     {
-        if (isset($pluginKey) && isset($this->plugins[$pluginKey])) {
-            $plugin = $this->preparePlugin($this->plugins[$pluginKey]);
+        if (isset($pluginKey) && ! empty($this->catalog->get($pluginKey))) {
+            $plugin = $this->preparePlugin($this->catalog->get($pluginKey));
             $this->installPlugin($plugin);
         }
+    }
+
+    /**
+     * Checks whether the npm package that provides the specified plugin is
+     * available on the application node modules folder.
+     *
+     * @param  string  $pluginKey  A plugin key
+     * @return bool
+     */
+    public function pluginAvailable($pluginKey)
+    {
+        $plugin = $this->catalog->get($pluginKey) ?: null;
+
+        if (! isset($plugin)) {
+            return false;
+        }
+
+        $package = $plugin['package'] ?? null;
+
+        if (! isset($package)) {
+            return false;
+        }
+
+        $path = $this->source.DIRECTORY_SEPARATOR.str_replace('/', DIRECTORY_SEPARATOR, $package);
+
+        return File::isDirectory($path);
+    }
+
+    /**
+     * Gets the npm command required to install the package that provides the
+     * specified plugin.
+     *
+     * @param  string  $pluginKey  A plugin key
+     * @return string|null
+     */
+    public function getInstallPackageCommand($pluginKey)
+    {
+        $plugin = $this->catalog->get($pluginKey) ?: null;
+
+        if (! isset($plugin['package'])) {
+            return null;
+        }
+
+        $version = $plugin['version'] ?? null;
+        $package = isset($version) ? "{$plugin['package']}@{$version}" : $plugin['package'];
+
+        return "npm i {$package}";
+    }
+
+    /**
+     * Gets the AdminLTE v4 replacement of a legacy (AdminLTE v3) plugin key.
+     * It returns null when the plugin has no replacement, and false when the
+     * specified key is not a legacy plugin key.
+     *
+     * @param  string  $pluginKey  A plugin key
+     * @return string|null|false
+     */
+    public function getLegacyPluginReplacement($pluginKey)
+    {
+        return $this->catalog->getLegacyReplacement($pluginKey);
     }
 
     /**
@@ -268,8 +140,8 @@ class PluginsResource extends PackageResource
      */
     public function uninstall($pluginKey = null)
     {
-        if (isset($pluginKey) && isset($this->plugins[$pluginKey])) {
-            $plugin = $this->preparePlugin($this->plugins[$pluginKey]);
+        if (isset($pluginKey) && ! empty($this->catalog->get($pluginKey))) {
+            $plugin = $this->preparePlugin($this->catalog->get($pluginKey));
             $this->uninstallPlugin($plugin);
         }
     }
@@ -282,8 +154,8 @@ class PluginsResource extends PackageResource
      */
     public function exists($pluginKey = null)
     {
-        if (isset($pluginKey) && isset($this->plugins[$pluginKey])) {
-            $plugin = $this->preparePlugin($this->plugins[$pluginKey]);
+        if (isset($pluginKey) && ! empty($this->catalog->get($pluginKey))) {
+            $plugin = $this->preparePlugin($this->catalog->get($pluginKey));
 
             return $this->pluginExists($plugin);
         }
@@ -300,8 +172,8 @@ class PluginsResource extends PackageResource
      */
     public function installed($pluginKey = null)
     {
-        if (isset($pluginKey) && isset($this->plugins[$pluginKey])) {
-            $plugin = $this->preparePlugin($this->plugins[$pluginKey]);
+        if (isset($pluginKey) && ! empty($this->catalog->get($pluginKey))) {
+            $plugin = $this->preparePlugin($this->catalog->get($pluginKey));
 
             return $this->pluginInstalled($plugin);
         }
@@ -324,28 +196,38 @@ class PluginsResource extends PackageResource
 
         // Add fully qualified paths and default values.
 
-        $DS = DIRECTORY_SEPARATOR;
-        $plugin['source'] = $this->source.$DS.$plugin['source'];
-        $plugin['target'] = $this->target.$DS.$plugin['target'];
+        $plugin['source'] = $this->source.DIRECTORY_SEPARATOR.$plugin['source'];
+        $plugin['target'] = $this->target.DIRECTORY_SEPARATOR.$plugin['target'];
         $plugin['ignore'] = $plugin['ignore'] ?? [];
         $plugin['recursive'] = $plugin['recursive'] ?? true;
 
         // Add fully qualified paths and default values on the resources.
 
-        if (isset($plugin['resources'])) {
-            foreach ($plugin['resources'] as $key => $res) {
-                $res['target'] = $res['target'] ?? $res['source'];
-                $res['source'] = $plugin['source'].$DS.$res['source'];
-                $res['target'] = $plugin['target'].$DS.$res['target'];
-                $res['ignore'] = $res['ignore'] ?? $plugin['ignore'];
-                $res['recursive'] = $res['recursive'] ?? $plugin['recursive'];
-                $plugin['resources'][$key] = $res;
-            }
+        foreach ($plugin['resources'] ?? [] as $key => $res) {
+            $plugin['resources'][$key] = $this->prepareResource($res, $plugin);
         }
 
         // Return normalized plugin data.
 
         return $plugin;
+    }
+
+    /**
+     * Normalizes the data of a plugin resource, relative to its plugin.
+     *
+     * @param  array  $res  An array with the resource data
+     * @param  array  $plugin  An array with the (normalized) plugin data
+     * @return array
+     */
+    protected function prepareResource($res, $plugin)
+    {
+        $res['target'] = $res['target'] ?? $res['source'];
+        $res['source'] = $plugin['source'].DIRECTORY_SEPARATOR.$res['source'];
+        $res['target'] = $plugin['target'].DIRECTORY_SEPARATOR.$res['target'];
+        $res['ignore'] = $res['ignore'] ?? $plugin['ignore'];
+        $res['recursive'] = $res['recursive'] ?? $plugin['recursive'];
+
+        return $res;
     }
 
     /**
@@ -506,12 +388,14 @@ class PluginsResource extends PackageResource
     {
         $target = $res['target'];
 
-        // Uninstall the specified resource. Note the target location is always
-        // a folder. When the target folder does not exists, we consider the
-        // resource as uninstalled.
+        // Uninstall the specified resource. When the target location does not
+        // exists, we consider the resource as uninstalled. Note a resource may
+        // be published as a single file too.
 
         if (File::isDirectory($target)) {
             File::deleteDirectory($target);
+        } elseif (File::exists($target)) {
+            File::delete($target);
         }
     }
 }

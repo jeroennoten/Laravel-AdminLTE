@@ -15,7 +15,7 @@
 @section('auth_body')
 
     @if(session('status'))
-        <div class="alert alert-success">
+        <div class="alert alert-success" role="alert">
             {{ session('status') }}
         </div>
     @endif
@@ -24,14 +24,15 @@
         @csrf
 
         {{-- Email field --}}
+        <label for="email" class="visually-hidden">{{ __('adminlte::adminlte.email') }}</label>
+
         <div class="input-group mb-3">
-            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror"
+            <input type="email" name="email" id="email"
+                class="form-control @error('email') is-invalid @enderror"
                 value="{{ old('email') }}" placeholder="{{ __('adminlte::adminlte.email') }}" autofocus>
 
-            <div class="input-group-append">
-                <div class="input-group-text">
-                    <span class="fas fa-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
-                </div>
+            <div class="input-group-text">
+                <span class="bi bi-envelope {{ config('adminlte.classes_auth_icon', '') }}"></span>
             </div>
 
             @error('email')
@@ -42,10 +43,12 @@
         </div>
 
         {{-- Send reset link button --}}
-        <button type="submit" class="btn btn-block {{ config('adminlte.classes_auth_btn', 'btn-flat btn-primary') }}">
-            <span class="fas fa-share-square"></span>
-            {{ __('adminlte::adminlte.send_password_reset_link') }}
-        </button>
+        <div class="d-grid">
+            <button type="submit" class="btn {{ config('adminlte.classes_auth_btn', 'btn-primary') }}">
+                <i class="bi bi-send me-1"></i>
+                {{ __('adminlte::adminlte.send_password_reset_link') }}
+            </button>
+        </div>
     </form>
 
 @stop

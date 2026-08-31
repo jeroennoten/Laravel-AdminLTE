@@ -312,4 +312,121 @@ class ActiveCheckerTest extends TestCase
 
         $this->assertTrue($isActive);
     }
+
+    public function testWithSubmenuWithoutActiveItems()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // A submenu without active children is not active.
+
+        $isActive = $this->checker->isActive([
+            'text' => 'Level 0',
+            'submenu' => [
+                ['url' => 'foo'],
+                ['url' => 'bar'],
+            ],
+        ]);
+
+        $this->assertFalse($isActive);
+    }
+
+    public function testWithEmptySubmenu()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // An empty submenu is never active.
+
+        $isActive = $this->checker->isActive([
+            'text' => 'Level 0',
+            'submenu' => [],
+        ]);
+
+        $this->assertFalse($isActive);
+    }
+
+    public function testWithMultiLevelSubmenuWithoutActiveItems()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // Make assertions.
+
+        $isActive = $this->checker->isActive([
+            'text' => 'Level 0',
+            'submenu' => [
+                [
+                    'text' => 'Level 1',
+                    'submenu' => [['url' => 'foo'], ['url' => 'bar']],
+                ],
+            ],
+        ]);
+
+        $this->assertFalse($isActive);
+    }
+
+    public function testWithSubmenuHoldingAnExplicitActiveItem()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/home');
+
+        // A submenu is active when any of its children is explicitly active.
+
+        $isActive = $this->checker->isActive([
+            'text' => 'Level 0',
+            'submenu' => [
+                ['url' => 'foo'],
+                ['url' => 'bar', 'active' => true],
+            ],
+        ]);
+
+        $this->assertTrue($isActive);
+    }
+
+    public function testWithTheCompiledHrefProperty()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // The compiled 'href' property is checked too.
+
+        $this->assertTrue($this->checker->isActive(['href' => 'about']));
+        $this->assertFalse($this->checker->isActive(['href' => 'home']));
+    }
+
+    public function testWithAnItemWithoutTestableProperties()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // An item without any of the tested properties is not active.
+
+        $this->assertFalse($this->checker->isActive(['text' => 'About']));
+        $this->assertFalse($this->checker->isActive([]));
+    }
+
+    public function testWithAnExplicitInactiveItem()
+    {
+        // Emulate a request.
+
+        $this->get('http://example.com/about');
+
+        // An explicit false value does not stop the other checks, so the url
+        // property still activates the item.
+
+        $item = ['url' => 'about', 'active' => false];
+        $this->assertTrue($this->checker->isActive($item));
+
+        // Without a matching url, the item is not active.
+
+        $item = ['url' => 'home', 'active' => false];
+        $this->assertFalse($this->checker->isActive($item));
+    }
 }

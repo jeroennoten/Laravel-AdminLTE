@@ -14,6 +14,7 @@ export default {
                     { text: 'Requirements', link: '/sections/overview/requirements' },
                     { text: 'Installation', link: '/sections/overview/installation' },
                     { text: 'Updating', link: '/sections/overview/updating' },
+                    { text: 'Upgrading from 3.x', link: '/sections/overview/upgrading_from_3x' },
                     { text: 'Usage', link: '/sections/overview/usage' },
                     { text: 'Authentication Views', link: '/sections/overview/authentication_views' },
                     { text: 'Artisan commands', link: '/sections/overview/artisan_console_commands' }

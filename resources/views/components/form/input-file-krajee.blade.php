@@ -15,7 +15,7 @@ one provided by the mentioned layout. So instead, we define a new layout.
 
     {{-- Input label --}}
     @isset($label)
-        <label for="{{ $id }}" @isset($labelClass) class="{{ $labelClass }}" @endisset>
+        <label for="{{ $id }}" class="{{ $makeLabelClass() }}">
             {{ $label }}
         </label>
     @endisset
@@ -34,37 +34,59 @@ one provided by the mentioned layout. So instead, we define a new layout.
 </div>
 
 {{-- Add the plugin initialization code --}}
+{{-- NOTE: the Krajee file input plugin still requires jQuery --}}
 
 @push('js')
 <script>
 
-    $(() => {
+    if (window.jQuery) {
 
-        // Initialize the plugin.
+        window.jQuery(function ($) {
 
-        $('#{{ $id }}').fileinput( @json($config) );
+            if (typeof $.fn.fileinput === 'undefined') {
+                return;
+            }
 
-        // Workaround to force setup of invalid class.
+            // Initialize the plugin.
 
-        @if($isInvalid())
-            $('#{{ $id }}').closest('.file-input')
-                .find('.file-caption-name')
-                .addClass('is-invalid')
+            $('#{{ $id }}').fileinput( @json((object) $config) );
 
-            $('#{{ $id }}').closest('.file-input')
-                .find('.file-preview')
-                .css('box-shadow', '0 .15rem 0.25rem rgba(255,0,0,.25)');
-        @endif
+            // Workaround to force setup of invalid class.
 
-        // Make custom style for particular scenarios (modes).
+            @if($isInvalid())
+                $('#{{ $id }}').closest('.file-input')
+                    .find('.file-caption-name')
+                    .addClass('is-invalid');
 
-        @if($presetMode == 'avatar')
-            $('#{{ $id }}').closest('.file-input')
-                .addClass('text-center')
-                .find('.file-drop-zone')
-                .addClass('border-0');
-        @endif
-    })
+                $('#{{ $id }}').closest('.file-input')
+                    .find('.file-preview')
+                    .addClass('adminlte-invalid-krajee-preview');
+            @endif
+
+            // Make custom style for particular scenarios (modes).
+
+            @if($presetMode == 'avatar')
+                $('#{{ $id }}').closest('.file-input')
+                    .addClass('text-center')
+                    .find('.file-drop-zone')
+                    .addClass('border-0');
+            @endif
+        });
+    }
 
 </script>
 @endpush
+
+{{-- Setup the custom invalid style for the plugin --}}
+
+@once
+@push('css')
+<style type="text/css">
+
+    .adminlte-invalid-krajee-preview {
+        box-shadow: 0 .15rem 0.25rem rgba(var(--bs-danger-rgb, 220, 53, 69), .25);
+    }
+
+</style>
+@endpush
+@endonce

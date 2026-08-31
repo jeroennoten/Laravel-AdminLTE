@@ -4,7 +4,7 @@
 
         {{-- Icon --}}
         @isset($icon)
-            <i class="{{ $icon }}"></i>
+            <i class="{{ $icon }} me-1" aria-hidden="true"></i>
         @endisset
 
         {{-- Header --}}

@@ -8,10 +8,17 @@
 
 @section('input_group_item')
 
-    {{-- Summernote Textarea --}}
+    {{-- Hidden textarea holding the value submitted with the form --}}
     <textarea id="{{ $id }}" name="{{ $name }}"
         {{ $attributes->merge(['class' => $makeItemClass()]) }}
     >{{ $getOldValue($errorKey, $slot) }}</textarea>
+
+    {{-- The wrapper of the 'Quill' editor. The plugin injects its toolbar as
+         a sibling of the target element, so the wrapper keeps both the
+         toolbar and the editing area inside a single input group item. --}}
+    <div class="{{ $makeEditorClass() }}">
+        <div id="{{ $makeEditorId() }}"></div>
+    </div>
 
 @overwrite
 
@@ -20,53 +27,125 @@
 @push('js')
 <script>
 
-    $(() => {
-        let usrCfg = @json($config);
+    document.addEventListener('DOMContentLoaded', function () {
 
-        // Check for placeholder attribute.
+        const source = document.getElementById(@json($id));
+        const target = document.getElementById(@json($makeEditorId()));
 
-        @isset($attributes['placeholder'])
-            usrCfg['placeholder'] = "{{ $attributes['placeholder'] }}";
-        @endisset
+        if (! source || ! target || typeof window.Quill === 'undefined') {
+            return;
+        }
 
-        // Initialize the plugin.
+        const usrCfg = @json((object) $makePluginConfig());
 
-        $('#{{ $id }}').summernote(usrCfg);
+        {{-- Check for the placeholder attribute. --}}
 
-        // Check for disabled attribute.
+        @if($attributes->has('placeholder'))
+            usrCfg.placeholder = usrCfg.placeholder
+                || @json($attributes->get('placeholder'));
+        @endif
 
-        @isset($attributes['disabled'])
-            $('#{{ $id }}').summernote('disable');
-        @endisset
-    })
+        {{-- Check for the disabled and readonly attributes. --}}
+
+        @if($attributes->has('disabled') || $attributes->has('readonly'))
+            usrCfg.readOnly = true;
+        @endif
+
+        const editor = new window.Quill(target, usrCfg);
+
+        const readEditor = function () {
+            return typeof editor.getSemanticHTML === 'function'
+                ? editor.getSemanticHTML()
+                : editor.root.innerHTML;
+        };
+
+        {{-- Load the initial content from the underlying textarea. Note the
+             textarea content is html escaped on the server side, so the
+             editor is the only place where it gets interpreted as html. --}}
+
+        if (source.value) {
+            editor.clipboard.dangerouslyPasteHTML(source.value);
+        }
+
+        {{-- Keep the underlying textarea in sync with the editor. --}}
+
+        editor.on('text-change', function () {
+            source.value = readEditor();
+        });
+
+        {{-- Submit the latest content even when the editor was never
+             focused nor modified. --}}
+
+        const form = source.closest('form');
+
+        if (form) {
+            form.addEventListener('submit', function () {
+                source.value = readEditor();
+            });
+        }
+    });
 
 </script>
 @endpush
 
-{{-- Setup the font size of the plugin when using sm/lg sizes --}}
-{{-- NOTE: this may change with newer plugin versions --}}
+{{-- Setup the height of this particular editor --}}
+
+@if($makeEditorHeight())
+@push('css')
+<style type="text/css">
+
+    #{{ $makeEditorId() }} .ql-editor {
+        min-height: {{ $makeEditorHeight() }};
+    }
+
+</style>
+@endpush
+@endif
+
+{{-- Setup the base styles and the custom invalid style for the editor --}}
 
 @once
 @push('css')
 <style type="text/css">
 
+    .adminlte-text-editor {
+        flex: 1 1 auto;
+        height: auto;
+        overflow: hidden;
+    }
+
+    .adminlte-text-editor .ql-editor {
+        min-height: 10rem;
+    }
+
+    .adminlte-text-editor .ql-toolbar {
+        border: 0;
+        border-bottom: var(--bs-border-width, 1px) solid var(--bs-border-color, #dee2e6);
+    }
+
+    .adminlte-text-editor .ql-container {
+        border: 0;
+        font-family: inherit;
+        font-size: inherit;
+    }
+
     {{-- SM size setup --}}
-    .input-group-sm .note-editor {
+    .input-group-sm .adminlte-text-editor {
         font-size: .875rem;
         line-height: 1;
     }
 
     {{-- LG size setup --}}
-    .input-group-lg .note-editor {
+    .input-group-lg .adminlte-text-editor {
         font-size: 1.25rem;
         line-height: 1.5;
     }
 
-    {{-- Setup custom invalid style  --}}
+    {{-- Custom invalid style setup --}}
 
-    .adminlte-invalid-itegroup .note-editor {
-        box-shadow: 0 .25rem 0.5rem rgba(0,0,0,.25);
-        border-color: #dc3545 !important;
+    .adminlte-invalid-itegroup .adminlte-text-editor {
+        box-shadow: 0 .25rem 0.5rem rgba(var(--bs-danger-rgb, 220, 53, 69), .25);
+        border-color: var(--bs-danger, #dc3545) !important;
     }
 
 </style>

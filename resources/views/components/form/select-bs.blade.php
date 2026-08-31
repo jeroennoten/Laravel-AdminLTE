@@ -8,7 +8,7 @@
 
 @section('input_group_item')
 
-    {{-- Select --}}
+    {{-- Select (Bootstrap 5 uses the 'form-select' class) --}}
     <select id="{{ $id }}" name="{{ $name }}"
         {{ $attributes->merge(['class' => $makeItemClass()]) }}>
         {{ $slot }}
@@ -21,33 +21,43 @@
 @push('js')
 <script>
 
-    $(() => {
-        $('#{{ $id }}').selectpicker( @json($config) );
+    document.addEventListener('DOMContentLoaded', function () {
 
-        // Add support to auto select old submitted values in case of
-        // validation errors.
+        const el = document.getElementById(@json($id));
+
+        if (! el) {
+            return;
+        }
+
+        {{-- Add support to auto select old submitted values in case of
+             validation errors. --}}
 
         @if($errors->any() && $enableOldSupport)
-            let oldOptions = @json(collect($getOldValue($errorKey)));
-            $('#{{ $id }}').selectpicker('val', oldOptions);
+
+            const oldOptions = @json(array_values((array) $getOldValue($errorKey, [])))
+                .map(String);
+
+            Array.from(el.options).forEach(function (opt) {
+                opt.selected = oldOptions.includes(String(opt.value || opt.text));
+            });
+
         @endif
-    })
+
+        {{-- Initialize the Tom Select plugin. When the plugin is not loaded,
+             the element stays a native Bootstrap 5 'form-select'. --}}
+
+        if (typeof window.TomSelect === 'undefined') {
+            return;
+        }
+
+        const usrCfg = Object.assign({}, @json((object) $config));
+
+        if (el.multiple && typeof usrCfg.plugins === 'undefined') {
+            usrCfg.plugins = ['remove_button'];
+        }
+
+        el.tomselect = new window.TomSelect(el, usrCfg);
+    });
 
 </script>
 @endpush
-
-{{-- Set of CSS workarounds for the plugin --}}
-{{-- NOTE: this may change with newer plugin versions --}}
-
-@once
-@push('css')
-<style type="text/css">
-
-    {{-- Fix the invalid visual style --}}
-    .bootstrap-select.is-invalid {
-        padding-right: 0px !important;
-    }
-
-</style>
-@endpush
-@endonce

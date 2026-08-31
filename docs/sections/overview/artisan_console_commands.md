@@ -2,9 +2,9 @@ This package provides some artisan commands in order to manage and publish its r
 
 ### Required Resources:
 
-- __`assets`__: The set of assets required by the AdminLTE package, including the AdminLTE package distribution files and its dependencies, like `Bootstrap`, `jQuery` and `Font Awesome`.
+- __`assets`__: The AdminLTE v4 distribution files: the stylesheets (including the RTL and the extended colors variants), the scripts and the default logo image.
 
-  **Target:** The assets will be installed inside the `public/vendor` folder of your Laravel project.
+  **Target:** The assets will be installed inside the `public/vendor/adminlte` folder of your Laravel project.
 
 - __`config`__: The package configuration file.
 
@@ -12,9 +12,13 @@ This package provides some artisan commands in order to manage and publish its r
 
 - __`translations`__: The set of translations files used by the package.
 
-  **Target:** The translations files will be published in the `resources/lang/vendor/adminlte/` folder of your Laravel project, or in `lang/vendor/adminlte` folder for `Laravel 9+` versions.
+  **Target:** The translations files will be published in the `lang/vendor/adminlte/` folder of your Laravel project.
 
 ### Optional Resources:
+
+- __`vendor_assets`__: The third party assets that AdminLTE v4 requires at runtime but does not distribute: the `Bootstrap` JavaScript bundle, the `Bootstrap Icons` font and `OverlayScrollbars`. They are published from the `node_modules` folder of your project, so install them first with `npm i bootstrap bootstrap-icons overlayscrollbars`. When they are not available, the resource is skipped and the package falls back to the CDN locations defined on the [assets configuration](/sections/configuration/other#assets).
+
+  **Target:** The assets will be installed inside the `public/vendor/bootstrap`, `public/vendor/bootstrap-icons` and `public/vendor/overlayscrollbars` folders of your Laravel project.
 
 - __`auth_views`__: A set of AdminLTE styled authentication views to replace the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) package.
 
@@ -28,7 +32,7 @@ This package provides some artisan commands in order to manage and publish its r
 
   **Target:** The main views will be published in the `resources/views/vendor/adminlte/` folder of your Laravel project.
 
-- __`components`__: (Only from <Badge type="tip">v3.13.0</Badge>) The set of blade components provided by this package. You may publish this resource if you need to make a customization in any of the available components.
+- __`components`__: The set of blade components provided by this package. You may publish this resource if you need to make a customization in any of the available components.
 
   **Target:** The components views will be published in the `resources/views/vendor/adminlte/components/` folder of your Laravel project, and the components classes will be published in the `app/View/Components/Adminlte/` folder.
 
@@ -40,14 +44,14 @@ You can install all the required and some additional package resources using the
 
 - `--force`: Use this option to force the overwrite of any existing files during the installation process.
 
-- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (all resources).
+- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (a basic installation plus the `auth_views`, `auth_routes`, `main_views` and `components` resources). Note that no installation type includes the optional `vendor_assets` resource, install it with `--with=vendor_assets` or `--only=vendor_assets`.
 
-- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views** or **components**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
+- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views** or **components**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
   ```sh
   php artisan adminlte:install --only=config --only=main_views
   ```
 
-- `--with=*`: Use this option to install with additional resources, the available resources are: **main_views**, **auth_views**, **auth_routes** or **components**. This option can be used multiple times, examples:
+- `--with=*`: Use this option to install with additional resources, the available resources are: **vendor_assets**, **main_views**, **auth_views**, **auth_routes** or **components**. This option can be used multiple times, examples:
   ```sh
   php artisan adminlte:install --with=auth_views --with=auth_routes
   php artisan adminlte:install --with=main_views
@@ -55,13 +59,10 @@ You can install all the required and some additional package resources using the
 
 - `--interactive`: Use this option to allow be guided through the installation process and choose what you want to install.
 
-> [!IMPORTANT]
-> Prior to version <Badge type="tip">v3.12.0</Badge> the resource **`auth_routes`** was named **`basic_routes`**, and the available installation types were: **basic**, **enhanced** (a basic installation plus the `auth_views` resource) and **full** (all resources except the `main_views`). Also, the **`components`** resource was introduced in version <Badge type="tip">v3.13.0</Badge>.
+> [!Important]
+> When you are upgrading an existing project from a `3.x` release, the `main_views`, `auth_views` and `components` resources **must be re-published with `--force`**. Their AdminLTE v3 (Bootstrap 4) markup does not render correctly on AdminLTE v4. See the [Upgrading from 3.x](/sections/overview/upgrading_from_3x) page.
 
 ## The `adminlte:remove` Command
-
-> [!IMPORTANT]
-> This command was introduced in version <Badge type="tip">v3.13.0</Badge>.
 
 You can uninstall or remove an already published package resource using the `php artisan adminlte:remove {resource}...` command. The command will accept one or more resource names as its arguments. Examples:
 
@@ -81,7 +82,11 @@ php artisan adminlte:remove main_views auth_views components
 
 ## The `adminlte:plugins` Command
 
-If you won't use the content delivery network (`CDN`) to include new plugins, then you are able to manage some optional plugins that already comes with the underlying **AdminLTE** package with the `php artisan adminlte:plugins` command.
+If you won't use a content delivery network (`CDN`) to include the extra plugins, you can manage them locally with the `php artisan adminlte:plugins` command.
+
+> [!Important]
+> AdminLTE v4 does not bundle any third party plugin any more (the AdminLTE v3 `plugins/` folder is gone). The plugins catalogue of this command now publishes the AdminLTE v4 recommended, jQuery free libraries from the `node_modules` folder of your project, so you have to install the related npm package first. When a package is missing, the command tells you the exact `npm i` command to run. The AdminLTE v3 plugin keys are still recognized and the command reports their v4 replacement.
+
 You can **list**, **install** or **remove** all the available plugins at once or some specifics plugins. It is recommended to first check which plugins are available by executing the command `php artisan adminlte:plugins` (the output of this command is similar to the one explained for the [adminlte:status command](#the-adminlte-status-command)). Note that after a plugin is installed locally, you still need to setup it on the configuration file in order to use it, refer to the [Plugins](/sections/configuration/plugins) section to checkout how to configure a plugin. Here are some examples that helps to explain the command options:
 
 - List the status of all the available plugins:
@@ -91,23 +96,23 @@ You can **list**, **install** or **remove** all the available plugins at once or
   ```
 - List the status of the specified plugins:
   ```sh
-  php artisan adminlte:plugins --plugin=datatables --plugin=select2
+  php artisan adminlte:plugins --plugin=flatpickr --plugin=tomSelect
   ```
 - Install all the available plugins:
   ```sh
   php artisan adminlte:plugins install
   ```
-- Install only Pace Progress & Select2 plugins:
+- Install only the Flatpickr & Quill plugins:
   ```sh
-  php artisan adminlte:plugins install --plugin=paceProgress --plugin=select2
+  php artisan adminlte:plugins install --plugin=flatpickr --plugin=quill
   ```
 - Remove all the available plugins:
   ```sh
   php artisan adminlte:plugins remove
   ```
-- Remove only Select2 plugin:
+- Remove only the Quill plugin:
   ```sh
-  php artisan adminlte:plugins remove --plugin=select2
+  php artisan adminlte:plugins remove --plugin=quill
   ```
 
 ### Command Arguments
@@ -122,10 +127,14 @@ You can **list**, **install** or **remove** all the available plugins at once or
 
 ## The `adminlte:update` Command
 
-This command is only a shortcut for `php artisan adminlte:install --force --only=assets`.
+This command is a shortcut for `php artisan adminlte:install --force --only=assets`, extended with two conveniences:
+
+- When the optional `vendor_assets` resource was **previously published**, it is refreshed too, so the command becomes `php artisan adminlte:install --force --only=assets --only=vendor_assets`. When it was never published, it is left alone (the package falls back to the CDN for those resources).
+
+- When the `main_views` resource was **previously published** and it differs from the one currently provided by the package, the command prints a warning telling you that your published layout views are outdated and may require a manual update.
 
 > [!Note]
-> This command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refer to section [Updating](/sections/overview/updating) to check how to make a complete update.
+> This command only updates the assets located on the `public/vendor` folder. It will not update any other package resource (the configuration file, the translations or the published views), refer to section [Updating](/sections/overview/updating) to check how to make a complete update.
 
 ## The `adminlte:status` Command
 

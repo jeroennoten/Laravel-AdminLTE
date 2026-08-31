@@ -1,15 +1,35 @@
+# The test suite of the package runs on GitHub Actions, this configuration
+# only keeps the static analysis of Scrutinizer.
 build:
     environment:
         php: 8.2
 
     nodes:
+        # The analysis does not need the dependencies installed, it only parses
+        # the sources.
         analysis:
+            project_setup:
+                override:
+                    - 'true'
             tests:
                 override:
                     - php-scrutinizer-run
 
+        # This node comes from the Scrutinizer configuration of the repository
+        # and runs the default setup of the build image, which can not resolve
+        # the requirements of the package (Laravel 12/13 and PHP 8.2). The
+        # suite is already verified by the GitHub Actions workflow, so the node
+        # is neutralized here.
+        tests:
+            project_setup:
+                override:
+                    - 'true'
+            tests:
+                override:
+                    - 'true'
+
 filter:
-    excluded_paths: [tests/*]
+    excluded_paths: [tests/*, docs/*]
 
 checks:
     php:
@@ -27,5 +47,7 @@ checks:
         fix_identation_4spaces: true
         fix_doc_comments: true
 
+# The code coverage upload was removed together with the support for the
+# unmaintained Laravel versions, so no external report is expected.
 tools:
-    external_code_coverage: true
+    external_code_coverage: false

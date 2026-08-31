@@ -45,7 +45,7 @@ class ServiceProviderTest extends TestCase
         // Check that config values are loaded.
 
         $this->assertTrue(Config::has('adminlte.title'));
-        $this->assertEquals('AdminLTE 3', Config::get('adminlte.title'));
+        $this->assertEquals('AdminLTE 4', Config::get('adminlte.title'));
 
         $this->assertTrue(Config::has('adminlte.menu'));
         $this->assertTrue(is_array(Config::get('adminlte.menu')));
@@ -60,6 +60,24 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(Arr::has($commands, 'adminlte:status'));
         $this->assertTrue(Arr::has($commands, 'adminlte:update'));
         $this->assertTrue(Arr::has($commands, 'adminlte:plugins'));
+        $this->assertTrue(Arr::has($commands, 'adminlte:remove'));
+    }
+
+    public function testBootRegisterMenuFilters()
+    {
+        // The default set of menu filters must be available.
+
+        $filters = Config::get('adminlte.filters');
+
+        $this->assertIsArray($filters);
+        $this->assertNotEmpty($filters);
+
+        foreach ($filters as $filter) {
+            $this->assertInstanceOf(
+                \JeroenNoten\LaravelAdminLte\Menu\Filters\FilterInterface::class,
+                $this->app->make($filter)
+            );
+        }
     }
 
     public function testBootRegisterViewComposers()
@@ -91,19 +109,7 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(View::exists('adminlte::components.widget.card'));
         $this->assertTrue(View::exists('adminlte::components.tool.modal'));
 
-        // Support of x-components is only available for Laravel >= 7.x
-        // versions. So, check if we can test for component existence first.
-
-        $canCheckComponents = method_exists(
-            'Illuminate\Support\Facade\Blade',
-            'getClassComponentAliases'
-        );
-
-        if (! $canCheckComponents) {
-            return;
-        }
-
-        // Now, check that the class components aliases are registered.
+        // Check that the class components aliases are registered.
 
         $aliases = Blade::getClassComponentAliases();
 

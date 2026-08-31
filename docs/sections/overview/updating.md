@@ -1,3 +1,6 @@
+> [!Important]
+> Coming from a **3.x** release of this package? The steps below cover a routine update **within** the `4.x` line. A `3.x` &rarr; `4.x` jump is a **major upgrade** with breaking changes (Laravel 12+/PHP 8.2+, the AdminLTE v4 markup rewrite, Bootstrap Icons, the removed boxed layout and sidebar skins, …). Read [Upgrading from 3.x](/sections/overview/upgrading_from_3x) first, then come back here.
+
 To perform an update on this package, please use the next steps as reference:
 
 ### 1. Update the package with composer
@@ -17,7 +20,7 @@ php artisan adminlte:update
 ```
 
 > [!Note]
-> This command will only update the underlying **AdminLTE distribution files** and its dependencies (`Bootstrap`, `jQuery`, etc.) that were installed in your `public/vendor` folder.
+> This command will only update the underlying **AdminLTE v4 distribution files** that were installed in your `public/vendor/adminlte` folder. When the third party assets (`Bootstrap`, `Bootstrap Icons` and `OverlayScrollbars`) were published too, they are refreshed as well.
 
 ### 3. Review the package published views (optional)
 

@@ -1,9 +1,86 @@
 <?php
 
+use Illuminate\Support\Facades\File;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\PluginsResource;
 
 class PluginsTest extends CommandTestCase
 {
+    /**
+     * The plugin keys used by the tests that target specific plugins.
+     *
+     * @var array
+     */
+    protected $testPlugins = ['flatpickr', 'quill'];
+
+    /**
+     * Setup this testing class.
+     */
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        // AdminLTE v4 does not bundle any third party plugin, the plugins are
+        // published from the node modules folder of the application. So, we
+        // need to fake that folder in order to test the plugins resource.
+
+        $this->makeFakeNodeModules();
+    }
+
+    /**
+     * Tear down this testing class.
+     */
+    public function tearDown(): void
+    {
+        File::deleteDirectory(base_path('node_modules'));
+
+        parent::tearDown();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Helper methods.
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Creates a dummy node modules folder holding the npm packages required by
+     * all the plugins of the plugins resource.
+     *
+     * @return void
+     */
+    protected function makeFakeNodeModules()
+    {
+        $plugins = (new PluginsResource())->getSourceData();
+
+        foreach ($plugins as $plugin) {
+            foreach ($this->getPluginSources($plugin) as $source) {
+                $path = base_path("node_modules/{$source}");
+
+                if (preg_match('/\.(js|css)$/', $source)) {
+                    $this->createDummyFile($path, 'dummy');
+                } else {
+                    $this->createDummyFile("{$path}/dummy.js", 'dummy');
+                }
+            }
+        }
+    }
+
+    /**
+     * Gets the set of source paths (relative to the node modules folder) that
+     * are published by the specified plugin.
+     *
+     * @param  array  $plugin  An array with the plugin data
+     * @return array
+     */
+    protected function getPluginSources($plugin)
+    {
+        if (isset($plugin['resources'])) {
+            return array_column($plugin['resources'], 'source');
+        }
+
+        return isset($plugin['source']) ? [$plugin['source']] : [];
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Basic tests.
@@ -16,6 +93,9 @@ class PluginsTest extends CommandTestCase
 
         $this->assertFalse($plugins->exists('dummy'));
         $this->assertFalse($plugins->installed('dummy'));
+        $this->assertFalse($plugins->pluginAvailable('dummy'));
+        $this->assertNull($plugins->getInstallPackageCommand('dummy'));
+        $this->assertFalse($plugins->getLegacyPluginReplacement('dummy'));
     }
 
     public function testWithInvalidOperation()
@@ -23,6 +103,77 @@ class PluginsTest extends CommandTestCase
         $this->artisan('adminlte:plugins dummy-op')
              ->expectsOutput('The specified operation: dummy-op is not valid!')
              ->assertExitCode(0);
+    }
+
+    public function testLegacyPluginKeysAreResolved()
+    {
+        $plugins = new PluginsResource();
+
+        // A legacy plugin with a replacement.
+
+        $this->assertEquals('quill', $plugins->getLegacyPluginReplacement('summernote'));
+
+        // A legacy plugin without replacement (covered natively now).
+
+        $this->assertNull($plugins->getLegacyPluginReplacement('icheckBootstrap'));
+    }
+
+    public function testEveryLegacyPluginKeyIsRecognized()
+    {
+        $plugins = new PluginsResource();
+
+        // Every plugin key of the AdminLTE v3 era must be recognized, either
+        // as a current plugin or as a legacy one with a reported replacement.
+
+        $legacyKeys = [
+            'bootstrap4DualListbox', 'bootstrapColorpicker', 'bootstrapSlider',
+            'bootstrapSwitch', 'bsCustomFileInput', 'chartJs', 'datatables',
+            'datatablesPlugins', 'daterangepicker', 'ekkoLightbox', 'fastclick',
+            'filterizr', 'flagIconCss', 'flot', 'fullcalendar', 'icheckBootstrap',
+            'inputmask', 'ionRangslider', 'jquery', 'jqueryKnob', 'jqueryMapael',
+            'jqueryMousewheel', 'jqueryUi', 'jqueryUiTouchPunch', 'jqueryValidation',
+            'jqvmap', 'jsgrid', 'moment', 'overlayScrollbars', 'paceProgress',
+            'raphael', 'select2', 'sparklines', 'summernote',
+            'tempusdominusBootstrap4', 'toastr',
+        ];
+
+        foreach ($legacyKeys as $key) {
+            $isCurrent = ! empty($plugins->getSourceData($key));
+            $isLegacy = $plugins->getLegacyPluginReplacement($key) !== false;
+
+            $this->assertTrue(
+                $isCurrent || $isLegacy,
+                "The plugin key '{$key}' is neither available nor reported as legacy."
+            );
+        }
+    }
+
+    public function testInstallLegacyPluginNotifiesTheReplacement()
+    {
+        $this->artisan('adminlte:plugins install --plugin=summernote --force')
+             ->expectsOutput('The plugin: summernote is not available on AdminLTE v4!')
+             ->expectsOutput("Use the 'quill' plugin instead.")
+             ->assertExitCode(0);
+    }
+
+    public function testInstallPluginWithoutTheNpmPackage()
+    {
+        $plugins = new PluginsResource();
+
+        // Remove the fake node modules folder to simulate a package that was
+        // not installed by the final user.
+
+        File::deleteDirectory(base_path('node_modules'));
+
+        $this->assertFalse($plugins->pluginAvailable('flatpickr'));
+
+        $this->artisan('adminlte:plugins install --plugin=flatpickr --force')
+             ->expectsOutput($plugins->getInstallPackageCommand('flatpickr')
+                 ? 'Install them first with: '.$plugins->getInstallPackageCommand('flatpickr')
+                 : '')
+             ->assertExitCode(0);
+
+        $this->assertFalse($plugins->installed('flatpickr'));
     }
 
     /*
@@ -66,9 +217,9 @@ class PluginsTest extends CommandTestCase
     public function testInstallAndUninstallSpecificPlugins()
     {
         $plugins = new PluginsResource();
-        $pluginsKeys = ['datatables', 'icheckBootstrap'];
+        $pluginsKeys = $this->testPlugins;
 
-        // Uninstall he plugins.
+        // Uninstall the plugins.
 
         foreach ($pluginsKeys as $pKey) {
             $plugins->uninstall($pKey);
@@ -76,7 +227,7 @@ class PluginsTest extends CommandTestCase
 
         // Test install the plugins.
 
-        $this->artisan('adminlte:plugins install --plugin=datatables --plugin=dummy --plugin=icheckBootstrap')
+        $this->artisan('adminlte:plugins install --plugin=flatpickr --plugin=dummy --plugin=quill --force')
              ->expectsOutput('The plugin key: dummy is not valid!');
 
         // Check that the plugins are installed.
@@ -87,7 +238,7 @@ class PluginsTest extends CommandTestCase
 
         // Test uninstall the plugins.
 
-        $this->artisan('adminlte:plugins remove --plugin=datatables --plugin=dummy --plugin=icheckBootstrap')
+        $this->artisan('adminlte:plugins remove --plugin=flatpickr --plugin=dummy --plugin=quill')
              ->expectsOutput('The plugin key: dummy is not valid!');
 
         // Check that the plugins are removed.
@@ -100,7 +251,7 @@ class PluginsTest extends CommandTestCase
     public function testInstallAndUninstallSpecificPLuginInteractively()
     {
         $plugins = new PluginsResource();
-        $pluginKey = 'icheckBootstrap';
+        $pluginKey = 'flatpickr';
         $installMsg = strtr(
             $plugins->getInstallMessage('install'),
             [':plugin' => $pluginKey]
@@ -110,43 +261,34 @@ class PluginsTest extends CommandTestCase
             [':plugin' => $pluginKey]
         );
 
-        // We can't perfom these tests on old Laravel versions. We need support
-        // for the expect confirmation method.
-
-        if (! $this->canExpectsConfirmation()) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         // Uninstall the plugin.
 
         $plugins->uninstall($pluginKey);
 
         // Test install with --interactive option (response with no).
 
-        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap --interactive')
+        $this->artisan("adminlte:plugins install --plugin={$pluginKey} --interactive --force")
              ->expectsConfirmation($installMsg, 'no');
 
         $this->assertFalse($plugins->installed($pluginKey));
 
         // Test install with --interactive option (response with yes).
 
-        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap --interactive')
+        $this->artisan("adminlte:plugins install --plugin={$pluginKey} --interactive --force")
              ->expectsConfirmation($installMsg, 'yes');
 
         $this->assertTrue($plugins->installed($pluginKey));
 
         // Test uninstall with --interactive option (response with no).
 
-        $this->artisan('adminlte:plugins remove --plugin=icheckBootstrap --interactive')
+        $this->artisan("adminlte:plugins remove --plugin={$pluginKey} --interactive")
              ->expectsConfirmation($removeMsg, 'no');
 
         $this->assertTrue($plugins->installed($pluginKey));
 
         // Test uninstall with --interactive option (response with yes).
 
-        $this->artisan('adminlte:plugins remove --plugin=icheckBootstrap --interactive')
+        $this->artisan("adminlte:plugins remove --plugin={$pluginKey} --interactive")
              ->expectsConfirmation($removeMsg, 'yes');
 
         $this->assertFalse($plugins->installed($pluginKey));
@@ -155,42 +297,33 @@ class PluginsTest extends CommandTestCase
     public function testInstallAndUninstallSpecificPluginWithOverwrite()
     {
         $plugins = new PluginsResource();
-        $pluginKey = 'icheckBootstrap';
+        $pluginKey = 'flatpickr';
         $overwriteMsg = strtr(
             $plugins->getInstallMessage('overwrite'),
             [':plugin' => $pluginKey]
         );
 
-        // We can't perfom these tests on old Laravel versions. We need support
-        // for the expect confirmation method.
+        // Create the plugin folder to force an overwrite.
 
-        if (! $this->canExpectsConfirmation()) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
-        // Create plugin folder to force overwrite.
-
-        mkdir(public_path('vendor/icheck-bootstrap'));
+        File::ensureDirectoryExists(public_path('vendor/flatpickr'));
 
         // Test install when an overwrite will occurs (response with no).
 
-        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap')
+        $this->artisan("adminlte:plugins install --plugin={$pluginKey}")
              ->expectsConfirmation($overwriteMsg, 'no');
 
         $this->assertFalse($plugins->installed($pluginKey));
 
         // Test install when an overwrite will occurs (response with yes).
 
-        $this->artisan('adminlte:plugins install --plugin=icheckBootstrap')
+        $this->artisan("adminlte:plugins install --plugin={$pluginKey}")
              ->expectsConfirmation($overwriteMsg, 'yes');
 
         $this->assertTrue($plugins->installed($pluginKey));
 
         // Clear installed resources.
 
-        $plugins->uninstall('icheckBootstrap');
+        $plugins->uninstall($pluginKey);
     }
 
     /*
@@ -205,26 +338,25 @@ class PluginsTest extends CommandTestCase
 
         // Install some plugins.
 
-        $plugins->install('icheckBootstrap');
-        mkdir(public_path('vendor/datatables'));
+        $plugins->install('flatpickr');
+        File::ensureDirectoryExists(public_path('vendor/quill'));
 
         // Ensure state is correct.
 
-        $this->assertTrue($plugins->installed('icheckBootstrap'));
-        $this->assertFalse($plugins->installed('datatables'));
-        $this->assertTrue($plugins->exists('datatables'));
+        $this->assertTrue($plugins->installed('flatpickr'));
+        $this->assertFalse($plugins->installed('quill'));
+        $this->assertTrue($plugins->exists('quill'));
 
         // Run the check of the plugin status.
 
         $this->artisan('adminlte:plugins')
              ->expectsOutput('Verifying the installation of the plugins...')
-             ->expectsOutput('All plugins verified successfully!')
              ->assertExitCode(0);
 
         // Clear installed resources.
 
-        $plugins->uninstall('icheckBootstrap');
-        rmdir(public_path('vendor/datatables'));
+        $plugins->uninstall('flatpickr');
+        File::deleteDirectory(public_path('vendor/quill'));
     }
 
     public function testSpecificPluginStatus()
@@ -233,15 +365,15 @@ class PluginsTest extends CommandTestCase
 
         // Install some plugins.
 
-        $plugins->install('icheckBootstrap');
+        $plugins->install('flatpickr');
 
         // Ensure state is correct.
 
-        $this->assertTrue($plugins->installed('icheckBootstrap'));
+        $this->assertTrue($plugins->installed('flatpickr'));
 
         // Run the check of the plugin status.
 
-        $this->artisan('adminlte:plugins --plugin=icheckBootstrap --plugin=dummy')
+        $this->artisan('adminlte:plugins --plugin=flatpickr --plugin=dummy')
              ->expectsOutput('Verifying the installation of the plugins...')
              ->expectsOutput('The plugin key: dummy is not valid!')
              ->expectsOutput('All plugins verified successfully!')
@@ -249,6 +381,6 @@ class PluginsTest extends CommandTestCase
 
         // Clear installed resources.
 
-        $plugins->uninstall('icheckBootstrap');
+        $plugins->uninstall('flatpickr');
     }
 }

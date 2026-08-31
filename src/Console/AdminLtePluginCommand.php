@@ -182,7 +182,7 @@ class AdminLtePluginCommand extends Command
 
             if (empty($pluginData)) {
                 $this->line('');
-                $this->error("The plugin key: {$key} is not valid!");
+                $this->reportInvalidPlugin($key);
                 $bar->advance();
                 continue;
             }
@@ -310,19 +310,7 @@ class AdminLtePluginCommand extends Command
         // Install the plugins.
 
         foreach ($pluginsKeys as $pluginKey) {
-            // Install the plugin, if it's a valid plugin key.
-
-            if (empty($this->plugins->getSourceData($pluginKey))) {
-                $this->line('');
-                $this->error("The plugin key: {$pluginKey} is not valid!");
-                $status = $this->styleOutput('Invalid', 'red');
-            } elseif ($this->installPlugin($pluginKey)) {
-                $status = $this->styleOutput('Installed', 'green');
-            } else {
-                $status = $this->styleOutput('Not Installed', 'red');
-            }
-
-            $summary[] = [$pluginKey, $status];
+            $summary[] = [$pluginKey, $this->installPluginWithStatus($pluginKey)];
             $bar->advance();
         }
 
@@ -336,6 +324,82 @@ class AdminLtePluginCommand extends Command
         // Show summary of installed plugins.
 
         $this->showSummaryTable($summary);
+    }
+
+    /**
+     * Installs a single plugin and returns the status to show on the summary.
+     *
+     * @param  string  $pluginKey  The plugin string key
+     * @return string
+     */
+    protected function installPluginWithStatus($pluginKey)
+    {
+        if (empty($this->plugins->getSourceData($pluginKey))) {
+            $this->line('');
+            $this->reportInvalidPlugin($pluginKey);
+
+            return $this->styleOutput('Invalid', 'red');
+        }
+
+        if (! $this->plugins->pluginAvailable($pluginKey)) {
+            $this->line('');
+            $this->reportMissingPackage($pluginKey);
+
+            return $this->styleOutput('Not Available', 'yellow');
+        }
+
+        if ($this->installPlugin($pluginKey)) {
+            return $this->styleOutput('Installed', 'green');
+        }
+
+        return $this->styleOutput('Not Installed', 'red');
+    }
+
+    /**
+     * Reports an invalid plugin key. When the key belongs to a plugin of the
+     * AdminLTE v3 era, the AdminLTE v4 replacement is suggested.
+     *
+     * @param  string  $pluginKey  The plugin string key
+     * @return void
+     */
+    protected function reportInvalidPlugin($pluginKey)
+    {
+        $replacement = $this->plugins->getLegacyPluginReplacement($pluginKey);
+
+        if ($replacement === false) {
+            $this->error("The plugin key: {$pluginKey} is not valid!");
+
+            return;
+        }
+
+        $this->error("The plugin: {$pluginKey} is not available on AdminLTE v4!");
+
+        if (isset($replacement)) {
+            $this->line("Use the '{$replacement}' plugin instead.");
+        } else {
+            $this->line('There is no direct replacement, check the plugins documentation.');
+        }
+    }
+
+    /**
+     * Reports that the npm package required by a plugin is not available on
+     * the application, and how to install it.
+     *
+     * @param  string  $pluginKey  The plugin string key
+     * @return void
+     */
+    protected function reportMissingPackage($pluginKey)
+    {
+        $pluginData = $this->plugins->getSourceData($pluginKey);
+        $name = $pluginData['name'] ?? $pluginKey;
+
+        $this->warn("The {$name} plugin files are not available on your application.");
+
+        $cmd = $this->plugins->getInstallPackageCommand($pluginKey);
+
+        if (isset($cmd)) {
+            $this->line("Install them first with: {$cmd}");
+        }
     }
 
     /**
@@ -401,7 +465,7 @@ class AdminLtePluginCommand extends Command
 
             if (empty($this->plugins->getSourceData($pluginKey))) {
                 $this->line('');
-                $this->error("The plugin key: {$pluginKey} is not valid!");
+                $this->reportInvalidPlugin($pluginKey);
                 $status = $this->styleOutput('Invalid', 'red');
             } elseif ($this->removePlugin($pluginKey)) {
                 $status = $this->styleOutput('Removed', 'green');

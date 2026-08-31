@@ -6,6 +6,22 @@ use JeroenNoten\LaravelAdminLte\Helpers\CommandHelper;
 class CommandHelperTest extends TestCase
 {
     /**
+     * Restore the permissions of the temporary folder, so an aborted test can
+     * not leave an unreadable folder behind and break the next runs.
+     */
+    protected function tearDown(): void
+    {
+        $path = base_path('foo-folder');
+
+        if (is_dir($path)) {
+            @chmod($path, 0755);
+            File::deleteDirectory($path);
+        }
+
+        parent::tearDown();
+    }
+
+    /**
      * Holds the source folder path that will be used during the tests.
      *
      * @var string
@@ -652,6 +668,80 @@ class CommandHelperTest extends TestCase
             $this->targetFolder,
             true,
             ['regex:@file[3,4].*@']
+        ));
+
+        // Clear the created folders.
+
+        $this->clearFolder($this->sourceFolder);
+        $this->clearFolder($this->targetFolder);
+    }
+
+    public function testCompareFiles()
+    {
+        // Create the folder structure.
+
+        $this->createFolderStructure($this->sourceFolder);
+
+        $file1 = $this->sourceFolder.'/file1.foo';
+        $file2 = $this->sourceFolder.'/file2.bar';
+        $copy = $this->sourceFolder.'/file1-copy.foo';
+
+        File::copy($file1, $copy);
+
+        // Two files with the same content are equal.
+
+        $this->assertTrue(CommandHelper::compareFiles($file1, $file1));
+        $this->assertTrue(CommandHelper::compareFiles($file1, $copy));
+
+        // Two files with a different content are not equal.
+
+        $this->assertFalse(CommandHelper::compareFiles($file1, $file2));
+
+        // A missing file is never equal.
+
+        $missing = $this->sourceFolder.'/missing.foo';
+
+        $this->assertFalse(CommandHelper::compareFiles($file1, $missing));
+        $this->assertFalse(CommandHelper::compareFiles($missing, $file1));
+        $this->assertFalse(CommandHelper::compareFiles($missing, $missing));
+
+        // A folder is not a file.
+
+        $this->assertFalse(CommandHelper::compareFiles(
+            $this->sourceFolder,
+            $this->sourceFolder
+        ));
+
+        // Clear the created folders.
+
+        $this->clearFolder($this->sourceFolder);
+    }
+
+    public function testCompareDirectoriesWithADistinctSubfolder()
+    {
+        // Create a folder structure and copy it.
+
+        $this->createFolderStructure($this->sourceFolder);
+        File::copyDirectory($this->sourceFolder, $this->targetFolder);
+
+        // Now change a file of the subfolder.
+
+        File::put($this->targetFolder.'/folder1/file3.foo', 'changed-content');
+
+        // Without recursion, the subfolder content is not compared.
+
+        $this->assertTrue(CommandHelper::compareDirectories(
+            $this->sourceFolder,
+            $this->targetFolder,
+            false
+        ));
+
+        // With recursion, the difference is detected.
+
+        $this->assertFalse(CommandHelper::compareDirectories(
+            $this->sourceFolder,
+            $this->targetFolder,
+            true
         ));
 
         // Clear the created folders.

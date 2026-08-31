@@ -4,7 +4,7 @@
        href="{{ $item['href'] }}" @isset($item['target']) target="{{ $item['target'] }}" @endisset
        {!! $item['data-compiled'] ?? '' !!}>
 
-        <i class="nav-icon {{ $item['icon'] ?? 'far fa-fw fa-circle' }} {{
+        <i class="nav-icon {{ $item['icon'] ?? 'bi bi-circle' }} {{
             isset($item['icon_color']) ? 'text-'.$item['icon_color'] : ''
         }}"></i>
 
@@ -12,7 +12,7 @@
             {{ $item['text'] }}
 
             @isset($item['label'])
-                <span class="badge badge-{{ $item['label_color'] ?? 'primary' }} right">
+                <span class="nav-badge badge text-bg-{{ $item['label_color'] ?? 'primary' }} me-3">
                     {{ $item['label'] }}
                 </span>
             @endisset

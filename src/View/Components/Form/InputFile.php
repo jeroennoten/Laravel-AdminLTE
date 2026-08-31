@@ -2,17 +2,26 @@
 
 namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
+
 class InputFile extends InputGroupComponent
 {
     /**
      * The placeholder for the input file box.
+     *
+     * DEPRECATED: Bootstrap 5 renders file inputs with the native browser
+     * control, which does not support a placeholder. The property is still
+     * accepted for backward compatibility, but it has no visual effect.
      *
      * @var string
      */
     public $placeholder;
 
     /**
-     * A legend for the replacement of the default 'Browser' text.
+     * A legend for the replacement of the default 'Browse' text. On Bootstrap 5
+     * the browse button is rendered by the browser and can't be relabeled, so
+     * the legend is rendered as an 'input-group-text' label attached to the
+     * file input instead.
      *
      * @var string
      */
@@ -20,7 +29,8 @@ class InputFile extends InputGroupComponent
 
     /**
      * Create a new component instance.
-     * Note this component requires the 'bs-custom-input-file' plugin.
+     * Note this component does not require any plugin anymore. Bootstrap 5
+     * styles the native file input with the 'form-control' class.
      *
      * @return void
      */
@@ -34,19 +44,20 @@ class InputFile extends InputGroupComponent
             $igroupClass, $disableFeedback, $errorKey
         );
 
-        $this->legend = $legend;
+        $this->legend = UtilsHelper::applyHtmlEntityDecoder($legend);
         $this->placeholder = $placeholder;
     }
 
     /**
      * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class.
+     * the method of the parent class. Bootstrap 5 dropped the 'custom-file'
+     * structure, a file input is now a regular 'form-control'.
      *
      * @return string
      */
     public function makeItemClass()
     {
-        $classes = ['custom-file-input'];
+        $classes = ['form-control'];
 
         if ($this->isInvalid()) {
             $classes[] = 'is-invalid';

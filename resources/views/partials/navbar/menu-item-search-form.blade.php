@@ -1,36 +1,46 @@
-<li class="nav-item">
+{{-- Navbar search form (AdminLTE v4 markup) --}}
 
-    {{-- Search toggle button --}}
-    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-        <i class="fas fa-search"></i>
-    </a>
+@php($searchId = $item['id'] ?? 'navbar-search-input')
+@php($searchLabel = Lang::has('adminlte::adminlte.search') ? __('adminlte::adminlte.search') : 'Search')
 
-    {{-- Search bar --}}
-    <div class="navbar-search-block">
-        <form class="form-inline" action="{{ $item['href'] }}" method="{{ $item['method'] }}">
+<li class="nav-item d-none d-md-flex align-items-center">
+
+    <form class="navbar-search ms-md-3" role="search" action="{{ $item['href'] }}"
+          method="{{ $item['method'] }}">
+
+        @if(strtolower($item['method']) === 'post')
             {{ csrf_field() }}
+        @endif
 
-            <div class="input-group">
+        {{-- Search label (only visible for screen readers) --}}
+        <label for="{{ $searchId }}" class="visually-hidden">
+            {{ $item['text'] ?? $searchLabel }}
+        </label>
 
-                {{-- Search input --}}
-                <input class="form-control form-control-navbar" type="search"
-                    @isset($item['id']) id="{{ $item['id'] }}" @endisset
-                    name="{{ $item['input_name'] }}"
-                    placeholder="{{ $item['text'] }}"
-                    aria-label="{{ $item['text'] }}">
+        <div class="navbar-search-field">
 
-                {{-- Search buttons --}}
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
+            {{-- Search input --}}
+            <input type="search" class="form-control" id="{{ $searchId }}"
+                   name="{{ $item['input_name'] }}"
+                   placeholder="{{ $item['text'] }}"
+                   aria-label="{{ $item['text'] }}"
+                   autocomplete="off">
 
-            </div>
-        </form>
-    </div>
+            {{-- Search button --}}
+            <button class="navbar-search-submit" type="submit"
+                    aria-label="{{ $searchLabel }}">
+                <i class="bi bi-search" aria-hidden="true"></i>
+            </button>
 
+        </div>
+
+    </form>
+
+</li>
+
+{{-- On small screens the field above is hidden, so link to the search page --}}
+<li class="nav-item d-md-none">
+    <a class="nav-link" href="{{ $item['href'] }}" aria-label="{{ $searchLabel }}">
+        <i class="bi bi-search" aria-hidden="true"></i>
+    </a>
 </li>

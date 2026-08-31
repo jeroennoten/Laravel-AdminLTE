@@ -7,15 +7,20 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Callout extends Component
 {
+    use HandlesThemeColors;
+
     /**
-     * The callout icon (a Font Awesome icon).
+     * The callout icon (a Bootstrap Icon).
      *
      * @var string
      */
     public $icon;
 
     /**
-     * The callout theme (info, success, warning or danger).
+     * The callout theme (primary, secondary, info, success, warning, danger,
+     * light or dark). Any color of the AdminLTE extended palette (navy, sky,
+     * teal, ...) is also supported when the 'adminlte.assets.extended_colors'
+     * option is enabled.
      *
      * @var string
      */
@@ -58,9 +63,10 @@ class Callout extends Component
     public function makeCalloutClass()
     {
         $classes = ['callout'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (! empty($this->theme)) {
-            $classes[] = "callout-{$this->theme}";
+        if (! empty($theme)) {
+            $classes[] = "callout-{$theme}";
         }
 
         return implode(' ', $classes);

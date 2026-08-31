@@ -23,6 +23,40 @@ class InstallTest extends CommandTestCase
              ->assertExitCode(0);
     }
 
+    public function testInstallWithInvalidTypeOption()
+    {
+        $this->artisan('adminlte:install --type=dummy')
+             ->expectsOutput('The option --type=dummy is invalid!')
+             ->expectsOutput('The installation is complete.')
+             ->assertExitCode(0);
+    }
+
+    public function testInstallWithInvalidAdditionalResource()
+    {
+        // The base resources of an installation type can't be used on the
+        // --with option.
+
+        $this->installVendorAssets();
+
+        $this->artisan('adminlte:install --with=assets --force')
+             ->expectsOutput('The option --with=assets is invalid!')
+             ->assertExitCode(0);
+
+        // Clear the installed resources.
+
+        foreach (['assets', 'config', 'translations'] as $name) {
+            $this->getResources($name)->uninstall();
+        }
+    }
+
+    public function testInstallWithMultipleInvalidOnlyOptions()
+    {
+        $this->artisan('adminlte:install --only=dummy --only=other')
+             ->expectsOutput('The option --only=dummy is invalid!')
+             ->expectsOutput('The option --only=other is invalid!')
+             ->assertExitCode(0);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | Tests over the --only=<resource> option.
@@ -58,15 +92,6 @@ class InstallTest extends CommandTestCase
 
     public function testInstallOnlyWithInteractiveFlag()
     {
-        // We can't perfom these tests on old Laravel versions. We need support
-        // for the expect confirmation method.
-
-        if (! $this->canExpectsConfirmation()) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         // Test installation of the resources when using --interactive.
 
         foreach ($this->getResources() as $name => $res) {
@@ -105,15 +130,6 @@ class InstallTest extends CommandTestCase
 
     public function testInstallOnlyWithOverwriteWarning()
     {
-        // We can't perfom these tests on old Laravel versions. We need support
-        // for the expect confirmation method.
-
-        if (! $this->canExpectsConfirmation()) {
-            $this->assertTrue(true);
-
-            return;
-        }
-
         // Test installation of the resources when an overwrite event occurs.
 
         foreach ($this->getResources() as $name => $res) {

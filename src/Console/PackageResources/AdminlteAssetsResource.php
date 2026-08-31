@@ -26,56 +26,48 @@ class AdminlteAssetsResource extends PackageResource
 
         $this->source = [
             'adminlte' => [
-                'name' => 'AdminLTE v3',
+                'name' => 'AdminLTE v4',
                 'source' => $adminltePath,
                 'target' => public_path('vendor/adminlte/'),
                 'resources' => [
+                    // The compiled stylesheets. Note we publish the entire
+                    // folder in order to provide the RTL variants and the
+                    // optional stylesheets (extended colors, select2 theme).
+                    // The source maps are not published, they are only
+                    // meaningful with the (not published) Sass sources. The
+                    // 'adminlte-docs' stylesheet is only used by the AdminLTE
+                    // documentation site, so it's not published too.
+
                     [
                         'source' => 'dist/css',
                         'recursive' => false,
+                        'ignore' => [
+                            '*.map',
+                            'adminlte-docs.*',
+                        ],
                     ],
+
+                    // The compiled scripts. The ESM builds are intended to be
+                    // consumed by a javascript bundler (they can't be loaded
+                    // with a plain script tag), so they are not published.
+
                     [
                         'source' => 'dist/js',
                         'recursive' => false,
                         'ignore' => [
-                            'demo.js',
+                            '*.map',
+                            '*.esm.js',
+                            '*.esm.min.js',
                         ],
                     ],
+
+                    // The default logo image. Note the AdminLTE v4 images are
+                    // located at the 'dist/assets/img' folder.
+
                     [
-                        'source' => 'dist/img/AdminLTELogo.png',
+                        'source' => 'dist/assets/img/AdminLTELogo.png',
                     ],
                 ],
-            ],
-            'fontawesome' => [
-                'name' => 'FontAwesome 5 Free',
-                'source' => $adminltePath.'/plugins/fontawesome-free',
-                'target' => public_path('vendor/fontawesome-free'),
-            ],
-            'bootstrap' => [
-                'name' => 'Bootstrap 4 (only JS files)',
-                'source' => $adminltePath.'/plugins/bootstrap',
-                'target' => public_path('vendor/bootstrap'),
-            ],
-            'popper' => [
-                'name' => 'Popper.js (Bootstrap 4 requirement)',
-                'source' => $adminltePath.'/plugins/popper',
-                'target' => public_path('vendor/popper'),
-            ],
-            'jquery' => [
-                'name' => 'jQuery (Bootstrap 4 requirement)',
-                'source' => $adminltePath.'/plugins/jquery',
-                'target' => public_path('vendor/jquery'),
-                'ignore' => [
-                    'core.js',
-                    'jquery.slim.js',
-                    'jquery.slim.min.js',
-                    'jquery.slim.min.map',
-                ],
-            ],
-            'overlay' => [
-                'name' => 'Overlay Scrollbars',
-                'source' => $adminltePath.'/plugins/overlayScrollbars',
-                'target' => public_path('vendor/overlayScrollbars'),
             ],
         ];
 

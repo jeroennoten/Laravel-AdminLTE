@@ -7,6 +7,8 @@ use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class InfoBox extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The title/header for the box.
      *
@@ -29,7 +31,7 @@ class InfoBox extends Component
     public $description;
 
     /**
-     * A Font Awesome icon for the box.
+     * A Bootstrap Icon for the box.
      *
      * @var string
      */
@@ -51,7 +53,7 @@ class InfoBox extends Component
 
     /**
      * The box theme (light, dark, primary, secondary, info, success, warning,
-     * danger or any other AdminLTE color like lighblue or teal).
+     * danger or any color of the AdminLTE extended palette like sky or teal).
      *
      * @var string
      */
@@ -59,7 +61,7 @@ class InfoBox extends Component
 
     /**
      * The icon theme (light, dark, primary, secondary, info, success, warning,
-     * danger or any other AdminLTE color like lighblue or teal).
+     * danger or any color of the AdminLTE extended palette like sky or teal).
      *
      * @var string
      */
@@ -75,7 +77,9 @@ class InfoBox extends Component
 
     /**
      * The progress bar theme (light, dark, primary, secondary, info, success,
-     * warning, danger or any other AdminLTE color like lighblue or teal).
+     * warning, danger or any color of the AdminLTE extended palette like sky
+     * or teal). When not defined, a themed box will paint the progress bar
+     * with its own contrast color (the AdminLTE v4 default).
      *
      * @var string
      */
@@ -89,7 +93,7 @@ class InfoBox extends Component
     public function __construct(
         $title = null, $text = null, $icon = null, $description = null,
         $url = null, $urlTarget = 'title', $theme = null, $iconTheme = null,
-        $progress = null, $progressTheme = 'white'
+        $progress = null, $progressTheme = null
     ) {
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
@@ -117,9 +121,10 @@ class InfoBox extends Component
     public function makeBoxClass()
     {
         $classes = ['info-box'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (isset($this->theme)) {
-            $classes[] = "bg-{$this->theme}";
+        if (! empty($theme)) {
+            $classes[] = "text-bg-{$theme}";
         }
 
         return implode(' ', $classes);
@@ -133,12 +138,30 @@ class InfoBox extends Component
     public function makeIconClass()
     {
         $classes = ['info-box-icon'];
+        $iconTheme = $this->resolveThemeColor($this->iconTheme);
 
-        if (isset($this->iconTheme)) {
-            $classes[] = "bg-{$this->iconTheme}";
+        if (! empty($iconTheme)) {
+            $classes[] = "text-bg-{$iconTheme}";
+            $classes[] = 'shadow-sm';
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the theme for the underlying progress bar. When no theme is setup
+     * and the box is themed, an empty theme is returned, so the AdminLTE v4
+     * stylesheet can paint the bar with the box contrast color.
+     *
+     * @return string
+     */
+    public function makeProgressTheme()
+    {
+        if (! empty($this->progressTheme)) {
+            return $this->progressTheme;
+        }
+
+        return empty($this->theme) ? 'primary' : '';
     }
 
     /**

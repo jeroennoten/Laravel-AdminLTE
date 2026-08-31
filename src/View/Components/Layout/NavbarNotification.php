@@ -3,9 +3,12 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Layout;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\View\Components\Widget\HandlesThemeColors;
 
 class NavbarNotification extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * Constants to define the available url configuration types.
      */
@@ -115,8 +118,12 @@ class NavbarNotification extends Component
     {
         $attrs = ['class' => 'nav-link'];
 
+        // On the dropdown mode, the anchor only toggles the dropdown. Note a
+        // href provided by the user always takes precedence over this default.
+
         if ($this->enableDropdownMode) {
-            $attrs['data-toggle'] = 'dropdown';
+            $attrs['data-bs-toggle'] = 'dropdown';
+            $attrs['href'] = '#';
         }
 
         return $attrs;
@@ -132,7 +139,7 @@ class NavbarNotification extends Component
         $classes = [$this->icon];
 
         if (! empty($this->iconColor)) {
-            $classes[] = "text-{$this->iconColor}";
+            $classes[] = "text-{$this->resolveThemeColor($this->iconColor)}";
         }
 
         return implode(' ', $classes);
@@ -145,10 +152,13 @@ class NavbarNotification extends Component
      */
     public function makeBadgeClass()
     {
-        $classes = ['badge navbar-badge text-bold text-xs badge-pill'];
+        // Note the '.navbar-badge' class already provides the size, the
+        // weight and the position of the badge on AdminLTE v4.
+
+        $classes = ['navbar-badge badge'];
 
         if (! empty($this->badgeColor)) {
-            $classes[] = "badge-{$this->badgeColor}";
+            $classes[] = "text-bg-{$this->resolveThemeColor($this->badgeColor)}";
         }
 
         return implode(' ', $classes);

@@ -26,7 +26,8 @@ class InputFileKrajee extends InputGroupComponent
 
     /**
      * Create a new component instance.
-     * Note this component requires the Krajee 'bootstrap-fileinput' plugin.
+     * Note this component requires the Krajee 'bootstrap-fileinput' plugin,
+     * which still depends on jQuery.
      *
      * @return void
      */
@@ -80,11 +81,18 @@ class InputFileKrajee extends InputGroupComponent
      */
     protected function makePluginDefaultCfg()
     {
-        // By default, force the plugin theme to 'Font Awesome 5'. Note this
-        // requires the theme files provided by the plugin to be imported.
+        // By default, force the plugin to generate Bootstrap 5 markup.
+
+        if (! isset($this->config['bsVersion'])) {
+            $this->config['bsVersion'] = '5';
+        }
+
+        // By default, force the plugin theme to 'bs5', which relies on the
+        // Bootstrap Icons used by AdminLTE v4. Note this requires the theme
+        // files provided by the plugin to be imported.
 
         if (! isset($this->config['theme'])) {
-            $this->config['theme'] = 'fa5';
+            $this->config['theme'] = 'bs5';
         }
 
         // By default, force the plugin language to the configured application
@@ -158,7 +166,9 @@ class InputFileKrajee extends InputGroupComponent
     {
         // Setup the additional classes for the upload preview zone.
 
-        $previewZoneClasses = ['bg-light', 'd-flex', 'justify-content-center'];
+        $previewZoneClasses = [
+            'bg-body-tertiary', 'd-flex', 'justify-content-center',
+        ];
 
         // Setup the allowed image extensions.
 

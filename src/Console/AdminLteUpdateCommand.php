@@ -4,6 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\VendorAssetsResource;
 
 class AdminLteUpdateCommand extends Command
 {
@@ -35,7 +36,7 @@ class AdminLteUpdateCommand extends Command
     latest changes. In the particular case you have recently changed those views
     to include own customizations, then you can ignore this warning. Please,
     refer to next link for more instructions on how to update the views:
-    https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Updating</>';
+    https://jeroennoten.github.io/Laravel-AdminLTE/sections/overview/updating.html</>';
 
     /**
      * Execute the console command.
@@ -44,7 +45,17 @@ class AdminLteUpdateCommand extends Command
      */
     public function handle()
     {
-        $options = ['--force' => true, '--only' => ['assets']];
+        // Update the AdminLTE assets. The third party assets are only updated
+        // when they were previously published, since they are optional (the
+        // package provides a CDN fallback for all of them).
+
+        $resources = ['assets'];
+
+        if ((new VendorAssetsResource())->exists()) {
+            $resources[] = 'vendor_assets';
+        }
+
+        $options = ['--force' => true, '--only' => $resources];
 
         $this->call('adminlte:install', $options);
 

@@ -4,28 +4,75 @@ These components are expected to be used within a `form` element. They can be us
 |-----------
 | [DateRange](#daterange), [InputColor](#inputcolor), [InputDate](#inputdate), [InputFileKrajee](#inputfilekrajee), [InputSlider](#inputslider), [InputSwitch](#inputswitch), [SelectBs](#selectbs), [TextEditor](#texteditor)
 
+## Underlying Plugins on AdminLTE v4
+
+**AdminLTE v4** is **jQuery free**, so on the `4.x` releases of this package every advanced form component was moved to the vanilla Javascript plugin recommended by AdminLTE v4. The next table summarizes what backs each component now:
+
+Component | Plugin | Plugin key | Requires jQuery
+----------|--------|------------|----------------
+[DateRange](#daterange) | [Flatpickr](https://flatpickr.js.org/) | `Flatpickr` | no
+[InputColor](#inputcolor) | _none_ (native `input[type=color]`) | – | no
+[InputDate](#inputdate) | [Flatpickr](https://flatpickr.js.org/) | `Flatpickr` | no
+[InputFileKrajee](#inputfilekrajee) | [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) | `KrajeeFileinput` | **yes**
+[InputSlider](#inputslider) | [noUiSlider](https://refreshless.com/nouislider/) | `NoUiSlider` | no
+[InputSwitch](#inputswitch) | _none_ (native Bootstrap 5.3 switch) | – | no
+[SelectBs](#selectbs) | [Tom Select](https://tom-select.js.org/) | `TomSelect` | no
+[TextEditor](#texteditor) | [Quill](https://quilljs.com/) | `Quill` | no
+
+> [!Important]
+> The `config` attribute of every component still **accepts the AdminLTE v3 plugin properties**. Whenever a v3 property has an equivalent on the new plugin it is translated on the fly, otherwise it is silently dropped. Each section below lists exactly which properties became no-ops.
+
+> [!Note]
+> With the exception of `KrajeeFileinput`, all the plugin keys above are already present on the `plugins` section of the `config/adminlte.php` file published by the package, pointing to a `CDN`. You only have to enable the plugin on the blade file where you use the component, with a `@section('plugins.<Key>', true)` sentence. For `KrajeeFileinput` you have to add the plugin entry to the configuration file yourself, as explained on the [plugins configuration section](/sections/configuration/plugins).
+
 # DateRange
 
 > [!Important]
-> This component requires the [Date Range Picker](https://www.daterangepicker.com/) and [Moment](https://momentjs.com/) plugins, so be sure to first install and setup these plugins on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). Both plugins can be installed locally using the `php artisan adminlte:plugins install --plugin=daterangepicker` command, after that you will need to include the plugins files on the configuration file.
+> This component requires the `Flatpickr` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.Flatpickr', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [Date Range Picker](https://www.daterangepicker.com/) and [Moment](https://momentjs.com/) plugins are **not used anymore** (both required jQuery).
 
 This component represents a **date-range** selector and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines the next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 config | Array with the plugin configuration parameters | array | `[]` | no
-enable-default-ranges | Enables a default set of ranges option. The string value, if any, will be used as the initial date range | string | null | no
+enable-default-ranges | Preselects one of the predefined ranges. The accepted string values are: `'Today'`, `'Yesterday'`, `'Last 7 Days'`, `'Last 30 Days'`, `'This Month'` or `'Last Month'` | string | `null` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
-By using the `enable-default-ranges` property you can configure the initial date range by assigning a string to the option. The current set of accepted values are: `'Today'`, `'Yesterday'`, `'Last 7 Days'`, `'Last 30 Days'`, `'This Month'` or `'Last Month'`.
+The available configuration (for the `config` option) are those explained on the [Flatpickr options documentation](https://flatpickr.js.org/options/). You can also assign a `javascript` expression to a particular configuration option by prepending the `js:` string token. All other attributes you define will be inserted directly on the underlying `input` element.
 
-The available configuration (for the `config` option) are those explained on the [plugin documentation](https://www.daterangepicker.com/#options). You can also assign a `javascript` expression to a particular configuration option by prepending the `js:` string token. All other attributes you define will be inserted directly on the underlying `input` element.
+The component applies the next defaults, which you can always overwrite through the `config` attribute:
+
+- `mode` is set to `'range'` (or to `'single'` when the legacy `singleDatePicker` property is truthy).
+- `allowInput` is set to `true`, so the user can also type the range manually (this matches the behavior of the legacy plugin).
+
+> [!Warning]
+> **Flatpickr does not provide a predefined ranges menu.** Because of that, the `enable-default-ranges` attribute is now only used to **preselect** the initial date range, no shortcut menu is rendered. The legacy `startDate` / `endDate` properties take precedence over `enable-default-ranges`.
+
+### Legacy DateRangePicker Properties
+
+The next legacy properties are still accepted, and are **translated** into their Flatpickr counterpart:
+
+Legacy property | Translated into
+----------------|----------------
+`minDate`, `maxDate` | `minDate`, `maxDate`
+`minYear`, `maxYear` | `minDate`, `maxDate`
+`singleDatePicker` | `mode: 'single'`
+`timePicker` | `enableTime: true`
+`timePicker24Hour` | `time_24hr`
+`locale.format` | `dateFormat`
+`locale.separator` | `locale.rangeSeparator`
+`startDate`, `endDate` | `defaultDate`
+
+The next legacy properties became **no-ops**, they are accepted for backward compatibility and silently dropped: `ranges`, `autoUpdateInput`, `autoApply`, `alwaysShowCalendars`, `linkedCalendars`, `showCustomRangeLabel`, `showDropdowns`, `showWeekNumbers`, `showISOWeekNumbers`, `opens`, `drops`, `parentEl`, `buttonClasses`, `applyButtonClasses`, `cancelButtonClasses`, `isInvalidDate`, `isCustomDate`, `maxSpan`, `dateLimit`, `timePickerIncrement` and `timePickerSeconds`.
+
+> [!Warning]
+> The date format tokens are **not** the Moment.js ones anymore. Flatpickr uses its own [formatting tokens](https://flatpickr.js.org/formatting/), for example `Y-m-d H:i` instead of `YYYY-MM-DD HH:mm`.
 
 > [!Note]
-> You may also configure the plugin from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component.
+> You may also configure the plugin from `Javascript` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. The component stores the created instance on the `_flatpickr_instance` property of the input element.
 
 ### Examples
 
@@ -36,19 +83,18 @@ The available configuration (for the `config` option) are those explained on the
 {{-- Disabled with predefined config --}}
 @php
 $config = [
-    "timePicker" => true,
-    "startDate" => "js:moment().subtract(6, 'days')",
-    "endDate" => "js:moment()",
-    "locale" => ["format" => "YYYY-MM-DD HH:mm"],
+    "enableTime" => true,
+    "dateFormat" => "Y-m-d H:i",
+    "defaultDate" => ["js:new Date(Date.now() - 6*24*3600*1000)", "js:new Date()"],
 ];
 @endphp
 <x-adminlte-date-range name="drDisabled" :config="$config" disabled/>
 
-{{-- Prepend slot and custom ranges enables --}}
+{{-- Prepend slot and a preselected range --}}
 <x-adminlte-date-range name="drCustomRanges" enable-default-ranges="Last 30 Days">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-info">
-            <i class="fas fa-calendar-alt"></i>
+        <div class="input-group-text text-bg-info bg-gradient">
+            <i class="bi bi-calendar-range"></i>
         </div>
     </x-slot>
 </x-adminlte-date-range>
@@ -57,32 +103,28 @@ $config = [
 <x-adminlte-date-range name="drPlaceholder" placeholder="Select a date range..."
     label="Date Range">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-danger">
-            <i class="far fa-lg fa-calendar-alt"></i>
+        <div class="input-group-text text-bg-danger bg-gradient">
+            <i class="bi bi-calendar-range"></i>
         </div>
     </x-slot>
 </x-adminlte-date-range>
-@push('js')<script>$(() => $("#drPlaceholder").val(''))</script>@endpush
 
 {{-- SM size with single date/time config --}}
 @php
 $config = [
-    "singleDatePicker" => true,
-    "showDropdowns" => true,
-    "startDate" => "js:moment()",
-    "minYear" => 2000,
-    "maxYear" => "js:parseInt(moment().format('YYYY'),10)",
-    "timePicker" => true,
-    "timePicker24Hour" => true,
-    "timePickerSeconds" => true,
-    "cancelButtonClasses" => "btn-danger",
-    "locale" => ["format" => "YYYY-MM-DD HH:mm:ss"],
+    "mode" => "single",
+    "enableTime" => true,
+    "enableSeconds" => true,
+    "time_24hr" => true,
+    "dateFormat" => "Y-m-d H:i:S",
+    "minDate" => "2000-01-01",
+    "maxDate" => "js:new Date()",
 ];
 @endphp
 <x-adminlte-date-range name="drSizeSm" label="Date/Time" igroup-size="sm" :config="$config">
     <x-slot name="appendSlot">
-        <div class="input-group-text bg-dark">
-            <i class="fas fa-calendar-day"></i>
+        <div class="input-group-text text-bg-dark">
+            <i class="bi bi-calendar-day"></i>
         </div>
     </x-slot>
 </x-adminlte-date-range>
@@ -90,65 +132,48 @@ $config = [
 {{-- LG size with some config and add-ons --}}
 @php
 $config = [
-    "showDropdowns" => true,
-    "startDate" => "js:moment()",
-    "endDate" => "js:moment().subtract(1, 'days')",
-    "minYear" => 2000,
-    "maxYear" => "js:parseInt(moment().format('YYYY'),10)",
-    "timePicker" => true,
-    "timePicker24Hour" => true,
-    "timePickerIncrement" => 30,
-    "locale" => ["format" => "YYYY-MM-DD HH:mm"],
-    "opens" => "center",
+    "enableTime" => true,
+    "time_24hr" => true,
+    "dateFormat" => "Y-m-d H:i",
+    "minDate" => "2000-01-01",
 ];
 @endphp
 <x-adminlte-date-range name="drSizeLg" label="Date/Time Range" label-class="text-primary"
     igroup-size="lg" :config="$config">
     <x-slot name="prependSlot">
         <div class="input-group-text text-primary">
-            <i class="fas fa-lg fa-calendar-alt"></i>
+            <i class="bi bi-calendar-range"></i>
         </div>
     </x-slot>
     <x-slot name="appendSlot">
-        <x-adminlte-button theme="outline-primary" label="Review" icon="fas fa-lg fa-clipboard-check"/>
+        <x-adminlte-button theme="outline-primary" label="Review" icon="bi bi-clipboard-check"/>
     </x-slot>
 </x-adminlte-date-range>
 ```
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every example is rendered. Please, note the image was taken with an older package version (the calendar popup is now rendered by **Flatpickr**), and that the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Date Range Component](/imgs/components/advanced_forms_components/date-range-component.png)
 
 ### Required Plugin Configuration
 
-To use this component you need to install and enable the required [Date Range Picker](https://www.daterangepicker.com/) and [Moment](https://momentjs.com/) plugins. You can install both plugins locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=daterangepicker
-```
-
-After installed, you can use the next plugin configuration as a reference:
+The `Flatpickr` entry is already available on the `plugins` section of the configuration file published by the package:
 
 ```php
 'plugins' => [
     ...
-    'DateRangePicker' => [
+    'Flatpickr' => [
         'active' => false,
         'files' => [
             [
                 'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/moment/moment.min.js',
-            ],
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/daterangepicker/daterangepicker.js',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js',
             ],
             [
                 'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/daterangepicker/daterangepicker.css',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css',
             ],
         ],
     ],
@@ -156,27 +181,34 @@ After installed, you can use the next plugin configuration as a reference:
 ],
 ```
 
-Finally, you need to use the `@section('plugins.DateRangePicker', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+If you prefer to serve the plugin files locally, install the npm package and publish it into the `public/vendor` folder, then point the `location` values to the published files and set `'asset' => true`:
+
+```sh
+npm i flatpickr@^4.6
+php artisan adminlte:plugins install --plugin=flatpickr
+```
+
+Finally, you need to use the `@section('plugins.Flatpickr', true)` sentence on the blade file where you expect to use the component.
 
 # InputColor
 
 > [!Important]
-> This component requires the [Bootstrap Colorpicker](https://itsjavi.com/bootstrap-colorpicker/index.html) plugin, so be sure to first setup the plugin on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed locally using `php artisan adminlte:plugins install --plugin=bootstrapColorpicker` command, after that you will need to include the plugins files on the configuration file.
+> **No plugin is required anymore.** **Bootstrap 5** provides a native color control (`form-control form-control-color`), so the [Bootstrap Colorpicker](https://itsjavi.com/bootstrap-colorpicker/index.html) jQuery plugin used on **AdminLTE v3** was dropped.
 
-This component represents a **color picker** input and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. When you enable an `addon` icon, this icon will automatically be set to show the picked color. The component also defines next additional attributes:
+This component represents a **color picker** input and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. When you enable an `addon` icon, this icon will automatically be set to show the picked color (the component keeps every `.input-group-text > i` element of the group in sync with the selected value). The component also defines next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
-config | Array with the plugin configuration parameters | array | `[]` | no
+config | **[Deprecated]** Array with the legacy plugin configuration parameters. It is accepted for backward compatibility and completely ignored | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
-The available plugin configuration are those explained on the [plugin documentation](https://itsjavi.com/bootstrap-colorpicker/module-options.html). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use the `data-*` attributes to configure the plugin.
+> [!Warning]
+> A native color input only understands a **6 digits hexadecimal notation**. The component validates the `value` attribute (and the old submitted value) against the `#rrggbb` pattern, lowercases it, and falls back to `#000000` when it does not match. So, values like `rgb(50, 100, 50)` or a named color, which were valid on **AdminLTE v3**, will be discarded. The same applies to the legacy `data-color`, `data-format` and `data-horizontal` attributes: they are just forwarded to the input element and have no effect.
 
-> [!Note]
-> Alternatively, you can make all the plugin configuration from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component.
+All other attributes you define will be inserted directly on the underlying `input` element.
 
 ### Examples
 
@@ -185,120 +217,57 @@ The available plugin configuration are those explained on the [plugin documentat
 <x-adminlte-input-color name="icBasic"/>
 
 {{-- Disabled with predefined value --}}
-<x-adminlte-input-color name="icDisabled" value="rgb(50, 100, 50)" disabled/>
+<x-adminlte-input-color name="icDisabled" value="#326432" disabled/>
 
-{{-- Append slot and data-* config --}}
-<x-adminlte-input-color name="icAddon" data-color="rgb(50, 100, 150)" data-format='hex'
-    data-horizontal=true>
+{{-- Append slot, the icon follows the picked color --}}
+<x-adminlte-input-color name="icAddon" value="#326496">
     <x-slot name="appendSlot">
         <div class="input-group-text">
-            <i class="fas fa-lg fa-square"></i>
+            <i class="bi bi-square-fill"></i>
         </div>
     </x-slot>
 </x-adminlte-input-color>
 
-{{-- Label and placeholder --}}
-<x-adminlte-input-color name="icPlaceholder" placeholder="Select a color..." label="Color">
+{{-- With a label --}}
+<x-adminlte-input-color name="icLabeled" label="Color">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-light">
-            <i class="fas fa-lg fa-tint"></i>
+        <div class="input-group-text">
+            <i class="bi bi-droplet-fill"></i>
         </div>
     </x-slot>
 </x-adminlte-input-color>
 
-{{-- SM size with custom config --}}
-@php
-$config = [
-    "color" => "#000000",
-    "horizontal" => true,
-    "format" => null,
-];
-@endphp
-<x-adminlte-input-color name="icSizeSm" label="Fill Color" igroup-size="sm" :config="$config">
-    <x-slot name="appendSlot">
-        <div class="input-group-text bg-white">
-            <i class="fas fa-lg fa-fill"></i>
-        </div>
-    </x-slot>
-</x-adminlte-input-color>
-
-{{-- LG size with predefined color extension --}}
-@php
-$config = [
-    "extensions" => [
-        [
-            "name" => 'swatches',
-            "options" => [
-                "colors" => [
-                    'black'   => '#000000',
-                    'gray'    => '#888888',
-                    'white'   => '#ffffff',
-                    'red'     => '#ff0000',
-                    'default' => '#777777',
-                    'primary' => '#337ab7',
-                    'success' => '#5cb85c',
-                    'info'    => '#5bc0de',
-                    'warning' => '#f0ad4e',
-                    'danger'  => '#d9534f'
-                ],
-                "namesAsValues" => true,
-            ]
-        ]
-    ]
-];
-@endphp
-<x-adminlte-input-color name="icSizeLg" placeholder="Choice a color..."
-    label="Brush Color" label-class="text-primary" igroup-size="lg" :config="$config">
+{{-- SM size --}}
+<x-adminlte-input-color name="icSizeSm" label="Fill Color" igroup-size="sm" value="#ffc107">
     <x-slot name="appendSlot">
         <div class="input-group-text">
-            <i class="fas fa-lg fa-brush"></i>
+            <i class="bi bi-paint-bucket"></i>
+        </div>
+    </x-slot>
+</x-adminlte-input-color>
+
+{{-- LG size --}}
+<x-adminlte-input-color name="icSizeLg" label="Brush Color" label-class="text-primary"
+    igroup-size="lg" value="#0d6efd">
+    <x-slot name="appendSlot">
+        <div class="input-group-text">
+            <i class="bi bi-brush"></i>
         </div>
     </x-slot>
 </x-adminlte-input-color>
 ```
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every example is rendered. Please, note the image was taken with an older package version, the color popup is now the one provided by the browser.
 
 ![Input Color Component](/imgs/components/advanced_forms_components/input-color-component.png)
 
-### Required Plugin Configuration
-
-To use this component you need to install and enable the required [Bootstrap Colorpicker](https://itsjavi.com/bootstrap-colorpicker/index.html) plugin. You can install the plugin locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=bootstrapColorpicker
-```
-
-After installed, you can use the next plugin configuration as a reference:
-
-```php
-'plugins' => [
-    ...
-    'BootstrapColorpicker' => [
-        'active' => false,
-        'files' => [
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js',
-            ],
-            [
-                'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css',
-            ],
-        ],
-    ],
-    ...
-],
-```
-
-Finally, you need to use the `@section('plugins.BootstrapColorpicker', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugins files from a `CDN` instead of installing it locally.
+> [!Tip]
+> If you need an advanced color picker (alpha channel, swatches, multiple formats, ...), **AdminLTE v4** recommends the jQuery free [Pickr](https://github.com/simonwep/pickr) plugin, which you can publish with `npm i @simonwep/pickr` followed by `php artisan adminlte:plugins install --plugin=pickr`, and then initialize on your own over the component `id`.
 
 # InputDate
 
 > [!Important]
-> This component requires the [Tempus Dominus](https://tempusdominus.github.io/bootstrap-4/) and [Moment](https://momentjs.com/) plugins, so be sure to first install and setup these plugins on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). Both plugins can be installed locally using `php artisan adminlte:plugins install --plugin=tempusdominusBootstrap4` command, after that you will need to include the plugins files on the configuration file.
+> This component requires the `Flatpickr` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.Flatpickr', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [Tempus Dominus](https://tempusdominus.github.io/bootstrap-4/) and [Moment](https://momentjs.com/) plugins are **not used anymore** (both required jQuery).
 
 This component represents a **date and time** selector and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines next additional attributes:
 
@@ -308,12 +277,35 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
-The available plugin configuration (for the `config` option) are those explained on the [plugin documentation](https://tempusdominus.github.io/bootstrap-4/Options/). You can assign a `javascript` expression to a particular configuration prepending the `js:` string token. All other attributes you define will be inserted directly on the underlying `input` element.
+The available plugin configuration (for the `config` option) are those explained on the [Flatpickr options documentation](https://flatpickr.js.org/options/). You can assign a `javascript` expression to a particular configuration prepending the `js:` string token. All other attributes you define will be inserted directly on the underlying `input` element.
+
+The component sets `allowInput` to `true` by default, so the user can also type the date manually (this matches the behavior of the legacy plugin). You can overwrite it through the `config` attribute.
+
+### Legacy Tempus Dominus Properties
+
+The next legacy properties are still accepted, and are **translated** into their Flatpickr counterpart:
+
+Legacy property | Translated into
+----------------|----------------
+`format` | `dateFormat`
+`defaultDate` | `defaultDate`
+`minDate`, `maxDate` | `minDate`, `maxDate`
+`disabledDates` | `disable`
+`enabledDates` | `enable`
+`inline` | `inline`
+
+The next legacy properties became **no-ops**, they are accepted for backward compatibility and silently dropped: `icons`, `buttons`, `collapse`, `sideBySide`, `toolbarPlacement`, `widgetPositioning`, `widgetParent`, `useCurrent`, `calendarWeeks`, `viewMode`, `keepOpen`, `focusOnShow`, `debug`, `allowInputToggle`, `extraFormats`, `keepInvalid`, `ignoreReadonly`, `tooltips`, `useStrict`, `daysOfWeekDisabled`, `stepping` and `timeZone`.
 
 > [!Note]
-> Alternatively, You can make all the configuration from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://getdatepicker.com/5-4/Functions/) method first.
+> The `icons` and `buttons` properties keep a default value (now based on **Bootstrap Icons**, for example `'date' => 'bi bi-calendar'`) only so that reading them from an existing configuration does not break. Flatpickr renders its own calendar chrome and does not use them.
+
+> [!Warning]
+> The date format tokens are **not** the Moment.js ones anymore. Flatpickr uses its own [formatting tokens](https://flatpickr.js.org/formatting/), so `'format' => 'YYYY-MM-DD'` has to be rewritten as `'dateFormat' => 'Y-m-d'`. Localized shortcuts like `L` or `LT` do not exist.
+
+> [!Note]
+> Alternatively, you can make all the configuration from `Javascript` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. The component stores the created instance on the `_flatpickr_instance` property of the input element, so you can call `el._flatpickr_instance.destroy()` before creating your own.
 
 ### Examples
 
@@ -323,130 +315,99 @@ The available plugin configuration (for the `config` option) are those explained
 
 {{-- Disabled with predefined value --}}
 @php
-$config = ['format' => 'YYYY-MM-DD'];
+$config = ['dateFormat' => 'Y-m-d'];
 @endphp
 <x-adminlte-input-date name="idDisabled" value="2020-10-04" :config="$config" disabled/>
 
 {{-- Placeholder, time only and prepend icon --}}
 @php
-$config = ['format' => 'LT'];
+$config = ['noCalendar' => true, 'enableTime' => true, 'dateFormat' => 'H:i'];
 @endphp
 <x-adminlte-input-date name="idTimeOnly" :config="$config" placeholder="Choose a time...">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-info">
-            <i class="fas fa-clock"></i>
+        <div class="input-group-text text-bg-info bg-gradient">
+            <i class="bi bi-clock"></i>
         </div>
     </x-slot>
 </x-adminlte-input-date>
 
 {{-- Placeholder, date only and append icon --}}
 @php
-$config = ['format' => 'L'];
+$config = ['dateFormat' => 'Y-m-d'];
 @endphp
 <x-adminlte-input-date name="idDateOnly" :config="$config" placeholder="Choose a date...">
     <x-slot name="appendSlot">
-        <div class="input-group-text bg-gradient-danger">
-            <i class="fas fa-calendar-alt"></i>
+        <div class="input-group-text text-bg-danger bg-gradient">
+            <i class="bi bi-calendar-event"></i>
         </div>
     </x-slot>
 </x-adminlte-input-date>
 
 {{-- With Label --}}
 @php
-$config = ['format' => 'DD/MM/YYYY HH:mm'];
+$config = ['enableTime' => true, 'time_24hr' => true, 'dateFormat' => 'd/m/Y H:i'];
 @endphp
 <x-adminlte-input-date name="idLabel" :config="$config" placeholder="Choose a date..."
     label="Datetime" label-class="text-primary">
     <x-slot name="appendSlot">
-        <x-adminlte-button theme="outline-primary" icon="fas fa-lg fa-birthday-cake"
+        <x-adminlte-button theme="outline-primary" icon="bi bi-calendar-heart"
             title="Set to Birthday"/>
     </x-slot>
 </x-adminlte-input-date>
 
-{{-- SM size, restricted to current month and week days --}}
+{{-- SM size, restricted to the current month and to week days --}}
 @php
 $config = [
-    'format' => 'YYYY-MM-DD HH.mm',
-    'dayViewHeaderFormat' => 'MMM YYYY',
-    'minDate' => "js:moment().startOf('month')",
-    'maxDate' => "js:moment().endOf('month')",
-    'daysOfWeekDisabled' => [0, 6],
+    'enableTime' => true,
+    'time_24hr' => true,
+    'dateFormat' => 'Y-m-d H:i',
+    'minDate' => 'js:new Date(new Date().getFullYear(), new Date().getMonth(), 1)',
+    'maxDate' => 'js:new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)',
+    'disable' => ['js:(date) => [0, 6].includes(date.getDay())'],
 ];
 @endphp
 <x-adminlte-input-date name="idSizeSm" label="Working Datetime" igroup-size="sm"
     :config="$config" placeholder="Choose a working day...">
     <x-slot name="appendSlot">
-        <div class="input-group-text bg-dark">
-            <i class="fas fa-calendar-day"></i>
+        <div class="input-group-text text-bg-dark">
+            <i class="bi bi-calendar-day"></i>
         </div>
     </x-slot>
 </x-adminlte-input-date>
 
-{{-- LG size with multiple datetimes --}}
+{{-- LG size with multiple dates --}}
 @php
 $config = [
-    'allowMultidate' => true,
-    'multidateSeparator' => ',',
-    'format' => 'DD MMM YYYY',
+    'mode' => 'multiple',
+    'conjunction' => ', ',
+    'dateFormat' => 'd M Y',
 ];
 @endphp
 <x-adminlte-input-date name="idSizeLg" label="Multiple Datetimes" label-class="text-danger"
     igroup-size="lg" placeholder="Multidate..." :config="$config">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-white">
-            <i class="far fa-lg fa-calendar-alt text-danger"></i>
+        <div class="input-group-text">
+            <i class="bi bi-calendar-week text-danger"></i>
         </div>
     </x-slot>
 </x-adminlte-input-date>
 ```
 
-Use the next image as reference to check how every example is rendered. Please, note in the image the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next image as reference to check how every example is rendered. Please, note the image was taken with an older package version (the calendar popup is now rendered by **Flatpickr**), and that the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Input Date Component](/imgs/components/advanced_forms_components/input-date-component.png)
 
 ### Required Plugin Configuration
 
-To use this component you need to install and enable the required [Tempus Dominus](https://tempusdominus.github.io/bootstrap-4/) and [Moment](https://momentjs.com/) plugins. You can install both plugins locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=tempusdominusBootstrap4
-```
-
-After installed, you can use the next plugin configuration as a reference:
-
-```php
-'plugins' => [
-    ...
-    'TempusDominusBs4' => [
-        'active' => false,
-        'files' => [
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/moment/moment.min.js',
-            ],
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
-            ],
-            [
-                'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css',
-            ],
-        ],
-    ],
-    ...
-],
-```
-
-Finally, you need to use the `@section('plugins.TempusDominusBs4', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+The plugin setup is exactly the same one described for the [DateRange](#daterange) component, both components share the `Flatpickr` plugin key.
 
 # InputFileKrajee
 
 > [!Important]
-> This component is only available from <Badge type="tip">v3.9.0</Badge> and requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can use its `CDN` files (read the instructions on the plugin site).
+> This component requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can use its `CDN` files (read the instructions on the plugin site).
+
+> [!Warning]
+> The Krajee file input plugin **still requires jQuery**, which **AdminLTE v4** does not bundle anymore. The component initialization code is guarded: when neither jQuery nor the plugin are present, the element stays a plain **Bootstrap 5** file input and nothing breaks. If you want a jQuery free alternative, **AdminLTE v4** recommends [FilePond](https://pqina.nl/filepond/) or [Dropzone](https://www.dropzone.dev/), both installable with `php artisan adminlte:plugins install --plugin=filepond` (or `--plugin=dropzone`).
 
 This component represents an advanced **file-input** component with file preview and other features. The component extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines the next additional attributes:
 
@@ -459,6 +420,15 @@ preset-mode | Used to make specific plugin configuration for some particular sce
 > The `enable-old-support` attribute is not supported here, due to **security** reasons related to file inputs.
 
 The available plugin configuration are those explained on the [plugin documentation](https://plugins.krajee.com/file-input#options). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use `data-* attributes` to configure the plugin.
+
+To keep the plugin aligned with **AdminLTE v4**, the component applies the next defaults, all of them overridable through the `config` attribute:
+
+- `bsVersion` is set to `'5'`, so the plugin generates **Bootstrap 5** markup.
+- `theme` is set to `'bs5'`, the plugin theme that relies on the **Bootstrap Icons** used by AdminLTE v4. Remember to import the theme files of the plugin.
+- `language` is set to the current `config('app.locale')` value. Remember to import the related locale file of the plugin.
+
+> [!Warning]
+> The `explorer-fa5` and the other **Font Awesome** based themes of the plugin are not the default anymore. If you still want to use one of them, set it explicitly on the `config` attribute and load both the theme files and the Font Awesome stylesheet.
 
 > [!Note]
 > Alternatively, you can make all the configuration from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://plugins.krajee.com/file-input/plugin-methods#destroy) method first.
@@ -479,7 +449,6 @@ The available plugin configuration are those explained on the [plugin documentat
 $config = [
     'allowedFileTypes' => ['text', 'office', 'pdf'],
     'browseOnZoneClick' => true,
-    'theme' => 'explorer-fa5',
 ];
 @endphp
 <x-adminlte-input-file-krajee name="kifLabel" label="Upload document file"
@@ -495,7 +464,7 @@ $config = [
     preset-mode="minimalist"/>
 ```
 
-Use the next images as reference to check how every example is rendered. Please, note in the images the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next images as reference to check how every example is rendered. Please, note in the images the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![InputFileKrajee Component 1](/imgs/components/advanced_forms_components/inputfilekrajee-component-1.png)
 ![InputFileKrajee Component 2](/imgs/components/advanced_forms_components/inputfilekrajee-component-2.png)
@@ -504,7 +473,7 @@ Use the next images as reference to check how every example is rendered. Please,
 
 To use this component you need to install and enable the required [krajee-file-input](https://plugins.krajee.com/file-input) plugin. You can manually download and install the plugin locally on the `public/vendor/krajee-fileinput/` folder. Please, note there is no artisan command to install this plugin.
 
-After installed on `public/vendor/krajee-fileinput/` folder, you can use the next plugin configuration as a reference. However, note the set of included plugin files may change depending on your needs:
+After installed on `public/vendor/krajee-fileinput/` folder, you can use the next plugin configuration as a reference. However, note the set of included plugin files may change depending on your needs, and that **jQuery must be loaded before the plugin files**:
 
 ```php
 'plugins' => [
@@ -518,11 +487,6 @@ After installed on `public/vendor/krajee-fileinput/` folder, you can use the nex
                 'location' => 'vendor/krajee-fileinput/css/fileinput.min.css',
             ],
             [
-                'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/krajee-fileinput/themes/explorer-fa5/theme.min.css',
-            ],
-            [
                 'type' => 'js',
                 'asset' => true,
                 'location' => 'vendor/krajee-fileinput/js/fileinput.min.js',
@@ -530,12 +494,7 @@ After installed on `public/vendor/krajee-fileinput/` folder, you can use the nex
             [
                 'type' => 'js',
                 'asset' => true,
-                'location' => 'vendor/krajee-fileinput/themes/fa5/theme.min.js',
-            ],
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/krajee-fileinput/themes/explorer-fa5/theme.min.js',
+                'location' => 'vendor/krajee-fileinput/themes/bs5/theme.min.js',
             ],
             [
                 'type' => 'js',
@@ -553,23 +512,54 @@ Finally, you need to use the `@section('plugins.KrajeeFileinput', true)` sentenc
 # InputSlider
 
 > [!Important]
-> This component requires the [bootstrap-slider](https://github.com/seiyria/bootstrap-slider) plugin, so be sure to first setup the plugin on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed locally using `php artisan adminlte:plugins install --plugin=bootstrapSlider` command, after that you will need to include the plugins files on the configuration file.
+> This component requires the `NoUiSlider` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.NoUiSlider', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [bootstrap-slider](https://github.com/seiyria/bootstrap-slider) plugin is **not used anymore**.
 
 This component represents a **slider** input and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
-color | The slider color. One of the available `html` colors | string | `null` | no
+color | The slider color. One of the available `html` colors, or any CSS color value | string | `null` | no
 config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
-The available plugin configuration (for `config` attribute) are those explained on the [plugin documentation](https://github.com/seiyria/bootstrap-slider#options). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use the `data-slider-*` attributes to configure the plugin. Also, the standard `value`, `min`, `max`, `step` and `disabled` attributes are mapped as shortcuts of the respective plugin options: `data-slider-value`, `data-slider-min`, `data-slider-max`, `data-slider-step` and `data-slider-enabled`.
+The available plugin configuration (for the `config` attribute) are those explained on the [noUiSlider options documentation](https://refreshless.com/nouislider/slider-options/).
+
+> [!Warning]
+> **noUiSlider renders into a plain `div`, not into an `input`.** Because of that, the component renders a **hidden input** that holds the value submitted with the form, plus a `div` that holds the slider. The hidden input is kept in sync with the slider on every `update` event, and the value of a multi-handle slider is submitted as a **comma separated** string.
+>
+> The `config['id']` property is the `id` of the `div` that holds the slider (it defaults to `"{$id}-slider"`), it is **not** the `id` of the underlying input.
+
+The standard `value`, `min`, `max`, `step` and `disabled` HTML attributes are still supported as shortcuts of the plugin `start`, `range.min`, `range.max`, `step` and disabled state.
+
+> [!Warning]
+> The `data-slider-*` attributes of the legacy plugin are **not supported anymore**, they are just forwarded to the hidden input and have no effect. Use the `config` attribute or the standard HTML attributes instead.
+
+### Legacy bootstrap-slider Properties
+
+The next legacy properties are still accepted, and are **translated** into their noUiSlider counterpart:
+
+Legacy property | Translated into
+----------------|----------------
+`min`, `max` | `range: {min, max}` (defaults to `0` and `10`)
+`step` | `step`
+`value` | `start`
+`range` (boolean) | a dual handle slider through the `connect` option
+`orientation` | `orientation`
+`reversed`, `rtl` | `direction: 'rtl'`
+`tooltip` | `tooltips` (`false` when the value is `'hide'`)
+`enabled` | when `false`, the slider is rendered disabled
+`id` | the `id` of the DOM element holding the slider
 
 > [!Note]
-> Alternatively, you can make all the plugin configuration from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://github.com/seiyria/bootstrap-slider#functions) method first.
+> The `range` key is ambiguous: on the legacy plugin it was a boolean enabling a dual handle slider, while on noUiSlider it holds the `min` / `max` definition. When you pass an **array** it is forwarded to noUiSlider as is; when you pass `true` it is interpreted as the legacy dual handle flag.
+
+The next legacy properties became **no-ops**, they are accepted for backward compatibility and silently dropped: `precision`, `tooltip_split`, `tooltip_position`, `handle`, `selection`, `natural_arrow_keys`, `ticks`, `ticks_positions`, `ticks_labels`, `ticks_snap_bounds`, `ticks_tooltip`, `scale`, `focus`, `labelledby`, `rangeHighlights`, `lock_to_ticks` and `formatter`.
+
+> [!Note]
+> Alternatively, you can make all the plugin configuration from `Javascript` using the `config['id']` value as the selector for the slider element, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://refreshless.com/nouislider/more/#section-destroying) method first.
 
 ### Examples
 
@@ -584,11 +574,10 @@ The available plugin configuration (for `config` attribute) are those explained 
 <x-adminlte-input-slider name="isMinMax" min=5 max=15 step=0.5 value=11.5 color="purple"/>
 
 {{-- Label, prepend icon and sm size --}}
-<x-adminlte-input-slider name="isSizeSm" label="Slider" igroup-size="sm"
-    color="#3c8dbc" data-slider-handle="square">
+<x-adminlte-input-slider name="isSizeSm" label="Slider" igroup-size="sm" color="#3c8dbc">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-lightblue">
-            <i class="fas fa-sliders-h"></i>
+        <div class="input-group-text text-bg-info">
+            <i class="bi bi-sliders"></i>
         </div>
     </x-slot>
 </x-adminlte-input-slider>
@@ -596,63 +585,59 @@ The available plugin configuration (for `config` attribute) are those explained 
 {{-- With slots, range mode and lg size --}}
 @php
 $config = [
-    'handle' => 'square',
-    'range' => true,
-    'value' => [3, 8],
+    'range' => ['min' => 0, 'max' => 10],
+    'start' => [3, 8],
+    'connect' => [false, true, false],
+    'tooltips' => true,
 ];
 @endphp
-<x-adminlte-input-slider name="isSizeLg" label="Range" size="lg"
-    color="orange" label-class="text-orange" :config="$config">
+<x-adminlte-input-slider name="isSizeLg" label="Range" igroup-size="lg"
+    color="orange" label-class="text-warning" :config="$config">
     <x-slot name="prependSlot">
-        <x-adminlte-button theme="warning" icon="fas fa-minus" title="Decrement"/>
+        <x-adminlte-button theme="warning" icon="bi bi-dash-lg" title="Decrement"/>
     </x-slot>
     <x-slot name="appendSlot">
-        <x-adminlte-button theme="warning" icon="fas fa-plus" title="Increment"/>
+        <x-adminlte-button theme="warning" icon="bi bi-plus-lg" title="Increment"/>
     </x-slot>
 </x-adminlte-input-slider>
 
-{{-- Vertical slider with ticks --}}
+{{-- Vertical slider --}}
 @php
 $config = [
-    'value' => 150,
     'orientation' => 'vertical',
-    'ticks' => [0, 100, 200, 300],
-    'ticks_labels' => ['$0', '$100', '$200', '$300'],
+    'range' => ['min' => 0, 'max' => 300],
+    'start' => [150],
+    'step' => 50,
+    'tooltips' => true,
 ];
 @endphp
 <x-adminlte-input-slider name="isVertical" label="Vertical" color="#77dd77"
-    label-class="text-olive" :config="$config"/>
+    label-class="text-success" :config="$config"/>
 ```
 
-Use the next images as reference to check how every example is rendered. Please, note in the images the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next images as reference to check how every example is rendered. Please, note the images were taken with an older package version (the slider is now rendered by **noUiSlider**), and that the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Input Slider Component](/imgs/components/advanced_forms_components/input-slider-component.png)
 
 ### Required Plugin Configuration
 
-To use this component you need to install and enable the required [bootstrap-slider](https://github.com/seiyria/bootstrap-slider) plugin. You can install the plugin locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=bootstrapSlider
-```
-
-After installed, you can use the next plugin configuration as a reference:
+The `NoUiSlider` entry is already available on the `plugins` section of the configuration file published by the package:
 
 ```php
 'plugins' => [
     ...
-    'BootstrapSlider' => [
+    'NoUiSlider' => [
         'active' => false,
         'files' => [
             [
                 'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/bootstrap-slider/bootstrap-slider.min.js',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/nouislider@15.8.1/dist/nouislider.min.js',
             ],
             [
                 'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/bootstrap-slider/css/bootstrap-slider.min.css',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/nouislider@15.8.1/dist/nouislider.min.css',
             ],
         ],
     ],
@@ -660,28 +645,52 @@ After installed, you can use the next plugin configuration as a reference:
 ],
 ```
 
-Finally, you need to use the `@section('plugins.BootstrapSlider', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+If you prefer to serve the plugin files locally, install the npm package and publish it into the `public/vendor` folder, then point the `location` values to the published files and set `'asset' => true`:
+
+```sh
+npm i nouislider@^15.8
+php artisan adminlte:plugins install --plugin=noUiSlider
+```
+
+Finally, you need to use the `@section('plugins.NoUiSlider', true)` sentence on the blade file where you expect to use the component.
 
 # InputSwitch
 
 > [!Important]
-> This component requires the [Bootstrap Switch](https://bttstrp.github.io/bootstrap-switch/) plugin, so be sure to first setup the plugin on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed locally using `php artisan adminlte:plugins install --plugin=bootstrapSwitch` command, after that you will need to include the plugins files on the configuration file (only `bootstrap-switch.min.js` file is required).
+> **No plugin is required anymore.** **Bootstrap 5.3** provides a native switch control (`form-check form-switch` with `role="switch"`), so the [Bootstrap Switch](https://bttstrp.github.io/bootstrap-switch/) jQuery plugin used on **AdminLTE v3** was dropped.
 
 This component represents a **switch** input and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
-config | Array with the plugin configuration parameters | array | `[]` | no
+config | Array with the legacy plugin configuration parameters. Only a few of them are still honoured (see below) | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
-is-checked | To specify whether the switch should be active or not (from <Badge type="tip">v3.14.2</Badge>) | bool | `null` | no
+is-checked | To specify whether the switch should be active or not | bool | `null` | no
 
 > [!Important]
-> Plase, note the `enable-old-support` property is only available for package version <Badge type="tip">> 3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own. Also, the `is-checked` property is only available from package version <Badge type="tip">v3.14.2</Badge> and may be used as an alternative to the **HTML checked attribute**.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own. The `is-checked` property may be used as an alternative to the **HTML checked attribute**.
 
-The available plugin configuration are those explained on the [plugin documentation](https://bttstrp.github.io/bootstrap-switch/options.html). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use the `data-*` attributes to configure the plugin.
+### Legacy Bootstrap Switch Properties
+
+The next legacy properties of the `config` attribute are still **honoured**:
+
+Legacy property | Effect
+----------------|-------
+`state` | The initial checked state of the switch (the `is-checked` attribute writes into it)
+`disabled` | Renders the switch disabled
+`readonly` | Renders the switch readonly
+`onColor` | The color of the checked state. Only the eight **Bootstrap 5.3** theme names are accepted (`primary`, `secondary`, `success`, `info`, `warning`, `danger`, `light` and `dark`), any other value is ignored
+`labelText`, `onText` | The visible label rendered next to the switch (`labelText` takes precedence)
+
+Every other legacy property became a **no-op**, it is accepted for backward compatibility and silently ignored, among them: `size`, `animate`, `handleWidth`, `labelWidth`, `inverse`, `offColor`, `offText`, `indeterminate`, `radioAllOff`, `wrapperClass` and `baseClass`.
 
 > [!Note]
-> Optionally, you can make all the plugin configuration from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component.
+> The `data-*` attributes of the legacy plugin (`data-on-color`, `data-off-text`, ...) are just forwarded to the underlying `input` element and have no effect either. Use the `config` attribute instead.
+
+> [!Tip]
+> The `igroup-size` attribute still works: the component ships the CSS that resizes the native switch on `input-group-sm` and `input-group-lg` groups.
+
+All other attributes you define will be inserted directly on the underlying `input` element.
 
 ### Examples
 
@@ -692,18 +701,19 @@ The available plugin configuration are those explained on the [plugin documentat
 {{-- Disabled --}}
 <x-adminlte-input-switch name="iswDisabled" disabled/>
 
-{{-- With colors using data-* config --}}
-<x-adminlte-input-switch name="iswColor" data-on-color="success" data-off-color="danger" checked/>
+{{-- Checked with a custom color --}}
+@php($config = ['onColor' => 'success'])
+<x-adminlte-input-switch name="iswColor" :config="$config" is-checked/>
 
-{{-- With custom text using data-* config --}}
-<x-adminlte-input-switch name="iswText" data-on-text="YES" data-off-text="NO"
-    data-on-color="teal" checked/>
+{{-- With a visible label next to the switch --}}
+@php($config = ['onColor' => 'info', 'labelText' => 'Enable notifications'])
+<x-adminlte-input-switch name="iswText" :config="$config" is-checked/>
 
 {{-- Label, and prepend icon --}}
 <x-adminlte-input-switch name="iswPrepend" label="Switch">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-lightblue">
-            <i class="fas fa-toggle-on"></i>
+        <div class="input-group-text text-bg-info">
+            <i class="bi bi-toggle-on"></i>
         </div>
     </x-slot>
 </x-adminlte-input-switch>
@@ -711,78 +721,44 @@ The available plugin configuration are those explained on the [plugin documentat
 {{-- Label, slots and lg size --}}
 @php
 $config = [
-    'onColor' => 'orange',
-    'offColor' => 'dark',
-    'inverse' => true,
-    'animate' => false,
+    'onColor' => 'warning',
     'state' => true,
-    'labelText' => '<i class="fas fa-2x fa-fw fa-lightbulb text-orange"></i>',
+    'labelText' => 'Lights on',
 ];
 @endphp
 <x-adminlte-input-switch name="iswSizeLG" label="Switch LG" igroup-size="lg"
     :config="$config">
     <x-slot name="appendSlot">
-        <x-adminlte-button icon="fas fa-caret-right" title="On"/>
+        <x-adminlte-button icon="bi bi-caret-right-fill" title="On"/>
     </x-slot>
     <x-slot name="prependSlot">
-        <x-adminlte-button icon="fas fa-caret-left" title="Off"/>
+        <x-adminlte-button icon="bi bi-caret-left-fill" title="Off"/>
     </x-slot>
 </x-adminlte-input-switch>
 
-{{-- Indeterminate with icon and SM size --}}
+{{-- SM size with a readonly switch --}}
 @php
 $config = [
-    'onColor' => 'indigo',
-    'offColor' => 'gray',
-    'onText' => '1',
-    'offText' => '0',
-    'indeterminate' => true,
-    'labelText' => '<i class="fas fa-power-off text-muted"></i>',
+    'onColor' => 'dark',
+    'onText' => 'Powered',
+    'readonly' => true,
+    'state' => true,
 ];
 @endphp
-<x-adminlte-input-switch name="iswSizeSM" label="Switch SM (indeterminate)"
+<x-adminlte-input-switch name="iswSizeSM" label="Switch SM (readonly)"
     igroup-size="sm" :config="$config"/>
 ```
 
-Use the next images as reference to check how every example is rendered. Please, note in the images the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next images as reference to check how every example is rendered. Please, note the images were taken with an older package version, the switch is now the native **Bootstrap 5.3** control.
 
 ![Input Switch Component](/imgs/components/advanced_forms_components/input-switch-component.png)
-
-### Required Plugin Configuration
-
-To use this component you need to install and enable the required [Bootstrap Switch](https://bttstrp.github.io/bootstrap-switch/) plugin. You can install the plugin locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=bootstrapSwitch
-```
-
-After installed, you can use the next plugin configuration as a reference:
-
-```php
-'plugins' => [
-    ...
-    'BootstrapSwitch' => [
-        'active' => false,
-        'files' => [
-            [
-                'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/bootstrap-switch/js/bootstrap-switch.min.js',
-            ],
-        ],
-    ],
-    ...
-],
-```
-
-Finally, you need to use the `@section('plugins.BootstrapSwitch', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
 
 # SelectBs
 
 > [!Important]
-> This component requires the [bootstrap-select](https://developer.snapappointments.com/bootstrap-select/) plugin, so be sure to first setup this plugin on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually on the `public/vendor` folder or you can use the `CDN` (read the instructions on the plugin site). Finally, you will need to include the plugins files on the configuration file.
+> This component requires the `TomSelect` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.TomSelect', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [bootstrap-select](https://developer.snapappointments.com/bootstrap-select/) plugin is **not used anymore** (it required jQuery).
 
-This component represents a **bootstrap-select** option selector. The plugin includes features like search, placeholder, and customized options, and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines next additional attributes:
+This component represents an enhanced option selector, backed by [Tom Select](https://tom-select.js.org/). The plugin includes features like search, placeholder, tagging and customized options, and the component extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
@@ -790,12 +766,34 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
-The available plugin configuration are those explained on the [plugin documentation](https://developer.snapappointments.com/bootstrap-select/options/#core-options). All other attributes you define will be inserted directly on the underlying `select` element, so you can also use the `data-* attributes` to configure the plugin (as explained on the site).
+> [!Tip]
+> This component **degrades gracefully**: when the Tom Select plugin is not loaded, the element stays a native **Bootstrap 5** `form-select` and keeps working as a normal select.
+
+The available plugin configuration are those explained on the [Tom Select settings documentation](https://tom-select.js.org/docs/). All other attributes you define will be inserted directly on the underlying `select` element. When the select carries the `multiple` attribute and no `plugins` setting is given, the component enables the Tom Select `remove_button` plugin by default.
+
+### Legacy bootstrap-select Properties
+
+The next legacy properties are still accepted, and are **translated** into their Tom Select counterpart:
+
+Legacy property | Translated into
+----------------|----------------
+`title` | `placeholder`
+`noneSelectedText` | `placeholder`
+`maxOptions` | `maxOptions`
+`maxItems` | `maxItems`
+
+The next legacy properties became **no-ops**, they are accepted for backward compatibility and silently dropped: `style`, `styleBase`, `container`, `dropupAuto`, `header`, `hideDisabled`, `iconBase`, `liveSearch`, `liveSearchNormalize`, `liveSearchPlaceholder`, `liveSearchStyle`, `mobile`, `multipleSeparator`, `selectedTextFormat`, `selectOnTab`, `showContent`, `showIcon`, `showSubtext`, `showTick`, `size`, `tickIcon`, `width`, `windowPadding`, `virtualScroll`, `actionsBox`, `countSelectedText`, `deselectAllText`, `selectAllText`, `doneButton`, `doneButtonText`, `dropdownAlignRight` and `noneResultsText`.
 
 > [!Note]
-> Optionally, you can make all the configuration from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://developer.snapappointments.com/bootstrap-select/methods/#selectpickerdestroy) method first.
+> Dropping `liveSearch` is not a loss of functionality: **Tom Select searches by default**. The same applies to `showTick`, the selected options are always highlighted.
+
+> [!Warning]
+> The `data-icon` and `data-subtext` attributes that `bootstrap-select` supported on each `<option>` element are **not supported** by Tom Select out of the box. To render custom option markup, use the Tom Select [render](https://tom-select.js.org/docs/#render-templates) templates through the `config` attribute.
+
+> [!Note]
+> Optionally, you can make all the configuration from `Javascript` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. The component stores the created instance on the `tomselect` property of the select element, so you can call `el.tomselect.destroy()` before creating your own.
 
 ### Examples
 
@@ -813,73 +811,69 @@ The available plugin configuration are those explained on the [plugin documentat
     <option>Option 2</option>
 </x-adminlte-select-bs>
 
-{{-- With prepend slot, label and data-* config --}}
-<x-adminlte-select-bs name="selBsVehicle" label="Vehicle" label-class="text-lightblue"
-    igroup-size="lg" data-title="Select an option..." data-live-search
-    data-live-search-placeholder="Search..." data-show-tick>
+{{-- With prepend slot, label and a placeholder --}}
+@php($config = ['placeholder' => 'Select an option...'])
+<x-adminlte-select-bs name="selBsVehicle" label="Vehicle" label-class="text-info"
+    igroup-size="lg" :config="$config">
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-info">
-            <i class="fas fa-car-side"></i>
+        <div class="input-group-text text-bg-info bg-gradient">
+            <i class="bi bi-car-front"></i>
         </div>
     </x-slot>
-    <option data-icon="fa fa-fw fa-car">Car</option>
-    <option data-icon="fa fa-fw fa-motorcycle">Motorcycle</option>
+    <option></option>
+    <option>Car</option>
+    <option>Motorcycle</option>
 </x-adminlte-select-bs>
 
 {{-- With multiple slots, plugin config parameter and custom options --}}
 @php
     $config = [
-        "title" => "Select multiple options...",
-        "liveSearch" => true,
-        "liveSearchPlaceholder" => "Search...",
-        "showTick" => true,
-        "actionsBox" => true,
+        "placeholder" => "Select multiple options...",
+        "maxItems" => 4,
+        "plugins" => ["remove_button", "clear_button"],
     ];
 @endphp
 <x-adminlte-select-bs id="selBsCategory" name="selBsCategory[]" label="Categories"
     label-class="text-danger" igroup-size="sm" :config="$config" multiple>
     <x-slot name="prependSlot">
-        <div class="input-group-text bg-gradient-red">
-            <i class="fas fa-tag"></i>
+        <div class="input-group-text text-bg-danger bg-gradient">
+            <i class="bi bi-tag"></i>
         </div>
     </x-slot>
     <x-slot name="appendSlot">
-        <x-adminlte-button theme="outline-dark" label="Clear" icon="fas fa-lg fa-ban text-danger"/>
+        <x-adminlte-button theme="outline-dark" label="Clear" icon="bi bi-slash-circle text-danger"/>
     </x-slot>
-    <option data-icon="fa fa-fw fa-running text-info" data-subtext="Running">Sports</option>
-    <option data-icon="fa fa-fw fa-futbol text-info" data-subtext="Futbol">Sports</option>
-    <option data-icon="fa fa-fw fa-newspaper text-danger">News</option>
-    <option data-icon="fa fa-fw fa-gamepad text-warning">Games</option>
-    <option data-icon="fa fa-fw fa-flask text-primary">Science</option>
-    <option data-icon="fa fa-fw fa-calculator text-dark">Maths</option>
+    <option>Sports</option>
+    <option>News</option>
+    <option>Games</option>
+    <option>Science</option>
+    <option>Maths</option>
 </x-adminlte-select-bs>
 ```
 
-Use the next images as reference to check how every example is rendered. Please, note in the images the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next images as reference to check how every example is rendered. Please, note the images were taken with an older package version (the dropdown is now rendered by **Tom Select**), and that the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![SelectBs Component](/imgs/components/advanced_forms_components/selectbs-component.png)
 
 ### Required Plugin Configuration
 
-To use this component you need to install and enable the required [bootstrap-select](https://developer.snapappointments.com/bootstrap-select/) plugin. You can manually download and install the plugin locally on the `public/vendor/bootstrap-select/` folder. Please, note there is no artisan command to install this plugin.
-
-After installed on `public/vendor/bootstrap-select/` folder, you can use the next plugin configuration as a reference:
+The `TomSelect` entry is already available on the `plugins` section of the configuration file published by the package. Note the stylesheet is the **Bootstrap 5** build of the plugin:
 
 ```php
 'plugins' => [
     ...
-    'BootstrapSelect' => [
+    'TomSelect' => [
         'active' => false,
         'files' => [
             [
                 'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/bootstrap-select/dist/js/bootstrap-select.min.js',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js',
             ],
             [
                 'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/bootstrap-select/dist/css/bootstrap-select.min.css',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.bootstrap5.min.css',
             ],
         ],
     ],
@@ -887,12 +881,19 @@ After installed on `public/vendor/bootstrap-select/` folder, you can use the nex
 ],
 ```
 
-Finally, you need to use the `@section('plugins.BootstrapSelect', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+If you prefer to serve the plugin files locally, install the npm package and publish it into the `public/vendor` folder, then point the `location` values to the published files and set `'asset' => true`:
+
+```sh
+npm i tom-select@^2.3
+php artisan adminlte:plugins install --plugin=tomSelect
+```
+
+Finally, you need to use the `@section('plugins.TomSelect', true)` sentence on the blade file where you expect to use the component.
 
 # TextEditor
 
 > [!Important]
-> This component requires the [Summernote](https://summernote.org/) plugin, so be sure to first setup the plugin on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed locally using `php artisan adminlte:plugins install --plugin=summernote` command, after that you will need to include the plugins files (for **Bootstrap 4**) on the configuration file (`summernote-bs4.min.js` and `summernote-bs4.min.css`).
+> This component requires the `Quill` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.Quill', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [Summernote](https://summernote.org/) plugin is **not used anymore** (it required jQuery).
 
 This component represents a **WYSIWYG editor** and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. However, the append and prepend slots used for addons are not supported here due to conflicts with the underlying plugin. The component also defines next additional attributes:
 
@@ -902,12 +903,29 @@ config | Array with the plugin configuration parameters | array | `[]` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
 
 > [!Important]
-> Please, note the `enable-old-support` property is only available for package version <Badge type="tip">> v3.7.2</Badge> and offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
+> The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
-The available plugin configuration are those explained on the [plugin documentation](https://summernote.org/deep-dive/). All other attributes you define will be inserted directly on the underlying `textarea` element (`disabled` and `placeholder` attributes are supported).
+The available plugin configuration are those explained on the [Quill configuration documentation](https://quilljs.com/docs/configuration) (`theme`, `modules`, `formats`, `placeholder`, `readOnly`, `bounds`, `debug`, ...). The `disabled`, `readonly` and `placeholder` HTML attributes are supported and mapped to the plugin `readOnly` and `placeholder` options.
+
+> [!Warning]
+> **Quill renders into a plain `div`, not into a `textarea`.** Because of that, the component renders a **hidden textarea** (with the `d-none` class) that holds the value submitted with the form, plus a `div` that holds the editor. The textarea is kept in sync on every `text-change` event and also right before the form is submitted, so the latest content is always sent even when the editor was never focused.
+
+The component applies the next defaults, both overridable through the `config` attribute:
+
+- `theme` is set to `'snow'`.
+- `modules.toolbar` is set to a default toolbar with the text styles, the lists, the headings, the colors, the alignment, the link / blockquote / code-block buttons and the _clean_ button.
+
+### Legacy Summernote Properties
+
+The `height` legacy property is still **honoured**: a numeric value is interpreted as pixels and it sets the `min-height` of the editing area (a string value is used as is, so you can also pass `'20rem'`).
+
+Every other legacy property became a **no-op**, it is accepted for backward compatibility and silently dropped: `width`, `minHeight`, `maxHeight`, `focus`, `airMode`, `toolbar`, `popover`, `lang`, `dialogsInBody`, `dialogsFade`, `disableDragAndDrop`, `shortcuts`, `tabsize`, `styleTags`, `fontNames`, `fontNamesIgnoreCheck`, `fontSizes`, `colors`, `colorsName`, `lineHeights`, `tableClassName`, `insertTableMaxSize`, `callbacks`, `codeviewFilter`, `codeviewIframeFilter`, `spellCheck`, `disableResize`, `disableResizeEditor`, `followingToolbar` and `toolbarPosition`.
+
+> [!Warning]
+> In particular, the Summernote `toolbar` array is **not** compatible with Quill and is dropped. Define the toolbar with the Quill syntax through `config['modules']['toolbar']` instead.
 
 > [!Note]
-> Optionally, you can make all the configuration from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://summernote.org/getting-started/#destroy) method first.
+> Optionally, you can make all the configuration from `Javascript` using the `<id>-editor` element as the target, instead of using the `config` property of the component.
 
 ### Examples
 
@@ -922,57 +940,49 @@ The available plugin configuration are those explained on the [plugin documentat
     <i>Aliquam quis nibh massa.</i>
 </x-adminlte-text-editor>
 
-{{-- With placeholder, sm size, label and some configuration --}}
+{{-- With placeholder, sm size, label and a custom toolbar --}}
 @php
 $config = [
-    "height" => "100",
-    "toolbar" => [
-        // [groupName, [list of button]]
-        ['style', ['bold', 'italic', 'underline', 'clear']],
-        ['font', ['strikethrough', 'superscript', 'subscript']],
-        ['fontsize', ['fontsize']],
-        ['color', ['color']],
-        ['para', ['ul', 'ol', 'paragraph']],
-        ['height', ['height']],
-        ['table', ['table']],
-        ['insert', ['link', 'picture', 'video']],
-        ['view', ['fullscreen', 'codeview', 'help']],
+    "height" => 200,
+    "modules" => [
+        "toolbar" => [
+            ["bold", "italic", "underline", "strike"],
+            [["list" => "ordered"], ["list" => "bullet"]],
+            [["header" => [1, 2, 3, false]]],
+            [["color" => []], ["background" => []]],
+            ["link", "blockquote", "code-block"],
+            ["clean"],
+        ],
     ],
-]
+];
 @endphp
 <x-adminlte-text-editor name="teConfig" label="WYSIWYG Editor" label-class="text-danger"
     igroup-size="sm" placeholder="Write some text..." :config="$config"/>
 ```
 
-Use the next images as reference to check how every example is rendered. Please, note in the images the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/4.1/layout/grid/) to organize them.
+Use the next images as reference to check how every example is rendered. Please, note the images were taken with an older package version, the editor is now rendered by **Quill**.
 
 ![Text Editor Component](/imgs/components/advanced_forms_components/text-editor-component.png)
 
 ### Required Plugin Configuration
 
-To use this component you need to install and enable the required [Summernote](https://summernote.org/) plugin. You can install the plugin locally using the next command:
-
-```sh
-php artisan adminlte:plugins install --plugin=summernote
-```
-
-After installed, you can use the next plugin configuration as a reference:
+The `Quill` entry is already available on the `plugins` section of the configuration file published by the package:
 
 ```php
 'plugins' => [
     ...
-    'Summernote' => [
+    'Quill' => [
         'active' => false,
         'files' => [
             [
                 'type' => 'js',
-                'asset' => true,
-                'location' => 'vendor/summernote/summernote-bs4.min.js',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js',
             ],
             [
                 'type' => 'css',
-                'asset' => true,
-                'location' => 'vendor/summernote/summernote-bs4.min.css',
+                'asset' => false,
+                'location' => '//cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css',
             ],
         ],
     ],
@@ -980,4 +990,14 @@ After installed, you can use the next plugin configuration as a reference:
 ],
 ```
 
-Finally, you need to use the `@section('plugins.Summernote', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing it locally.
+If you prefer to serve the plugin files locally, install the npm package and publish it into the `public/vendor` folder, then point the `location` values to the published files and set `'asset' => true`:
+
+```sh
+npm i quill@^2.0
+php artisan adminlte:plugins install --plugin=quill
+```
+
+> [!Note]
+> The configuration above loads the `snow` theme stylesheet. If you switch the `theme` option to `'bubble'`, remember to load the `quill.bubble.css` file instead.
+
+Finally, you need to use the `@section('plugins.Quill', true)` sentence on the blade file where you expect to use the component.

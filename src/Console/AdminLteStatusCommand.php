@@ -10,6 +10,7 @@ use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\VendorAssetsResource;
 
 class AdminLteStatusCommand extends Command
 {
@@ -70,6 +71,7 @@ class AdminLteStatusCommand extends Command
 
         $this->pkgResources = [
             'assets' => new AdminlteAssetsResource(),
+            'vendor_assets' => new VendorAssetsResource(),
             'config' => new ConfigResource(),
             'translations' => new TranslationsResource(),
             'main_views' => new LayoutViewsResource(),

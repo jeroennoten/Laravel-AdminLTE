@@ -2,8 +2,8 @@
 
     {{-- Callout title --}}
     @if(! empty($title) || ! empty($icon))
-        <h5 @isset($titleClass) class="{{ $titleClass }}" @endisset>
-            @isset($icon) <i class="{{ $icon }} mr-2"></i> @endisset
+        <h5 class="{{ $titleClass ?? 'mb-1' }}">
+            @isset($icon) <i class="{{ $icon }} me-2" aria-hidden="true"></i> @endisset
             @isset($title) {{ $title }} @endisset
         </h5>
     @endif

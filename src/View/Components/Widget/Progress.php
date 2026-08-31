@@ -3,9 +3,12 @@
 namespace JeroenNoten\LaravelAdminLte\View\Components\Widget;
 
 use Illuminate\View\Component;
+use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
 
 class Progress extends Component
 {
+    use HandlesThemeColors;
+
     /**
      * The available progress bar sizes.
      *
@@ -22,7 +25,8 @@ class Progress extends Component
 
     /**
      * The progress bar theme (light, dark, primary, secondary, info, success,
-     * warning, danger or any other AdminLTE color like lighblue or teal).
+     * warning, danger or any color of the AdminLTE extended palette like sky
+     * or teal). Set to an empty value to inherit the color of the container.
      *
      * @var string
      */
@@ -95,6 +99,14 @@ class Progress extends Component
     {
         $classes = ['progress'];
 
+        // The AdminLTE v4 stylesheet gives the progress bars no margin, the
+        // reference layouts separate the stacked ones with a 'mb-2' utility.
+        // It is only added when the caller provides no margin of its own.
+
+        if (! UtilsHelper::hasBottomMarginClass($this->attributes?->get('class'))) {
+            $classes[] = 'mb-2';
+        }
+
         if (isset($this->size) && in_array($this->size, $this->pSizes)) {
             $classes[] = "progress-{$this->size}";
         }
@@ -113,10 +125,11 @@ class Progress extends Component
      */
     public function makeProgressBarClass()
     {
-        $classes = ['progress-bar', 'text-bold'];
+        $classes = ['progress-bar', 'fw-bold'];
+        $theme = $this->resolveThemeColor($this->theme);
 
-        if (! empty($this->theme)) {
-            $classes[] = "bg-{$this->theme}";
+        if (! empty($theme)) {
+            $classes[] = "bg-{$theme}";
         }
 
         if (isset($this->striped) || isset($this->animated)) {

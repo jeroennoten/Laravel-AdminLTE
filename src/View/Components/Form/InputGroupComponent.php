@@ -115,16 +115,44 @@ class InputGroupComponent extends Component
     }
 
     /**
-     * Make the class attribute for the "form-group" element.
+     * Make the class attribute for the form group element. Note that Bootstrap
+     * 5 dropped the "form-group" class in favour of the spacing utilities, so
+     * we use the "mb-3" utility as the AdminLTE v4 form pages do.
      *
      * @return string
      */
     public function makeFormGroupClass()
     {
-        $classes = ['form-group'];
+        $classes = [];
 
         if (isset($this->fgroupClass)) {
             $classes[] = $this->fgroupClass;
+        }
+
+        // Add the default bottom margin, unless the caller already provides a
+        // margin utility. Note the Bootstrap spacing utilities are declared
+        // with '!important' and the same specificity, so the winner is decided
+        // by the order of the stylesheet and not by the order of the classes.
+
+        if (! UtilsHelper::hasBottomMarginClass(implode(' ', $classes))) {
+            array_unshift($classes, 'mb-3');
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for the label element. Bootstrap 5 requires the
+     * "form-label" class on the labels of the form controls.
+     *
+     * @return string
+     */
+    public function makeLabelClass()
+    {
+        $classes = ['form-label'];
+
+        if (isset($this->labelClass)) {
+            $classes[] = $this->labelClass;
         }
 
         return implode(' ', $classes);
@@ -168,6 +196,16 @@ class InputGroupComponent extends Component
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for the invalid feedback block.
+     *
+     * @return string
+     */
+    public function makeInvalidFeedbackClass()
+    {
+        return 'invalid-feedback d-block';
     }
 
     /**
