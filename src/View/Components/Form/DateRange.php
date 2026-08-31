@@ -94,6 +94,29 @@ class DateRange extends InputGroupComponent
      */
     public function makePluginConfig()
     {
+        $pluginCfg = $this->makeForwardedConfig();
+
+        $pluginCfg += $this->makeModeConfig();
+        $pluginCfg += $this->makeTimeConfig();
+        $pluginCfg += $this->makeLocaleConfig($pluginCfg);
+        $pluginCfg += $this->makeDefaultDateConfig();
+
+        // The 'allowInput' option lets the user type the range manually, which
+        // matches the behavior of the legacy plugin.
+
+        $pluginCfg += ['allowInput' => true];
+
+        return $pluginCfg;
+    }
+
+    /**
+     * Gets the configuration properties that are forwarded to the plugin,
+     * translating the ones that only changed their name.
+     *
+     * @return array
+     */
+    protected function makeForwardedConfig()
+    {
         $pluginCfg = [];
 
         foreach ($this->config as $key => $value) {
@@ -104,52 +127,80 @@ class DateRange extends InputGroupComponent
             }
         }
 
-        // Setup the range mode. The legacy 'singleDatePicker' property is
-        // honoured, so a single date can still be selected.
+        return $pluginCfg;
+    }
 
-        $pluginCfg['mode'] = $pluginCfg['mode']
-            ?? (! empty($this->config['singleDatePicker']) ? 'single' : 'range');
+    /**
+     * Setups the range mode. The legacy 'singleDatePicker' property is
+     * honoured, so a single date can still be selected.
+     *
+     * @return array
+     */
+    protected function makeModeConfig()
+    {
+        return [
+            'mode' => empty($this->config['singleDatePicker']) ? 'range' : 'single',
+        ];
+    }
 
-        // Translate the legacy time picker related properties.
+    /**
+     * Translates the legacy time picker related properties.
+     *
+     * @return array
+     */
+    protected function makeTimeConfig()
+    {
+        $cfg = [];
 
         if (! empty($this->config['timePicker'])) {
-            $pluginCfg['enableTime'] = $pluginCfg['enableTime'] ?? true;
+            $cfg['enableTime'] = true;
         }
 
         if (isset($this->config['timePicker24Hour'])) {
-            $pluginCfg['time_24hr'] = $pluginCfg['time_24hr']
-                ?? (bool) $this->config['timePicker24Hour'];
+            $cfg['time_24hr'] = (bool) $this->config['timePicker24Hour'];
         }
 
-        // Translate the legacy locale related properties.
+        return $cfg;
+    }
 
+    /**
+     * Translates the legacy locale related properties.
+     *
+     * @param  array  $pluginCfg  The configuration resolved so far
+     * @return array
+     */
+    protected function makeLocaleConfig($pluginCfg)
+    {
         $locale = $this->config['locale'] ?? [];
 
-        if (is_array($locale) && isset($locale['format'])) {
-            $pluginCfg['dateFormat'] = $pluginCfg['dateFormat'] ?? $locale['format'];
+        if (! is_array($locale)) {
+            return [];
         }
 
-        if (is_array($locale) && isset($locale['separator'])) {
-            $pluginCfg['locale'] = array_merge(
-                is_array($pluginCfg['locale'] ?? null) ? $pluginCfg['locale'] : [],
-                ['rangeSeparator' => $locale['separator']]
-            );
+        $cfg = [];
+
+        if (isset($locale['format'])) {
+            $cfg['dateFormat'] = $locale['format'];
         }
 
-        // Setup the initial date range, when available.
+        if (isset($locale['separator'])) {
+            $current = is_array($pluginCfg['locale'] ?? null) ? $pluginCfg['locale'] : [];
+            $cfg['locale'] = array_merge($current, ['rangeSeparator' => $locale['separator']]);
+        }
 
+        return $cfg;
+    }
+
+    /**
+     * Setups the initial date range, when available.
+     *
+     * @return array
+     */
+    protected function makeDefaultDateConfig()
+    {
         $defaultDate = $this->makeDefaultDate();
 
-        if (! empty($defaultDate)) {
-            $pluginCfg['defaultDate'] = $pluginCfg['defaultDate'] ?? $defaultDate;
-        }
-
-        // The 'allowInput' option lets the user type the range manually, which
-        // matches the behavior of the legacy plugin.
-
-        $pluginCfg['allowInput'] = $pluginCfg['allowInput'] ?? true;
-
-        return $pluginCfg;
+        return empty($defaultDate) ? [] : ['defaultDate' => $defaultDate];
     }
 
     /**
@@ -183,42 +234,51 @@ class DateRange extends InputGroupComponent
             return [];
         }
 
-        $now = Carbon::now();
+        $resolvers = $this->getDefaultRangeResolvers();
 
-        switch ($range) {
-            case 'Today':
-                $dates = [$now->copy()->startOfDay(), $now->copy()->endOfDay()];
-                break;
-
-            case 'Yesterday':
-                $ref = $now->copy()->subDay();
-                $dates = [$ref->copy()->startOfDay(), $ref->copy()->endOfDay()];
-                break;
-
-            case 'Last 7 Days':
-                $dates = [$now->copy()->subDays(6), $now->copy()];
-                break;
-
-            case 'Last 30 Days':
-                $dates = [$now->copy()->subDays(29), $now->copy()];
-                break;
-
-            case 'This Month':
-                $dates = [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()];
-                break;
-
-            case 'Last Month':
-                $ref = $now->copy()->subMonthNoOverflow();
-                $dates = [$ref->copy()->startOfMonth(), $ref->copy()->endOfMonth()];
-                break;
-
-            default:
-                return [];
+        if (! isset($resolvers[$range])) {
+            return [];
         }
+
+        $dates = $resolvers[$range](Carbon::now());
 
         return array_map(function ($date) {
             return $date->format('Y-m-d');
         }, $dates);
+    }
+
+    /**
+     * Gets the resolver of each supported default range. Every resolver takes
+     * the current date and returns the start and the end of its range.
+     *
+     * @return array
+     */
+    protected function getDefaultRangeResolvers()
+    {
+        return [
+            'Today' => function ($now) {
+                return [$now->copy()->startOfDay(), $now->copy()->endOfDay()];
+            },
+            'Yesterday' => function ($now) {
+                $ref = $now->copy()->subDay();
+
+                return [$ref->copy()->startOfDay(), $ref->copy()->endOfDay()];
+            },
+            'Last 7 Days' => function ($now) {
+                return [$now->copy()->subDays(6), $now->copy()];
+            },
+            'Last 30 Days' => function ($now) {
+                return [$now->copy()->subDays(29), $now->copy()];
+            },
+            'This Month' => function ($now) {
+                return [$now->copy()->startOfMonth(), $now->copy()->endOfMonth()];
+            },
+            'Last Month' => function ($now) {
+                $ref = $now->copy()->subMonthNoOverflow();
+
+                return [$ref->copy()->startOfMonth(), $ref->copy()->endOfMonth()];
+            },
+        ];
     }
 
     /**

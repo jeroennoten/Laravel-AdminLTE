@@ -78,6 +78,24 @@ class InputSlider extends InputGroupComponent
      */
     public function makePluginConfig()
     {
+        $pluginCfg = $this->makeForwardedConfig();
+
+        $pluginCfg += $this->makeRangeConfig();
+        $pluginCfg += $this->makeHandlesConfig($pluginCfg);
+        $pluginCfg += $this->makeOrientationConfig();
+        $pluginCfg += $this->makeTooltipsConfig();
+
+        return $pluginCfg;
+    }
+
+    /**
+     * Gets the configuration properties that are forwarded to the plugin as
+     * they are provided.
+     *
+     * @return array
+     */
+    protected function makeForwardedConfig()
+    {
         $pluginCfg = [];
 
         foreach ($this->config as $key => $value) {
@@ -86,10 +104,6 @@ class InputSlider extends InputGroupComponent
             // holds the min/max definition. Only the latter is forwarded.
 
             if ($key === 'range') {
-                if (is_array($value)) {
-                    $pluginCfg['range'] = $value;
-                }
-
                 continue;
             }
 
@@ -98,53 +112,85 @@ class InputSlider extends InputGroupComponent
             }
         }
 
-        // Translate the legacy 'min' and 'max' properties into the 'range'
-        // option required by the plugin.
-
-        $pluginCfg['range'] = $pluginCfg['range'] ?? [
-            'min' => (float) ($this->config['min'] ?? 0),
-            'max' => (float) ($this->config['max'] ?? 10),
-        ];
-
-        // Translate the legacy 'step' property.
-
-        if (isset($this->config['step'])) {
-            $pluginCfg['step'] = $pluginCfg['step'] ?? (float) $this->config['step'];
-        }
-
-        // Translate the legacy 'value' property into the 'start' option.
-
-        $pluginCfg['start'] = $pluginCfg['start'] ?? $this->makeStartValue();
-
-        // Translate the legacy 'range' (dual handle) property into the
-        // 'connect' option. Note the plugin expects an array of booleans when
-        // there is more than one handle.
-
-        if (! isset($pluginCfg['connect'])) {
-            $pluginCfg['connect'] = count((array) $pluginCfg['start']) > 1
-                ? [false, true, false]
-                : 'lower';
-        }
-
-        // Translate the legacy 'orientation' and 'reversed' properties.
-
-        if (isset($this->config['orientation'])) {
-            $pluginCfg['orientation'] = $pluginCfg['orientation']
-                ?? $this->config['orientation'];
-        }
-
-        if (! empty($this->config['reversed']) || ! empty($this->config['rtl'])) {
-            $pluginCfg['direction'] = $pluginCfg['direction'] ?? 'rtl';
-        }
-
-        // Translate the legacy 'tooltip' property.
-
-        if (isset($this->config['tooltip'])) {
-            $pluginCfg['tooltips'] = $pluginCfg['tooltips']
-                ?? ($this->config['tooltip'] !== 'hide');
+        if (is_array($this->config['range'] ?? null)) {
+            $pluginCfg['range'] = $this->config['range'];
         }
 
         return $pluginCfg;
+    }
+
+    /**
+     * Translates the legacy 'min', 'max' and 'step' properties into the range
+     * definition required by the plugin.
+     *
+     * @return array
+     */
+    protected function makeRangeConfig()
+    {
+        $cfg = [
+            'range' => [
+                'min' => (float) ($this->config['min'] ?? 0),
+                'max' => (float) ($this->config['max'] ?? 10),
+            ],
+        ];
+
+        if (isset($this->config['step'])) {
+            $cfg['step'] = (float) $this->config['step'];
+        }
+
+        return $cfg;
+    }
+
+    /**
+     * Translates the legacy 'value' and 'range' (dual handle) properties into
+     * the handles definition required by the plugin. Note the plugin expects
+     * an array of booleans when there is more than one handle.
+     *
+     * @param  array  $pluginCfg  The configuration resolved so far
+     * @return array
+     */
+    protected function makeHandlesConfig($pluginCfg)
+    {
+        $start = $pluginCfg['start'] ?? $this->makeStartValue();
+
+        return [
+            'start' => $start,
+            'connect' => count((array) $start) > 1 ? [false, true, false] : 'lower',
+        ];
+    }
+
+    /**
+     * Translates the legacy 'orientation', 'reversed' and 'rtl' properties.
+     *
+     * @return array
+     */
+    protected function makeOrientationConfig()
+    {
+        $cfg = [];
+
+        if (isset($this->config['orientation'])) {
+            $cfg['orientation'] = $this->config['orientation'];
+        }
+
+        if (! empty($this->config['reversed']) || ! empty($this->config['rtl'])) {
+            $cfg['direction'] = 'rtl';
+        }
+
+        return $cfg;
+    }
+
+    /**
+     * Translates the legacy 'tooltip' property.
+     *
+     * @return array
+     */
+    protected function makeTooltipsConfig()
+    {
+        if (! isset($this->config['tooltip'])) {
+            return [];
+        }
+
+        return ['tooltips' => $this->config['tooltip'] !== 'hide'];
     }
 
     /**
@@ -155,31 +201,49 @@ class InputSlider extends InputGroupComponent
     public function makeStartValue()
     {
         $value = $this->getOldValue($this->errorKey, $this->config['value'] ?? null);
+        $handles = $this->normalizeHandles($value);
 
+        if (empty($handles)) {
+            return $this->makeDefaultHandles();
+        }
+
+        return array_map('floatval', $handles);
+    }
+
+    /**
+     * Normalizes the provided value into the set of slider handles. Note a
+     * string holds the handles separated by commas.
+     *
+     * @param  mixed  $value  The value to normalize
+     * @return array
+     */
+    protected function normalizeHandles($value)
+    {
         if (is_string($value)) {
             $value = explode(',', $value);
         }
 
-        $value = array_values(array_filter(
-            array_map('trim', array_map('strval', (array) $value)),
-            function ($item) {
-                return $item !== '';
-            }
-        ));
+        $handles = array_map('trim', array_map('strval', (array) $value));
 
-        if (empty($value)) {
-            $range = is_array($this->config['range'] ?? null)
-                ? $this->config['range']
-                : [];
+        return array_values(array_filter($handles, function ($item) {
+            return $item !== '';
+        }));
+    }
 
-            $min = (float) ($this->config['min'] ?? $range['min'] ?? 0);
-            $max = (float) ($this->config['max'] ?? $range['max'] ?? 10);
-            $isDual = ($this->config['range'] ?? null) === true;
+    /**
+     * Makes the handles to use when no value is provided. The legacy 'range'
+     * property enables a slider with two handles.
+     *
+     * @return array
+     */
+    protected function makeDefaultHandles()
+    {
+        $range = is_array($this->config['range'] ?? null) ? $this->config['range'] : [];
 
-            return $isDual ? [$min, $max] : [$min];
-        }
+        $min = (float) ($this->config['min'] ?? $range['min'] ?? 0);
+        $max = (float) ($this->config['max'] ?? $range['max'] ?? 10);
 
-        return array_map('floatval', $value);
+        return ($this->config['range'] ?? null) === true ? [$min, $max] : [$min];
     }
 
     /**

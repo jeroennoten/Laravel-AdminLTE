@@ -2,70 +2,11 @@
 
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
-use Composer\InstalledVersions;
+use JeroenNoten\LaravelAdminLte\Assets\AdminLteVersion;
+use JeroenNoten\LaravelAdminLte\Assets\AssetResolver;
 
 class AssetHelper
 {
-    /**
-     * Holds the set of asset keys that provides a RTL variant. The RTL variant
-     * of an asset key is resolved by appending the '_rtl' suffix to the base
-     * name of the key.
-     *
-     * @var array
-     */
-    protected static $rtlAwareAssets = [
-        'adminlte_css', 'colors_css', 'colors_v3_css',
-    ];
-
-    /**
-     * The AdminLTE version to use on the CDN locations when the installed
-     * version can not be detected.
-     *
-     * @var string
-     */
-    protected static $fallbackVersion = '4.8';
-
-    /**
-     * Gets the version of the installed AdminLTE package, which is used to
-     * build the CDN locations. This way the assets served from the CDN always
-     * match the ones provided by the composer dependency.
-     *
-     * @return string
-     */
-    public static function adminlteVersion()
-    {
-        // A version configured by the user always takes precedence.
-
-        $cfgVersion = config('adminlte.assets.adminlte_version');
-
-        if (is_string($cfgVersion) && $cfgVersion !== '') {
-            return $cfgVersion;
-        }
-
-        // Otherwise, read the version that composer installed.
-
-        $version = null;
-
-        if (class_exists(InstalledVersions::class)) {
-            try {
-                $version = InstalledVersions::getPrettyVersion('almasaeed2010/adminlte');
-            } catch (\Throwable $e) {
-                $version = null;
-            }
-        }
-
-        $version = is_string($version) ? ltrim($version, 'v') : null;
-
-        // Guard against the development versions (for example 'dev-master'),
-        // which are not resolvable on the CDN.
-
-        if (! isset($version) || ! preg_match('/^\d+\.\d+(\.\d+)?/', $version)) {
-            $version = self::$fallbackVersion;
-        }
-
-        return $version;
-    }
-
     /**
      * Gets the configured assets delivery mode.
      *
@@ -73,9 +14,32 @@ class AssetHelper
      */
     public static function mode()
     {
-        $mode = config('adminlte.assets.mode', 'local');
+        return AssetResolver::mode();
+    }
 
-        return in_array($mode, ['local', 'cdn']) ? $mode : 'local';
+    /**
+     * Gets the version of the installed AdminLTE package, which is used to
+     * build the CDN locations.
+     *
+     * @return string
+     */
+    public static function adminlteVersion()
+    {
+        return AdminLteVersion::get();
+    }
+
+    /**
+     * Replaces the version placeholder of a location by the version of the
+     * installed AdminLTE package. Note this is also used by the plugins view,
+     * since a plugin may point to an asset of the AdminLTE distribution (for
+     * example the Select2 compatibility theme).
+     *
+     * @param  string|null  $location  The location of an asset
+     * @return string|null
+     */
+    public static function applyVersion($location)
+    {
+        return AdminLteVersion::apply($location);
     }
 
     /**
@@ -126,11 +90,7 @@ class AssetHelper
      */
     public static function bootstrapJs()
     {
-        if (! config('adminlte.assets.bootstrap_js', true)) {
-            return null;
-        }
-
-        return self::resolve('bootstrap_js');
+        return self::resolveOptional('bootstrap_js', 'assets.bootstrap_js');
     }
 
     /**
@@ -141,11 +101,7 @@ class AssetHelper
      */
     public static function bootstrapIconsCss()
     {
-        if (! config('adminlte.assets.bootstrap_icons', true)) {
-            return null;
-        }
-
-        return self::resolve('bootstrap_icons_css');
+        return self::resolveOptional('bootstrap_icons_css', 'assets.bootstrap_icons');
     }
 
     /**
@@ -156,11 +112,7 @@ class AssetHelper
      */
     public static function overlayScrollbarsCss()
     {
-        if (! config('adminlte.assets.overlayscrollbars', true)) {
-            return null;
-        }
-
-        return self::resolve('overlayscrollbars_css');
+        return self::resolveOptional('overlayscrollbars_css', 'assets.overlayscrollbars');
     }
 
     /**
@@ -171,11 +123,7 @@ class AssetHelper
      */
     public static function overlayScrollbarsJs()
     {
-        if (! config('adminlte.assets.overlayscrollbars', true)) {
-            return null;
-        }
-
-        return self::resolve('overlayscrollbars_js');
+        return self::resolveOptional('overlayscrollbars_js', 'assets.overlayscrollbars');
     }
 
     /**
@@ -186,11 +134,7 @@ class AssetHelper
      */
     public static function fontsCss()
     {
-        if (! config('adminlte.google_fonts.allowed', true)) {
-            return null;
-        }
-
-        return self::resolve('fonts_css');
+        return self::resolveOptional('fonts_css', 'google_fonts.allowed');
     }
 
     /**
@@ -201,78 +145,22 @@ class AssetHelper
      */
     public static function resolve($key)
     {
-        $key = self::resolveKeyDirection($key);
-        $local = config("adminlte.assets.local.{$key}");
-        $cdn = config("adminlte.assets.cdn.{$key}");
-
-        $cdn = self::applyVersion($cdn);
-
-        // On the CDN mode, always prefer the configured CDN location.
-
-        if (self::mode() === 'cdn' && is_string($cdn) && $cdn !== '') {
-            return $cdn;
-        }
-
-        // Without a local path, the CDN location is the only option.
-
-        if (! is_string($local) || $local === '') {
-            return is_string($cdn) && $cdn !== '' ? $cdn : null;
-        }
-
-        // When the local asset is not published yet, fallback to the CDN.
-
-        if (! self::isPublished($local) && config('adminlte.assets.cdn_fallback', true)) {
-            return is_string($cdn) && $cdn !== '' ? $cdn : asset($local);
-        }
-
-        return asset($local);
+        return AssetResolver::resolve($key);
     }
 
     /**
-     * Replaces the version placeholder of a location by the version of the
-     * installed AdminLTE package. Note this is also used by the plugins view,
-     * since a plugin may point to an asset of the AdminLTE distribution (for
-     * example the Select2 compatibility theme).
-     *
-     * @param  string|null  $location  The location of an asset
-     * @return string|null
-     */
-    public static function applyVersion($location)
-    {
-        if (! is_string($location) || ! str_contains($location, '{version}')) {
-            return $location;
-        }
-
-        return str_replace('{version}', self::adminlteVersion(), $location);
-    }
-
-    /**
-     * Checks whether the specified local asset is published or not.
-     *
-     * @param  string  $path  The asset path relative to the public folder
-     * @return bool
-     */
-    protected static function isPublished($path)
-    {
-        return is_file(public_path($path));
-    }
-
-    /**
-     * Resolves the RTL variant of an asset key when the RTL mode is enabled.
+     * Resolves an asset that the configuration can disable.
      *
      * @param  string  $key  The asset key (as defined on the config file)
-     * @return string
+     * @param  string  $option  The option that enables the asset
+     * @return string|null
      */
-    protected static function resolveKeyDirection($key)
+    protected static function resolveOptional($key, $option)
     {
-        if (! in_array($key, self::$rtlAwareAssets)) {
-            return $key;
+        if (! config("adminlte.{$option}", true)) {
+            return null;
         }
 
-        if (! LayoutHelper::isRtlEnabled()) {
-            return $key;
-        }
-
-        return preg_replace('/_css$/', '_rtl_css', $key);
+        return self::resolve($key);
     }
 }

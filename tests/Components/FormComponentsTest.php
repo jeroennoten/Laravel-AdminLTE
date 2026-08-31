@@ -2114,4 +2114,47 @@ class FormComponentsTest extends TestCase
         $this->assertStringContainsString('value="old@value.com"', $html);
         $this->assertStringNotContainsString('new@value.com', $html);
     }
+
+    public function testDateRangeTranslatesTheLegacyConfiguration()
+    {
+        $component = new Components\Form\DateRange('r', null, null, null, null, null, null, null, null, [
+            'locale' => ['format' => 'd/m/Y', 'separator' => ' to '],
+            'timePicker' => true,
+            'timePicker24Hour' => true,
+            'singleDatePicker' => true,
+            'minDate' => '2026-01-01',
+        ]);
+
+        $config = $component->makePluginConfig();
+
+        $this->assertEquals('d/m/Y', $config['dateFormat']);
+        $this->assertEquals(' to ', $config['locale']['rangeSeparator']);
+        $this->assertEquals('single', $config['mode']);
+        $this->assertTrue($config['enableTime']);
+        $this->assertTrue($config['time_24hr']);
+        $this->assertEquals('2026-01-01', $config['minDate']);
+        $this->assertTrue($config['allowInput']);
+    }
+
+    public function testInputSliderTranslatesTheLegacyConfiguration()
+    {
+        $component = new Components\Form\InputSlider('s', null, null, null, null, null, null, null, null, [
+            'min' => 5,
+            'max' => 50,
+            'step' => 5,
+            'value' => [10, 20],
+            'orientation' => 'vertical',
+            'reversed' => true,
+            'tooltip' => 'hide',
+        ]);
+
+        $config = $component->makePluginConfig();
+
+        $this->assertEquals(['min' => 5.0, 'max' => 50.0], $config['range']);
+        $this->assertEquals(5.0, $config['step']);
+        $this->assertEquals([false, true, false], $config['connect']);
+        $this->assertEquals('vertical', $config['orientation']);
+        $this->assertEquals('rtl', $config['direction']);
+        $this->assertFalse($config['tooltips']);
+    }
 }

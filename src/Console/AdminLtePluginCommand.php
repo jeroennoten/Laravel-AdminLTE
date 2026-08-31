@@ -310,23 +310,7 @@ class AdminLtePluginCommand extends Command
         // Install the plugins.
 
         foreach ($pluginsKeys as $pluginKey) {
-            // Install the plugin, if it's a valid plugin key.
-
-            if (empty($this->plugins->getSourceData($pluginKey))) {
-                $this->line('');
-                $this->reportInvalidPlugin($pluginKey);
-                $status = $this->styleOutput('Invalid', 'red');
-            } elseif (! $this->plugins->pluginAvailable($pluginKey)) {
-                $this->line('');
-                $this->reportMissingPackage($pluginKey);
-                $status = $this->styleOutput('Not Available', 'yellow');
-            } elseif ($this->installPlugin($pluginKey)) {
-                $status = $this->styleOutput('Installed', 'green');
-            } else {
-                $status = $this->styleOutput('Not Installed', 'red');
-            }
-
-            $summary[] = [$pluginKey, $status];
+            $summary[] = [$pluginKey, $this->installPluginWithStatus($pluginKey)];
             $bar->advance();
         }
 
@@ -340,6 +324,35 @@ class AdminLtePluginCommand extends Command
         // Show summary of installed plugins.
 
         $this->showSummaryTable($summary);
+    }
+
+    /**
+     * Installs a single plugin and returns the status to show on the summary.
+     *
+     * @param  string  $pluginKey  The plugin string key
+     * @return string
+     */
+    protected function installPluginWithStatus($pluginKey)
+    {
+        if (empty($this->plugins->getSourceData($pluginKey))) {
+            $this->line('');
+            $this->reportInvalidPlugin($pluginKey);
+
+            return $this->styleOutput('Invalid', 'red');
+        }
+
+        if (! $this->plugins->pluginAvailable($pluginKey)) {
+            $this->line('');
+            $this->reportMissingPackage($pluginKey);
+
+            return $this->styleOutput('Not Available', 'yellow');
+        }
+
+        if ($this->installPlugin($pluginKey)) {
+            return $this->styleOutput('Installed', 'green');
+        }
+
+        return $this->styleOutput('Not Installed', 'red');
     }
 
     /**

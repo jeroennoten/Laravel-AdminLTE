@@ -2,27 +2,14 @@
 
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
-use Illuminate\Support\Facades\View;
-use JeroenNoten\LaravelAdminLte\Events\ReadingDarkModePreference;
-use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
+use JeroenNoten\LaravelAdminLte\Layout\BodyClasses;
+use JeroenNoten\LaravelAdminLte\Layout\ColorMode;
+use JeroenNoten\LaravelAdminLte\Layout\Direction;
+use JeroenNoten\LaravelAdminLte\Layout\Layout;
+use JeroenNoten\LaravelAdminLte\Layout\Sidebar;
 
 class LayoutHelper
 {
-    /**
-     * Holds the set of tokens related to the sidebar expand breakpoints that
-     * are supported by AdminLTE v4.
-     *
-     * @var array
-     */
-    protected static $sidebarExpandValues = ['sm', 'md', 'lg', 'xl', 'xxl'];
-
-    /**
-     * Holds the set of supported color modes.
-     *
-     * @var array
-     */
-    protected static $colorModes = ['light', 'dark', 'auto'];
-
     /**
      * Checks if layout topnav is enabled.
      *
@@ -30,8 +17,7 @@ class LayoutHelper
      */
     public static function isLayoutTopnavEnabled()
     {
-        return config('adminlte.layout_topnav', false)
-            || ! empty(View::getSection('layout_topnav'));
+        return Layout::isTopnavEnabled();
     }
 
     /**
@@ -44,8 +30,7 @@ class LayoutHelper
      */
     public static function isLayoutBoxedEnabled()
     {
-        return config('adminlte.layout_boxed', false)
-            || ! empty(View::getSection('layout_boxed'));
+        return Layout::isBoxedEnabled();
     }
 
     /**
@@ -55,8 +40,7 @@ class LayoutHelper
      */
     public static function isRightSidebarEnabled()
     {
-        return config('adminlte.right_sidebar', false)
-            || ! empty(View::getSection('right_sidebar'));
+        return Layout::isRightSidebarEnabled();
     }
 
     /**
@@ -67,13 +51,7 @@ class LayoutHelper
      */
     public static function isRtlEnabled()
     {
-        $cfg = config('adminlte.rtl.enabled', null);
-
-        if (is_bool($cfg)) {
-            return $cfg;
-        }
-
-        return self::isRtlLocale(app()->getLocale());
+        return Direction::isRtlEnabled();
     }
 
     /**
@@ -84,30 +62,7 @@ class LayoutHelper
      */
     public static function isRtlLocale($locale)
     {
-        $locales = config('adminlte.rtl.locales', []);
-
-        if (! is_array($locales) || ! is_string($locale)) {
-            return false;
-        }
-
-        // Normalize the locale and compare it with the configured ones. Both
-        // the full locale (for example 'uz-AF') and its language part (for
-        // example 'ar' from 'ar_EG') are checked.
-
-        $locale = str_replace('_', '-', $locale);
-        $language = explode('-', $locale)[0];
-
-        foreach ($locales as $rtlLocale) {
-            $rtlLocale = str_replace('_', '-', (string) $rtlLocale);
-
-            if (strcasecmp($rtlLocale, $locale) === 0
-                || strcasecmp($rtlLocale, $language) === 0
-            ) {
-                return true;
-            }
-        }
-
-        return false;
+        return Direction::isRtlLocale($locale);
     }
 
     /**
@@ -117,7 +72,7 @@ class LayoutHelper
      */
     public static function getHtmlDirection()
     {
-        return self::isRtlEnabled() ? 'rtl' : 'ltr';
+        return Direction::get();
     }
 
     /**
@@ -128,28 +83,7 @@ class LayoutHelper
      */
     public static function getColorMode()
     {
-        // The legacy 'layout_theme_mode' and 'layout_dark_mode' options are
-        // still supported for backward compatibility.
-
-        $legacy = config('adminlte.layout_theme_mode', null);
-
-        if (in_array($legacy, self::$colorModes)) {
-            return $legacy;
-        }
-
-        if (config('adminlte.layout_dark_mode', false) === true) {
-            return 'dark';
-        }
-
-        // Check for a dark mode preference resolved on the server side.
-
-        if (self::isDarkModeEnabled()) {
-            return 'dark';
-        }
-
-        $mode = config('adminlte.color_mode.default', 'auto');
-
-        return in_array($mode, self::$colorModes) ? $mode : 'auto';
+        return ColorMode::get();
     }
 
     /**
@@ -159,10 +93,27 @@ class LayoutHelper
      */
     public static function isDarkModeEnabled()
     {
-        $darkModeCtrl = new DarkModeController();
-        event(new ReadingDarkModePreference($darkModeCtrl));
+        return ColorMode::isDarkModeEnabled();
+    }
 
-        return $darkModeCtrl->isEnabled();
+    /**
+     * Checks whether the navbar (app-header) is configured as fixed.
+     *
+     * @return bool
+     */
+    public static function isFixedNavbarEnabled()
+    {
+        return BodyClasses::isFixedNavbarEnabled();
+    }
+
+    /**
+     * Checks whether the footer is configured as fixed.
+     *
+     * @return bool
+     */
+    public static function isFixedFooterEnabled()
+    {
+        return BodyClasses::isFixedFooterEnabled();
     }
 
     /**
@@ -174,35 +125,11 @@ class LayoutHelper
     {
         $attrs = [];
 
-        // Add the text direction attribute when the RTL mode is enabled.
-
-        if (self::isRtlEnabled()) {
+        if (Direction::isRtlEnabled()) {
             $attrs[] = 'dir="rtl"';
         }
 
-        // Add the Bootstrap 5.3 color mode attribute. Note the 'auto' mode is
-        // resolved on the client side by the AdminLTE color mode widget.
-
-        $colorMode = self::getColorMode();
-
-        if ($colorMode !== 'auto') {
-            $attrs[] = "data-bs-theme=\"{$colorMode}\"";
-        }
-
-        // When the color mode is not remembered on the browser, the package
-        // provides its own (server side) toggle. So, the AdminLTE color mode
-        // plugin is disabled, otherwise it would restore its stored value and
-        // fight with the preference resolved on the server.
-        //
-        // Note the automatic mode is the exception: it has to be resolved on
-        // the client side from the operating system preference, so the plugin
-        // (and the no flash script) must stay enabled for it.
-
-        if ($colorMode !== 'auto' && ! config('adminlte.color_mode.remember', true)) {
-            $attrs[] = 'data-lte-color-mode="off"';
-        }
-
-        return trim(implode(' ', $attrs));
+        return self::join(array_merge($attrs, ColorMode::makeHtmlAttributes()));
     }
 
     /**
@@ -212,12 +139,7 @@ class LayoutHelper
      */
     public static function makeBodyClasses()
     {
-        $classes = [];
-        array_push($classes, ...self::makeLayoutClasses());
-        array_push($classes, ...self::makeSidebarClasses());
-        array_push($classes, ...self::makeCustomBodyClasses());
-
-        return trim(implode(' ', array_unique($classes)));
+        return self::join(BodyClasses::make());
     }
 
     /**
@@ -251,14 +173,7 @@ class LayoutHelper
      */
     public static function makeSidebarWrapperClasses()
     {
-        $classes = ['app-sidebar'];
-        $cfg = config('adminlte.classes_sidebar', 'bg-body-secondary shadow');
-
-        if (is_string($cfg) && ! empty($cfg)) {
-            $classes[] = $cfg;
-        }
-
-        return trim(implode(' ', $classes));
+        return self::join(Sidebar::makeClasses());
     }
 
     /**
@@ -268,24 +183,7 @@ class LayoutHelper
      */
     public static function makeSidebarData()
     {
-        $attrs = [];
-
-        // Add the color mode of the sidebar.
-
-        $theme = config('adminlte.sidebar_theme', 'dark');
-
-        if (in_array($theme, ['light', 'dark'])) {
-            $attrs[] = "data-bs-theme=\"{$theme}\"";
-        }
-
-        // Add the attribute that makes the AdminLTE v4 PushMenu plugin to
-        // remember the collapsed state of the sidebar between page loads.
-
-        if (config('adminlte.sidebar_collapse_remember', false)) {
-            $attrs[] = 'data-enable-persistence="true"';
-        }
-
-        return trim(implode(' ', $attrs));
+        return self::join(Sidebar::makeAttributes());
     }
 
     /**
@@ -296,176 +194,17 @@ class LayoutHelper
      */
     public static function makeContentWrapperClasses()
     {
-        $classes = ['app-main'];
-
-        // Add classes from the configuration file.
-
-        $cfg = config('adminlte.classes_content_wrapper', '');
-
-        if (is_string($cfg) && ! empty($cfg)) {
-            $classes[] = $cfg;
-        }
-
-        // Add position-relative when using a content-wrapper preloader.
-
-        if (PreloaderHelper::isPreloaderEnabled('cwrapper')) {
-            $classes[] = 'position-relative';
-        }
-
-        return trim(implode(' ', $classes));
+        return self::join(Layout::makeContentWrapperClasses());
     }
 
     /**
-     * Makes and return the set of classes related to the layout configuration.
+     * Joins a set of classes or attributes into a single string.
      *
-     * @return array
+     * @param  array  $tokens  The set of tokens to join
+     * @return string
      */
-    private static function makeLayoutClasses()
+    protected static function join($tokens)
     {
-        $classes = [];
-
-        // Add classes related to the fixed sidebar layout configuration. The
-        // fixed sidebar is not compatible with the topnav layout.
-
-        $fixedSidebar = config('adminlte.layout_fixed_sidebar', false);
-
-        if (! self::isLayoutTopnavEnabled() && $fixedSidebar) {
-            $classes[] = 'layout-fixed';
-        }
-
-        // Add classes related to the fixed navbar/footer configuration.
-
-        if (self::isFixedSectionEnabled('navbar')) {
-            $classes[] = 'fixed-header';
-        }
-
-        if (self::isFixedSectionEnabled('footer')) {
-            $classes[] = 'fixed-footer';
-        }
-
-        return $classes;
-    }
-
-    /**
-     * Checks whether the navbar (app-header) is configured as fixed.
-     *
-     * @return bool
-     */
-    public static function isFixedNavbarEnabled()
-    {
-        return self::isFixedSectionEnabled('navbar');
-    }
-
-    /**
-     * Checks whether the footer is configured as fixed.
-     *
-     * @return bool
-     */
-    public static function isFixedFooterEnabled()
-    {
-        return self::isFixedSectionEnabled('footer');
-    }
-
-    /**
-     * Checks whether the fixed mode is enabled for the specified layout
-     * section. Note AdminLTE v4 does not support responsive fixed modes, so
-     * an array configuration is considered enabled when any of its values is
-     * enabled.
-     *
-     * @param  string  $section  The layout section (navbar or footer)
-     * @return bool
-     */
-    private static function isFixedSectionEnabled($section)
-    {
-        $cfg = config("adminlte.layout_fixed_{$section}", false);
-
-        if (is_array($cfg)) {
-            return in_array(true, $cfg, true);
-        }
-
-        return (bool) $cfg;
-    }
-
-    /**
-     * Makes the set of classes related to the main left sidebar configuration.
-     *
-     * @return array
-     */
-    private static function makeSidebarClasses()
-    {
-        $classes = [];
-
-        // The topnav layout has no sidebar, so no sidebar classes are needed.
-
-        if (self::isLayoutTopnavEnabled()) {
-            return $classes;
-        }
-
-        // Add the class related to the "sidebar_expand" configuration. It
-        // defines the breakpoint where the sidebar switches to the offcanvas
-        // (mobile) behavior.
-
-        $expand = config('adminlte.sidebar_expand', 'lg');
-
-        if (in_array($expand, self::$sidebarExpandValues)) {
-            $classes[] = "sidebar-expand-{$expand}";
-        }
-
-        // Add classes related to the "sidebar_mini" configuration. Note the
-        // legacy 'xs', 'md' and 'lg' values are still supported.
-
-        if (self::isSidebarMiniEnabled()) {
-            $classes[] = 'sidebar-mini';
-        }
-
-        // Add classes related to the "sidebar_collapse" configuration.
-
-        $sidebarCollapse = config('adminlte.sidebar_collapse', false)
-            || ! empty(View::getSection('sidebar_collapse'));
-
-        if ($sidebarCollapse) {
-            $classes[] = 'sidebar-collapse';
-        }
-
-        // Add classes related to the "sidebar_without_hover" configuration.
-
-        if (config('adminlte.sidebar_without_hover', false)) {
-            $classes[] = 'sidebar-without-hover';
-        }
-
-        return $classes;
-    }
-
-    /**
-     * Checks whether the sidebar mini mode is enabled.
-     *
-     * @return bool
-     */
-    private static function isSidebarMiniEnabled()
-    {
-        $cfg = config('adminlte.sidebar_mini', true);
-
-        if (is_string($cfg)) {
-            return in_array($cfg, ['xs', 'sm', 'md', 'lg', 'xl', 'xxl']);
-        }
-
-        return (bool) $cfg;
-    }
-
-    /**
-     * Makes the set of classes related to custom body classes configuration.
-     *
-     * @return array
-     */
-    private static function makeCustomBodyClasses()
-    {
-        $classes = [];
-        $cfg = config('adminlte.classes_body', '');
-
-        if (is_string($cfg) && ! empty($cfg)) {
-            $classes[] = $cfg;
-        }
-
-        return $classes;
+        return trim(implode(' ', $tokens));
     }
 }
