@@ -2,13 +2,17 @@
 | ------------------
 | [Before You Start](#before-you-start)
 | [Laravel and PHP Requirements](#laravel-and-php-requirements)
+| [The Stale Bootstrap 4 Assets Trap](#the-stale-bootstrap-4-assets-trap)
 | [The AdminLTE v4 Markup Rewrite](#the-adminlte-v4-markup-rewrite)
 | [Bootstrap Icons Instead of FontAwesome](#bootstrap-icons-instead-of-fontawesome)
 | [The Boxed Layout Was Removed](#the-boxed-layout-was-removed)
 | [The Control Sidebar Is Now an Offcanvas](#the-control-sidebar-is-now-an-offcanvas)
 | [The Sidebar Skins Were Removed](#the-sidebar-skins-were-removed)
 | [The Plugin Catalogue Now Comes From npm](#the-plugin-catalogue-now-comes-from-npm)
+| [The Form Components Switched Their Plugin](#the-form-components-switched-their-plugin)
 | [The Laravel Mix Options Were Removed](#the-laravel-mix-options-were-removed)
+| [Configuration Defaults and Renamed Options](#configuration-defaults-and-renamed-options)
+| [Smaller Behavior Changes](#smaller-behavior-changes)
 | [Checklist](#checklist)
 
 This page lists the **breaking changes** you actually hit when moving a project from a `3.x` release of this package to **Laravel-AdminLTE v4**.
@@ -32,11 +36,69 @@ Upgrading rewrites published files. Before anything else:
 
 If your project is not on Laravel 12 yet, upgrade the framework **first**, verify the application boots, and only then bump this package. See the [requirements](/sections/overview/requirements) page.
 
+## The Stale Bootstrap 4 Assets Trap
+
+> [!Warning]
+> Read this one even if you skip everything else. It is the breaking change that produces the most confusing symptoms, because nothing errors and nothing looks obviously broken.
+
+A `3.x` installation published a set of third party assets into the `public/vendor` folder of your project:
+
+| Folder | What a `3.x` installation left there |
+| ------ | ------------------------------------ |
+| `public/vendor/bootstrap` | The **Bootstrap 4** Javascript bundle |
+| `public/vendor/jquery` | jQuery |
+| `public/vendor/popper` | Popper.js (a Bootstrap 4 requirement) |
+| `public/vendor/fontawesome-free` | FontAwesome 5 Free |
+| `public/vendor/overlayScrollbars` | OverlayScrollbars 1.x |
+
+**Nothing in the upgrade removes those folders.** The `assets` resource of the `4.x` releases only manages `public/vendor/adminlte`, so neither `php artisan adminlte:install --type=full` nor `php artisan adminlte:update` publishes over them or deletes them, and `php artisan adminlte:remove assets` cannot clean them either.
+
+Four of them are merely orphans wasting disk space. The fifth one **breaks your panel**:
+
+- `assets.mode` defaults to `local`.
+- The default local path of the Bootstrap bundle is `vendor/bootstrap/js/bootstrap.bundle.min.js`, which is **exactly the path the `3.x` releases used for Bootstrap 4**.
+- The package only falls back to the CDN when the local file is **absent**.
+
+So the stale **Bootstrap 4** bundle keeps being served and silently drives the new **Bootstrap 5.3** markup. Every `data-bs-*` driven behavior degrades without a single console error: dropdowns do not open, modals do not show, the offcanvas right sidebar does nothing, collapses and tooltips are dead.
+
+### The Remedy
+
+Delete the stale folders:
+
+```sh
+rm -rf public/vendor/bootstrap \
+       public/vendor/jquery \
+       public/vendor/popper \
+       public/vendor/fontawesome-free \
+       public/vendor/overlayScrollbars
+```
+
+This alone is already enough to unbreak the panel: with `assets.cdn_fallback` at its default `true`, a missing local file is served from the CDN. Then decide how you want the third party resources delivered:
+
+**Self host them** with the new `vendor_assets` resource. It is the supported way to serve the Bootstrap Javascript bundle, the Bootstrap Icons font and OverlayScrollbars from your own domain. They are published from the `node_modules` folder of your project, so install the npm packages first:
+
+```sh
+npm i bootstrap bootstrap-icons overlayscrollbars
+php artisan adminlte:install --only=vendor_assets
+```
+
+**Or serve them from the CDN**, by switching the delivery mode on `config/adminlte.php`:
+
+```php
+'assets' => [
+    'mode' => 'cdn',
+    ...
+],
+```
+
+> [!Note]
+> Once `vendor_assets` has been published, `php artisan adminlte:update` refreshes it together with the AdminLTE distribution files, so it stays in sync on the routine updates.
+
 ## The AdminLTE v4 Markup Rewrite
 
 **AdminLTE v4** is a full rewrite on top of **Bootstrap 5.3**. Every view and every blade component of this package was rewritten with it. The consequences:
 
-- The layout element names changed. The old `.content-wrapper` is now `main.app-main`, the navbar is `nav.app-header`, the sidebar is `aside.app-sidebar`, the footer is `footer.app-footer`, and the content is wrapped in `.app-content` / `.app-content-header`.
+- The layout element names changed. The outermost `.wrapper` is now `.app-wrapper`, the old `.content-wrapper` is now `main.app-main`, the navbar is `nav.app-header`, the sidebar is `aside.app-sidebar`, the footer is `footer.app-footer`, and the content is wrapped in `.app-content` / `.app-content-header`.
 - The AdminLTE plugins are driven by **`data-lte-toggle="..."`** attributes. The v3 `data-widget` and `data-card-widget` attributes do not exist any more.
 - **jQuery is gone.** AdminLTE v4 bundles no jQuery and none of its own plugins need it.
 - Bootstrap 4 classes that Bootstrap 5 renamed (`ml-*`/`mr-*` &rarr; `ms-*`/`me-*`, `float-left`/`float-right` &rarr; `float-start`/`float-end`, `data-toggle` &rarr; `data-bs-toggle`, `badge-*` &rarr; `text-bg-*`, …) no longer resolve.
@@ -154,6 +216,31 @@ Because jQuery is gone, the default plugin set changed to the jQuery free librar
 
 See the [plugins configuration](/sections/configuration/plugins) and the [advanced form components](/sections/components/advanced_forms_components) pages.
 
+## The Form Components Switched Their Plugin
+
+Every plugin backed form component kept its name and its attributes, but the library behind it was replaced:
+
+| Component | AdminLTE v3 plugin | Laravel-AdminLTE v4 plugin | Plugin key |
+| --------- | ------------------ | -------------------------- | ---------- |
+| [SelectBs](/sections/components/advanced_forms_components#selectbs) | `bootstrap-select` | [Tom Select](https://tom-select.js.org/) | `TomSelect` |
+| [TextEditor](/sections/components/advanced_forms_components#texteditor) | Summernote | [Quill](https://quilljs.com/) | `Quill` |
+| [InputSlider](/sections/components/advanced_forms_components#inputslider) | `bootstrap-slider` | [noUiSlider](https://refreshless.com/nouislider/) | `NoUiSlider` |
+| [InputDate](/sections/components/advanced_forms_components#inputdate) | Tempus Dominus | [Flatpickr](https://flatpickr.js.org/) | `Flatpickr` |
+| [DateRange](/sections/components/advanced_forms_components#daterange) | `daterangepicker` + Moment | [Flatpickr](https://flatpickr.js.org/) | `Flatpickr` |
+| [InputSwitch](/sections/components/advanced_forms_components#inputswitch) | Bootstrap Switch | native Bootstrap 5.3 switch | – |
+| [InputColor](/sections/components/advanced_forms_components#inputcolor) | Bootstrap Colorpicker | native `input[type=color]` | – |
+
+> [!Warning]
+> **The constructor signatures did not change, so nothing errors.** Your existing `<x-adminlte-select-bs>`, `<x-adminlte-text-editor>` or `<x-adminlte-input-slider>` tags keep rendering after the upgrade. When the new plugin is not loaded, the control simply **degrades to a plain input** — a `select-bs` that suddenly looks like an ordinary `form-select`, or a `text-editor` that looks like a plain `textarea`, is the symptom of a plugin that was not enabled.
+
+So there are three things to review on every view that uses one of these components:
+
+- **The plugin key** you enable with `@section('plugins.<Key>', true)`, as listed on the table above. The AdminLTE v3 keys do not resolve anymore.
+- **The `config` attribute**, whose option names are now those of the new library. The legacy v3 properties that have an equivalent are translated on the fly, the rest are silently dropped. Each component section of the [advanced form components](/sections/components/advanced_forms_components) page lists exactly which ones became no-ops.
+- **jQuery**, which is no longer loaded by the package. Only [Select2](/sections/components/basic_forms_components#select2) and [InputFileKrajee](/sections/components/advanced_forms_components#inputfilekrajee) still need it, and you now have to provide it yourself.
+
+`InputSlider` is the one that deserves the closest look: **noUiSlider** describes the bounds with a `range` object instead of the `min` / `max` / `value` properties of `bootstrap-slider`. The common legacy properties (`min`, `max`, `step`, `value`) are translated for you, but the more exotic ones (`precision`, `orientation`, `ticks_tooltip`, `scale`, `rangeHighlights`, …) have no equivalent and are dropped.
+
 ## The Laravel Mix Options Were Removed
 
 The legacy **`enabled_laravel_mix`**, **`laravel_mix_css_path`** and **`laravel_mix_js_path`** options **were removed** and are no longer read. They are superseded by the `laravel_asset_bundling` option, which also covers Vite:
@@ -172,17 +259,101 @@ The legacy **`enabled_laravel_mix`**, **`laravel_mix_css_path`** and **`laravel_
 
 If you bundle the assets yourself, also review the new [assets](/sections/configuration/other#assets) section: the package stops emitting the AdminLTE core stylesheet and script, but it still emits the third party resources, so set `assets.bootstrap_js`, `assets.bootstrap_icons` and `assets.overlayscrollbars` to `false` when your bundle already includes them.
 
+## Configuration Defaults and Renamed Options
+
+### Dark Mode Moved to the `color_mode` Section
+
+The **`layout_dark_mode`** option was **removed from the shipped configuration file**. It is still read as a legacy fallback (`layout_dark_mode => true` behaves exactly like `color_mode.default => 'dark'`), so an old configuration keeps working, but the color mode is now configured through the new `color_mode` section:
+
+```php
+// AdminLTE v3
+'layout_dark_mode' => true,
+
+// Laravel-AdminLTE v4
+'color_mode' => [
+    'default' => 'dark',        // 'light', 'dark' or 'auto'
+    'remember' => true,         // store the visitor choice in the browser localStorage
+    'no_flash_script' => true,
+    'theme_color' => [
+        'light' => '#007bff',
+        'dark' => '#1a1a1a',
+    ],
+],
+```
+
+With `remember => true` (the default), the AdminLTE v4 color mode plugin persists the choice of the visitor in the **browser `localStorage`**. Pick `remember => false` together with an explicit `'light'` or `'dark'` default when the preference has to be resolved on the **server** instead (for example, persisted per user in your database through the `ReadingDarkModePreference` and `DarkModeWasToggled` events). See [color mode](/sections/configuration/layout_and_styling#color-mode).
+
+### `sidebar_mini` Was Split in Two
+
+**`sidebar_mini`** is now a plain on/off switch, and the breakpoint moved to the new **`sidebar_expand`** option:
+
+```php
+// AdminLTE v3
+'sidebar_mini' => 'md',
+
+// Laravel-AdminLTE v4
+'sidebar_mini' => true,
+'sidebar_expand' => 'lg',
+```
+
+The legacy `'xs'`, `'md'` and `'lg'` string values are still accepted on `sidebar_mini`, but they now only mean **enabled**: AdminLTE v4 has no `sidebar-mini-md` or `sidebar-mini-xs` classes anymore, so the responsive variants of the mini sidebar are gone.
+
+### `sidebar_scrollbar_auto_hide` Changed Its Vocabulary
+
+The value is handed over **verbatim** to **OverlayScrollbars 2.x**, which only accepts `'never'`, `'scroll'`, `'leave'` and `'move'`. The one letter tokens of the AdminLTE v3 releases are not valid anymore, so `'l'` has to become `'leave'`:
+
+```php
+// AdminLTE v3
+'sidebar_scrollbar_auto_hide' => 'l',
+
+// Laravel-AdminLTE v4
+'sidebar_scrollbar_auto_hide' => 'leave',
+```
+
+### Menu Colors Are Not Translated
+
+The `icon_color` and `label_color` [menu attributes](/sections/configuration/menu) are copied **verbatim** into the class name. Only the blade components map the AdminLTE v3 palette on the fly, the menu does not. So a menu item still carrying `'icon_color' => 'lightblue'` needs **both** `assets.extended_colors` and `assets.extended_colors_v3_aliases` enabled. The cleaner move is to rewrite those values with the v4 names (`sky`, `pink`, `violet`, `olive`, …).
+
+### Defaults That Changed on the Published Configuration
+
+Re-publishing `config/adminlte.php` (which you should do) brings a set of changed defaults. If you diff your old file against the new one, expect these:
+
+| Option | 3.x default | 4.x default |
+| ------ | ----------- | ----------- |
+| `title` | `'AdminLTE 3'` | `'AdminLTE 4'` |
+| `layout_fixed_sidebar` | `null` | `true` |
+| `classes_body` | `''` | `'bg-body-tertiary'` |
+| `classes_topnav` | `'navbar-white navbar-light'` | `'bg-body'` |
+| `classes_topnav_container` | `'container'` | `'container-fluid'` |
+| `logo_img`, `auth_logo.img.path`, `preloader.img.path` | `vendor/adminlte/dist/img/…` | `vendor/adminlte/dist/assets/img/…` |
+
+> [!Important]
+> The three image paths are not cosmetic. **AdminLTE v4 moved its images to the `dist/assets/img/` folder**, so a configuration that kept the old `vendor/adminlte/dist/img/AdminLTELogo.png` value renders a broken image on the brand logo, the authentication views and the preloader.
+
+## Smaller Behavior Changes
+
+A few remaining differences that are easy to miss:
+
+- **The footer is rendered more often.** On the `3.x` releases the footer only appeared when your views defined a `footer` section. Now it is also rendered whenever `layout_fixed_footer` is enabled, because the fixed layout has to reserve the space for it. Disable `layout_fixed_footer` if you want no footer at all.
+
+- **`InfoBox` changed its progress bar default.** The `progress-theme` attribute defaulted to `'white'` on the `3.x` releases, it defaults to `null` now. Without an explicit value, the bar is painted `primary` on an unthemed box, and it inherits the contrast color of the box when a `theme` is set. Pass `progress-theme="white"` explicitly to get the old look back.
+
 ## Checklist
 
 - [ ] Laravel upgraded to 12 or 13, PHP to 8.2 or higher.
+- [ ] Stale `public/vendor/bootstrap`, `jquery`, `popper`, `fontawesome-free` and `overlayScrollbars` folders deleted, and the third party assets either published with `--only=vendor_assets` or switched to `assets.mode => 'cdn'`.
 - [ ] `composer update jeroennoten/laravel-adminlte` and `php artisan adminlte:update` run.
-- [ ] `config/adminlte.php` re-published and merged (do not keep the old file as is).
+- [ ] `config/adminlte.php` re-published and merged (do not keep the old file as is), including the `dist/img/` &rarr; `dist/assets/img/` image paths.
 - [ ] `main_views`, `auth_views` and `components` re-published with `--force`, customizations re-applied.
 - [ ] Menu icons migrated to `bi bi-*`, or FontAwesome loaded explicitly.
 - [ ] `layout_boxed` removed from the configuration.
 - [ ] Right sidebar content migrated to offcanvas markup, `right_sidebar` section spelled with an underscore, dead `right_sidebar_*` options removed.
 - [ ] `classes_sidebar` skin classes replaced by a background utility plus `sidebar_theme`.
 - [ ] Plugins reinstalled from npm, jQuery loaded explicitly if you still use Select2 or the Krajee file input.
+- [ ] Views using the plugin backed form components checked: new `@section('plugins.<Key>', true)` keys enabled and the `config` attributes reviewed against the new libraries.
 - [ ] `enabled_laravel_mix` replaced by `laravel_asset_bundling`.
-- [ ] Own blade views swept for Bootstrap 4 classes and `data-widget` / `data-card-widget` attributes.
-- [ ] `assets.extended_colors` enabled if you theme components with colors such as `navy`, `teal` or `olive`.
+- [ ] `layout_dark_mode` migrated to the `color_mode` section.
+- [ ] `sidebar_mini` reduced to a boolean and the breakpoint moved to `sidebar_expand`.
+- [ ] `sidebar_scrollbar_auto_hide` rewritten with the OverlayScrollbars 2.x vocabulary (`'l'` &rarr; `'leave'`).
+- [ ] Own blade views swept for Bootstrap 4 classes, the `.wrapper` element name and `data-widget` / `data-card-widget` attributes.
+- [ ] `assets.extended_colors` enabled if you theme components with colors such as `navy`, `teal` or `olive` (plus `assets.extended_colors_v3_aliases` if your menu still uses the v3 color names).

@@ -92,7 +92,7 @@ class ToolComponentsTest extends TestCase
         $this->assertStringContainsString('table-primary', $tClass);
 
         $this->assertContains(
-            ['extend' => 'pageLength', 'className' => 'btn-default'],
+            ['extend' => 'pageLength', 'className' => 'btn-secondary'],
             $component->config['buttons']['buttons']
         );
 
@@ -107,7 +107,7 @@ class ToolComponentsTest extends TestCase
         );
 
         $this->assertNotContains(
-            ['extend' => 'pageLength', 'className' => 'btn-default'],
+            ['extend' => 'pageLength', 'className' => 'btn-secondary'],
             $component->config['buttons']['buttons']
         );
     }

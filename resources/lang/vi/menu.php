@@ -13,7 +13,7 @@ return [
     'level_two' => 'Cấp độ 2',
     'level_three' => 'Cấp độ 3',
     'labels' => 'NHÃN',
-    'Important' => 'Quan trọng',
-    'Warning' => 'Cảnh báo',
-    'Information' => 'Thông tin',
+    'important' => 'Quan trọng',
+    'warning' => 'Cảnh báo',
+    'information' => 'Thông tin',
 ];

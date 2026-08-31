@@ -53,7 +53,7 @@
             fetch("{{ $makeUpdateUrl() }}")
                 .then((response) => response.json())
                 .then((data) => nLink.update(data))
-                .catch((err) => console.log(err));
+                .catch((err) => console.warn('AdminLTE: the notification "{{ $id }}" could not be updated.', err));
         };
 
         const nLink = new _AdminLTE_NavbarNotification("{{ $id }}");

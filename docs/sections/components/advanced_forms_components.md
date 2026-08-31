@@ -23,7 +23,7 @@ Component | Plugin | Plugin key | Requires jQuery
 > The `config` attribute of every component still **accepts the AdminLTE v3 plugin properties**. Whenever a v3 property has an equivalent on the new plugin it is translated on the fly, otherwise it is silently dropped. Each section below lists exactly which properties became no-ops.
 
 > [!Note]
-> With the exception of `Select2` and `KrajeeFileinput`, all the plugin keys above are already present on the `plugins` section of the `config/adminlte.php` file published by the package, pointing to a `CDN`. You only have to enable the plugin on the blade file where you use the component, with a `@section('plugins.<Key>', true)` sentence.
+> With the exception of `KrajeeFileinput`, all the plugin keys above are already present on the `plugins` section of the `config/adminlte.php` file published by the package, pointing to a `CDN`. You only have to enable the plugin on the blade file where you use the component, with a `@section('plugins.<Key>', true)` sentence. For `KrajeeFileinput` you have to add the plugin entry to the configuration file yourself, as explained on the [plugins configuration section](/sections/configuration/plugins).
 
 # DateRange
 

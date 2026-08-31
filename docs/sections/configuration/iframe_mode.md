@@ -7,7 +7,7 @@ Option | Type | Default | Description
 ----------|--------|------------|---------------
 default_tab.url | string / null | `null` | An `url` for the default tab. If defined, it will enable a default tab on initialization
 default_tab.title | string / null | `null` | The title for the default tab. When `null`, the translation of `Home` will be displayed
-buttons.close | bool | `false` | Whether to enable a button to close the currently active tab
+buttons.close | bool | `true` | Whether to enable a button to close the currently active tab
 buttons.close_all | bool | `true` | Whether to enable a button to close all tabs
 buttons.close_all_other | bool | `true` | Whether to enable a button to close all tabs except the active one
 buttons.scroll_left | bool | `true` | Whether to enable the scroll left button
@@ -18,7 +18,7 @@ options.auto_show_new_tab | bool | `true` | Whether to automatically display a n
 options.use_navbar_items | bool | `true` | Whether to also open the top navbar menu items in tabs, instead of open only sidebar menu items
 
 > [!Note]
-> Default values are only used when the related configuration option do not exists in the configuration file. The configuration file published by the package sets `buttons.close` to `true` and `options.loading_screen` to `1000`.
+> Default values are only used when the related configuration option do not exists in the configuration file. The configuration file published by the package already defines every option of the table above, using exactly these same values.
 
 > [!Tip]
 > You can tune the `loading_screen` value enough to hide visual anomalies that happens then loading a new **iframe tab**.

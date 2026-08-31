@@ -43,7 +43,7 @@ The following config options are available:
   Enables/Disables the fixed mode for the footer (adds the `.fixed-footer` class to the body).
 
 > [!Important]
-> AdminLTE v4 has no responsive fixed modes any more, the `.fixed-header` and `.fixed-footer` classes apply to every viewport size. For backward compatibility, an array value (the old [responsive usage](#responsive-usage)) is still accepted on `layout_fixed_navbar` and `layout_fixed_footer`, and it enables the fixed mode when any of its entries is `true`.
+> AdminLTE v4 has no responsive fixed modes any more, the `.fixed-header` and `.fixed-footer` classes apply to every viewport size. For backward compatibility, an array value (the old [responsive usage](#responsive-usage-deprecated)) is still accepted on `layout_fixed_navbar` and `layout_fixed_footer`, and it enables the fixed mode when any of its entries is `true`.
 
 ### Responsive Usage <Badge type="warning">deprecated</Badge>
 
@@ -61,7 +61,9 @@ The following configuration options are available:
 
 - __`color_mode.remember`__
 
-  When enabled (the default), the **AdminLTE v4 color mode plugin** stores the choice of the visitor on the browser local storage and restores it on the next page load, which is the standard AdminLTE v4 behavior.
+  When enabled (the default), the **AdminLTE v4 color mode plugin** stores the choice of the visitor in the **browser `localStorage`** and restores it on the next page load, which is the standard AdminLTE v4 behavior. The preference therefore lives only in that one browser: it is never sent to your application, it is lost when the visitor clears the site data or switches to another device or browser, and it cannot be read back on the server side.
+
+  Pick `remember => false` (together with an explicit `'light'` or `'dark'` default) whenever the preference has to live **on the server** instead — for example persisted per user in your database. In that mode the client side plugin is switched off and the package resolves the color mode from your own `ReadingDarkModePreference` / `DarkModeWasToggled` listeners, as described next.
 
   When set to `false`, the **AdminLTE color mode plugin is switched off entirely**: the package adds `data-lte-color-mode="off"` to the `<html>` element and uses its own **server side toggle** instead (the `adminlte.darkmode.toggle` route together with the `ReadingDarkModePreference` and `DarkModeWasToggled` events). This is the mode to pick when you want to persist the preference of a logged in user in your database rather than in their browser, or when the panel must always start on the configured `color_mode.default`.
 
@@ -293,7 +295,7 @@ The following configuration options are available:
 
 - __`sidebar_scrollbar_theme`__
 
-  Changes the sidebar vertical scrollbar theme used when the sidebar is on the fixed mode. Possible values are: `'os-theme-light'`, `'os-theme-dark'` or `'os-theme-none'` to hide the scrollbar.
+  Changes the sidebar vertical scrollbar theme. Possible values are: `'os-theme-light'`, `'os-theme-dark'` or `'os-theme-none'` to hide the scrollbar.
 
 - __`sidebar_scrollbar_auto_hide`__
 
@@ -307,6 +309,11 @@ The following configuration options are available:
 - __`sidebar_scrollbar_click_scroll`__
 
   Enables/Disables the click scroll behavior of the sidebar scrollbar (clicking on the scrollbar track scrolls the sidebar).
+
+> [!Note]
+> The three `sidebar_scrollbar_*` options above configure the **OverlayScrollbars** instance that the package attaches to the `.sidebar-wrapper` element. That setup is emitted whenever the layout **has a left sidebar** (so it is skipped only on the [top navigation layout](#layout)) and the `assets.overlayscrollbars` resource is not disabled — it is **not** tied to the fixed sidebar mode. On top of that, the instance is not created when the viewport is **992 pixels wide or narrower**, to avoid interfering with touch scrolling on mobile devices, so the sidebar simply uses the native scrollbar there.
+>
+> The values are handed over to **OverlayScrollbars 2.x** verbatim, so they must be valid options of that library.
 
 - __`sidebar_nav_accordion`__
 

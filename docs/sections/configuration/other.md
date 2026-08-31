@@ -110,7 +110,7 @@ The practical consequence:
 ## Laravel Mix
 
 > [!Important]
-> Please, be sure you're familiar with [Laravel Mix](https://laravel.com/docs/mix) before changing or using this configuration.
+> Please, be sure you're familiar with [Laravel Mix](https://laravel-mix.com/) before changing or using this configuration.
 
 If you want to use **Laravel Mix** to compile the assets into single files instead of publishing them in the `/public/vendor` folder, start by installing the required `NPM` packages:
 
@@ -180,7 +180,7 @@ Also, you can change the paths used to lookup for the bundled `JS` and `CSS` fil
 > [!Important]
 > Please, be sure you're familiar with [Livewire](https://livewire.laravel.com/) before changing or using this configuration.
 
-This option provides support to the [Livewire](https://laravel-livewire.com/) package. Before enabling livewire support, you must install the livewire package using composer:
+This option provides support to the [Livewire](https://livewire.laravel.com/) package. Before enabling livewire support, you must install the livewire package using composer:
 
 ```sh
 composer require livewire/livewire

@@ -1,12 +1,16 @@
 {
   "name": "jeroennoten/laravel-adminlte",
-  "description": "Easy AdminLTE integration with Laravel",
+  "description": "Easy AdminLTE v4 integration with Laravel",
   "keywords": [
     "laravel",
     "adminlte",
     "admin",
-    "administrator"
+    "administrator",
+    "dashboard",
+    "bootstrap5",
+    "blade"
   ],
+  "homepage": "https://jeroennoten.github.io/Laravel-AdminLTE",
   "license": "MIT",
   "authors": [
     {
@@ -14,6 +18,11 @@
       "email": "jeroennoten@me.com"
     }
   ],
+  "support": {
+    "issues": "https://github.com/jeroennoten/Laravel-AdminLTE/issues",
+    "source": "https://github.com/jeroennoten/Laravel-AdminLTE",
+    "docs": "https://jeroennoten.github.io/Laravel-AdminLTE"
+  },
   "autoload": {
     "psr-4": {
       "JeroenNoten\\LaravelAdminLte\\": "src/"

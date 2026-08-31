@@ -1,6 +1,6 @@
 # Easy AdminLTE integration with Laravel
 
-This package provides an easy way to quickly set up [AdminLTE v4](https://adminlte.io/) with [Laravel](https://laravel.com/). It has no other requirements and dependencies besides **Laravel**, so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/blade) that you can extend and an advanced menu configuration system. Also, and optionally, the package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
+This package provides an easy way to quickly set up [AdminLTE v4](https://adminlte.io/) with [Laravel](https://laravel.com/). Its only dependencies are **Laravel** itself and the [AdminLTE template](https://github.com/ColorlibHQ/AdminLTE) (pulled in by composer as `almasaeed2010/adminlte`), so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/blade) that you can extend and an advanced menu configuration system. Also, and optionally, the package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
 
 ## Two version numbers, do not mix them up
 

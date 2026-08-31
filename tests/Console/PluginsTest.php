@@ -118,6 +118,36 @@ class PluginsTest extends CommandTestCase
         $this->assertNull($plugins->getLegacyPluginReplacement('icheckBootstrap'));
     }
 
+    public function testEveryLegacyPluginKeyIsRecognized()
+    {
+        $plugins = new PluginsResource();
+
+        // Every plugin key of the AdminLTE v3 era must be recognized, either
+        // as a current plugin or as a legacy one with a reported replacement.
+
+        $legacyKeys = [
+            'bootstrap4DualListbox', 'bootstrapColorpicker', 'bootstrapSlider',
+            'bootstrapSwitch', 'bsCustomFileInput', 'chartJs', 'datatables',
+            'datatablesPlugins', 'daterangepicker', 'ekkoLightbox', 'fastclick',
+            'filterizr', 'flagIconCss', 'flot', 'fullcalendar', 'icheckBootstrap',
+            'inputmask', 'ionRangslider', 'jquery', 'jqueryKnob', 'jqueryMapael',
+            'jqueryMousewheel', 'jqueryUi', 'jqueryUiTouchPunch', 'jqueryValidation',
+            'jqvmap', 'jsgrid', 'moment', 'overlayScrollbars', 'paceProgress',
+            'raphael', 'select2', 'sparklines', 'summernote',
+            'tempusdominusBootstrap4', 'toastr',
+        ];
+
+        foreach ($legacyKeys as $key) {
+            $isCurrent = ! empty($plugins->getSourceData($key));
+            $isLegacy = $plugins->getLegacyPluginReplacement($key) !== false;
+
+            $this->assertTrue(
+                $isCurrent || $isLegacy,
+                "The plugin key '{$key}' is neither available nor reported as legacy."
+            );
+        }
+    }
+
     public function testInstallLegacyPluginNotifiesTheReplacement()
     {
         $this->artisan('adminlte:plugins install --plugin=summernote --force')

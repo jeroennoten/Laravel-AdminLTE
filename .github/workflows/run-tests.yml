@@ -62,6 +62,10 @@ jobs:
           extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
           coverage: none
 
+      # Verify the package metadata before installing anything.
+      - name: Validate composer.json
+        run: composer validate --strict --no-check-lock
+
       # Install the package dependencies.
       - name: Install dependencies
         run: |

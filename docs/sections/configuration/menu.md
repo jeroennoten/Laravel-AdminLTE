@@ -61,6 +61,7 @@ Attribute                                   | Description
 [key](#the-key-attribute)                   | An unique identifier key for reference the item.
 [label](#the-label-and-label-color-attributes) | Text for a badge associated with the item.
 [label_color](#the-label-and-label-color-attributes) | An AdminLTE color for the badge (info, primary, etc).
+[model](#the-model-attribute)               | A model class name or instance, used as the argument of the `can` checks.
 [route](#the-route-attribute)               | A route name, usually used on link items.
 [shift](#the-shift-attribute)               | **[Deprecated]** Classes to append to the list item (for shifting submenu items)
 [submenu](#the-submenu-attribute)           | Array with child items that enables nested menus definition.
@@ -199,6 +200,8 @@ The `icon` attribute is optional, and the sidebar items will fall back to an ope
 
 > [!Tip]
 > The `icon_color` attribute accepts the eight **Bootstrap 5.3** theme colors (`primary`, `secondary`, `success`, `danger`, `warning`, `info`, `light` and `dark`). Any color of the **AdminLTE v4** extended palette (`navy`, `olive`, `sky`, `teal`, ...) requires the `assets.extended_colors` option to be enabled on the `config/adminlte.php` file.
+>
+> Unlike the blade components, the menu attributes are **not** translated from the **AdminLTE v3** palette: the value is copied verbatim into the class name. So an old color name such as `lightblue` or `maroon` needs **both** `assets.extended_colors` and `assets.extended_colors_v3_aliases` to be enabled. Otherwise, use the v4 name (`sky`, `pink`, ...). The same applies to the `label_color` attribute.
 
 #### The __`id`__ Attribute:
 
@@ -229,6 +232,21 @@ The `label` attribute provides a way to setup a right aligned [badge](https://ge
     'label_color' => 'success',
 ]
 ```
+
+#### The __`model`__ Attribute:
+
+This attribute is only meaningful together with the [can](#the-can-attribute) attribute. Its value is passed as the extra argument of the `Gate::any()` check performed by the `GateFilter`, which is what [Laravel Policies](https://laravel.com/docs/authorization#creating-policies) need in order to resolve the policy class. The value may be a model class name (for the policy actions that do not require a model instance) or a model instance (only possible on a [dynamic menu configuration](#dynamic-menu-config)):
+
+```php
+[
+    'text' => 'Create Post',
+    'url' => 'admin/posts/new',
+    'can' => ['create'],
+    'model' => \App\Models\Post::class,
+]
+```
+
+When the attribute is not defined, the `can` permissions are checked without any extra argument. See [Side Notes About Laravel Policies Support](#side-notes-about-laravel-policies-support) for a complete walkthrough.
 
 #### The __`route`__ Attribute:
 
@@ -338,11 +356,11 @@ You can set the filters you want to include for rendering the menu using the `fi
 
 ```php
 'filters' => [
+    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\HrefFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\SearchFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ActiveFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\ClassesFilter::class,
-    JeroenNoten\LaravelAdminLte\Menu\Filters\GateFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\LangFilter::class,
     JeroenNoten\LaravelAdminLte\Menu\Filters\DataFilter::class,
 ],

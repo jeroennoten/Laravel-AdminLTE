@@ -255,11 +255,14 @@ This component represents a set of option tags. It can be used with [Select](#se
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 disabled | A list of disabled option `keys` | array | `null` | no
-empty-option | Whether to add a selectable empty option to the list. If the value is a `string`, it will be used as the option label, otherwise no label will be available | bool/string | `false` | no
+empty-option | Whether to add a selectable empty option to the list. If the value is a `string`, it will be used as the option label, otherwise no label will be available | bool/string | `null` | no
 options | The list of options as `key => value` pairs | array | - | **yes**
-placeholder | Whether to add a placeholder (non selectable hidden option) to the list. If the value is a `string`, it will be used as the placeholder label, otherwise no label will be available | bool/string | `false` | no
+placeholder | Whether to add a placeholder (non selectable hidden option) to the list. If the value is a `string`, it will be used as the placeholder label, otherwise no label will be available | bool/string | `null` | no
 selected | A list of selected option `keys` | array | `null` | no
 strict | Whether to use strict comparison between option's key and the keys of selected/disabled options | bool | `false` | no
+
+> [!Warning]
+> The `empty-option` and the `placeholder` attributes are evaluated with `isset()`, not for truthiness. So passing a literal `false` (for example `:empty-option="false"`) still **adds** the option, with an empty label. To leave it out, simply do not define the attribute (or pass `null`).
 
 The intention of the `empty-option` attribute is to represent a selectable option that will submit a `null` value for a selection component. On the other hand, the `placeholder` adds a non selectable (hidden option) to the list of options that will acts as a placeholder for the selection component. As an example, note the next components definition:
 
@@ -428,7 +431,7 @@ enable-old-support | Enable the auto retrievement and selection of the submitted
 > [!Important]
 > The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
-The available plugin configuration options are those explained on the [plugin documentation](https://select2.org/sections/configuration/options-api). All other attributes you define will be inserted directly on the underlying `select` element, so you can also use the [data-* attributes](https://select2.org/sections/configuration/data-attributes) to configure the plugin.
+The available plugin configuration options are those explained on the [plugin documentation](https://select2.org/configuration/options-api). All other attributes you define will be inserted directly on the underlying `select` element, so you can also use the [data-* attributes](https://select2.org/configuration/data-attributes) to configure the plugin.
 
 > [!Note]
 > You may also configure the plugin from `Javascript/jQuery` using the `id` or `name` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://select2.org/programmatic-control/methods#destroying-the-select2-control) method first.

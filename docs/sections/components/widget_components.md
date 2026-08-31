@@ -8,8 +8,8 @@ These components are classified under the **Widget** category and represents som
 
 Every widget component below accepts a `theme` attribute (and some of them an `icon-theme`, `progress-theme` or `badge` attribute) with a color name. On **AdminLTE v4** the colors are resolved as follows:
 
-- The eight **Bootstrap 5.3** theme colors (`primary`, `secondary`, `success`, `danger`, `warning`, `info`, `light` and `dark`) always work, they render as `text-bg-{color}`, `card-{color}`, `callout-{color}` or `bg-{color}` classes depending on the widget.
-- Any color of the **AdminLTE v4 extended palette** (`navy`, `midnight`, `slate`, `steel`, `graphite`, `sky`, `teal`, `olive`, `amber`, `orange`, `pink`, `fuchsia`, `violet` and `indigo`) requires the `assets.extended_colors` option of the [assets configuration](/sections/configuration/other#assets) to be enabled, so that the `adminlte-colors.css` stylesheet is loaded.
+- The eight **Bootstrap 5.3** theme colors (`primary`, `secondary`, `success`, `danger`, `warning`, `info`, `light` and `dark`) always work, they render as `text-bg-{color}`, `card-{color}`, `callout-{color}`, `alert-{color}`, `btn-{color}` or `bg-{color}` classes depending on the widget.
+- Any color of the **AdminLTE v4 extended palette** (`navy`, `midnight`, `slate`, `steel`, `graphite`, `sky`, `teal`, `olive`, `amber`, `orange`, `pink`, `fuchsia`, `violet` and `indigo`) requires the `assets.extended_colors` option of the [assets configuration](/sections/configuration/other#assets) to be enabled, so that the `adminlte-colors.css` stylesheet is loaded. The AdminLTE palette stylesheet does not provide the `alert-{color}` and `btn-{color}` families, so the package generates them for every extended color from the custom properties that the same stylesheet defines. This means the extended colors also work on the [Alert](#alert) component and on the [Button](/sections/components/basic_forms_components#button) component.
 - The **AdminLTE v3** color names are still accepted and are **translated on the fly** into their v4 equivalent, as shown on the next table.
 
 v3 name | v4 name | v3 name | v4 name
@@ -25,7 +25,7 @@ v3 name | v4 name | v3 name | v4 name
 > The translation is skipped when the `assets.extended_colors_v3_aliases` option is enabled, because in that case the `adminlte-colors-v3.css` stylesheet is loaded and the old names exist as real CSS classes.
 
 > [!Warning]
-> The `bg-gradient-{color}` classes are **not part of the AdminLTE v4 core stylesheet** anymore, they only exist on the extended colors stylesheet. The portable way to paint a gradient is to combine the color class with the Bootstrap `bg-gradient` helper, for example `class="text-bg-info bg-gradient"`, which is exactly what the components do internally.
+> The `bg-gradient-{color}` classes are **not part of the AdminLTE v4 core stylesheet** anymore, they only exist on the extended colors stylesheet. No component paints a gradient on your behalf, so the portable way to get one is to combine the color class with the Bootstrap `bg-gradient` helper yourself, for example `class="bg-gradient"` on a component that already renders a `text-bg-{color}` class.
 
 # Alert
 
@@ -35,7 +35,7 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 icon | An icon for the alert (Bootstrap Icons by default) | string | `null` | no
 dismissable | Setup the alert as dismissable, a button will be available to dismiss the alert | any | `null` | no
-theme | A theme color: dark, light, primary, secondary, info, success, warning or danger | string | `null` | no
+theme | A theme color: dark, light, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
 title | The title for the alert | string | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.alert` element. So, for example, you can define a `class`, `onclick`, `id` or any other attribute you may need.
@@ -197,8 +197,8 @@ Any other attribute you define will be directly inserted into the underlying `di
 
 > [!Note]
 > The `theme-mode` values render as follows on **AdminLTE v4**:
-> - `outline` &rarr; `card card-{theme} card-outline` (the card title also gets a `text-{theme}` class).
-> - `full` &rarr; `card text-bg-{theme} bg-gradient`, since the AdminLTE v3 `bg-gradient-{color}` classes are not part of the v4 core stylesheet anymore.
+> - `outline` &rarr; `card card-{theme} card-outline`. The card title stays plain (`card-title`), on AdminLTE v4 the theme color of an outline card is only painted on the top border.
+> - `full` &rarr; `card text-bg-{theme}`, since the AdminLTE v3 `bg-gradient-{color}` classes are not part of the v4 core stylesheet anymore. Add `class="bg-gradient"` yourself if you want the gradient back.
 > - No `theme-mode` &rarr; `card card-{theme}`.
 
 ### Card Tools
@@ -418,7 +418,7 @@ layout-type | The profile header layout type (`modern` or `classic`). | string |
 name | The user name of the profile | string | `null` | no
 theme | The profile header theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
 
-Any other attribute you define will be directly inserted into the underlying `div.card.card-widget` element. So, for example, you can define `class`, `onclick`, `id` or any other attribute you may need. There is a main `slot` available to provide content into the footer section, usually by adding [Profile Col Item or Profile Row Item](#profile-col-item-profile-row-item) elements, but you can try with custom content also.
+Any other attribute you define will be directly inserted into the underlying `div.card` element, which also carries a `widget-user` class on the `modern` layout or a `widget-user-2` class on the `classic` one. So, for example, you can define `class`, `onclick`, `id` or any other attribute you may need. There is a main `slot` available to provide content into the footer section, usually by adding [Profile Col Item or Profile Row Item](#profile-col-item-profile-row-item) elements, but you can try with custom content also.
 
 ### Examples
 

@@ -44,7 +44,7 @@ You can install all the required and some additional package resources using the
 
 - `--force`: Use this option to force the overwrite of any existing files during the installation process.
 
-- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (all resources).
+- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (a basic installation plus the `auth_views`, `auth_routes`, `main_views` and `components` resources). Note that no installation type includes the optional `vendor_assets` resource, install it with `--with=vendor_assets` or `--only=vendor_assets`.
 
 - `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views** or **components**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
   ```sh
@@ -127,10 +127,14 @@ You can **list**, **install** or **remove** all the available plugins at once or
 
 ## The `adminlte:update` Command
 
-This command is only a shortcut for `php artisan adminlte:install --force --only=assets`.
+This command is a shortcut for `php artisan adminlte:install --force --only=assets`, extended with two conveniences:
+
+- When the optional `vendor_assets` resource was **previously published**, it is refreshed too, so the command becomes `php artisan adminlte:install --force --only=assets --only=vendor_assets`. When it was never published, it is left alone (the package falls back to the CDN for those resources).
+
+- When the `main_views` resource was **previously published** and it differs from the one currently provided by the package, the command prints a warning telling you that your published layout views are outdated and may require a manual update.
 
 > [!Note]
-> This command will only update the AdminLTE assets located on the `public/vendor` folder. It will not update any other package resources, refer to section [Updating](/sections/overview/updating) to check how to make a complete update.
+> This command only updates the assets located on the `public/vendor` folder. It will not update any other package resource (the configuration file, the translations or the published views), refer to section [Updating](/sections/overview/updating) to check how to make a complete update.
 
 ## The `adminlte:status` Command
 

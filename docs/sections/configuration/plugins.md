@@ -26,7 +26,7 @@ The plugin **active** status and the **files** array (even empty) are always req
 > [!Warning]
 > A `{version}` placeholder inside a plugin **location** (or inside its `rtl` counterpart) is substituted by the installed **AdminLTE** version, exactly as on the [assets](./other.md#the-adminlte-version-of-the-cdn-locations) configuration. This is useful for the plugins that point to an asset of the AdminLTE distribution, like the shipped `Select2` compatibility theme.
 
-By default the [DataTables](https://datatables.net/), [Select2](https://select2.github.io/), [Tom Select](https://tom-select.js.org/), [Tabulator](https://tabulator.info/), [Flatpickr](https://flatpickr.js.org/), [Quill](https://quilljs.com/), [noUiSlider](https://refreshless.com/nouislider/), [ChartJS](https://www.chartjs.org/), [Pace](http://github.hubspot.com/pace/docs/welcome/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are configured out-of-the-box with `CDN` files but they are not active. You can activate them by changing the `active` attribute to load it on every page, or instead by adding a `@section(...)` directive in some specific blade file to automatically inject their files. For example, to inject the **Datatables** plugin you can use the following code at the begin of your blade template:
+By default the [DataTables](https://datatables.net/), [Select2](https://select2.org/), [Tom Select](https://tom-select.js.org/), [Tabulator](https://tabulator.info/), [Flatpickr](https://flatpickr.js.org/), [Quill](https://quilljs.com/), [noUiSlider](https://refreshless.com/nouislider/), [ChartJS](https://www.chartjs.org/), [Pace](https://codebyzach.github.io/pace/) and [SweetAlert2](https://sweetalert2.github.io/) plugins are configured out-of-the-box with `CDN` files but they are not active. You can activate them by changing the `active` attribute to load it on every page, or instead by adding a `@section(...)` directive in some specific blade file to automatically inject their files. For example, to inject the **Datatables** plugin you can use the following code at the begin of your blade template:
 
 ```blade
 @section('plugins.Datatables', true)
@@ -99,7 +99,7 @@ You can change the Pace plugin theme by modifying the `css` file location when u
 
 ### Install a Plugin with the Artisan Command
 
-There is a set of predefined plugins that are part of the underlying **AdminLTE** template and that you can install using the [artisan command](/sections/overview/artisan_console_commands#the-adminlteplugins-command) provided by this package. You can view the list of available plugins using the next command:
+There is a set of predefined plugins that are part of the underlying **AdminLTE** template and that you can install using the [artisan command](/sections/overview/artisan_console_commands#the-adminlte-plugins-command) provided by this package. You can view the list of available plugins using the next command:
 
 ```sh
 php artisan adminlte:plugins

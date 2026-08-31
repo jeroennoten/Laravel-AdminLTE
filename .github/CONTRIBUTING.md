@@ -12,7 +12,7 @@ Refer to [this guide](https://help.github.com/articles/about-pull-requests/) for
 
 - Review all the automated tests that are triggered when submitting your **Pull Request**.
 - Always check that the **Pull Request** doesn't introduce a high downgrade on the code quality. For this, you need to review the automated **Scrutinizer CI** test.
-- If the **Pull Request** introduces a new feature, consider adding a proposal of the documentation for the [Wiki](https://github.com/jeroennoten/Laravel-AdminLTE/wiki) into the **Pull Request** description.
+- If the **Pull Request** introduces a new feature, consider adding the documentation for it to the [docs folder](https://github.com/jeroennoten/Laravel-AdminLTE/tree/master/docs/sections) in the same **Pull Request**.
 - Please, keep the package focused and do not add support to other packages or very particular situations. These changes will make the package harder to maintain.
 
 ## Testing your changes.

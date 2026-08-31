@@ -209,10 +209,10 @@ The modal also defines the next extra **slot** (the main slot is used for the mo
 > The modal is built with the **Bootstrap 5** markup and data attributes: use `data-bs-toggle="modal"` and `data-bs-target="#id"` to open it, and `data-bs-dismiss="modal"` to close it (the Bootstrap 4 `data-toggle`, `data-target` and `data-dismiss` attributes do not work anymore). The close control of the header is a `button.btn-close`, and the `static-backdrop` attribute emits `data-bs-backdrop="static"` together with `data-bs-keyboard="false"`.
 
 > [!Note]
-> Bootstrap 5.3 resolves the color of the `btn-close` control from the active color mode, so when the theme paints a dark header (`primary`, `secondary`, `success`, `danger`, `dark`, `indigo`, `navy`, `purple`, `violet`, `fuchsia`, `pink`, `maroon`, `olive`, `lime`, `teal`, `blue`, `green`, `red` or `gray-dark`) the component adds `data-bs-theme="dark"` to the header, so that the close icon keeps enough contrast.
+> Bootstrap 5.3 resolves the color of the `btn-close` control from the active color mode, so when the theme paints a dark header (`primary`, `secondary`, `success`, `danger`, `dark`, `indigo`, `navy`, `midnight`, `slate`, `steel`, `graphite`, `violet`, `fuchsia`, `pink`, `olive` or `teal`) the component adds `data-bs-theme="dark"` to the header, so that the close icon keeps enough contrast. The check runs on the **resolved** color name, so the AdminLTE v3 aliases of those colors (`purple`, `maroon`, `lime`, `blue`, `red`, `green` and `gray-dark`) are covered as well.
 
-> [!Warning]
-> Unlike the widget components, this component does **not** map the **AdminLTE v3** color names. A `theme="lightblue"` value renders a literal `text-bg-lightblue` class, which only exists when the `assets.extended_colors_v3_aliases` option is enabled. Prefer the v4 names (`sky` instead of `lightblue`, `pink` instead of `maroon`) with `assets.extended_colors` enabled.
+> [!Note]
+> Just like the widget components, this component maps the **AdminLTE v3** color names on the fly, so a `theme="lightblue"` value renders `text-bg-sky`. See [About the `theme` Attribute](/sections/components/widget_components#about-the-theme-attribute) for the complete translation table. The literal v3 name (`text-bg-lightblue`) is only emitted when the `assets.extended_colors_v3_aliases` option is enabled, since in that case the old names exist as real CSS classes and no mapping is applied. Remember that any color outside the eight Bootstrap ones also requires `assets.extended_colors` to be enabled.
 
 ### Examples
 

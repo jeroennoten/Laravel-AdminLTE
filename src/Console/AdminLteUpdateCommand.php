@@ -36,7 +36,7 @@ class AdminLteUpdateCommand extends Command
     latest changes. In the particular case you have recently changed those views
     to include own customizations, then you can ignore this warning. Please,
     refer to next link for more instructions on how to update the views:
-    https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Updating</>';
+    https://jeroennoten.github.io/Laravel-AdminLTE/sections/overview/updating.html</>';
 
     /**
      * Execute the console command.
