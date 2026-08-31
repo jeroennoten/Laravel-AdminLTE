@@ -14,7 +14,6 @@ class PluginsResource extends PackageResource
      */
     protected $catalog;
 
-
     /**
      * Create a new resource instance.
      *
