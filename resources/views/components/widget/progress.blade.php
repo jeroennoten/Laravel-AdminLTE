@@ -31,7 +31,7 @@
     'aria-valuenow' => $value,
     'aria-valuemin' => 0,
     'aria-valuemax' => 100,
-    'aria-label' => 'Progress',
+    'aria-label' => __('adminlte::adminlte.progress'),
 ]) }}>
 
     {{-- Progress bar --}}

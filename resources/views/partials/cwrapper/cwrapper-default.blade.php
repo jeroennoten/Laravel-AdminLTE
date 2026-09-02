@@ -18,20 +18,20 @@
         @include('adminlte::partials.common.preloader')
     @endif
 
-    {{-- Content Header --}}
-    @hasSection('content_header')
-        <div class="app-content-header">
-            <div class="{{ config('adminlte.classes_content_header') ?: $def_container_class }}">
-                @yield('content_header')
-            </div>
-        </div>
-    @endif
-
     {{-- Content Top Area --}}
     @hasSection('content_top_area')
         <div class="app-content-top-area">
             <div class="{{ config('adminlte.classes_content_top_area') ?: $def_container_class }}">
                 @yield('content_top_area')
+            </div>
+        </div>
+    @endif
+
+    {{-- Content Header --}}
+    @hasSection('content_header')
+        <div class="app-content-header">
+            <div class="{{ config('adminlte.classes_content_header') ?: $def_container_class }}">
+                @yield('content_header')
             </div>
         </div>
     @endif

@@ -184,7 +184,7 @@ A header item can also be represented with a single string, for example `"REPORT
 
 #### The __`icon`__ and __`icon_color`__ Attributes:
 
-The `icon` attribute is optional, and the sidebar items will fall back to an open circle (`bi bi-circle`) if you leave it out. **AdminLTE v4** ships [Bootstrap Icons](https://icons.getbootstrap.com/), so the available icons that you can use are those from that set. Just specify the class name of the icon and it will appear in front of your menu item. The `ìcon_color` attribute provides a way to setup an **AdminLTE color** for the icon (it is rendered as a `text-{color}` class). Example:
+The `icon` attribute is optional, and the sidebar items will fall back to an open circle (`bi bi-circle`) if you leave it out. **AdminLTE v4** ships [Bootstrap Icons](https://icons.getbootstrap.com/), so the available icons that you can use are those from that set. Just specify the class name of the icon and it will appear in front of your menu item. The `icon_color` attribute provides a way to setup an **AdminLTE color** for the icon (it is rendered as a `text-{color}` class). Example:
 
 ```php
 [

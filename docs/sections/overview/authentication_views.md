@@ -39,7 +39,7 @@ The **AdminLTE v4** login and register pages provide a `social-auth-links` block
 
 The available attributes of each link are:
 
-- `url`: the target of the link. It is the only required attribute, the links without an `url` are ignored. Note the value is used as it is, so you may want to fill it with the helpers of your application (for example, `route('social.login', 'facebook')`).
+- `url`: the target of the link. It is the only required attribute, the links without an `url` are ignored. The value is rendered as it is, so you may want to fill it with the helpers of your application (for example, `route('social.login', 'facebook')`). Only an `http`/`https` url or an application relative path is accepted: an entry carrying any other scheme (a `javascript:` url, for example) is dropped and no button is rendered for it.
 - `text`: the label of the button. When not defined, the _Sign In_ (login view) or _Register_ (register view) translation is used instead.
 - `icon`: an optional icon class, for example `bi bi-facebook`. Only plain class tokens (letters, digits, hyphens and underscores) are accepted, any other value is discarded and the button is rendered without an icon.
 - `theme`: the [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/components/buttons/) button theme, without the `btn-` prefix. The accepted values are `primary`, `secondary`, `success`, `danger`, `warning`, `info`, `light`, `dark` and `link`, plus their `outline-` variants. Any other value falls back to `primary`. Defaults to `primary`.

@@ -410,7 +410,13 @@ class LayoutRenderTest extends TestCase
 
         $html = $this->renderPage();
 
-        $this->assertStringContainsString('app-wrapper compact-mode', $html);
+        // The token compounds with the sidebar ones, so it sits on the body.
+
+        $this->assertMatchesRegularExpression(
+            '/<body[^>]*class="[^"]*compact-mode/',
+            $html
+        );
+        $this->assertStringNotContainsString('app-wrapper compact-mode', $html);
     }
 
     public function testRenderWithTheConfiguredWrapperClasses()
@@ -594,44 +600,46 @@ class LayoutRenderTest extends TestCase
 
     public function testRenderTheSidebarNavigationVariants()
     {
-        config(['adminlte.sidebar_nav_compact' => true]);
+        // The variants land on the body, where AdminLTE compounds them with
+        // the sidebar tokens, and the menu element keeps its own classes.
 
-        $this->assertStringContainsString(
-            '<ul class="nav sidebar-menu flex-column nav-compact"',
-            $this->renderPage()
-        );
+        foreach (['compact', 'indent', 'pills'] as $variant) {
+            config(['adminlte' => ["sidebar_nav_{$variant}" => true]]);
 
-        config([
-            'adminlte.sidebar_nav_compact' => false,
-            'adminlte.sidebar_nav_indent' => true,
-        ]);
+            $html = $this->renderPage();
 
-        $this->assertStringContainsString(
-            '<ul class="nav sidebar-menu flex-column nav-indent"',
-            $this->renderPage()
-        );
+            $this->assertMatchesRegularExpression(
+                '/<body[^>]*class="[^"]*nav-'.$variant.'/',
+                $html
+            );
+            $this->assertStringContainsString(
+                '<ul class="nav sidebar-menu flex-column"',
+                $html
+            );
+        }
+    }
 
-        config([
-            'adminlte.sidebar_nav_indent' => false,
-            'adminlte.sidebar_nav_pills' => true,
-        ]);
-
-        $this->assertStringContainsString(
-            '<ul class="nav sidebar-menu flex-column nav-pills"',
-            $this->renderPage()
-        );
-
-        // The variants can be combined, and they precede the custom classes.
-
+    public function testTheSidebarNavigationVariantsCanBeCombined()
+    {
         config([
             'adminlte.sidebar_nav_compact' => true,
             'adminlte.sidebar_nav_indent' => true,
+            'adminlte.sidebar_nav_pills' => true,
             'adminlte.classes_sidebar_nav' => 'my-nav-cls',
         ]);
 
+        $html = $this->renderPage();
+
+        $this->assertMatchesRegularExpression(
+            '/<body[^>]*class="[^"]*nav-compact nav-indent nav-pills/',
+            $html
+        );
+
+        // The custom classes stay on the menu element.
+
         $this->assertStringContainsString(
-            '<ul class="nav sidebar-menu flex-column nav-compact nav-indent nav-pills my-nav-cls"',
-            $this->renderPage()
+            '<ul class="nav sidebar-menu flex-column my-nav-cls"',
+            $html
         );
     }
 
@@ -818,7 +826,7 @@ class LayoutRenderTest extends TestCase
         $html = $this->renderPage();
 
         $this->assertStringContainsString(
-            '[data-bs-theme] .app-sidebar, .app-sidebar {',
+            '[data-bs-theme] .app-sidebar, [data-bs-theme].app-sidebar, .app-sidebar {',
             $html
         );
         $this->assertStringContainsString(
@@ -858,5 +866,61 @@ class LayoutRenderTest extends TestCase
             strpos($html, '.app-sidebar {'),
             strpos($html, '--bs-primary: #6f42c1;')
         );
+    }
+
+    public function testTheSkipLinkTargetsTheSidebarNavigation()
+    {
+        // Without an explicit id the AdminLTE accessibility script stamps the
+        // first nav of the document, which is the header toolbar.
+
+        $html = $this->renderPage();
+
+        $this->assertMatchesRegularExpression(
+            '/<nav id="navigation"[^>]*aria-label=/',
+            $html
+        );
+
+        // The id must sit on the sidebar nav, after the header.
+
+        $this->assertLessThan(
+            strpos($html, 'id="navigation"'),
+            strpos($html, 'class="app-header')
+        );
+    }
+
+    public function testTheContentAreasFollowTheReferenceOrder()
+    {
+        // The reference layout puts the top area above the content header:
+        // its border-bottom is designed to sit right under the app-header,
+        // and the bottom area is the last band of the app-main grid.
+
+        View::startSection('content_top_area');
+        echo 'TOP';
+        View::stopSection();
+
+        View::startSection('content_header');
+        echo 'HEADER';
+        View::stopSection();
+
+        View::startSection('content_bottom_area');
+        echo 'BOTTOM';
+        View::stopSection();
+
+        $html = View::make('adminlte::page')->render();
+
+        $top = strpos($html, 'app-content-top-area');
+        $header = strpos($html, 'app-content-header');
+        // Note 'app-content-top-area' also starts with 'app-content', so the
+        // main content is matched on its own class boundary.
+
+        preg_match('/class="app-content[ "]/', $html, $m, PREG_OFFSET_CAPTURE);
+        $content = $m[0][1];
+        $bottom = strpos($html, 'app-content-bottom-area');
+
+        $this->assertLessThan($header, $top);
+        $this->assertLessThan($content, $header);
+        $this->assertLessThan($bottom, $content);
+
+        View::flushSections();
     }
 }

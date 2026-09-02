@@ -8,7 +8,7 @@
         $rsPlacement = 'end';
     }
 
-    $rsTheme = config('adminlte.right_sidebar_theme', 'dark');
+    $rsTheme = config('adminlte.right_sidebar_theme');
 
     if (! in_array($rsTheme, ['light', 'dark'])) {
         $rsTheme = null;
@@ -31,7 +31,7 @@
 
         <h5 class="offcanvas-title @unless($rsHasTitle) visually-hidden @endunless"
             id="adminlte-right-sidebar-title">
-            {{ $rsHasTitle ? $rsTitle : config('adminlte.title', 'AdminLTE') }}
+            {{ $rsHasTitle ? $rsTitle : config('adminlte.title', 'AdminLTE 4') }}
         </h5>
 
         <button type="button" class="btn-close" data-bs-dismiss="offcanvas"

@@ -327,7 +327,7 @@ The relevant options of the `color_mode` section are:
     'no_flash_script' => true,  // Apply the stored color mode before the first paint.
 
     'theme_color' => [          // Colors used for the 'theme-color' meta tags.
-        'light' => '#007bff',
+        'light' => '#0d6efd',
         'dark' => '#1a1a1a',
     ],
 ],

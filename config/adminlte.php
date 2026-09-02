@@ -526,6 +526,41 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | CSS Variables (AdminLTE v4)
+    |--------------------------------------------------------------------------
+    |
+    | The AdminLTE v4 theming is driven by the Bootstrap 5.3 and the AdminLTE
+    | custom properties, so overriding them is enough for most brandings and
+    | needs no stylesheet of your own. The declarations are emitted on an
+    | inline <style> block of the document head.
+    |
+    | Only well formed custom property names ('--name') and values that can
+    | not break out of the declaration are accepted, any other entry is
+    | silently dropped.
+    |
+    | For detailed instructions you can look the css variables section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
+    |
+    */
+
+    // The custom properties applied on the whole document. For example:
+    // 'css_variables' => ['--bs-primary' => '#6f42c1'],
+
+    'css_variables' => [],
+
+    // The selector of the block above. Only ':root' and 'body' are accepted.
+
+    'css_variables_scope' => ':root',
+
+    // The custom properties applied on the sidebar element only. AdminLTE
+    // redeclares the sidebar properties under a color mode selector, so these
+    // are emitted with a matching specificity. For example:
+    // 'css_variables_sidebar' => ['--lte-sidebar-bg' => '#1f2d3d'],
+
+    'css_variables_sidebar' => [],
+
+    /*
+    |--------------------------------------------------------------------------
     | Laravel Asset Bundling
     |--------------------------------------------------------------------------
     |
@@ -539,10 +574,6 @@ return [
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/other.html
     |
     */
-
-    'css_variables' => [],
-    'css_variables_scope' => ':root',
-    'css_variables_sidebar' => [],
 
     'laravel_asset_bundling' => false,
     'laravel_css_path' => 'resources/css/app.css',

@@ -187,7 +187,7 @@ The styling was split into two independent options:
 'sidebar_theme' => 'dark',
 ```
 
-The sidebar navigation skins went the same way: **`nav-child-indent`, `nav-flat` and `nav-legacy` no longer exist**. Only `nav-compact` survives on `classes_sidebar_nav`.
+The sidebar navigation skins went the same way: **`nav-child-indent`, `nav-flat` and `nav-legacy` no longer exist**. AdminLTE v4 styles `nav-compact` and `nav-indent`, and the Bootstrap `nav-pills` variant also applies. All three have their own configuration option (`sidebar_nav_compact`, `sidebar_nav_indent` and `sidebar_nav_pills`), so there is no need to write them into `classes_sidebar_nav` by hand. See [layout & styling](/sections/configuration/layout_and_styling#sidebar).
 
 ## The Plugin Catalogue Now Comes From npm
 

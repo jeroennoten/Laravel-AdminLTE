@@ -23,8 +23,8 @@ The `icon` attributes are plain **class strings** that are copied verbatim into 
 {{-- Bootstrap Icons (the AdminLTE v4 default) --}}
 <x-adminlte-button label="Save" theme="success" icon="bi bi-save"/>
 
-{{-- Any other icon font you loaded on your own --}}
-<x-adminlte-button label="Save" theme="success" icon="bi bi-save"/>
+{{-- Any other icon font you loaded on your own (Font Awesome here) --}}
+<x-adminlte-button label="Save" theme="success" icon="fas fa-save"/>
 ```
 
 > [!Note]

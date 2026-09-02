@@ -34,7 +34,12 @@
 
     {{-- Sidebar menu --}}
     <div class="sidebar-wrapper">
-        <nav class="mt-2" aria-label="{{ config('adminlte.sidebar_nav_aria_label') ?: __('adminlte::adminlte.main_navigation') }}">
+        {{-- The 'navigation' id is the target of the skip link. Without it the
+             AdminLTE accessibility script falls back to the first nav element
+             of the document, which is the header toolbar. --}}
+        <nav id="navigation"
+            aria-label="{{ config('adminlte.sidebar_nav_aria_label') ?: __('adminlte::adminlte.main_navigation') }}"
+            class="mt-2">
             <ul class="{{ $layoutHelper->makeSidebarNavClasses() }}"
                 id="{{ $sidebarMenuId }}"
                 data-lte-toggle="treeview"

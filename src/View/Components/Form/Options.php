@@ -66,8 +66,17 @@ class Options extends Component
         $this->selected = Arr::wrap($selected);
         $this->disabled = Arr::wrap($disabled);
         $this->strict = isset($strict);
-        $this->emptyOption = UtilsHelper::applyHtmlEntityDecoder($emptyOption);
-        $this->placeholder = UtilsHelper::applyHtmlEntityDecoder($placeholder);
+        // A bare 'empty-option' attribute reaches the component as a boolean,
+        // and the decoder would turn it into the literal '1'. Only a string
+        // carries a label, anything else just enables the empty option.
+
+        $this->emptyOption = is_string($emptyOption)
+            ? UtilsHelper::applyHtmlEntityDecoder($emptyOption)
+            : $emptyOption;
+
+        $this->placeholder = is_string($placeholder)
+            ? UtilsHelper::applyHtmlEntityDecoder($placeholder)
+            : $placeholder;
     }
 
     /**

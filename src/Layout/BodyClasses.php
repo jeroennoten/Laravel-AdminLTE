@@ -61,6 +61,15 @@ class BodyClasses
             $classes[] = Tokens::FIXED_FOOTER;
         }
 
+        // The compact mode belongs to the body and not to the wrapper: two of
+        // its rules compound the token with the sidebar ones on a single
+        // element, and those live here. Every other rule is a descendant
+        // selector, so it keeps matching from the body too.
+
+        if (config('adminlte.layout_compact', false) === true) {
+            $classes[] = Tokens::COMPACT_MODE;
+        }
+
         return $classes;
     }
 
@@ -91,7 +100,7 @@ class BodyClasses
      */
     protected static function makeCustomClasses(): array
     {
-        $cfg = config('adminlte.classes_body', '');
+        $cfg = config('adminlte.classes_body', 'bg-body-tertiary');
 
         return is_string($cfg) && ! empty($cfg) ? [$cfg] : [];
     }

@@ -15,6 +15,47 @@ class AssetResolver
     public const RTL_AWARE_KEYS = ['adminlte_css', 'colors_css', 'colors_v3_css'];
 
     /**
+     * The locations shipped by the package configuration file, used whenever
+     * the application configuration does not provide them.
+     *
+     * @var array|null
+     */
+    protected static $shippedLocations;
+
+    /**
+     * Gets the configured location of an asset. The application configuration
+     * wins, and the location shipped by the package is the fallback.
+     *
+     * A published configuration file that predates a key, or one trimmed by
+     * hand, would otherwise resolve to null and the layout would silently
+     * render without the AdminLTE stylesheet and script. Note the shallow
+     * 'mergeConfigFrom' of Laravel cannot cover this, and it is skipped
+     * altogether once the configuration is cached.
+     *
+     * @param  string  $mode  The delivery mode ('local' or 'cdn')
+     * @param  string  $key  The asset key (as defined on the config file)
+     * @return mixed
+     */
+    protected static function location($mode, $key)
+    {
+        $path = "adminlte.assets.{$mode}.{$key}";
+
+        // An explicitly configured value wins, even when it is null, so an
+        // application can still opt out of an asset.
+
+        if (config()->has($path)) {
+            return config($path);
+        }
+
+        if (! isset(self::$shippedLocations)) {
+            $config = require __DIR__.'/../../config/adminlte.php';
+            self::$shippedLocations = $config['assets'] ?? [];
+        }
+
+        return self::$shippedLocations[$mode][$key] ?? null;
+    }
+
+    /**
      * Gets the configured assets delivery mode.
      *
      * @return string
@@ -35,8 +76,8 @@ class AssetResolver
     public static function resolve($key): ?string
     {
         $key = self::resolveKeyDirection($key);
-        $cdn = AdminLteVersion::apply(config("adminlte.assets.cdn.{$key}"));
-        $local = config("adminlte.assets.local.{$key}");
+        $cdn = AdminLteVersion::apply(self::location('cdn', $key));
+        $local = self::location('local', $key);
 
         if (self::mode() === 'cdn') {
             return self::firstAvailable($cdn, $local);

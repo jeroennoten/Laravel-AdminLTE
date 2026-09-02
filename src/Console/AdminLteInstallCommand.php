@@ -22,8 +22,8 @@ class AdminLteInstallCommand extends Command
      */
     protected $signature = 'adminlte:install
         {--type=basic : The installation type: basic, basic_with_auth, basic_with_views or full}
-        {--only=* : To install only specific resources: assets, config, translations, auth_views, auth_routes, main_views or components. Can\'t be mixed with option --with}
-        {--with=* : To install with additional resources: auth_views, auth_routes, main_views or components}
+        {--only=* : To install only specific resources: assets, vendor_assets, config, translations, auth_views, auth_routes, main_views, components or error_views. Can\'t be mixed with option --with}
+        {--with=* : To install with additional resources: vendor_assets, auth_views, auth_routes, main_views, components or error_views}
         {--force : To force the overwrite of existing files during the installation process}
         {--interactive : To allow the installation process guide you through it}';
 

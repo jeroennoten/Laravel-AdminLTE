@@ -44,7 +44,7 @@ The following config options are available:
 
 - __`layout_compact`__
 
-  Enables/Disables the AdminLTE v4 compact mode (adds the `.compact-mode` class to the `.app-wrapper` element). It reduces the height of the header, the padding of the sidebar links and the spacing of the content, which fits more information on a screen.
+  Enables/Disables the AdminLTE v4 compact mode (adds the `.compact-mode` class to the `body` element). It reduces the height of the header, the padding of the sidebar links and the spacing of the content, which fits more information on a screen.
 
 > [!Important]
 > AdminLTE v4 has no responsive fixed modes any more, the `.fixed-header` and `.fixed-footer` classes apply to every viewport size. For backward compatibility, an array value (the old [responsive usage](#responsive-usage-deprecated)) is still accepted on `layout_fixed_navbar` and `layout_fixed_footer`, and it enables the fixed mode when any of its entries is `true`.
@@ -252,7 +252,7 @@ The following config options are available:
 
 - __`classes_sidebar_nav`__
 
-  Extra classes for the sidebar navigation. Classes will be added to the element `ul.nav.sidebar-menu`, after the built-in style variants. The three variants that AdminLTE v4 styles (`nav-compact`, `nav-indent` and `nav-pills`) have their own options on the [sidebar](#sidebar) section, so there is no need to write them here.
+  Extra classes for the sidebar navigation. Classes will be added to the element `ul.nav.sidebar-menu`. The three variants that AdminLTE v4 styles (`nav-compact`, `nav-indent` and `nav-pills`) have their own options on the [sidebar](#sidebar) section, and they are added to the `body` element instead, so there is no need to write them here.
 
 > [!Important]
 > The `nav-child-indent`, `nav-flat` and `nav-legacy` classes of AdminLTE v3 no longer exist.
@@ -283,7 +283,7 @@ The following configuration options are available:
   Enables/Disables the collapsed mini sidebar mode (adds the `.sidebar-mini` class to the body). Use `true` to enable it or `false` to disable it.
 
 > [!Important]
-> AdminLTE v4 has a single sidebar mini mode, the breakpoint where the sidebar switches to its offcanvas (mobile) behavior is controlled by the `sidebar_expand` option instead. The legacy `'xs'`, `'md'` and `'lg'` tokens are still accepted and simply enable the mini mode.
+> AdminLTE v4 has a single sidebar mini mode, the breakpoint where the sidebar switches to its offcanvas (mobile) behavior is controlled by the `sidebar_expand` option instead. The legacy breakpoint tokens (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'` and `'xxl'`) are still accepted and simply enable the mini mode.
 
 - __`sidebar_expand`__
 
@@ -355,18 +355,18 @@ The following configuration options are available:
 
 - __`sidebar_nav_compact`__
 
-  Enables/Disables the compact style of the sidebar navigation (adds the `.nav-compact` class to the element `ul.nav.sidebar-menu`). It removes the rounded corners and the spacing between the links, which fits more items on a screen.
+  Enables/Disables the compact style of the sidebar navigation (adds the `.nav-compact` class to the `body` element). It removes the rounded corners and the spacing between the links, which fits more items on a screen.
 
 - __`sidebar_nav_indent`__
 
-  Enables/Disables the indentation of the sidebar submenus (adds the `.nav-indent` class to the element `ul.nav.sidebar-menu`). The children of a treeview get an extra left padding, so the hierarchy of the menu is easier to follow. It can be combined with `sidebar_nav_compact`, AdminLTE styles that combination on its own.
+  Enables/Disables the indentation of the sidebar submenus (adds the `.nav-indent` class to the `body` element). The children of a treeview get an extra left padding, so the hierarchy of the menu is easier to follow. It can be combined with `sidebar_nav_compact`, AdminLTE styles that combination on its own.
 
 - __`sidebar_nav_pills`__
 
-  Enables/Disables the Bootstrap pills style of the sidebar navigation (adds the `.nav-pills` class to the element `ul.nav.sidebar-menu`). The active link is then painted with the `--bs-nav-pills-link-active-bg` color of Bootstrap instead of the sidebar one.
+  Enables/Disables the Bootstrap pills style of the sidebar navigation (adds the `.nav-pills` class to the `body` element). The active link is then painted with the `--bs-nav-pills-link-active-bg` color of Bootstrap instead of the sidebar one.
 
 > [!Note]
-> The three options above are the built-in style variants of the AdminLTE v4 sidebar menu. They are added before the extra classes of `classes_sidebar_nav`, so those still win. Note the `.sidebar-collapse` refinements that AdminLTE defines for the indented menu (the padding of the submenus while a mini sidebar is hovered) are written against the **body**, so they only apply when you also add `nav-indent` to `classes_body`.
+> The three options above are the built-in style variants of the AdminLTE v4 sidebar menu. They are emitted on the **body** element, not on the menu, because AdminLTE compounds them with `sidebar-mini` and `sidebar-collapse` on a single element and then reaches the sidebar as a descendant. Placing them on the menu would silently lose the refinements for the collapsed and hover-expanded sidebar. The same applies to `layout_compact`.
 
 - __`sidebar_nav_accordion`__
 
