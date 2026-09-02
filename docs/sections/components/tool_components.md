@@ -63,7 +63,7 @@ All other extra attributes you define will be inserted directly on the underlyin
 > When the `with-buttons` attribute is enabled, the export buttons are rendered with **Bootstrap Icons**: `bi bi-printer` (print), `bi bi-filetype-csv` (CSV), `bi bi-file-earmark-excel` (Excel) and `bi bi-file-earmark-pdf` (PDF). Their tooltips are translated, see the [accessibility strings](/sections/configuration/translations#accessibility-strings).
 
 > [!Note]
-> The component configures the table through the Datatables **2.x `layout`** option (`topStart`, `topEnd`, `bottomStart`, `bottomEnd`). The `dom` option of the 1.x releases is deprecated in the pinned version, but it is still honored when you pass it explicitly on the `config` attribute, in which case the component adds no `layout` of its own.
+> To place the export buttons, the component writes a Datatables **2.x `layout`** option (`topStart: buttons`, `topEnd: search`, `bottomStart: info`, `bottomEnd: paging`). It is only written when the `with-buttons` attribute is enabled: without it the plugin keeps its own default layout. The `dom` option of the 1.x releases is deprecated in the pinned version, but it is still honored when you pass it explicitly on the `config` attribute, in which case the component adds no `layout` of its own (the same happens when you provide your own `layout`).
 
 > [!Note]
 > You can always do all the plugin configuration from `Javascript/jQuery` using the `id` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://datatables.net/reference/api/destroy()) method first.

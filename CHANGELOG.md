@@ -230,10 +230,15 @@ guide walks through them with more context.
   password, the paths that stay reachable while the panel is locked, and the
   unlock attempt limit.
 - Sidebar navigation variants (`sidebar_nav_compact`, `sidebar_nav_indent` and
-  `sidebar_nav_pills`), the `sidebar_breakpoint` option of the push menu
-  plugin, and the `sidebar_scrollbar_options`,
+  `sidebar_nav_pills`), the `sidebar_breakpoint` option that picks where the
+  sidebar turns into an overlay, and the `sidebar_scrollbar_options`,
   `sidebar_scrollbar_click_scroll` and `sidebar_scrollbar_disable_below`
-  options of the scrollbars.
+  options of the scrollbars. Note `sidebar_breakpoint` takes a viewport width
+  and takes precedence over `sidebar_expand`: it selects the matching
+  `.sidebar-expand-*` class, so the push menu plugin and the media queries of
+  the stylesheet agree. Only the five widths AdminLTE ships a stylesheet for
+  (`576`, `768`, `992`, `1200`, `1400`) are honored, any other value is
+  ignored.
 - The `maximizable="maximized"` initial card state, the `callout-link` support
   of the callout component through its new `url` and `url-text` options, and
   the stacked progress bars through the new `segments` option.
