@@ -160,6 +160,22 @@ class Tokens
     public const SIDEBAR_EXPAND_BREAKPOINTS = ['sm', 'md', 'lg', 'xl', 'xxl'];
 
     /**
+     * The viewport width, in pixels, at which each of the supported sidebar
+     * expand breakpoints starts. AdminLTE hardcodes these widths in the media
+     * queries of its stylesheet, so they are the only breakpoints the sidebar
+     * layout can actually use.
+     *
+     * @var array
+     */
+    public const SIDEBAR_EXPAND_WIDTHS = [
+        'sm' => 576,
+        'md' => 768,
+        'lg' => 992,
+        'xl' => 1200,
+        'xxl' => 1400,
+    ];
+
+    /**
      * The supported color modes.
      *
      * @var array
@@ -207,5 +223,32 @@ class Tokens
         }
 
         return self::SIDEBAR_EXPAND_PREFIX.$breakpoint;
+    }
+
+    /**
+     * Resolves a sidebar breakpoint given as a viewport width in pixels to the
+     * name of the expand breakpoint that covers it. AdminLTE reads the width
+     * back from the stylesheet of the expand class, so an arbitrary width can
+     * not be honored: it would leave the script and the media queries
+     * disagreeing about where the sidebar turns into an overlay. The width is
+     * therefore matched against the ones AdminLTE ships, and both the exact
+     * value and the '.98' upper bound of the media query are accepted.
+     *
+     * @param  mixed  $width  A viewport width in pixels
+     * @return string|null
+     */
+    public static function sidebarBreakpointName($width): ?string
+    {
+        if (! is_numeric($width)) {
+            return null;
+        }
+
+        foreach (self::SIDEBAR_EXPAND_WIDTHS as $name => $value) {
+            if ((int) ceil((float) $width) === $value) {
+                return $name;
+            }
+        }
+
+        return null;
     }
 }
