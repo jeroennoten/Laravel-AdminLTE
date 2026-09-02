@@ -19,6 +19,11 @@
       "role": "Creator"
     },
     {
+      "name": "Diego Smania",
+      "email": "diego.smania@gmail.com",
+      "role": "Maintainer"
+    },
+    {
       "name": "Florian Ressel",
       "email": "florian@genxtreme.de",
       "role": "Maintainer"

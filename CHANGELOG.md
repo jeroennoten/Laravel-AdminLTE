@@ -279,7 +279,7 @@ guide walks through them with more context.
   through a lifecycle helper that also runs after a body swap, and the Livewire
   navigation event is bridged to the AdminLTE lifecycle, which the template
   only wires for Turbo.
-- The package author list names its current maintainer.
+- The package author list names its two current maintainers.
 - The test suite grew from 23 to 63 test files, covering the layout classes,
   the rendered views, the translations, the lockscreen and the blade
   compilation of every shipped view.
