@@ -56,7 +56,7 @@
 @push('js')
 <script>
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window._AdminLTE_Ready(() => {
 
         const updateNotification = (nLink) => {
             fetch("{{ $makeUpdateUrl() }}")

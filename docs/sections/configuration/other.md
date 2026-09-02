@@ -5,6 +5,7 @@
 | [Laravel Mix](#laravel-mix)
 | [Laravel Vite](#laravel-vite)
 | [Livewire](#livewire)
+| [Single Page Navigation](#single-page-navigation)
 
 ## Assets
 
@@ -302,3 +303,35 @@ After that, just enable livewire support in the configuration file:
 ```
 
 This will setup the `@livewireStyles` and the `@livewireScripts` directives correctly on the `master.blade.php` blade file of this package, as explained on the [Livewire Documentation](https://livewire.laravel.com/docs/installation#manually-including-livewires-frontend-assets).
+
+## Single Page Navigation
+
+Turbo Drive and the Livewire `wire:navigate` visits replace the `body` of the document without a full page load. Two things break on such a visit unless something re-runs them:
+
+1. **The inline scripts of this package.** A script bound on `DOMContentLoaded` never runs a second time: the swapped body re-executes it, but the document is already loaded by then, so the event never fires again. Every inline script of the package now goes through a small `_AdminLTE_Ready()` helper instead, which runs the callback immediately when the document is already loaded. The handful of listeners bound to the `document` itself go through `_AdminLTE_Once()`, since they survive a body swap and would otherwise pile up on every visit.
+
+2. **The AdminLTE plugins.** AdminLTE re-initializes them on the `turbo:load` event of Turbo Drive, but it knows nothing about Livewire, so after a `wire:navigate` visit the sidebar, the treeview and the card tools would stay dead. The package bridges the Livewire event to the AdminLTE lifecycle:
+
+```php
+'spa_navigation' => true,
+```
+
+- __`spa_navigation`__
+
+  When enabled (the default), the package listens to `livewire:navigated` and calls `adminlte.initialize()`. That method tears the previous cycle down before re-running the plugin initializations, so calling it again is safe. Set the option to `false` when your application handles the lifecycle on its own.
+
+> [!Note]
+> Nothing has to be enabled for **Turbo Drive**: AdminLTE binds `turbo:load` and `turbo:before-render` itself, and the `_AdminLTE_Ready()` helper covers the inline scripts of the package in both cases.
+
+> [!Tip]
+> If you write your own inline scripts inside a page that is reached through `wire:navigate`, use the same helper instead of `DOMContentLoaded`:
+>
+> ```blade
+> @push('js')
+> <script>
+>     window._AdminLTE_Ready(() => {
+>         // Runs on the first load and after every in-app navigation.
+>     });
+> </script>
+> @endpush
+> ```

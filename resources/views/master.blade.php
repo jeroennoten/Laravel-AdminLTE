@@ -24,6 +24,11 @@
     $bootstrapJs = $assetHelper->bootstrapJs();
     $adminlteJs = $bundlesAdminlte ? null : $assetHelper->adminlteJs();
 
+    // Bridge the Livewire navigation events to the AdminLTE lifecycle. The
+    // template binds Turbo on its own, but it knows nothing about Livewire.
+
+    $spaNavigation = config('adminlte.spa_navigation', true) !== false;
+
     // Resolve the color mode setup. The 'authored' color mode is the one the
     // page declares by itself, the 'auto' mode declares nothing and lets the
     // client resolve the mode from the OS preference.
@@ -269,6 +274,9 @@
             @endisset
     @endswitch
 
+    {{-- Lifecycle helpers used by the inline scripts of the package --}}
+    @include('adminlte::partials.common.lifecycle')
+
     @if($setupScrollbars)
         {{-- OverlayScrollbars Configuration (main sidebar) --}}
         <script>
@@ -281,7 +289,7 @@
                     scrollbarClickScroll: @json((bool) config('adminlte.sidebar_scrollbar_click_scroll', true)),
                 };
 
-                document.addEventListener('DOMContentLoaded', function () {
+                window._AdminLTE_Ready(function () {
                     const sidebarWrapper = document.querySelector(SELECTOR_SIDEBAR_WRAPPER);
 
                     // Disable OverlayScrollbars on mobile devices to prevent

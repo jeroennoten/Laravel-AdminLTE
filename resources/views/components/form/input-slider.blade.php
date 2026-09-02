@@ -23,7 +23,7 @@
 @push('js')
 <script>
 
-    document.addEventListener('DOMContentLoaded', function () {
+    window._AdminLTE_Ready(function () {
 
         const input = document.getElementById(@json($id));
         const target = document.getElementById(@json($config['id']));

@@ -15,7 +15,13 @@
   "authors": [
     {
       "name": "Jeroen Noten",
-      "email": "jeroennoten@me.com"
+      "email": "jeroennoten@me.com",
+      "role": "Creator"
+    },
+    {
+      "name": "Florian Ressel",
+      "email": "florian@genxtreme.de",
+      "role": "Maintainer"
     }
   ],
   "support": {

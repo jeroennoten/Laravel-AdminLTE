@@ -436,7 +436,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window._AdminLTE_Ready(() => {
         document.querySelectorAll(SELECTOR_ROOT).forEach((root) => new AdminLteIFrame(root));
     });
 })();

@@ -47,7 +47,7 @@
     // guarded in order to not break a jQuery free application. Note the
     // vanilla javascript alternative recommended by AdminLTE v4 is Tabulator.
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window._AdminLTE_Ready(() => {
 
         if (typeof window.jQuery === 'undefined' || typeof window.jQuery.fn.DataTable === 'undefined') {
             console.warn('The datatable component requires the jQuery based Datatables plugin.');

@@ -76,7 +76,7 @@
 @push('js')
 <script>
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window._AdminLTE_Ready(() => {
 
         // The '.animated-dropdown-menu' rule of the AdminLTE stylesheet is
         // keyed on an '.open' class over the dropdown wrapper, which is a
@@ -100,8 +100,10 @@
             wrapper.classList.toggle('open', isOpen);
         };
 
-        document.addEventListener('show.bs.dropdown', (e) => syncOpenState(e, true));
-        document.addEventListener('hidden.bs.dropdown', (e) => syncOpenState(e, false));
+        window._AdminLTE_Once('navbar-dropdown-animation', () => {
+            document.addEventListener('show.bs.dropdown', (e) => syncOpenState(e, true));
+            document.addEventListener('hidden.bs.dropdown', (e) => syncOpenState(e, false));
+        });
 
     });
 
