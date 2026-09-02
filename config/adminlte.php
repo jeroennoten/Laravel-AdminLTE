@@ -546,6 +546,23 @@ return [
     // The custom properties applied on the whole document. For example:
     // 'css_variables' => ['--bs-primary' => '#6f42c1'],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Single Page Navigation
+    |--------------------------------------------------------------------------
+    |
+    | AdminLTE re-initializes its plugins on the 'turbo:load' event of Turbo
+    | Drive, but it knows nothing about Livewire. So, after a 'wire:navigate'
+    | visit the sidebar, the treeview and the card tools would stay dead.
+    |
+    | With this option enabled, the package bridges the Livewire navigation
+    | event to the AdminLTE lifecycle. Disable it when your application takes
+    | care of that on its own.
+    |
+    */
+
+    'spa_navigation' => true,
+
     'css_variables' => [],
 
     // The selector of the block above. Only ':root' and 'body' are accepted.

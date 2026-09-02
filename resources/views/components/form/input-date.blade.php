@@ -20,7 +20,7 @@
 @push('js')
 <script>
 
-    document.addEventListener('DOMContentLoaded', function () {
+    window._AdminLTE_Ready(function () {
 
         const el = document.getElementById(@json($id));
 

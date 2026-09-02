@@ -74,7 +74,7 @@
     @push('js')
     <script>
 
-        document.addEventListener('DOMContentLoaded', () => {
+        window._AdminLTE_Ready(() => {
 
             const root = document.documentElement;
             const widget = document.querySelector('li.adminlte-darkmode-widget');

@@ -168,7 +168,7 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    window._AdminLTE_Ready(() => {
 
         // Move every toast into the shared container of its screen position.
 
@@ -185,18 +185,20 @@
     // Bootstrap provides no declarative trigger for the toasts, so the
     // 'data-bs-toggle="toast"' controls are wired with a delegated listener.
 
-    document.addEventListener('click', (event) => {
+    window._AdminLTE_Once('toast-trigger', () => {
+        document.addEventListener('click', (event) => {
 
-        const target = event.target instanceof Element ? event.target : null;
-        const trigger = target ? target.closest('[data-bs-toggle="toast"]') : null;
+            const target = event.target instanceof Element ? event.target : null;
+            const trigger = target ? target.closest('[data-bs-toggle="toast"]') : null;
 
-        if (! trigger) {
-            return;
-        }
+            if (! trigger) {
+                return;
+            }
 
-        event.preventDefault();
+            event.preventDefault();
 
-        new _AdminLTE_Toast(trigger.getAttribute('data-bs-target')).show();
+            new _AdminLTE_Toast(trigger.getAttribute('data-bs-target')).show();
+        });
     });
 
 </script>

@@ -317,7 +317,20 @@ class AuthViewsRenderTest extends TestCase
 
         $this->assertStringContainsString('https://example.test/auth', $html);
 
-        foreach (['javascript', 'data:text/html', 'Evil'] as $rejected) {
+        // Check the emitted hrefs, not the whole document: the inline scripts
+        // of the layout legitimately mention the word.
+
+        preg_match_all('/<a[^>]+href="([^"]*)"/', $html, $matches);
+
+        foreach ($matches[1] as $href) {
+            $this->assertDoesNotMatchRegularExpression(
+                '/^\s*(javascript|data)\s*:/i',
+                $href,
+                $href
+            );
+        }
+
+        foreach (['Evil'] as $rejected) {
             $this->assertStringNotContainsString($rejected, $html, $rejected);
         }
     }

@@ -274,6 +274,12 @@ guide walks through them with more context.
   (`homepage`, `support` and extra `keywords`) on `composer.json`.
 - The way back to the login and register pages on the password reset view,
   which used to be a dead end.
+- Support for the single page navigation of Turbo Drive and Livewire, through
+  the new `spa_navigation` option. Every inline script of the package goes
+  through a lifecycle helper that also runs after a body swap, and the Livewire
+  navigation event is bridged to the AdminLTE lifecycle, which the template
+  only wires for Turbo.
+- The package author list names its two current maintainers.
 - The test suite grew from 23 to 63 test files, covering the layout classes,
   the rendered views, the translations, the lockscreen and the blade
   compilation of every shipped view.
@@ -409,6 +415,10 @@ guide walks through them with more context.
   `profile_url` option was missing from a published configuration.
 - The `--only` and `--with` help of the console commands never learned about
   the `vendor_assets` and `error_views` resources.
+- Every inline script of the package bound on `DOMContentLoaded`, so none of
+  them ran again after a Turbo or Livewire navigation: the swapped body
+  re-executes them, but the document is already loaded and the event never
+  fires a second time.
 
 - The user menu partial mixed the inline `@php(...)` and the block
   `@php ... @endphp` directives. The block form is matched lazily, so the

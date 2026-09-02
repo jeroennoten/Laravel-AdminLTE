@@ -27,7 +27,7 @@
 @push('js')
 <script>
 
-    document.addEventListener('DOMContentLoaded', function () {
+    window._AdminLTE_Ready(function () {
 
         const source = document.getElementById(@json($id));
         const target = document.getElementById(@json($makeEditorId()));
