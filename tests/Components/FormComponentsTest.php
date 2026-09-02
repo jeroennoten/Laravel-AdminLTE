@@ -509,6 +509,32 @@ class FormComponentsTest extends TestCase
         }
     }
 
+    public function testDateRangeComponentWidensTheLegacyYearBounds()
+    {
+        // The legacy 'minYear' and 'maxYear' properties carry a year, while
+        // their 'Flatpickr' counterparts expect a date, so a bare year has to
+        // be widened to the boundary day it stands for.
+
+        $component = new Components\Form\DateRange(
+            'name', null, null, null, null, null, null, null, null,
+            ['minYear' => 2010, 'maxYear' => '2030']
+        );
+
+        $pluginCfg = $component->makePluginConfig();
+
+        $this->assertEquals('2010-01-01', $pluginCfg['minDate']);
+        $this->assertEquals('2030-12-31', $pluginCfg['maxDate']);
+
+        // A value that is already a date is passed through untouched.
+
+        $component = new Components\Form\DateRange(
+            'name', null, null, null, null, null, null, null, null,
+            ['minYear' => '2010-06-15']
+        );
+
+        $this->assertEquals('2010-06-15', $component->makePluginConfig()['minDate']);
+    }
+
     public function testDateRangeComponentDefaultRanges()
     {
         // The predefined ranges are only used to preselect the initial range.

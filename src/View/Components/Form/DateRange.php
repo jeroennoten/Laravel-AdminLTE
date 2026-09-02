@@ -121,13 +121,38 @@ class DateRange extends InputGroupComponent
 
         foreach ($this->config as $key => $value) {
             if (isset($this->legacyCfgMap[$key])) {
-                $pluginCfg[$this->legacyCfgMap[$key]] = $value;
+                $pluginCfg[$this->legacyCfgMap[$key]] = self::legacyCfgValue($key, $value);
             } elseif (! in_array($key, $this->legacyCfgNoop, true)) {
                 $pluginCfg[$key] = $value;
             }
         }
 
         return $pluginCfg;
+    }
+
+    /**
+     * Translates the value of a legacy 'DateRangePicker' property to the one
+     * its 'Flatpickr' counterpart expects. The year bounds are the only ones
+     * that need it: they carry a year, while 'minDate' and 'maxDate' expect a
+     * date, so the year is widened to the boundary day it stands for.
+     *
+     * @param  string  $key  The legacy property name
+     * @param  mixed  $value  The configured value
+     * @return mixed
+     */
+    protected static function legacyCfgValue($key, $value)
+    {
+        if (! in_array($key, ['minYear', 'maxYear'], true)) {
+            return $value;
+        }
+
+        if (! is_numeric($value) || (int) $value != $value) {
+            return $value;
+        }
+
+        $year = (int) $value;
+
+        return $key === 'minYear' ? "{$year}-01-01" : "{$year}-12-31";
     }
 
     /**
