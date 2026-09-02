@@ -1,7 +1,5 @@
 <?php
 
-use JeroenNoten\LaravelAdminLte\View\Components;
-
 class WidgetSlotsTest extends TestCase
 {
     use ComponentTestHelpers;
