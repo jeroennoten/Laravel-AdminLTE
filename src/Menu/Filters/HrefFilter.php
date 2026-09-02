@@ -27,7 +27,7 @@ class HrefFilter implements FilterInterface
      * @param  array  $item  A menu item
      * @return string
      */
-    protected function makeHref($item)
+    protected function makeHref($item): string
     {
         // If url attribute is available, use it to make the href property.
         // Otherwise, check if route attribute is available.
@@ -50,7 +50,7 @@ class HrefFilter implements FilterInterface
      * @param  mixed  $routeAttr  The route attribute of a menu item
      * @return string
      */
-    protected function makeHrefFromRouteAttr($routeAttr)
+    protected function makeHrefFromRouteAttr($routeAttr): string
     {
         $routeName = $routeParams = null;
 

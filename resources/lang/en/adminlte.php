@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Chat messages',
     'direct_chat_contacts' => 'Contacts',
     'direct_chat_new_messages' => 'New messages',
+    'social_auth_separator' => '- OR -',
+    'lockscreen_message' => 'Enter your password to retrieve your session',
+    'lockscreen_wrong_password' => 'The provided password is incorrect.',
+    'lockscreen_throttle' => 'Too many unlock attempts. Please try again in :seconds seconds.',
 ];

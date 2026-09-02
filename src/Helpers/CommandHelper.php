@@ -221,7 +221,7 @@ class CommandHelper
      * @param  array  $ignores  An array of name patterns to be ignored
      * @return bool
      */
-    protected static function shouldCopyItem($s, $t, $fFlag, $rFlag, $ignores)
+    protected static function shouldCopyItem($s, $t, $fFlag, $rFlag, $ignores): bool
     {
         // At first, we should copy the item when it's a directoy and the
         // recursive flag is set, or when it's a file and the target path does
@@ -247,7 +247,7 @@ class CommandHelper
      * @param  array  $ignores  An array of name patterns to be ignored
      * @return bool
      */
-    protected static function shouldCompareItem($s, $rFlag, $ignores)
+    protected static function shouldCompareItem($s, $rFlag, $ignores): bool
     {
         // At first, we should compare the item when it's a file or when it's
         // a directory and the recursive flag is set.
@@ -269,7 +269,7 @@ class CommandHelper
      * @param  array  $ignores  An array of name patterns to be ignored
      * @return bool
      */
-    protected static function isIgnoredItem($name, $ignores)
+    protected static function isIgnoredItem($name, $ignores): bool
     {
         foreach ($ignores as $pattern) {
             $match = Str::startsWith($pattern, 'regex:')

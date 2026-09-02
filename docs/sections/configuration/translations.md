@@ -1,10 +1,13 @@
-At the moment, English, German, French, Dutch, Portuguese, Spanish, Turkish, and other translations are available out of the box. You just need to specify the `locale` configuration option in `config/app.php` file of your Laravel project. The translation files are published by default when installing this package, however if that's not the case, you can publish the language files with the next command:
+At the moment, translations for **26 locales** are available out of the box: `ar`, `bn`, `ca`, `de`, `en`, `es`, `fa`, `fr`, `hr`, `hu`, `id`, `it`, `ja`, `lo`, `nl`, `pl`, `pt-br`, `pt-pt`, `ru`, `sk`, `sr`, `tr`, `uk`, `vi`, `zh-CN` (plus the `la` alias described below). Each of them ships the three files the package uses: `adminlte.php` for the layout and the components, `menu.php` for the example menu, and `iframe.php` for the iframe mode. You just need to specify the `locale` configuration option in `config/app.php` file of your Laravel project. The translation files are published by default when installing this package, however if that's not the case, you can publish the language files with the next command:
 
 ```sh
 php artisan adminlte:install --only=translations
 ```
 
 Now, you will able to edit the translations files or add support for new languages inside the `lang/vendor/adminlte` folder of your Laravel project.
+
+> [!Note]
+> **The `la` folder holds Lao, not Latin.** Earlier releases shipped the Lao translations under `la`, which is the ISO 639-1 code of **Latin**; the code of Lao is `lo`. The canonical folder is `lo` now, and `la` is kept as a thin alias that returns the Lao files, so an application already configured with the wrong code keeps working. Switch your `locale` to `lo` — the alias will be removed on the next major release.
 
 ## Accessibility Strings
 

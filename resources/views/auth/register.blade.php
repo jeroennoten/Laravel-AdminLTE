@@ -105,6 +105,7 @@
             </button>
         </div>
     </form>
+@include('adminlte::auth.social-links', ['fallbackText' => __('adminlte::adminlte.register')])
 @stop
 
 @section('auth_footer')

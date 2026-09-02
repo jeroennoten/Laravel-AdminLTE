@@ -79,7 +79,7 @@ class InputFileKrajee extends InputGroupComponent
      *
      * @return void
      */
-    protected function makePluginDefaultCfg()
+    protected function makePluginDefaultCfg(): void
     {
         // By default, force the plugin to generate Bootstrap 5 markup.
 
@@ -111,7 +111,7 @@ class InputFileKrajee extends InputGroupComponent
      *
      * @return void
      */
-    protected function makePluginInputGroupClassCfg()
+    protected function makePluginInputGroupClassCfg(): void
     {
         // Use the parent method to create the input group classes, but
         // remove the 'input-group' CSS class to avoid duplication, since it's
@@ -133,28 +133,15 @@ class InputFileKrajee extends InputGroupComponent
      *
      * @return array
      */
-    protected function getPresetModeCfg()
+    protected function getPresetModeCfg(): array
     {
-        $modeCfg = [];
-
         // Check for valid preset mode and generate the related plugin config.
 
-        switch ($this->presetMode) {
-            case 'avatar':
-                $modeCfg = $this->makeAvatarCfg();
-                break;
-
-            case 'minimalist':
-                $modeCfg = $this->makeMinimalistCfg();
-                break;
-
-            default:
-                break;
-        }
-
-        // Return the preset mode config.
-
-        return $modeCfg;
+        return match ($this->presetMode) {
+            'avatar' => $this->makeAvatarCfg(),
+            'minimalist' => $this->makeMinimalistCfg(),
+            default => [],
+        };
     }
 
     /**
@@ -162,7 +149,7 @@ class InputFileKrajee extends InputGroupComponent
      *
      * @return array
      */
-    protected function makeAvatarCfg()
+    protected function makeAvatarCfg(): array
     {
         // Setup the additional classes for the upload preview zone.
 
@@ -195,7 +182,7 @@ class InputFileKrajee extends InputGroupComponent
      *
      * @return array
      */
-    protected function makeMinimalistCfg()
+    protected function makeMinimalistCfg(): array
     {
         // Return the configuration for the avatar mode.
 

@@ -93,7 +93,7 @@ class AdminLteRemoveCommand extends Command
      * @param  string  $resource  The keyword of the resource to uninstall
      * @return void
      */
-    protected function uninstallPackageResource($resource)
+    protected function uninstallPackageResource($resource): void
     {
         $removeMsg = 'Do you really want to uninstall the resource: :res?';
         $removeMsg = str_replace(':res', $resource, $removeMsg);

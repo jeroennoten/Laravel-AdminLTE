@@ -68,4 +68,8 @@ return [
     'direct_chat_messages' => 'Missatges del xat',
     'direct_chat_contacts' => 'Contactes',
     'direct_chat_new_messages' => 'Missatges nous',
+    'social_auth_separator' => '- O -',
+    'lockscreen_message' => 'Introduïu la vostra contrasenya per recuperar la sessió',
+    'lockscreen_wrong_password' => 'La contrasenya indicada no és correcta.',
+    'lockscreen_throttle' => 'Massa intents de desbloqueig. Torneu-ho a provar en :seconds segons.',
 ];

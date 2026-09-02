@@ -35,7 +35,7 @@ class AdminLteVersion
      *
      * @return string
      */
-    public static function get()
+    public static function get(): string
     {
         $configured = config('adminlte.assets.adminlte_version');
 
@@ -48,12 +48,13 @@ class AdminLteVersion
 
     /**
      * Replaces the version placeholder of a location by the version of the
-     * installed AdminLTE distribution.
+     * installed AdminLTE distribution. A location that is not a string is
+     * returned unchanged.
      *
-     * @param  string|null  $location  The location of an asset
-     * @return string|null
+     * @param  mixed  $location  The location of an asset
+     * @return mixed
      */
-    public static function apply($location)
+    public static function apply($location): mixed
     {
         if (! is_string($location) || ! str_contains($location, self::PLACEHOLDER)) {
             return $location;
@@ -69,7 +70,7 @@ class AdminLteVersion
      *
      * @return string|null
      */
-    protected static function detect()
+    protected static function detect(): ?string
     {
         if (! class_exists(InstalledVersions::class)) {
             return null;

@@ -120,38 +120,38 @@ class NavbarDarkmodeWidget extends Component
     public function makeIconClass()
     {
         $classes = $this->currentColorMode() === 'dark'
-            ? $this->makeIconEnabledClass()
-            : $this->makeIconDisabledClass();
+            ? $this->makeIconEnabledClasses()
+            : $this->makeIconDisabledClasses();
 
         return implode(' ', $classes);
     }
 
     /**
-     * Make the class attribute for the icon when dark mode is disabled.
+     * Make the set of classes for the icon when dark mode is disabled.
      *
      * @return array
      */
-    public function makeIconDisabledClass()
+    public function makeIconDisabledClasses()
     {
         return $this->makeIconClasses($this->iconDisabled, $this->colorDisabled);
     }
 
     /**
-     * Make the class attribute for the icon when dark mode is enabled.
+     * Make the set of classes for the icon when dark mode is enabled.
      *
      * @return array
      */
-    public function makeIconEnabledClass()
+    public function makeIconEnabledClasses()
     {
         return $this->makeIconClasses($this->iconEnabled, $this->colorEnabled);
     }
 
     /**
-     * Make the class attribute for the icon of the automatic color mode.
+     * Make the set of classes for the icon of the automatic color mode.
      *
      * @return array
      */
-    public function makeIconAutoClass()
+    public function makeIconAutoClasses()
     {
         return $this->makeIconClasses($this->iconAuto, $this->colorAuto);
     }
@@ -179,7 +179,7 @@ class NavbarDarkmodeWidget extends Component
      * @param  string|null  $color  The (optional) icon color
      * @return array
      */
-    protected function makeIconClasses($icon, $color)
+    protected function makeIconClasses($icon, $color): array
     {
         $classes = explode(' ', $icon);
 

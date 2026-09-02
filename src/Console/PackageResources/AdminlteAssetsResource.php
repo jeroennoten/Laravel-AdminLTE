@@ -147,7 +147,7 @@ class AdminlteAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return void
      */
-    protected function installAsset($asset)
+    protected function installAsset($asset): void
     {
         // Check if we just need to publish the entire asset.
 
@@ -173,7 +173,7 @@ class AdminlteAssetsResource extends PackageResource
      * @param  array  $res  An array with the resource data
      * @return void
      */
-    protected function publishResource($res)
+    protected function publishResource($res): void
     {
         // Check whether the resource is a file or a directory.
 
@@ -197,7 +197,7 @@ class AdminlteAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return bool
      */
-    protected function assetExists($asset)
+    protected function assetExists($asset): bool
     {
         return File::exists($asset['target']);
     }
@@ -208,7 +208,7 @@ class AdminlteAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return bool
      */
-    protected function assetInstalled($asset)
+    protected function assetInstalled($asset): bool
     {
         // Check whether the asset has resources or not.
 
@@ -235,7 +235,7 @@ class AdminlteAssetsResource extends PackageResource
      * @param  array  $res  An array with the resource data
      * @return bool
      */
-    protected function resourceInstalled($res)
+    protected function resourceInstalled($res): bool
     {
         // Check whether the resource is a file or a directory.
 
@@ -257,7 +257,7 @@ class AdminlteAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return void
      */
-    protected function uninstallAsset($asset)
+    protected function uninstallAsset($asset): void
     {
         $target = $asset['target'];
 

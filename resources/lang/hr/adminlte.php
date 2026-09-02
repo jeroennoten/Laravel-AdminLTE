@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Poruke razgovora',
     'direct_chat_contacts' => 'Kontakti',
     'direct_chat_new_messages' => 'Nove poruke',
+    'social_auth_separator' => '- ILI -',
+    'lockscreen_message' => 'Unesite lozinku za nastavak sesije',
+    'lockscreen_wrong_password' => 'Unesena lozinka nije ispravna.',
+    'lockscreen_throttle' => 'Previše pokušaja otključavanja. Pokušajte ponovno za :seconds sekundi.',
 ];

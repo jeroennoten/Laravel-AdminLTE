@@ -13,7 +13,7 @@ class ColorMode
      *
      * @return string
      */
-    public static function get()
+    public static function get(): string
     {
         $legacy = self::fromLegacyOptions();
 
@@ -31,7 +31,7 @@ class ColorMode
      *
      * @return bool
      */
-    public static function isDarkModeEnabled()
+    public static function isDarkModeEnabled(): bool
     {
         $darkModeCtrl = new DarkModeController();
         event(new ReadingDarkModePreference($darkModeCtrl));
@@ -45,7 +45,7 @@ class ColorMode
      *
      * @return bool
      */
-    public static function isRemembered()
+    public static function isRemembered(): bool
     {
         return (bool) config('adminlte.color_mode.remember', true);
     }
@@ -55,7 +55,7 @@ class ColorMode
      *
      * @return bool
      */
-    public static function isEnabled()
+    public static function isEnabled(): bool
     {
         return config('adminlte.color_mode.enabled', true) !== false;
     }
@@ -65,7 +65,7 @@ class ColorMode
      *
      * @return array
      */
-    public static function makeHtmlAttributes()
+    public static function makeHtmlAttributes(): array
     {
         $attrs = [];
         $mode = self::get();
@@ -105,7 +105,7 @@ class ColorMode
      *
      * @return string|null
      */
-    protected static function fromLegacyOptions()
+    protected static function fromLegacyOptions(): ?string
     {
         $legacy = config('adminlte.layout_theme_mode', null);
 

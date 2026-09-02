@@ -2,11 +2,17 @@
 
 @php
     $passEmailUrl = View::getSection('password_email_url') ?? config('adminlte.password_email_url', 'password/email');
+    $loginUrl = View::getSection('login_url') ?? config('adminlte.login_url', 'login');
+    $registerUrl = View::getSection('register_url') ?? config('adminlte.register_url', 'register');
 
     if (config('adminlte.use_route_url', false)) {
         $passEmailUrl = $passEmailUrl ? route($passEmailUrl) : '';
+        $loginUrl = $loginUrl ? route($loginUrl) : '';
+        $registerUrl = $registerUrl ? route($registerUrl) : '';
     } else {
         $passEmailUrl = $passEmailUrl ? url($passEmailUrl) : '';
+        $loginUrl = $loginUrl ? url($loginUrl) : '';
+        $registerUrl = $registerUrl ? url($registerUrl) : '';
     }
 @endphp
 
@@ -51,4 +57,25 @@
         </div>
     </form>
 
+@stop
+
+@section('auth_footer')
+    {{-- Login link. Without it the page is a dead end, the reference layout
+         provides the same way back. --}}
+    @if($loginUrl)
+        <p class="my-0">
+            <a href="{{ $loginUrl }}">
+                {{ __('adminlte::adminlte.i_already_have_a_membership') }}
+            </a>
+        </p>
+    @endif
+
+    {{-- Register link --}}
+    @if($registerUrl)
+        <p class="my-0">
+            <a href="{{ $registerUrl }}">
+                {{ __('adminlte::adminlte.register_a_new_membership') }}
+            </a>
+        </p>
+    @endif
 @stop

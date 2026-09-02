@@ -25,10 +25,10 @@ class ActiveChecker
         // performance.
 
         $this->tests = [
-            'active' => [$this, 'isExplicitActive'],
-            'submenu' => [$this, 'containsActive'],
-            'href' => [$this, 'checkPattern'],
-            'url' => [$this, 'checkPattern'],
+            'active' => $this->isExplicitActive(...),
+            'submenu' => $this->containsActive(...),
+            'href' => $this->checkPattern(...),
+            'url' => $this->checkPattern(...),
         ];
     }
 
@@ -59,7 +59,7 @@ class ActiveChecker
      * @param  array  $items  The items to check
      * @return bool
      */
-    protected function containsActive($items)
+    protected function containsActive($items): bool
     {
         foreach ($items as $item) {
             if ($this->isActive($item)) {
@@ -77,7 +77,7 @@ class ActiveChecker
      * @param  bool|array  $activeDef
      * @return bool
      */
-    protected function isExplicitActive($activeDef)
+    protected function isExplicitActive($activeDef): bool
     {
         // If the active definition is a bool, return it.
 
@@ -103,7 +103,7 @@ class ActiveChecker
      * @param  string  $pattern
      * @return bool
      */
-    protected function checkPattern($pattern)
+    protected function checkPattern($pattern): bool
     {
         // First, check if the pattern is a regular expression.
 

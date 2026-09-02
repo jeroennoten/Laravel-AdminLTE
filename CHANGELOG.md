@@ -70,6 +70,20 @@ guide before updating.
 - The Datatables **Buttons** extension, as the new `DatatablesButtons` plugin
   entry and the `datatablesButtons` console catalog entry. The `with-buttons`
   attribute used to configure export buttons the installer could not provide.
+- Social login buttons on the authentication views, through the new
+  `auth_social_links` and `auth_social_links_separator` options.
+- The `css_variables` and `css_variables_scope` options, which declare the
+  Bootstrap and AdminLTE custom properties inline on the document head. Most
+  brandings need no stylesheet of their own any more.
+- The `lo` locale, which is the ISO 639-1 code of the Lao translations the
+  package shipped under the wrong `la` folder. The old folder is kept as an
+  alias of the new one.
+- The missing `iframe.php` translations of 17 locales and the missing
+  `menu.php` ones of 5, which used to fall back to English silently.
+- A `composer test` script.
+- A URL scheme allowlist on the social login buttons, and the way back to the
+  login and register pages on the password reset view, which used to be a dead
+  end.
 
 ### Changed
 
@@ -132,3 +146,9 @@ guide before updating.
 - The `layout_boxed`, `sidebar_collapse_auto_size` and
   `sidebar_collapse_remember_no_transition` options left the shipped
   configuration file. They had no effect on AdminLTE v4.
+- The duplicated `makeItemClass()` and `makeInputGroupClass()` overrides of the
+  form components, and the size arrays of the `Progress`, `Modal`, `Ribbon` and
+  `UserBlock` components. Every one of those methods is still available through
+  the base class with identical output. The size arrays became `SIZES` class
+  constants, so a subclass that redeclared the protected property has to
+  redeclare the constant instead.

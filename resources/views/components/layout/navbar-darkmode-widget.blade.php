@@ -11,13 +11,13 @@
            data-bs-toggle="dropdown" aria-expanded="false"
            aria-label="{{ __('adminlte::adminlte.toggle_color_mode') }}">
 
-            <i class="{{ implode(' ', $makeIconDisabledClass()) }} @if($currentColorMode() !== 'light') d-none @endif"
+            <i class="{{ implode(' ', $makeIconDisabledClasses()) }} @if($currentColorMode() !== 'light') d-none @endif"
                data-lte-theme-icon="light"></i>
 
-            <i class="{{ implode(' ', $makeIconEnabledClass()) }} @if($currentColorMode() !== 'dark') d-none @endif"
+            <i class="{{ implode(' ', $makeIconEnabledClasses()) }} @if($currentColorMode() !== 'dark') d-none @endif"
                data-lte-theme-icon="dark"></i>
 
-            <i class="{{ implode(' ', $makeIconAutoClass()) }} @if($currentColorMode() !== 'auto') d-none @endif"
+            <i class="{{ implode(' ', $makeIconAutoClasses()) }} @if($currentColorMode() !== 'auto') d-none @endif"
                data-lte-theme-icon="auto"></i>
 
         </a>
@@ -28,7 +28,7 @@
             <li>
                 <button type="button" class="dropdown-item d-flex align-items-center @if($currentColorMode() === 'light') active @endif"
                         data-bs-theme-value="light" aria-pressed="{{ $currentColorMode() === 'light' ? 'true' : 'false' }}">
-                    <i class="{{ implode(' ', $makeIconDisabledClass()) }} me-2"></i>
+                    <i class="{{ implode(' ', $makeIconDisabledClasses()) }} me-2"></i>
                     {{ __('adminlte::adminlte.color_mode_light') }}
                     <i class="bi bi-check-lg ms-auto d-none"></i>
                 </button>
@@ -37,7 +37,7 @@
             <li>
                 <button type="button" class="dropdown-item d-flex align-items-center @if($currentColorMode() === 'dark') active @endif"
                         data-bs-theme-value="dark" aria-pressed="{{ $currentColorMode() === 'dark' ? 'true' : 'false' }}">
-                    <i class="{{ implode(' ', $makeIconEnabledClass()) }} me-2"></i>
+                    <i class="{{ implode(' ', $makeIconEnabledClasses()) }} me-2"></i>
                     {{ __('adminlte::adminlte.color_mode_dark') }}
                     <i class="bi bi-check-lg ms-auto d-none"></i>
                 </button>
@@ -46,7 +46,7 @@
             <li>
                 <button type="button" class="dropdown-item d-flex align-items-center @if($currentColorMode() === 'auto') active @endif"
                         data-bs-theme-value="auto" aria-pressed="{{ $currentColorMode() === 'auto' ? 'true' : 'false' }}">
-                    <i class="{{ implode(' ', $makeIconAutoClass()) }} me-2"></i>
+                    <i class="{{ implode(' ', $makeIconAutoClasses()) }} me-2"></i>
                     {{ __('adminlte::adminlte.color_mode_auto') }}
                     <i class="bi bi-check-lg ms-auto d-none"></i>
                 </button>
@@ -83,8 +83,8 @@
             // Get the set of classes to be toggled on the widget icon.
 
             const iconClasses = [
-                ...@json($makeIconEnabledClass()),
-                ...@json($makeIconDisabledClass())
+                ...@json($makeIconEnabledClasses()),
+                ...@json($makeIconDisabledClasses())
             ];
 
             // Add 'click' event listener for the darkmode widget.

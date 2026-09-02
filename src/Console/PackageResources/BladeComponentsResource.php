@@ -136,7 +136,7 @@ class BladeComponentsResource extends PackageResource
      *
      * @return void
      */
-    protected function adaptPublishedComponentClasses()
+    protected function adaptPublishedComponentClasses(): void
     {
         // Get an array of all published component classes files.
 

@@ -9,6 +9,22 @@ class InputSwitch extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * The class added to the "input-group" element when the input group has
+     * associated errors.
+     *
+     * @var string
+     */
+    protected $invalidGroupClass = 'adminlte-invalid-iswgroup';
+
+    /**
+     * The base set of classes for the input group item. Bootstrap 5.3 requires
+     * the 'form-check-input' class on the switch control.
+     *
+     * @var array
+     */
+    protected $itemBaseClass = ['form-check-input'];
+
+    /**
      * The legacy 'Bootstrap Switch' plugin configuration parameters. Array with
      * 'key => value' pairs.
      *
@@ -53,49 +69,6 @@ class InputSwitch extends InputGroupComponent
         }
 
         $this->enableOldSupport = isset($enableOldSupport);
-    }
-
-    /**
-     * Make the class attribute for the "input-group" element. Note we overwrite
-     * the method of the parent class.
-     *
-     * @return string
-     */
-    public function makeInputGroupClass()
-    {
-        $classes = ['input-group'];
-
-        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
-            $classes[] = "input-group-{$this->size}";
-        }
-
-        if ($this->isInvalid()) {
-            $classes[] = 'adminlte-invalid-iswgroup';
-        }
-
-        if (isset($this->igroupClass)) {
-            $classes[] = $this->igroupClass;
-        }
-
-        return implode(' ', $classes);
-    }
-
-    /**
-     * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class. Bootstrap 5.3 requires the
-     * 'form-check-input' class on the switch control.
-     *
-     * @return string
-     */
-    public function makeItemClass()
-    {
-        $classes = ['form-check-input'];
-
-        if ($this->isInvalid()) {
-            $classes[] = 'is-invalid';
-        }
-
-        return implode(' ', $classes);
     }
 
     /**

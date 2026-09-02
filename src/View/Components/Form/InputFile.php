@@ -49,24 +49,6 @@ class InputFile extends InputGroupComponent
     }
 
     /**
-     * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class. Bootstrap 5 dropped the 'custom-file'
-     * structure, a file input is now a regular 'form-control'.
-     *
-     * @return string
-     */
-    public function makeItemClass()
-    {
-        $classes = ['form-control'];
-
-        if ($this->isInvalid()) {
-            $classes[] = 'is-invalid';
-        }
-
-        return implode(' ', $classes);
-    }
-
-    /**
      * Get the view / contents that represent the component.
      *
      * @return \Illuminate\View\View|string

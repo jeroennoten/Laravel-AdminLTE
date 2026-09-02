@@ -31,7 +31,7 @@ class GateFilter implements FilterInterface
      * @param  array  $item  A menu item
      * @return bool
      */
-    protected function isAuthorized($item)
+    protected function isAuthorized($item): bool
     {
         // Check if there are any permission defined for the item.
 

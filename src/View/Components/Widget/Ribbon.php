@@ -14,7 +14,7 @@ class Ribbon extends Component
      *
      * @var array
      */
-    protected $rSizes = ['lg', 'xl'];
+    protected const SIZES = ['lg', 'xl'];
 
     /**
      * The ribbon label. It is replaced by the content of the default slot
@@ -74,7 +74,7 @@ class Ribbon extends Component
     {
         $classes = ['ribbon-wrapper'];
 
-        if (isset($this->size) && in_array($this->size, $this->rSizes)) {
+        if (isset($this->size) && in_array($this->size, static::SIZES)) {
             $classes[] = "ribbon-{$this->size}";
         }
 

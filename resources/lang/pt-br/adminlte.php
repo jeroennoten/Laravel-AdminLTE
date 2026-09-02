@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Mensagens do chat',
     'direct_chat_contacts' => 'Contatos',
     'direct_chat_new_messages' => 'Novas mensagens',
+    'social_auth_separator' => '- OU -',
+    'lockscreen_message' => 'Digite sua senha para retomar sua sessão',
+    'lockscreen_wrong_password' => 'A senha informada está incorreta.',
+    'lockscreen_throttle' => 'Muitas tentativas de desbloqueio. Tente novamente em :seconds segundos.',
 ];

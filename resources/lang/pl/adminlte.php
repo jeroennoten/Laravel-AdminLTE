@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Wiadomości czatu',
     'direct_chat_contacts' => 'Kontakty',
     'direct_chat_new_messages' => 'Nowe wiadomości',
+    'social_auth_separator' => '- LUB -',
+    'lockscreen_message' => 'Wprowadź hasło, aby wrócić do sesji',
+    'lockscreen_wrong_password' => 'Podane hasło jest nieprawidłowe.',
+    'lockscreen_throttle' => 'Zbyt wiele prób odblokowania. Spróbuj ponownie za :seconds sekund.',
 ];

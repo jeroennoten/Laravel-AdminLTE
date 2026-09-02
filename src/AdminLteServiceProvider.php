@@ -254,12 +254,23 @@ class AdminLteServiceProvider extends BaseServiceProvider
      */
     protected function loadRoutes()
     {
-        // The check belongs here and not inside the route file, otherwise the
-        // 'route:cache' command would freeze the current value of the option
+        // The checks belong here and not inside the route files, otherwise the
+        // 'route:cache' command would freeze the current value of the options
         // into the compiled routes.
 
-        if (config('adminlte.color_mode.routes', true) === false
-            || config('adminlte.disable_darkmode_routes', false) === true) {
+        $routeFiles = [];
+
+        if (config('adminlte.color_mode.routes', true) !== false
+            && config('adminlte.disable_darkmode_routes', false) !== true) {
+            $routeFiles[] = 'routes/web.php';
+        }
+
+        if (config('adminlte.lockscreen.enabled', false) === true
+            && config('adminlte.lockscreen.routes', true) !== false) {
+            $routeFiles[] = 'routes/lockscreen.php';
+        }
+
+        if (empty($routeFiles)) {
             return;
         }
 
@@ -269,9 +280,10 @@ class AdminLteServiceProvider extends BaseServiceProvider
             'middleware' => ['web'],
         ];
 
-        Route::group($routesCfg, function () {
-            $routesPath = $this->packagePath('routes/web.php');
-            $this->loadRoutesFrom($routesPath);
+        Route::group($routesCfg, function () use ($routeFiles) {
+            foreach ($routeFiles as $routeFile) {
+                $this->loadRoutesFrom($this->packagePath($routeFile));
+            }
         });
     }
 

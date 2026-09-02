@@ -284,13 +284,13 @@ class LayoutHelperDelegationTest extends TestCase
         );
 
         $this->assertSame(
-            trim(implode(' ', Layout::makeWrapperClasses())),
+            trim(implode(' ', Layout::wrapperClasses())),
             LayoutHelper::makeWrapperClasses(),
             $msg
         );
 
         $this->assertSame(
-            trim(implode(' ', Layout::makeContentWrapperClasses())),
+            trim(implode(' ', Layout::contentWrapperClasses())),
             LayoutHelper::makeContentWrapperClasses(),
             $msg
         );

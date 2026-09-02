@@ -74,9 +74,9 @@ class AdminLtePluginCommand extends Command
         // Fill the available operations handlers.
 
         $this->opHandlers = [
-            'list' => [$this, 'showPlugins'],
-            'install' => [$this, 'installPlugins'],
-            'remove' => [$this, 'removePlugins'],
+            'list' => $this->showPlugins(...),
+            'install' => $this->installPlugins(...),
+            'remove' => $this->removePlugins(...),
         ];
 
         // Create the plugins resource instance.
@@ -114,7 +114,7 @@ class AdminLtePluginCommand extends Command
      *
      * @return void
      */
-    protected function showPlugins()
+    protected function showPlugins(): void
     {
         // Get the list of affected plugins on the current operation.
 
@@ -145,7 +145,7 @@ class AdminLtePluginCommand extends Command
      *
      * @return array
      */
-    protected function getAffectedPlugins()
+    protected function getAffectedPlugins(): array
     {
         // First, check if the user has specified the plugins keys.
 
@@ -164,7 +164,7 @@ class AdminLtePluginCommand extends Command
      * @param  array  $pluginsKeys  Array with the plugins keys to evaluate
      * @return array
      */
-    protected function getPluginsStatus($pluginsKeys)
+    protected function getPluginsStatus($pluginsKeys): array
     {
         // Define the array that will hold the resources status.
 
@@ -204,7 +204,7 @@ class AdminLtePluginCommand extends Command
      * @param  array  $pluginsStatus  Array with the status of plugins
      * @return void
      */
-    protected function showPluginsStatus($pluginsStatus)
+    protected function showPluginsStatus($pluginsStatus): void
     {
         // Define the table headers.
 
@@ -234,7 +234,7 @@ class AdminLtePluginCommand extends Command
      * @param  string  $pluginKey  The plugin key
      * @return string
      */
-    protected function getPluginStatus($pluginKey)
+    protected function getPluginStatus($pluginKey): string
     {
         $status = $this->status['uninstalled'];
 
@@ -252,7 +252,7 @@ class AdminLtePluginCommand extends Command
      *
      * @return void
      */
-    protected function showStatusLegends()
+    protected function showStatusLegends(): void
     {
         // Create the table headers for the legends.
 
@@ -284,7 +284,7 @@ class AdminLtePluginCommand extends Command
      * @param  string  $color  The output color for the text
      * @return string
      */
-    protected function styleOutput($text, $color)
+    protected function styleOutput($text, $color): string
     {
         return "<fg={$color}>{$text}</>";
     }
@@ -294,7 +294,7 @@ class AdminLtePluginCommand extends Command
      *
      * @return void
      */
-    protected function installPlugins()
+    protected function installPlugins(): void
     {
         $summary = [];
 
@@ -332,7 +332,7 @@ class AdminLtePluginCommand extends Command
      * @param  string  $pluginKey  The plugin string key
      * @return string
      */
-    protected function installPluginWithStatus($pluginKey)
+    protected function installPluginWithStatus($pluginKey): string
     {
         if (empty($this->plugins->getSourceData($pluginKey))) {
             $this->line('');
@@ -362,7 +362,7 @@ class AdminLtePluginCommand extends Command
      * @param  string  $pluginKey  The plugin string key
      * @return void
      */
-    protected function reportInvalidPlugin($pluginKey)
+    protected function reportInvalidPlugin($pluginKey): void
     {
         $replacement = $this->plugins->getLegacyPluginReplacement($pluginKey);
 
@@ -388,7 +388,7 @@ class AdminLtePluginCommand extends Command
      * @param  string  $pluginKey  The plugin string key
      * @return void
      */
-    protected function reportMissingPackage($pluginKey)
+    protected function reportMissingPackage($pluginKey): void
     {
         $pluginData = $this->plugins->getSourceData($pluginKey);
         $name = $pluginData['name'] ?? $pluginKey;
@@ -408,7 +408,7 @@ class AdminLtePluginCommand extends Command
      * @param  string  $pluginKey  The plugin string key
      * @return bool
      */
-    protected function installPlugin($pluginKey)
+    protected function installPlugin($pluginKey): bool
     {
         // Customize the output messages.
 
@@ -445,7 +445,7 @@ class AdminLtePluginCommand extends Command
      *
      * @return void
      */
-    protected function removePlugins()
+    protected function removePlugins(): void
     {
         $summary = [];
 
@@ -496,7 +496,7 @@ class AdminLtePluginCommand extends Command
      * @param  string  $pluginKey  The plugin string key
      * @return bool
      */
-    protected function removePlugin($pluginKey)
+    protected function removePlugin($pluginKey): bool
     {
         // Customize the output messages.
 
@@ -522,7 +522,7 @@ class AdminLtePluginCommand extends Command
      * @param  array  $rows  The table rows.
      * @return void
      */
-    protected function showSummaryTable($rows)
+    protected function showSummaryTable($rows): void
     {
         $header = [
             $this->styleOutput('Plugin Key', 'cyan'),

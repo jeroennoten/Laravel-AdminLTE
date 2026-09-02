@@ -19,7 +19,7 @@ class AssetResolver
      *
      * @return string
      */
-    public static function mode()
+    public static function mode(): string
     {
         $mode = config('adminlte.assets.mode', 'local');
 
@@ -32,7 +32,7 @@ class AssetResolver
      * @param  string  $key  The asset key (as defined on the config file)
      * @return string|null
      */
-    public static function resolve($key)
+    public static function resolve($key): ?string
     {
         $key = self::resolveKeyDirection($key);
         $cdn = AdminLteVersion::apply(config("adminlte.assets.cdn.{$key}"));
@@ -60,7 +60,7 @@ class AssetResolver
      * @param  string|null  $cdn  The CDN location of the asset
      * @return string
      */
-    protected static function fallbackFor($local, $cdn)
+    protected static function fallbackFor($local, $cdn): string
     {
         $useCdn = config('adminlte.assets.cdn_fallback', true) && self::isUsable($cdn);
 
@@ -75,7 +75,7 @@ class AssetResolver
      * @param  string|null  $local  The local path of the asset
      * @return string|null
      */
-    protected static function firstAvailable($cdn, $local)
+    protected static function firstAvailable($cdn, $local): ?string
     {
         if (self::isUsable($cdn)) {
             return $cdn;
@@ -90,7 +90,7 @@ class AssetResolver
      * @param  mixed  $location  The location to check
      * @return bool
      */
-    protected static function isUsable($location)
+    protected static function isUsable($location): bool
     {
         return is_string($location) && $location !== '';
     }
@@ -101,7 +101,7 @@ class AssetResolver
      * @param  string  $path  The asset path relative to the public folder
      * @return bool
      */
-    protected static function isPublished($path)
+    protected static function isPublished($path): bool
     {
         return is_file(public_path($path));
     }
@@ -112,7 +112,7 @@ class AssetResolver
      * @param  string  $key  The asset key (as defined on the config file)
      * @return string
      */
-    protected static function resolveKeyDirection($key)
+    protected static function resolveKeyDirection($key): string
     {
         if (! in_array($key, self::RTL_AWARE_KEYS, true) || ! Direction::isRtlEnabled()) {
             return $key;

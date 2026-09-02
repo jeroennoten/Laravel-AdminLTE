@@ -16,7 +16,7 @@ class Modal extends Component
      *
      * @var array
      */
-    protected $mSizes = [
+    protected const SIZES = [
         'sm', 'lg', 'xl', 'fullscreen', 'fullscreen-sm-down',
         'fullscreen-md-down', 'fullscreen-lg-down', 'fullscreen-xl-down',
         'fullscreen-xxl-down',
@@ -160,7 +160,7 @@ class Modal extends Component
             $classes[] = 'modal-dialog-scrollable';
         }
 
-        if (isset($this->size) && in_array($this->size, $this->mSizes)) {
+        if (isset($this->size) && in_array($this->size, static::SIZES)) {
             $classes[] = "modal-{$this->size}";
         }
 

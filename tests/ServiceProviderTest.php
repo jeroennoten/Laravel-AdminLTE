@@ -137,6 +137,56 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(Route::has('adminlte.darkmode.toggle'));
     }
 
+    public function testBootLoadTheLockscreenRoutesOnlyWhenEnabled()
+    {
+        // The lockscreen is opt in, so its routes must not exist by default.
+
+        config(['adminlte.lockscreen.enabled' => false]);
+        $this->clearRoutesAndReRegisterProvider();
+
+        $this->assertFalse(Route::has('adminlte.lockscreen.show'));
+        $this->assertFalse(Route::has('adminlte.lockscreen.lock'));
+        $this->assertFalse(Route::has('adminlte.lockscreen.unlock'));
+
+        config(['adminlte.lockscreen.enabled' => true]);
+        $this->clearRoutesAndReRegisterProvider();
+
+        $this->assertTrue(Route::has('adminlte.lockscreen.show'));
+        $this->assertTrue(Route::has('adminlte.lockscreen.lock'));
+        $this->assertTrue(Route::has('adminlte.lockscreen.unlock'));
+    }
+
+    public function testTheLockscreenRoutesCanBeDisabledOnTheirOwn()
+    {
+        // An application may register its own endpoints for the feature.
+
+        config([
+            'adminlte.lockscreen.enabled' => true,
+            'adminlte.lockscreen.routes' => false,
+        ]);
+
+        $this->clearRoutesAndReRegisterProvider();
+
+        $this->assertFalse(Route::has('adminlte.lockscreen.show'));
+
+        // The color mode routes are unaffected by that switch.
+
+        $this->assertTrue(Route::has('adminlte.darkmode.toggle'));
+    }
+
+    public function testBothRouteGroupsCanBeDisabledAtOnce()
+    {
+        config([
+            'adminlte.color_mode.routes' => false,
+            'adminlte.lockscreen.enabled' => false,
+        ]);
+
+        $this->clearRoutesAndReRegisterProvider();
+
+        $this->assertFalse(Route::has('adminlte.darkmode.toggle'));
+        $this->assertFalse(Route::has('adminlte.lockscreen.show'));
+    }
+
     /**
      * Clear routes and re-register the service provider.
      */
@@ -186,6 +236,38 @@ class ServiceProviderTest extends TestCase
             $this->assertTrue(
                 View::exists("adminlte::components.{$component}"),
                 $component
+            );
+        }
+    }
+
+    public function testEveryRegisteredComponentIsDocumented()
+    {
+        // The component list and the documentation drift apart easily, so the
+        // inventory is checked instead of trusted.
+
+        $provider = file_get_contents(__DIR__.'/../src/AdminLteServiceProvider.php');
+
+        preg_match_all(
+            "/'([a-z0-9-]+)' => (?:Layout|Form|Tool|Widget)\\\\/",
+            $provider,
+            $matches
+        );
+
+        $components = $matches[1];
+
+        $this->assertGreaterThan(40, count($components));
+
+        $docs = '';
+
+        foreach (glob(__DIR__.'/../docs/sections/**/*.md') as $file) {
+            $docs .= file_get_contents($file);
+        }
+
+        foreach ($components as $component) {
+            $this->assertStringContainsString(
+                $component,
+                $docs,
+                "The '{$component}' component is not mentioned in the docs."
             );
         }
     }

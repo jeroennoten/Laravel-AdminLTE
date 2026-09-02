@@ -68,4 +68,8 @@ return [
     'direct_chat_messages' => 'رسائل الدردشة',
     'direct_chat_contacts' => 'جهات الاتصال',
     'direct_chat_new_messages' => 'رسائل جديدة',
+    'social_auth_separator' => '- أو -',
+    'lockscreen_message' => 'أدخل كلمة المرور لاستعادة جلستك',
+    'lockscreen_wrong_password' => 'كلمة المرور المدخلة غير صحيحة.',
+    'lockscreen_throttle' => 'محاولات فتح كثيرة جدًا. يرجى المحاولة بعد :seconds ثانية.',
 ];

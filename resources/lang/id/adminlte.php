@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Pesan obrolan',
     'direct_chat_contacts' => 'Kontak',
     'direct_chat_new_messages' => 'Pesan baru',
+    'social_auth_separator' => '- ATAU -',
+    'lockscreen_message' => 'Masukkan kata sandi untuk melanjutkan sesi Anda',
+    'lockscreen_wrong_password' => 'Kata sandi yang dimasukkan salah.',
+    'lockscreen_throttle' => 'Terlalu banyak percobaan buka kunci. Coba lagi dalam :seconds detik.',
 ];

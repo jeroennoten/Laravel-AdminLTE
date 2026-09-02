@@ -30,7 +30,7 @@ class ClassesFilter implements FilterInterface
      * @param  array  $item  A menu item
      * @return string
      */
-    protected function makeClasses($item)
+    protected function makeClasses($item): string
     {
         $classes = [];
 
@@ -55,7 +55,7 @@ class ClassesFilter implements FilterInterface
      * @param  array  $item  A menu item
      * @return string
      */
-    protected function makeSubmenuClasses($item)
+    protected function makeSubmenuClasses($item): string
     {
         $classes = [];
 

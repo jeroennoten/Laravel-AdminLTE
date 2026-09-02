@@ -7,6 +7,15 @@ class Select extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * The base set of classes for the input group item. Bootstrap 5 requires
+     * the "form-select" class on the select elements (it replaces the legacy
+     * Bootstrap 4 "custom-select" class).
+     *
+     * @var array
+     */
+    protected $itemBaseClass = ['form-select'];
+
+    /**
      * Create a new component instance.
      *
      * @return void
@@ -22,25 +31,6 @@ class Select extends InputGroupComponent
         );
 
         $this->enableOldSupport = isset($enableOldSupport);
-    }
-
-    /**
-     * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class. Bootstrap 5 requires the "form-select"
-     * class on the select elements (it replaces the legacy Bootstrap 4
-     * "custom-select" class).
-     *
-     * @return string
-     */
-    public function makeItemClass()
-    {
-        $classes = ['form-select'];
-
-        if ($this->isInvalid()) {
-            $classes[] = 'is-invalid';
-        }
-
-        return implode(' ', $classes);
     }
 
     /**

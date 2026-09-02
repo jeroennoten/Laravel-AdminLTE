@@ -200,7 +200,7 @@ class Tokens
      * @param  string  $breakpoint  One of the supported breakpoints
      * @return string|null
      */
-    public static function sidebarExpand($breakpoint)
+    public static function sidebarExpand($breakpoint): ?string
     {
         if (! in_array($breakpoint, self::SIDEBAR_EXPAND_BREAKPOINTS, true)) {
             return null;

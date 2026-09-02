@@ -274,7 +274,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return bool
      */
-    protected function assetAvailable($asset)
+    protected function assetAvailable($asset): bool
     {
         return File::isDirectory($asset['source']);
     }
@@ -285,7 +285,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $missing  An array with the missing assets keys
      * @return string
      */
-    protected function makeSkippedAssetsMessage($missing)
+    protected function makeSkippedAssetsMessage($missing): string
     {
         $names = array_map(
             function ($key) {
@@ -315,7 +315,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return void
      */
-    protected function installAsset($asset)
+    protected function installAsset($asset): void
     {
         foreach ($this->prepareAssetResources($asset) as $res) {
             $this->publishResource($res);
@@ -329,7 +329,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return array
      */
-    protected function prepareAssetResources($asset)
+    protected function prepareAssetResources($asset): array
     {
         $resources = [];
 
@@ -349,7 +349,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $res  An array with the resource data
      * @return void
      */
-    protected function publishResource($res)
+    protected function publishResource($res): void
     {
         // When the source does not exists, there is nothing to publish.
 
@@ -379,7 +379,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return bool
      */
-    protected function assetInstalled($asset)
+    protected function assetInstalled($asset): bool
     {
         foreach ($this->prepareAssetResources($asset) as $res) {
             if (! $this->resourceInstalled($res)) {
@@ -396,7 +396,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $res  An array with the resource data
      * @return bool
      */
-    protected function resourceInstalled($res)
+    protected function resourceInstalled($res): bool
     {
         // Check whether the resource is a file or a directory.
 
@@ -418,7 +418,7 @@ class VendorAssetsResource extends PackageResource
      * @param  array  $asset  An array with the asset data
      * @return void
      */
-    protected function uninstallAsset($asset)
+    protected function uninstallAsset($asset): void
     {
         $target = $asset['target'];
 

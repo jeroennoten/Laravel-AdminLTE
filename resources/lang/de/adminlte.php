@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Chat-Nachrichten',
     'direct_chat_contacts' => 'Kontakte',
     'direct_chat_new_messages' => 'Neue Nachrichten',
+    'social_auth_separator' => '- ODER -',
+    'lockscreen_message' => 'Geben Sie Ihr Passwort ein, um Ihre Sitzung fortzusetzen',
+    'lockscreen_wrong_password' => 'Das eingegebene Passwort ist falsch.',
+    'lockscreen_throttle' => 'Zu viele Entsperrversuche. Bitte versuchen Sie es in :seconds Sekunden erneut.',
 ];

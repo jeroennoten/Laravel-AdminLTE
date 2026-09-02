@@ -151,6 +151,52 @@ Since this package steers you into that palette through `extended_colors_v3_alia
 
 The correction also feeds the contrast decisions of the components: with it active, the footer link of a [Small Box](/sections/components/widget_components#small-box) and the close button of a themed [Modal](/sections/components/tool_components#modal) switch to their dark variants on the affected colors.
 
+## CSS Variables
+
+The AdminLTE v4 theming is driven by the **Bootstrap 5.3 and AdminLTE custom properties**, so overriding a handful of them is enough for most brandings and needs no stylesheet of your own. The `css_variables` option emits them as an inline block in the document head, after the AdminLTE stylesheets and before your own:
+
+```php
+'css_variables' => [
+    '--bs-primary' => '#6f42c1',
+    '--bs-primary-rgb' => '111, 66, 193',
+    '--bs-body-bg' => '#fbfbfe',
+    '--bs-border-radius' => '.5rem',
+    '--bs-font-sans-serif' => '"Inter", system-ui, sans-serif',
+],
+
+'css_variables_scope' => ':root',
+
+// The sidebar properties need their own block, see below.
+'css_variables_sidebar' => [
+    '--lte-sidebar-color' => 'rgba(255, 255, 255, .8)',
+    '--lte-sidebar-active-color' => '#fff',
+],
+```
+
+- __`css_variables`__
+
+  A map of custom property names to values. Only names matching `--[a-zA-Z0-9_-]+` are accepted, and a value containing `;`, `{`, `}`, `<`, `>`, a backslash, a comment, an `@import` or an `expression(...)` is dropped, so a configuration value cannot inject arbitrary CSS. Leave the array empty (the default) and no `<style>` block is emitted at all.
+
+- __`css_variables_scope`__
+
+  Where to declare them: `':root'` (the default) or `'body'`. Any other value falls back to `':root'`. Use `'body'` when a variable has to lose against something declared on `:root` by a stylesheet of your own.
+
+- __`css_variables_sidebar`__
+
+  The same, but declared on the **sidebar element**. This is a separate option because AdminLTE redeclares every `--lte-sidebar-*` property on `.app-sidebar` under a color mode selector:
+
+  ```css
+  [data-bs-theme=dark] .app-sidebar { --lte-sidebar-color: #c2c7d0; ... }
+  ```
+
+  That rule is more specific than `:root`, and the sidebar carries `data-bs-theme` by default (see the `sidebar_theme` option), so a `--lte-sidebar-color` placed in `css_variables` would be **silently ignored**. The values of this option are emitted as `[data-bs-theme] .app-sidebar, .app-sidebar`, which matches that specificity and comes later on the document, so it wins in both color modes.
+
+> [!Tip]
+> To repoint the **primary color** of the whole template, prefer [`assets.palette.primary`](#tuning-the-palette): it uses the AdminLTE `data-lte-primary` attribute and recomputes every derived shade, while overriding `--bs-primary` by hand only changes the base color. Use `css_variables` for the properties the palette does not cover, such as the border radius, the font stack or the sidebar colors.
+
+> [!Note]
+> The block is emitted **before** the `adminlte_css` section, so a stylesheet you add there still wins. It is also emitted before the [color mode](/sections/configuration/layout_and_styling#color-mode) does its work, so to theme the dark mode separately, declare the variable inside your own stylesheet under `[data-bs-theme="dark"]` instead.
+
 ## Laravel Mix
 
 > [!Important]
