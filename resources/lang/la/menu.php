@@ -1,19 +1,6 @@
 <?php
 
-return [
+// See the 'adminlte.php' file of this folder for why the 'la' locale is an
+// alias of the Lao ('lo') one.
 
-    'main_navigation' => 'ໜ້າຫຼັກ',
-    'blog' => 'blog',
-    'pages' => 'ໜ້າ',
-    'account_settings' => 'ຕັ້ງຄ່າບັນຊີ',
-    'profile' => 'ໂປຣຟາຍ',
-    'change_password' => 'ປ່ຽນລະຫັດຜ່ານ',
-    'multilevel' => 'ຫຼາກຫຼາຍລະດັບ',
-    'level_one' => 'ລະດັບທີ 1',
-    'level_two' => 'ລະດັບທີ 2',
-    'level_three' => 'ລະດັບທີ 3',
-    'labels' => 'ແຖບ',
-    'important' => 'ສຳຄັນ',
-    'warning' => 'ຄຳເຕືອນ',
-    'information' => 'ຂໍ້ມູນ',
-];
+return require __DIR__.'/../lo/menu.php';

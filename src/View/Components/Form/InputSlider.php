@@ -9,6 +9,14 @@ class InputSlider extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * The class added to the "input-group" element when the input group has
+     * associated errors.
+     *
+     * @var string
+     */
+    protected $invalidGroupClass = 'adminlte-invalid-islgroup';
+
+    /**
      * The set of legacy 'bootstrap-slider' configuration properties that became
      * meaningless on AdminLTE v4, where the vanilla Javascript 'noUiSlider'
      * plugin is used instead. They are accepted for backward compatibility and
@@ -258,31 +266,6 @@ class InputSlider extends InputGroupComponent
         $max = (float) ($this->config['max'] ?? $range['max'] ?? 10);
 
         return ($this->config['range'] ?? null) === true ? [$min, $max] : [$min];
-    }
-
-    /**
-     * Make the class attribute for the "input-group" element. Note we overwrite
-     * the method of the parent class.
-     *
-     * @return string
-     */
-    public function makeInputGroupClass()
-    {
-        $classes = ['input-group'];
-
-        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
-            $classes[] = "input-group-{$this->size}";
-        }
-
-        if ($this->isInvalid()) {
-            $classes[] = 'adminlte-invalid-islgroup';
-        }
-
-        if (isset($this->igroupClass)) {
-            $classes[] = $this->igroupClass;
-        }
-
-        return implode(' ', $classes);
     }
 
     /**

@@ -92,4 +92,81 @@ class TranslationsTest extends TestCase
             __('adminlte::adminlte.card_remove')
         );
     }
+
+    public function testTheLaoLocaleIsReachableByItsIsoCode()
+    {
+        // The 'la' folder shipped the Lao translations, but 'la' is the code
+        // of Latin. The canonical folder is 'lo' now, and 'la' is kept as an
+        // alias so an application configured with the old code keeps working.
+
+        $files = $this->getTranslationFiles();
+
+        $this->assertArrayHasKey('lo', $files);
+        $this->assertArrayHasKey('la', $files);
+
+        $this->assertEquals(require $files['lo'], require $files['la']);
+
+        app()->setLocale('lo');
+        $lao = __('adminlte::adminlte.sign_in');
+
+        app()->setLocale('la');
+        $alias = __('adminlte::adminlte.sign_in');
+
+        $this->assertEquals($lao, $alias);
+        $this->assertNotEquals('adminlte::adminlte.sign_in', $lao);
+
+        app()->setLocale('en');
+    }
+
+    public function testEveryLocaleShipsEveryTranslationFile()
+    {
+        // A missing file falls back to the application fallback locale, so a
+        // localized panel silently shows English strings.
+
+        $expected = [];
+
+        foreach (glob(__DIR__.'/../resources/lang/en/*.php') as $file) {
+            $expected[] = basename($file);
+        }
+
+        sort($expected);
+        $this->assertContains('iframe.php', $expected);
+        $this->assertContains('menu.php', $expected);
+
+        foreach (glob(__DIR__.'/../resources/lang/*', GLOB_ONLYDIR) as $dir) {
+            $files = [];
+
+            foreach (glob($dir.'/*.php') as $file) {
+                $files[] = basename($file);
+            }
+
+            sort($files);
+
+            $this->assertEquals(
+                $expected,
+                $files,
+                "The '".basename($dir)."' locale does not ship every file."
+            );
+        }
+    }
+
+    public function testEveryLocaleShipsTheSameKeysOnEveryFile()
+    {
+        // A locale may carry extra keys of its own, but a missing one falls
+        // back to the fallback locale and shows an English string.
+
+        foreach (['menu.php', 'iframe.php'] as $file) {
+            $reference = array_keys(require __DIR__.'/../resources/lang/en/'.$file);
+
+            foreach (glob(__DIR__.'/../resources/lang/*', GLOB_ONLYDIR) as $dir) {
+                $keys = array_keys(require $dir.'/'.$file);
+
+                $this->assertEmpty(
+                    array_diff($reference, $keys),
+                    basename($dir).'/'.$file.' is missing: '.
+                    implode(', ', array_diff($reference, $keys))
+                );
+            }
+        }
+    }
 }

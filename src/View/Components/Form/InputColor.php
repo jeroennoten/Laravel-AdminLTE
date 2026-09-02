@@ -7,6 +7,14 @@ class InputColor extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * The base set of classes for the input group item. Bootstrap 5 styles a
+     * native color input with the 'form-control-color' modifier.
+     *
+     * @var array
+     */
+    protected $itemBaseClass = ['form-control', 'form-control-color'];
+
+    /**
      * The legacy 'Bootstrap Colorpicker' plugin configuration parameters.
      *
      * DEPRECATED: AdminLTE v4 / Bootstrap 5 provide a native color control
@@ -36,24 +44,6 @@ class InputColor extends InputGroupComponent
 
         $this->config = is_array($config) ? $config : [];
         $this->enableOldSupport = isset($enableOldSupport);
-    }
-
-    /**
-     * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class. Bootstrap 5 styles a native color input
-     * with the 'form-control-color' modifier.
-     *
-     * @return string
-     */
-    public function makeItemClass()
-    {
-        $classes = ['form-control', 'form-control-color'];
-
-        if ($this->isInvalid()) {
-            $classes[] = 'is-invalid';
-        }
-
-        return implode(' ', $classes);
     }
 
     /**

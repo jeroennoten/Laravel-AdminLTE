@@ -744,4 +744,119 @@ class LayoutRenderTest extends TestCase
             $this->renderPage()
         );
     }
+
+    public function testNoStyleBlockIsRenderedWithoutCssVariables()
+    {
+        $html = $this->renderPage();
+
+        $this->assertStringNotContainsString('--bs-primary:', $html);
+    }
+
+    public function testRenderTheConfiguredCssVariables()
+    {
+        config(['adminlte.css_variables' => [
+            '--bs-primary' => '#6f42c1',
+            '--lte-sidebar-color' => 'rgba(255, 255, 255, .8)',
+        ]]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('--bs-primary: #6f42c1;', $html);
+        $this->assertStringContainsString('--lte-sidebar-color: rgba(255, 255, 255, .8);', $html);
+        $this->assertMatchesRegularExpression('/:root\s*\{/', $html);
+    }
+
+    public function testTheCssVariablesScopeIsValidated()
+    {
+        config([
+            'adminlte.css_variables' => ['--bs-primary' => 'red'],
+            'adminlte.css_variables_scope' => 'body',
+        ]);
+
+        $this->assertStringContainsString('body {', $this->renderPage());
+
+        // An unknown scope falls back, so no arbitrary selector is emitted.
+
+        config(['adminlte.css_variables_scope' => 'html[data-x] * ']);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString(':root', $html);
+        $this->assertStringNotContainsString('html[data-x]', $html);
+    }
+
+    public function testTheCssVariablesRejectAnythingButAProperty()
+    {
+        config(['adminlte.css_variables' => [
+            '--valid' => 'red',
+            'color' => 'red',
+            '--inject' => 'red; } body { display: none',
+            '--comment' => 'red /* x */',
+            '--import' => '@import url(x)',
+            '--empty' => '',
+            '--array' => ['red'],
+        ]]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('--valid: red;', $html);
+
+        foreach (['color: red', 'display: none', '/* x */', '@import'] as $rejected) {
+            $this->assertStringNotContainsString($rejected, $html, $rejected);
+        }
+    }
+
+    public function testRenderTheSidebarCssVariables()
+    {
+        // AdminLTE redeclares these on the sidebar element under a color mode
+        // selector, so a ':root' declaration would never win.
+
+        config(['adminlte.css_variables_sidebar' => [
+            '--lte-sidebar-color' => 'rgba(255, 255, 255, .85)',
+        ]]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString(
+            '[data-bs-theme] .app-sidebar, .app-sidebar {',
+            $html
+        );
+        $this->assertStringContainsString(
+            '--lte-sidebar-color: rgba(255, 255, 255, .85);',
+            $html
+        );
+    }
+
+    public function testTheSidebarCssVariablesAreSanitizedToo()
+    {
+        config(['adminlte.css_variables_sidebar' => [
+            'color' => 'red',
+            '--inject' => 'red; } body { display: none',
+        ]]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringNotContainsString('.app-sidebar {', $html);
+        $this->assertStringNotContainsString('display: none', $html);
+    }
+
+    public function testBothCssVariableBlocksCanBeCombined()
+    {
+        config([
+            'adminlte.css_variables' => ['--bs-primary' => '#6f42c1'],
+            'adminlte.css_variables_sidebar' => ['--lte-sidebar-color' => '#fff'],
+        ]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('--bs-primary: #6f42c1;', $html);
+        $this->assertStringContainsString('--lte-sidebar-color: #fff;', $html);
+
+        // The sidebar block has to come last, so it wins over the root one.
+
+        $this->assertLessThan(
+            strpos($html, '.app-sidebar {'),
+            strpos($html, '--bs-primary: #6f42c1;')
+        );
+    }
 }

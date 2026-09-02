@@ -115,7 +115,7 @@ class AdminLteStatusCommand extends Command
      *
      * @return array
      */
-    protected function getResourcesStatus()
+    protected function getResourcesStatus(): array
     {
         // Define the array that will hold the resources status.
 
@@ -146,7 +146,7 @@ class AdminLteStatusCommand extends Command
      * @param  array  $resStatus  Array with the status of each resource
      * @return void
      */
-    protected function showResourcesStatus($resStatus)
+    protected function showResourcesStatus($resStatus): void
     {
         // Define the table headers.
 
@@ -191,7 +191,7 @@ class AdminLteStatusCommand extends Command
      * @param  PackageResource  $resource  The package resource to check
      * @return string
      */
-    protected function getResourceStatus($resource)
+    protected function getResourceStatus($resource): string
     {
         $status = $this->status['uninstalled'];
 
@@ -209,7 +209,7 @@ class AdminLteStatusCommand extends Command
      *
      * @return void
      */
-    protected function showStatusLegends()
+    protected function showStatusLegends(): void
     {
         // Create the table headers for the legends.
 
@@ -241,7 +241,7 @@ class AdminLteStatusCommand extends Command
      * @param  string  $color  The output color for the text
      * @return string
      */
-    protected function styleOutput($text, $color)
+    protected function styleOutput($text, $color): string
     {
         return "<fg={$color}>{$text}</>";
     }

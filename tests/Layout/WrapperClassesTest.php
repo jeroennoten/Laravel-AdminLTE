@@ -20,7 +20,7 @@ class WrapperClassesTest extends TestCase
     {
         config(['adminlte' => []]);
 
-        $this->assertEquals(['app-wrapper'], Layout::makeWrapperClasses());
+        $this->assertEquals(['app-wrapper'], Layout::wrapperClasses());
         $this->assertEquals('app-wrapper', LayoutHelper::makeWrapperClasses());
     }
 
@@ -30,7 +30,7 @@ class WrapperClassesTest extends TestCase
 
         $this->assertEquals(
             ['app-wrapper', 'compact-mode'],
-            Layout::makeWrapperClasses()
+            Layout::wrapperClasses()
         );
     }
 
@@ -41,7 +41,7 @@ class WrapperClassesTest extends TestCase
 
             $this->assertNotContains(
                 'compact-mode',
-                Layout::makeWrapperClasses(),
+                Layout::wrapperClasses(),
                 var_export($value, true)
             );
         }
@@ -53,7 +53,7 @@ class WrapperClassesTest extends TestCase
 
         $this->assertEquals(
             ['app-wrapper', 'my-cls other-cls'],
-            Layout::makeWrapperClasses()
+            Layout::wrapperClasses()
         );
     }
 
@@ -64,8 +64,28 @@ class WrapperClassesTest extends TestCase
 
             $this->assertEquals(
                 ['app-wrapper'],
-                Layout::makeWrapperClasses(),
+                Layout::wrapperClasses(),
                 var_export($value, true)
+            );
+        }
+    }
+
+    public function testTheInnerMethodsDoNotCollideWithTheFacadeOnes()
+    {
+        // The facade methods return the classes joined into a string, while
+        // the inner ones return the set of classes as an array. So, they can't
+        // share their names.
+
+        $this->assertIsArray(Layout::wrapperClasses());
+        $this->assertIsArray(Layout::contentWrapperClasses());
+
+        $this->assertIsString(LayoutHelper::makeWrapperClasses());
+        $this->assertIsString(LayoutHelper::makeContentWrapperClasses());
+
+        foreach (['makeWrapperClasses', 'makeContentWrapperClasses'] as $method) {
+            $this->assertFalse(
+                method_exists(Layout::class, $method),
+                "The 'Layout::{$method}' method should not exist"
             );
         }
     }

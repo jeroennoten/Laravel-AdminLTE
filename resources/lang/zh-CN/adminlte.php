@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => '聊天消息',
     'direct_chat_contacts' => '联系人',
     'direct_chat_new_messages' => '新消息',
+    'social_auth_separator' => '- 或 -',
+    'lockscreen_message' => '输入密码以恢复您的会话',
+    'lockscreen_wrong_password' => '密码不正确。',
+    'lockscreen_throttle' => '解锁尝试次数过多，请在 :seconds 秒后重试。',
 ];

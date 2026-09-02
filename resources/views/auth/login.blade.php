@@ -82,6 +82,7 @@
             </div>
         </div>
     </form>
+@include('adminlte::auth.social-links', ['fallbackText' => __('adminlte::adminlte.sign_in')])
 @stop
 
 @section('auth_footer')

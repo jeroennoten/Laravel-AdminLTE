@@ -176,7 +176,7 @@ class AdminLteInstallCommand extends Command
      * @param  string  $opt  Descriptive name of the handled option
      * @return void
      */
-    protected function handleOptions($values, $resources, $opt)
+    protected function handleOptions($values, $resources, $opt): void
     {
         foreach ($values as $value) {
             $this->handleOption($value, $resources, $opt);
@@ -191,7 +191,7 @@ class AdminLteInstallCommand extends Command
      * @param  string  $opt  Descriptive name of the handled option
      * @return void
      */
-    protected function handleOption($value, $resources, $opt)
+    protected function handleOption($value, $resources, $opt): void
     {
         if (! isset($resources[$value])) {
             $this->comment("The option --{$opt}={$value} is invalid!");
@@ -210,7 +210,7 @@ class AdminLteInstallCommand extends Command
      * @param  string  $resources  The resources to install
      * @return void
      */
-    protected function exportPackageResources(...$resources)
+    protected function exportPackageResources(...$resources): void
     {
         foreach ($resources as $resource) {
             // Check if the resource was already installed on the current
@@ -232,7 +232,7 @@ class AdminLteInstallCommand extends Command
      * @param  string  $resource  The keyword of the resource to install
      * @return void
      */
-    protected function exportPackageResource($resource)
+    protected function exportPackageResource($resource): void
     {
         $resource = $this->pkgResources[$resource];
         $installMsg = $resource->getInstallMessage('install');

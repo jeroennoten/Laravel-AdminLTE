@@ -182,13 +182,13 @@ class Builder
      * @param  array  $items  An array with the items to be compiled
      * @return array
      */
-    protected function compileItems($items)
+    protected function compileItems($items): array
     {
         // Get the set of compiled items.
 
         $items = array_filter(
-            array_map([$this, 'applyFilters'], $items),
-            [MenuItemHelper::class, 'isAllowed']
+            array_map($this->applyFilters(...), $items),
+            MenuItemHelper::isAllowed(...)
         );
 
         // Return the set of compiled items without array holes, that's why we
@@ -206,7 +206,7 @@ class Builder
      * @param  array  $items  The array from where to search for the menu item
      * @return ?array
      */
-    protected function findItemPath($itemKey, $items)
+    protected function findItemPath($itemKey, $items): ?array
     {
         // Traverse all the specified items. For each item, we first check if
         // the item has the specified key. Otherwise, if the item is a submenu,
@@ -236,7 +236,7 @@ class Builder
      * @param  mixed  $item  A menu item
      * @return mixed
      */
-    protected function applyFilters($item)
+    protected function applyFilters($item): mixed
     {
         // Filters are only applied to array type menu items.
 
@@ -275,8 +275,9 @@ class Builder
      * @param  string  $itemKey  The key that identifies the target menu item
      * @param  int  $where  Identifier for where to place the new items
      * @param  mixed  $items  The new items to be added
+     * @return void
      */
-    protected function addItems($itemKey, $where, ...$items)
+    protected function addItems($itemKey, $where, ...$items): void
     {
         // Check if a path can be found for the specified menu item.
 

@@ -7,6 +7,14 @@ class Select2 extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * The base set of classes for the input group item. Bootstrap 5 requires
+     * the "form-select" class on the select elements.
+     *
+     * @var array
+     */
+    protected $itemBaseClass = ['form-select'];
+
+    /**
      * The select2 plugin configuration parameters. Array with 'key => value'
      * pairs, where the key should be an existing configuration property of
      * the select2 plugin.
@@ -38,24 +46,6 @@ class Select2 extends InputGroupComponent
         $this->config = is_array($config) ? $config : [];
         $this->config['theme'] = $this->config['theme'] ?? 'default';
         $this->enableOldSupport = isset($enableOldSupport);
-    }
-
-    /**
-     * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class. Bootstrap 5 requires the "form-select"
-     * class on the select elements.
-     *
-     * @return string
-     */
-    public function makeItemClass()
-    {
-        $classes = ['form-select'];
-
-        if ($this->isInvalid()) {
-            $classes[] = 'is-invalid';
-        }
-
-        return implode(' ', $classes);
     }
 
     /**

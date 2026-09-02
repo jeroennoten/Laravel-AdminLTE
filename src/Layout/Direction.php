@@ -10,7 +10,7 @@ class Direction
      *
      * @return bool
      */
-    public static function isRtlEnabled()
+    public static function isRtlEnabled(): bool
     {
         $cfg = config('adminlte.rtl.enabled', null);
 
@@ -27,7 +27,7 @@ class Direction
      * @param  string  $locale  The locale to check (for example: 'ar')
      * @return bool
      */
-    public static function isRtlLocale($locale)
+    public static function isRtlLocale($locale): bool
     {
         if (! is_string($locale)) {
             return false;
@@ -47,7 +47,7 @@ class Direction
      *
      * @return string
      */
-    public static function get()
+    public static function get(): string
     {
         return self::isRtlEnabled() ? 'rtl' : 'ltr';
     }
@@ -61,7 +61,7 @@ class Direction
      * @param  array  $locales  The set of locales to compare with
      * @return bool
      */
-    protected static function matchesAnyLocale($locale, $locales)
+    protected static function matchesAnyLocale($locale, $locales): bool
     {
         $locale = self::normalize($locale);
         $language = explode('-', $locale)[0];
@@ -86,7 +86,7 @@ class Direction
      * @param  string  $locale  The locale to normalize
      * @return string
      */
-    protected static function normalize($locale)
+    protected static function normalize($locale): string
     {
         return str_replace('_', '-', $locale);
     }

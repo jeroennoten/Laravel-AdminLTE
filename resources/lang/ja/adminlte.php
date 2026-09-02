@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'チャットメッセージ',
     'direct_chat_contacts' => '連絡先',
     'direct_chat_new_messages' => '新着メッセージ',
+    'social_auth_separator' => '- または -',
+    'lockscreen_message' => 'セッションを再開するにはパスワードを入力してください',
+    'lockscreen_wrong_password' => 'パスワードが正しくありません。',
+    'lockscreen_throttle' => 'ロック解除の試行が多すぎます。:seconds 秒後にもう一度お試しください。',
 ];

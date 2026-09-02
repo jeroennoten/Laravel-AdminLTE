@@ -421,6 +421,27 @@ class AssetHelperTest extends TestCase
         $this->assertNull(AssetHelper::adminlteCss());
     }
 
+    public function testTheRequiredAssetsAreNullableToo()
+    {
+        // The 'adminlteCss' and 'adminlteJs' methods are documented to return
+        // a string, but they resolve to null when no location is configured.
+        // Note the master view checks for that null before using them.
+
+        config([
+            'adminlte.assets.local.adminlte_css' => null,
+            'adminlte.assets.cdn.adminlte_css' => null,
+            'adminlte.assets.local.adminlte_js' => null,
+            'adminlte.assets.cdn.adminlte_js' => null,
+        ]);
+
+        foreach (['local', 'cdn'] as $mode) {
+            config(['adminlte.assets.mode' => $mode]);
+
+            $this->assertNull(AssetHelper::adminlteCss(), $mode);
+            $this->assertNull(AssetHelper::adminlteJs(), $mode);
+        }
+    }
+
     public function testResolveWithoutACdnLocation()
     {
         // Without a CDN location, the local path is used even when the asset

@@ -12,7 +12,7 @@ class Layout
      *
      * @return bool
      */
-    public static function isTopnavEnabled()
+    public static function isTopnavEnabled(): bool
     {
         return self::isEnabledBy('layout_topnav');
     }
@@ -21,11 +21,12 @@ class Layout
      * Checks if the boxed layout is enabled. Note the boxed layout was removed
      * on AdminLTE v4, this is kept for backward compatibility only.
      *
-     * @deprecated The boxed layout is not supported by AdminLTE v4.
+     * @deprecated The boxed layout is not supported by AdminLTE v4. It will
+     * be removed on the 5.0 release.
      *
      * @return bool
      */
-    public static function isBoxedEnabled()
+    public static function isBoxedEnabled(): bool
     {
         return self::isEnabledBy('layout_boxed');
     }
@@ -35,7 +36,7 @@ class Layout
      *
      * @return bool
      */
-    public static function isRightSidebarEnabled()
+    public static function isRightSidebarEnabled(): bool
     {
         return self::isEnabledBy('right_sidebar');
     }
@@ -45,7 +46,7 @@ class Layout
      *
      * @return array
      */
-    public static function makeWrapperClasses()
+    public static function wrapperClasses(): array
     {
         $classes = [Tokens::WRAPPER];
 
@@ -67,7 +68,7 @@ class Layout
      *
      * @return array
      */
-    public static function makeContentWrapperClasses()
+    public static function contentWrapperClasses(): array
     {
         $classes = [Tokens::CONTENT_WRAPPER];
         $cfg = config('adminlte.classes_content_wrapper', '');
@@ -92,7 +93,7 @@ class Layout
      * @param  string  $option  The name of the option and of the section
      * @return bool
      */
-    protected static function isEnabledBy($option)
+    protected static function isEnabledBy($option): bool
     {
         return (bool) config("adminlte.{$option}", false)
             || ! empty(View::getSection($option));

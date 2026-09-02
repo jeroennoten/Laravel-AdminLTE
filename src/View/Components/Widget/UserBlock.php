@@ -12,7 +12,7 @@ class UserBlock extends Component
      *
      * @var array
      */
-    protected $ubSizes = ['sm'];
+    protected const SIZES = ['sm'];
 
     /**
      * The user name of the block.
@@ -77,7 +77,7 @@ class UserBlock extends Component
     {
         $classes = ['user-block'];
 
-        if (isset($this->size) && in_array($this->size, $this->ubSizes)) {
+        if (isset($this->size) && in_array($this->size, static::SIZES)) {
             $classes[] = "user-block-{$this->size}";
         }
 

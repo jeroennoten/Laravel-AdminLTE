@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Správy chatu',
     'direct_chat_contacts' => 'Kontakty',
     'direct_chat_new_messages' => 'Nové správy',
+    'social_auth_separator' => '- ALEBO -',
+    'lockscreen_message' => 'Zadajte svoje heslo pre návrat do relácie',
+    'lockscreen_wrong_password' => 'Zadané heslo je nesprávne.',
+    'lockscreen_throttle' => 'Príliš veľa pokusov o odomknutie. Skúste to znova o :seconds sekúnd.',
 ];

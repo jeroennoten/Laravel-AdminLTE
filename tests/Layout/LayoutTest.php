@@ -89,7 +89,7 @@ class LayoutTest extends TestCase
     {
         config(['adminlte' => []]);
 
-        $this->assertEquals(['app-main'], Layout::makeContentWrapperClasses());
+        $this->assertEquals(['app-main'], Layout::contentWrapperClasses());
     }
 
     public function testMakeContentWrapperClassesWithCustomClasses()
@@ -101,7 +101,7 @@ class LayoutTest extends TestCase
 
         $this->assertEquals(
             ['app-main', 'class1 class2'],
-            Layout::makeContentWrapperClasses()
+            Layout::contentWrapperClasses()
         );
     }
 
@@ -116,7 +116,7 @@ class LayoutTest extends TestCase
 
             $this->assertEquals(
                 ['app-main'],
-                Layout::makeContentWrapperClasses()
+                Layout::contentWrapperClasses()
             );
         }
     }
@@ -133,13 +133,13 @@ class LayoutTest extends TestCase
 
         $this->assertEquals(
             ['app-main', 'position-relative'],
-            Layout::makeContentWrapperClasses()
+            Layout::contentWrapperClasses()
         );
 
         // The fullscreen preloader does not affect the content wrapper.
 
         config(['adminlte.preloader.mode' => 'fullscreen']);
-        $this->assertEquals(['app-main'], Layout::makeContentWrapperClasses());
+        $this->assertEquals(['app-main'], Layout::contentWrapperClasses());
 
         // Neither does a disabled preloader.
 
@@ -148,7 +148,7 @@ class LayoutTest extends TestCase
             'adminlte.preloader.mode' => 'cwrapper',
         ]);
 
-        $this->assertEquals(['app-main'], Layout::makeContentWrapperClasses());
+        $this->assertEquals(['app-main'], Layout::contentWrapperClasses());
     }
 
     public function testMakeContentWrapperClassesWithAllTheOptions()
@@ -161,7 +161,7 @@ class LayoutTest extends TestCase
 
         $this->assertEquals(
             ['app-main', 'p-3', 'position-relative'],
-            Layout::makeContentWrapperClasses()
+            Layout::contentWrapperClasses()
         );
     }
 }

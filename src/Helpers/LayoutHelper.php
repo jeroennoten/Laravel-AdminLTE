@@ -25,7 +25,8 @@ class LayoutHelper
      * Checks if layout boxed is enabled. Note the boxed layout was removed on
      * AdminLTE v4, this method is kept for backward compatibility only.
      *
-     * @deprecated The boxed layout is not supported by AdminLTE v4.
+     * @deprecated The boxed layout is not supported by AdminLTE v4. It will
+     * be removed on the 5.0 release.
      *
      * @return bool
      */
@@ -162,7 +163,8 @@ class LayoutHelper
      * that on AdminLTE v4 the color mode is applied on the html element, so
      * this method is kept for backward compatibility only.
      *
-     * @deprecated Use the {@see makeHtmlData()} method instead.
+     * @deprecated Use the {@see makeHtmlData()} method instead. It will be
+     * removed on the 5.0 release.
      *
      * @return string
      */
@@ -210,7 +212,7 @@ class LayoutHelper
      */
     public static function makeWrapperClasses()
     {
-        return self::join(Layout::makeWrapperClasses());
+        return self::join(Layout::wrapperClasses());
     }
 
     /**
@@ -221,7 +223,7 @@ class LayoutHelper
      */
     public static function makeContentWrapperClasses()
     {
-        return self::join(Layout::makeContentWrapperClasses());
+        return self::join(Layout::contentWrapperClasses());
     }
 
     /**
@@ -230,7 +232,7 @@ class LayoutHelper
      * @param  array  $tokens  The set of tokens to join
      * @return string
      */
-    protected static function join($tokens)
+    protected static function join($tokens): string
     {
         return trim(implode(' ', $tokens));
     }

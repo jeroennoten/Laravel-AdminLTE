@@ -361,6 +361,55 @@ return [
     'classes_auth_icon' => '',
     'classes_auth_btn' => 'btn-primary',
 
+    // The social login buttons of the authentication views. Every entry
+    // accepts an 'url', a 'text', an 'icon' and a 'theme'. Leave the array
+    // empty (the default) and no block is rendered at all.
+    //
+    // 'auth_social_links' => [
+    //     [
+    //         'url' => '/auth/facebook',
+    //         'text' => 'Sign in using Facebook',
+    //         'icon' => 'bi bi-facebook',
+    //         'theme' => 'primary',
+    //     ],
+    // ],
+
+    'auth_social_links' => [],
+    'auth_social_links_separator' => null,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Lockscreen
+    |--------------------------------------------------------------------------
+    |
+    | The AdminLTE lockscreen keeps the visitor authenticated but locks the
+    | panel behind their password. Enable it to register the package routes,
+    | and add the 'RedirectIfLocked' middleware to protect your own routes.
+    |
+    | The 'guard' option selects the authentication guard whose user provider
+    | verifies the password (null uses the default guard). The 'throttle'
+    | options limit the unlock attempts per user and ip, set 'max_attempts' to
+    | zero to disable the limit. The 'except' option lists extra paths that
+    | stay reachable while the panel is locked.
+    |
+    | For detailed instructions you can look the lockscreen section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/overview/authentication_views.html
+    |
+    */
+
+    'lockscreen' => [
+        'enabled' => false,
+        'routes' => true,
+        'guard' => null,
+
+        'throttle' => [
+            'max_attempts' => 5,
+            'decay_seconds' => 60,
+        ],
+
+        'except' => [],
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Admin Panel Classes
@@ -490,6 +539,10 @@ return [
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/other.html
     |
     */
+
+    'css_variables' => [],
+    'css_variables_scope' => ':root',
+    'css_variables_sidebar' => [],
 
     'laravel_asset_bundling' => false,
     'laravel_css_path' => 'resources/css/app.css',

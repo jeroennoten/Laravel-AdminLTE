@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Chatberichten',
     'direct_chat_contacts' => 'Contacten',
     'direct_chat_new_messages' => 'Nieuwe berichten',
+    'social_auth_separator' => '- OF -',
+    'lockscreen_message' => 'Voer uw wachtwoord in om uw sessie te hervatten',
+    'lockscreen_wrong_password' => 'Het opgegeven wachtwoord is onjuist.',
+    'lockscreen_throttle' => 'Te veel ontgrendelpogingen. Probeer het over :seconds seconden opnieuw.',
 ];

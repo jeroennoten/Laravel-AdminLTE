@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'پیام‌های گفتگو',
     'direct_chat_contacts' => 'مخاطبین',
     'direct_chat_new_messages' => 'پیام‌های جدید',
+    'social_auth_separator' => '- یا -',
+    'lockscreen_message' => 'برای بازگشت به نشست خود رمز عبور را وارد کنید',
+    'lockscreen_wrong_password' => 'رمز عبور واردشده نادرست است.',
+    'lockscreen_throttle' => 'تلاش‌های زیادی برای باز کردن قفل انجام شده است. :seconds ثانیه دیگر تلاش کنید.',
 ];

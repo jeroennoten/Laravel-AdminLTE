@@ -16,6 +16,23 @@ class InputGroupComponent extends Component
     protected $errorsBag;
 
     /**
+     * The class added to the "input-group" element when the input group has
+     * associated errors. Each component styles its own invalid state, so the
+     * class is expected to be paired with the rules pushed by its view.
+     *
+     * @var string
+     */
+    protected $invalidGroupClass = 'adminlte-invalid-igroup';
+
+    /**
+     * The base set of classes for the input group item. It provides a way for
+     * the concrete components to setup the style of their underlying control.
+     *
+     * @var array
+     */
+    protected $itemBaseClass = ['form-control'];
+
+    /**
      * The id attribute for the underlying input group item. The input group
      * item may be an "input", a "select", a "textarea", etc.
      *
@@ -172,7 +189,7 @@ class InputGroupComponent extends Component
         }
 
         if ($this->isInvalid()) {
-            $classes[] = 'adminlte-invalid-igroup';
+            $classes[] = $this->invalidGroupClass;
         }
 
         if (isset($this->igroupClass)) {
@@ -189,7 +206,7 @@ class InputGroupComponent extends Component
      */
     public function makeItemClass()
     {
-        $classes = ['form-control'];
+        $classes = (array) $this->itemBaseClass;
 
         if ($this->isInvalid()) {
             $classes[] = 'is-invalid';

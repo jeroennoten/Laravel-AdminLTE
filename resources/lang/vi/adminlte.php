@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Tin nhắn trò chuyện',
     'direct_chat_contacts' => 'Danh bạ',
     'direct_chat_new_messages' => 'Tin nhắn mới',
+    'social_auth_separator' => '- HOẶC -',
+    'lockscreen_message' => 'Nhập mật khẩu để tiếp tục phiên làm việc',
+    'lockscreen_wrong_password' => 'Mật khẩu không đúng.',
+    'lockscreen_throttle' => 'Quá nhiều lần thử mở khóa. Vui lòng thử lại sau :seconds giây.',
 ];

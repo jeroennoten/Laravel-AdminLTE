@@ -12,7 +12,7 @@ class Sidebar
      *
      * @return array
      */
-    public static function makeBodyClasses()
+    public static function makeBodyClasses(): array
     {
         if (Layout::isTopnavEnabled()) {
             return [];
@@ -45,7 +45,7 @@ class Sidebar
      *
      * @return array
      */
-    public static function makeClasses()
+    public static function makeClasses(): array
     {
         $classes = [Tokens::SIDEBAR];
         $cfg = config('adminlte.classes_sidebar', 'bg-body-secondary shadow');
@@ -62,7 +62,7 @@ class Sidebar
      *
      * @return array
      */
-    public static function makeNavClasses()
+    public static function makeNavClasses(): array
     {
         $classes = [Tokens::NAV, Tokens::SIDEBAR_MENU, Tokens::NAV_COLUMN];
 
@@ -94,7 +94,7 @@ class Sidebar
      *
      * @return array
      */
-    public static function makeAttributes()
+    public static function makeAttributes(): array
     {
         $attrs = [];
         $theme = config('adminlte.sidebar_theme', 'dark');
@@ -128,7 +128,7 @@ class Sidebar
      *
      * @return bool
      */
-    protected static function isMiniEnabled()
+    protected static function isMiniEnabled(): bool
     {
         $cfg = config('adminlte.sidebar_mini', true);
 
@@ -144,7 +144,7 @@ class Sidebar
      *
      * @return bool
      */
-    protected static function isCollapsed()
+    protected static function isCollapsed(): bool
     {
         return (bool) config('adminlte.sidebar_collapse', false)
             || ! empty(View::getSection('sidebar_collapse'));

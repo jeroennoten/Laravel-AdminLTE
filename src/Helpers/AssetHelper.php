@@ -34,8 +34,8 @@ class AssetHelper
      * since a plugin may point to an asset of the AdminLTE distribution (for
      * example the Select2 compatibility theme).
      *
-     * @param  string|null  $location  The location of an asset
-     * @return string|null
+     * @param  mixed  $location  The location of an asset
+     * @return mixed
      */
     public static function applyVersion($location)
     {
@@ -44,9 +44,10 @@ class AssetHelper
 
     /**
      * Gets the location (url) of the main AdminLTE stylesheet. The RTL variant
-     * is returned when the RTL mode is enabled.
+     * is returned when the RTL mode is enabled. Returns null when no location
+     * can be resolved.
      *
-     * @return string
+     * @return string|null
      */
     public static function adminlteCss()
     {
@@ -54,9 +55,10 @@ class AssetHelper
     }
 
     /**
-     * Gets the location (url) of the main AdminLTE script.
+     * Gets the location (url) of the main AdminLTE script. Returns null when
+     * no location can be resolved.
      *
-     * @return string
+     * @return string|null
      */
     public static function adminlteJs()
     {
@@ -155,7 +157,7 @@ class AssetHelper
      * @param  string  $option  The option that enables the asset
      * @return string|null
      */
-    protected static function resolveOptional($key, $option)
+    protected static function resolveOptional($key, $option): ?string
     {
         if (! config("adminlte.{$option}", true)) {
             return null;

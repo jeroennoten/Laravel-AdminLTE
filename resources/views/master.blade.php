@@ -206,6 +206,9 @@
         @livewireStyles
     @endif
 
+    {{-- Custom CSS variables --}}
+    @include('adminlte::partials.common.css-variables')
+
     {{-- Custom Stylesheets (post AdminLTE) --}}
     @yield('adminlte_css')
 

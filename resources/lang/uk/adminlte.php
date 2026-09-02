@@ -70,4 +70,8 @@ return [
     'direct_chat_messages' => 'Повідомлення чату',
     'direct_chat_contacts' => 'Контакти',
     'direct_chat_new_messages' => 'Нові повідомлення',
+    'social_auth_separator' => '- АБО -',
+    'lockscreen_message' => 'Введіть пароль, щоб повернутися до сеансу',
+    'lockscreen_wrong_password' => 'Вказано невірний пароль.',
+    'lockscreen_throttle' => 'Забагато спроб розблокування. Повторіть через :seconds секунд.',
 ];

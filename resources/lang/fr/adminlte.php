@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'Messages du chat',
     'direct_chat_contacts' => 'Contacts',
     'direct_chat_new_messages' => 'Nouveaux messages',
+    'social_auth_separator' => '- OU -',
+    'lockscreen_message' => 'Saisissez votre mot de passe pour retrouver votre session',
+    'lockscreen_wrong_password' => 'Le mot de passe fourni est incorrect.',
+    'lockscreen_throttle' => 'Trop de tentatives de deverrouillage. Reessayez dans :seconds secondes.',
 ];

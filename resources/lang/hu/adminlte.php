@@ -68,4 +68,8 @@ return [
     'direct_chat_messages' => 'Csevegőüzenetek',
     'direct_chat_contacts' => 'Névjegyek',
     'direct_chat_new_messages' => 'Új üzenetek',
+    'social_auth_separator' => '- VAGY -',
+    'lockscreen_message' => 'Adja meg a jelszavát a munkamenet folytatásához',
+    'lockscreen_wrong_password' => 'A megadott jelszó helytelen.',
+    'lockscreen_throttle' => 'Túl sok feloldási kísérlet. Próbálja újra :seconds másodperc múlva.',
 ];

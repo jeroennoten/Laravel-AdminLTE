@@ -23,7 +23,7 @@ class Palette
      *
      * @return string|null
      */
-    public static function getPrimary()
+    public static function getPrimary(): ?string
     {
         $color = config('adminlte.assets.palette.primary', null);
 
@@ -40,7 +40,7 @@ class Palette
      *
      * @return string|null
      */
-    public static function getContrast()
+    public static function getContrast(): ?string
     {
         $contrast = config('adminlte.assets.palette.contrast', null);
 
@@ -62,7 +62,7 @@ class Palette
      *
      * @return array
      */
-    public static function getAvailableColors()
+    public static function getAvailableColors(): array
     {
         $extended = UtilsHelper::getExtendedColors();
 
@@ -76,7 +76,7 @@ class Palette
      *
      * @return array
      */
-    public static function makeHtmlAttributes()
+    public static function makeHtmlAttributes(): array
     {
         $attrs = [];
         $primary = self::getPrimary();
@@ -98,7 +98,7 @@ class Palette
      *
      * @return bool
      */
-    protected static function isV3PaletteEnabled()
+    protected static function isV3PaletteEnabled(): bool
     {
         return ! empty(UtilsHelper::getExtendedColors())
             && (bool) config('adminlte.assets.extended_colors_v3_aliases', false);

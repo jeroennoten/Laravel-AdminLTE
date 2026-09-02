@@ -26,7 +26,7 @@ class DataFilter implements FilterInterface
      * @param  array  $dataArray  Array of HTML data attributes
      * @return string
      */
-    protected function compileData($dataArray)
+    protected function compileData($dataArray): string
     {
         $compiled = [];
 

@@ -345,21 +345,14 @@ class Card extends Component
      */
     public function makeCardHeaderClass($hasTabsSlot = false)
     {
-        $classes = ['card-header'];
-
         // A tabbed card header holds the tabs navigation, which needs to sit
         // flush against the body seam.
 
-        if ($this->hasTabs($hasTabsSlot)) {
-            $classes[] = 'p-0';
-            $classes[] = 'pt-1';
-        }
+        $modifiers = $this->hasTabs($hasTabsSlot) ? ['p-0', 'pt-1'] : [];
 
-        if (isset($this->headerClass)) {
-            $classes[] = $this->headerClass;
-        }
-
-        return implode(' ', $classes);
+        return $this->makeCardSectionClass(
+            'card-header', $this->headerClass, $modifiers
+        );
     }
 
     /**
@@ -369,13 +362,7 @@ class Card extends Component
      */
     public function makeCardBodyClass()
     {
-        $classes = ['card-body'];
-
-        if (isset($this->bodyClass)) {
-            $classes[] = $this->bodyClass;
-        }
-
-        return implode(' ', $classes);
+        return $this->makeCardSectionClass('card-body', $this->bodyClass);
     }
 
     /**
@@ -385,13 +372,7 @@ class Card extends Component
      */
     public function makeCardFooterClass()
     {
-        $classes = ['card-footer'];
-
-        if (isset($this->footerClass)) {
-            $classes[] = $this->footerClass;
-        }
-
-        return implode(' ', $classes);
+        return $this->makeCardSectionClass('card-footer', $this->footerClass);
     }
 
     /**
@@ -404,10 +385,26 @@ class Card extends Component
         // Note the AdminLTE v4 outline cards keep a plain title, the theme
         // color is only applied to the top border of the card.
 
-        $classes = ['card-title'];
+        return $this->makeCardSectionClass('card-title', $this->titleClass);
+    }
 
-        if (isset($this->titleClass)) {
-            $classes[] = $this->titleClass;
+    /**
+     * Make the class attribute for a section of the card. The extra classes
+     * provided by the user are always appended at the end, so they can
+     * overwrite the default ones.
+     *
+     * @param  string  $baseClass  The base class of the section
+     * @param  string  $extraClass  The extra classes provided by the user
+     * @param  array  $modifiers  Additional classes for the section
+     * @return string
+     */
+    protected function makeCardSectionClass(
+        $baseClass, $extraClass, $modifiers = []
+    ) {
+        $classes = array_merge([$baseClass], $modifiers);
+
+        if (isset($extraClass)) {
+            $classes[] = $extraClass;
         }
 
         return implode(' ', $classes);

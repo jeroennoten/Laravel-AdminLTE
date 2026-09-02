@@ -70,4 +70,8 @@ return [
     'direct_chat_messages' => 'Sohbet mesajları',
     'direct_chat_contacts' => 'Kişiler',
     'direct_chat_new_messages' => 'Yeni mesajlar',
+    'social_auth_separator' => '- VEYA -',
+    'lockscreen_message' => 'Oturumunuza dönmek için parolanızı girin',
+    'lockscreen_wrong_password' => 'Girilen parola hatalı.',
+    'lockscreen_throttle' => 'Çok fazla kilit açma denemesi. Lütfen :seconds saniye sonra tekrar deneyin.',
 ];

@@ -129,7 +129,7 @@ class AuthViewsResource extends PackageResource
      * @param  string  $content  The expected content of the view
      * @return bool
      */
-    protected function authViewExists($path, $content)
+    protected function authViewExists($path, $content): bool
     {
         return File::isFile($path)
             && strpos(File::get($path), $content) !== false;
@@ -142,7 +142,7 @@ class AuthViewsResource extends PackageResource
      * @param  string  $content  The expected content of the view
      * @return bool
      */
-    protected function authViewInstalled($path, $content)
+    protected function authViewInstalled($path, $content): bool
     {
         return File::isFile($path) && File::get($path) === $content;
     }

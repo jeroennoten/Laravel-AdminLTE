@@ -331,7 +331,7 @@ class LayoutComponentsTest extends TestCase
 
         // Test the icon of the automatic color mode.
 
-        $iAutoClass = implode(' ', $component->makeIconAutoClass());
+        $iAutoClass = implode(' ', $component->makeIconAutoClasses());
 
         $this->assertStringContainsString('icon-auto', $iAutoClass);
         $this->assertStringContainsString('text-color-auto', $iAutoClass);
@@ -364,6 +364,43 @@ class LayoutComponentsTest extends TestCase
 
         $this->assertStringContainsString('icon-on', $iClass);
         $this->assertStringContainsString('text-color-on', $iClass);
+    }
+
+    public function testNavbarDarkmodeWidgetIconMethodsReturnTypes()
+    {
+        // The plural named methods provide the set of classes as an array, the
+        // singular named one provides the class attribute as a string.
+
+        $component = new Components\Layout\NavbarDarkmodeWidget(
+            'icon-off', 'icon-on', 'icon-auto', 'color-off', 'color-on', 'color-auto'
+        );
+
+        $this->assertIsString($component->makeIconClass());
+
+        $this->assertEquals(
+            ['icon-off', 'text-color-off'],
+            $component->makeIconDisabledClasses()
+        );
+
+        $this->assertEquals(
+            ['icon-on', 'text-color-on'],
+            $component->makeIconEnabledClasses()
+        );
+
+        $this->assertEquals(
+            ['icon-auto', 'text-color-auto'],
+            $component->makeIconAutoClasses()
+        );
+
+        // The old singular names of the array methods are gone, they collided
+        // with the string returned by the 'makeIconClass' method.
+
+        foreach (['Disabled', 'Enabled', 'Auto'] as $state) {
+            $this->assertFalse(
+                method_exists($component, "makeIcon{$state}Class"),
+                "The 'makeIcon{$state}Class' method should not exist"
+            );
+        }
     }
 
     public function testNavbarDarkmodeWidgetMode()

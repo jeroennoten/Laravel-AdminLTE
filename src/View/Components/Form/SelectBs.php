@@ -7,6 +7,14 @@ class SelectBs extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * The base set of classes for the input group item. Bootstrap 5 requires
+     * the "form-select" class on the select elements.
+     *
+     * @var array
+     */
+    protected $itemBaseClass = ['form-select'];
+
+    /**
      * The set of legacy 'bootstrap-select' configuration properties that can
      * be translated into a Tom Select configuration property. Any other legacy
      * property will be accepted and ignored.
@@ -96,18 +104,14 @@ class SelectBs extends InputGroupComponent
 
     /**
      * Make the class attribute for the input group item. Note we overwrite
-     * the method of the parent class. Bootstrap 5 requires the "form-select"
-     * class on the select elements.
+     * the method of the parent class in order to add the size modifier of the
+     * Bootstrap 5 select elements.
      *
      * @return string
      */
     public function makeItemClass()
     {
-        $classes = ['form-select'];
-
-        if ($this->isInvalid()) {
-            $classes[] = 'is-invalid';
-        }
+        $classes = [parent::makeItemClass()];
 
         if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
             $classes[] = "form-select-{$this->size}";

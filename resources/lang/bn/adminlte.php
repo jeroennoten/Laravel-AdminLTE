@@ -69,4 +69,8 @@ return [
     'direct_chat_messages' => 'চ্যাট বার্তা',
     'direct_chat_contacts' => 'পরিচিতি',
     'direct_chat_new_messages' => 'নতুন বার্তা',
+    'social_auth_separator' => '- অথবা -',
+    'lockscreen_message' => 'আপনার সেশনে ফিরতে পাসওয়ার্ড দিন',
+    'lockscreen_wrong_password' => 'প্রদত্ত পাসওয়ার্ড ভুল।',
+    'lockscreen_throttle' => 'অনেকবার আনলক করার চেষ্টা হয়েছে। :seconds সেকেন্ড পরে আবার চেষ্টা করুন।',
 ];

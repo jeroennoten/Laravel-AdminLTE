@@ -70,4 +70,8 @@ return [
     'direct_chat_messages' => 'Сообщения чата',
     'direct_chat_contacts' => 'Контакты',
     'direct_chat_new_messages' => 'Новые сообщения',
+    'social_auth_separator' => '- ИЛИ -',
+    'lockscreen_message' => 'Введите пароль, чтобы вернуться к сеансу',
+    'lockscreen_wrong_password' => 'Указан неверный пароль.',
+    'lockscreen_throttle' => 'Слишком много попыток разблокировки. Повторите через :seconds секунд.',
 ];

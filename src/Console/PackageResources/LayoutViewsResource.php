@@ -116,7 +116,7 @@ class LayoutViewsResource extends PackageResource
      * @param  string  $target  The target path
      * @return void
      */
-    protected function publishResource($source, $target)
+    protected function publishResource($source, $target): void
     {
         // Check whether the resource is a file or a directory.
 
@@ -133,7 +133,7 @@ class LayoutViewsResource extends PackageResource
      * @param  string  $target  The target path
      * @return void
      */
-    protected function uninstallResource($target)
+    protected function uninstallResource($target): void
     {
         // When the target does not exists, we consider the resource as
         // unistalled.
@@ -159,7 +159,7 @@ class LayoutViewsResource extends PackageResource
      * @param  string  $target  The target path
      * @return bool
      */
-    protected function resourceInstalled($source, $target)
+    protected function resourceInstalled($source, $target): bool
     {
         // Check whether the resource is a file or a directory.
 

@@ -46,7 +46,7 @@ class ErrorViewsResource extends PackageResource
      *
      * @return array
      */
-    protected function makeSourceContent()
+    protected function makeSourceContent(): array
     {
         $content = [];
 

@@ -7,6 +7,14 @@ class TextEditor extends InputGroupComponent
     use Traits\OldValueSupportTrait;
 
     /**
+     * The class added to the "input-group" element when the input group has
+     * associated errors.
+     *
+     * @var string
+     */
+    protected $invalidGroupClass = 'adminlte-invalid-itegroup';
+
+    /**
      * The default toolbar handed over to the 'Quill' plugin.
      *
      * @var array
@@ -158,31 +166,6 @@ class TextEditor extends InputGroupComponent
 
         if ($this->isInvalid()) {
             $classes[] = 'is-invalid';
-        }
-
-        return implode(' ', $classes);
-    }
-
-    /**
-     * Make the class attribute for the "input-group" element. Note we overwrite
-     * the method of the parent class.
-     *
-     * @return string
-     */
-    public function makeInputGroupClass()
-    {
-        $classes = ['input-group'];
-
-        if (isset($this->size) && in_array($this->size, ['sm', 'lg'])) {
-            $classes[] = "input-group-{$this->size}";
-        }
-
-        if ($this->isInvalid()) {
-            $classes[] = 'adminlte-invalid-itegroup';
-        }
-
-        if (isset($this->igroupClass)) {
-            $classes[] = $this->igroupClass;
         }
 
         return implode(' ', $classes);

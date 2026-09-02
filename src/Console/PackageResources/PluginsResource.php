@@ -187,7 +187,7 @@ class PluginsResource extends PackageResource
      * @param  array  $plugin  An array with the plugin data
      * @return array
      */
-    protected function preparePlugin($plugin)
+    protected function preparePlugin($plugin): array
     {
         // Add source and target when not defined.
 
@@ -219,7 +219,7 @@ class PluginsResource extends PackageResource
      * @param  array  $plugin  An array with the (normalized) plugin data
      * @return array
      */
-    protected function prepareResource($res, $plugin)
+    protected function prepareResource($res, $plugin): array
     {
         $res['target'] = $res['target'] ?? $res['source'];
         $res['source'] = $plugin['source'].DIRECTORY_SEPARATOR.$res['source'];
@@ -236,7 +236,7 @@ class PluginsResource extends PackageResource
      * @param  array  $plugin  An array with the plugin data
      * @return void
      */
-    protected function installPlugin($plugin)
+    protected function installPlugin($plugin): void
     {
         // First, check and install dependencies plugins, if any.
 
@@ -265,7 +265,7 @@ class PluginsResource extends PackageResource
      * @param  array  $res  An array with the resource data
      * @return void
      */
-    protected function publishResource($res)
+    protected function publishResource($res): void
     {
         // Check whether the resource is a file or a directory.
 
@@ -290,7 +290,7 @@ class PluginsResource extends PackageResource
      * @param  array  $plugin  An array with the plugin data
      * @return bool
      */
-    protected function pluginExists($plugin)
+    protected function pluginExists($plugin): bool
     {
         // When the plugin is not a resources list, just check if target exists.
 
@@ -315,7 +315,7 @@ class PluginsResource extends PackageResource
      * @param  array  $plugin  An array with the plugin data
      * @return bool
      */
-    protected function pluginInstalled($plugin)
+    protected function pluginInstalled($plugin): bool
     {
         // Check whether the plugin has resources or not.
 
@@ -338,7 +338,7 @@ class PluginsResource extends PackageResource
      * @param  array  $res  An array with the resource data
      * @return bool
      */
-    protected function resourceInstalled($res)
+    protected function resourceInstalled($res): bool
     {
         // Check whether the resource is a file or a directory.
 
@@ -360,7 +360,7 @@ class PluginsResource extends PackageResource
      * @param  array  $plugin  An array with the plugin data
      * @return void
      */
-    protected function uninstallPlugin($plugin)
+    protected function uninstallPlugin($plugin): void
     {
         // If the plugin doensn't have resources, remove the main target
         // location folder.
@@ -384,7 +384,7 @@ class PluginsResource extends PackageResource
      * @param  array  $res  An array with the resource data
      * @return void
      */
-    protected function uninstallResource($res)
+    protected function uninstallResource($res): void
     {
         $target = $res['target'];
 

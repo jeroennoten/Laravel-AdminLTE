@@ -9,7 +9,7 @@ class BodyClasses
      *
      * @return array
      */
-    public static function make()
+    public static function make(): array
     {
         return array_unique(array_merge(
             self::makeLayoutClasses(),
@@ -23,7 +23,7 @@ class BodyClasses
      *
      * @return bool
      */
-    public static function isFixedNavbarEnabled()
+    public static function isFixedNavbarEnabled(): bool
     {
         return self::isFixedSectionEnabled('navbar');
     }
@@ -33,7 +33,7 @@ class BodyClasses
      *
      * @return bool
      */
-    public static function isFixedFooterEnabled()
+    public static function isFixedFooterEnabled(): bool
     {
         return self::isFixedSectionEnabled('footer');
     }
@@ -43,7 +43,7 @@ class BodyClasses
      *
      * @return array
      */
-    protected static function makeLayoutClasses()
+    protected static function makeLayoutClasses(): array
     {
         $classes = [];
 
@@ -73,7 +73,7 @@ class BodyClasses
      * @param  string  $section  The layout section (navbar or footer)
      * @return bool
      */
-    protected static function isFixedSectionEnabled($section)
+    protected static function isFixedSectionEnabled($section): bool
     {
         $cfg = config("adminlte.layout_fixed_{$section}", false);
 
@@ -89,7 +89,7 @@ class BodyClasses
      *
      * @return array
      */
-    protected static function makeCustomClasses()
+    protected static function makeCustomClasses(): array
     {
         $cfg = config('adminlte.classes_body', '');
 

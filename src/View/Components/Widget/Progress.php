@@ -14,7 +14,7 @@ class Progress extends Component
      *
      * @var array
      */
-    protected $pSizes = ['sm', 'xs', 'xxs'];
+    protected const SIZES = ['sm', 'xs', 'xxs'];
 
     /**
      * The progress bar percentage value (integer between 0 and 100).
@@ -187,7 +187,7 @@ class Progress extends Component
             $classes[] = 'mb-2';
         }
 
-        if (isset($this->size) && in_array($this->size, $this->pSizes)) {
+        if (isset($this->size) && in_array($this->size, static::SIZES)) {
             $classes[] = "progress-{$this->size}";
         }
 
@@ -212,7 +212,7 @@ class Progress extends Component
     {
         $classes = ['progress'];
 
-        if (isset($this->size) && in_array($this->size, $this->pSizes)) {
+        if (isset($this->size) && in_array($this->size, static::SIZES)) {
             $classes[] = "progress-{$this->size}";
         }
 

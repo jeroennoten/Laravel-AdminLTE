@@ -58,9 +58,9 @@ class LangFilter implements FilterInterface
      *
      * @param  string  $key  The key to translate
      * @param  array  $params  The additional translation parameters
-     * @return string
+     * @return string|array
      */
-    protected function getTranslation($key, $params = [])
+    protected function getTranslation($key, $params = []): string|array
     {
         // Check for a translation. Note we first check if translations are
         // available in a "menu.php" file, then we check for translations in
