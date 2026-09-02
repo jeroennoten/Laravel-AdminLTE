@@ -2,7 +2,9 @@ These components are classified under the **Widget** category and represents som
 
 |Components
 |-----------
-| [Alert](#alert), [Callout](#callout), [Card](#card), [Info Box](#info-box), [ProfileColItem](#profile-col-item-profile-row-item), [ProfileRowItem](#profile-col-item-profile-row-item), [ProfileWidget](#profile-widget), [Progress](#progress), [Progress Group](#progress-group), [Ribbon](#ribbon), [Small Box](#small-box), [Toast](#toast), [User Block](#user-block), [Timeline](#timeline), [TimelineItem](#timeline), [TimelineLabel](#timeline)
+| [Alert](#alert), [Callout](#callout), [Card](#card), [Direct Chat](#direct-chat), [DirectChatMsg](#direct-chat), [DirectChatContact](#direct-chat), [Info Box](#info-box), [ProfileColItem](#profile-col-item-profile-row-item), [ProfileRowItem](#profile-col-item-profile-row-item), [ProfileWidget](#profile-widget), [Progress](#progress), [Progress Group](#progress-group), [Ribbon](#ribbon), [Small Box](#small-box), [Toast](#toast), [User Block](#user-block), [Timeline](#timeline), [TimelineItem](#timeline), [TimelineLabel](#timeline)
+
+The [Stylesheet Utilities](#stylesheet-utilities) section at the end documents the AdminLTE v4 helper classes that are meant to be added to your own markup (avatar sizes and table modifiers) instead of being wrapped in a component.
 
 ## About the `theme` Attribute
 
@@ -115,8 +117,36 @@ icon | An icon for the callout (Bootstrap Icons by default) | string | `null` | 
 theme | A theme color: primary, secondary, info, success, warning, danger, light or dark. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
 title | The title for the callout | string | `null` | no
 title-class | Extra classes for the title container (replaces the default `mb-1` class) | string | `null` | no
+url | An URL for the callout. When provided, a `callout-link` styled anchor is rendered after the callout content | string | `null` | no
+url-text | The text/label of the callout link. Defaults to the `url` value | string | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.callout` element. So, for example, you can define a `class`, `onclick`, `id` or any other attribute you may need.
+
+### The Callout Link
+
+The AdminLTE v4 stylesheet provides a `.callout-link` class, which renders a **bold** anchor painted with the emphasis color of the callout theme (`--bs-callout-link-color`). Use the `url` attribute to get one:
+
+```blade
+<x-adminlte-callout theme="warning" title="Quota" url="/billing" url-text="Upgrade your plan">
+    You are close to the limit of your current plan.
+</x-adminlte-callout>
+```
+
+> [!Note]
+> The emphasis color is only defined by the **themed** callout variants (`callout-primary`, `callout-info`, ...). On a callout without a `theme`, the link keeps the color it inherits and only the bold weight of `.callout-link` applies.
+
+Inline links inside the callout content are styled too (the `.callout a` rule paints them with the theme link color), so you only need the `url` attribute for the trailing call to action. You can also write your own `<a class="callout-link">` anywhere inside the default slot.
+
+### Slots
+
+- **linkSlot**: Replaces the text of the callout link, for example to add an icon to it. It requires the `url` attribute, which is what renders the anchor.
+
+```blade
+<x-adminlte-callout theme="info" title="Docs" url="/docs">
+    Read the reference before going on.
+    <x-slot name="linkSlot"><i class="bi bi-arrow-right-short"></i> Take me there</x-slot>
+</x-adminlte-callout>
+```
 
 ### Examples
 
@@ -154,6 +184,12 @@ Any other attribute you define will be directly inserted into the underlying `di
     icon="bi bi-flower1" title="observation">
     <i>A styled observation for the user.</i>
 </x-adminlte-callout>
+
+{{-- With a callout link --}}
+<x-adminlte-callout theme="primary" icon="bi bi-info-circle-fill" title="New release"
+    url="/changelog" url-text="See what changed">
+    A new version of the application is available.
+</x-adminlte-callout>
 ```
 
 Use the next image as reference to check how every example is rendered. Please, note in the image the callouts were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
@@ -172,7 +208,7 @@ disabled | Disables the card (an overlay will show over the card) | any | `null`
 footer-class | Additional classes for the `card-footer` container | string | `null` | no
 header-class | Additional classes for the `card-header` container | string | `null` | no
 icon | An icon for the card header (Bootstrap Icons by default) | string | `null` | no
-maximizable | Enables a maximizable card with a button to maximize it | any | `null` | no
+maximizable | Enables a maximizable card with a button to maximize it. Use the `'maximized'` string value to initiate the card on maximized mode | any | `null` | no
 removable | Enables a removable card with a button to remove it | any | `null` | no
 theme | The card theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
 theme-mode | The theme mode (`full` or `outline`) | string | `null` | no
@@ -218,6 +254,64 @@ If you add your own card tool buttons through the `toolsSlot`, use those attribu
 
 > [!Note]
 > The `disabled` attribute no longer renders the AdminLTE v3 `.overlay` element (it was removed on v4). The overlay is now built with **Bootstrap 5** utilities and shows a `bi bi-slash-circle` icon.
+
+The `btn-tool` class of the AdminLTE v4 stylesheet is declared as `.btn-tool:not(.btn-tool-custom)`, so adding **`btn-tool-custom`** next to it keeps the compact tool sizing while opting out of the muted colors, letting your own Bootstrap button classes win:
+
+```blade
+<x-adminlte-card title="Card with a colored tool" collapsible>
+    <x-slot name="toolsSlot">
+        <button type="button" class="btn btn-tool btn-tool-custom btn-danger">
+            <i class="bi bi-trash"></i>
+        </button>
+    </x-slot>
+    Body...
+</x-adminlte-card>
+```
+
+The component never emits `btn-tool-custom` on the collapse, remove and maximize buttons on purpose: those are the AdminLTE tool buttons and are expected to stay muted. The class is therefore only relevant for the buttons **you** write in the `toolsSlot`, which is markup you own entirely, so it needs no attribute of its own.
+
+### Card States
+
+The AdminLTE v4 card plugin toggles a set of **resting state** classes on the `div.card` element. Two of them can be set from the component, so a card renders already on that state:
+
+Class | Set by | Effect
+------|--------|-------
+`collapsed-card` | `collapsible="collapsed"` | The card body and footer start hidden.
+`maximized-card` | `maximizable="maximized"` | The card starts fixed to the viewport at full size.
+`was-collapsed` | `collapsible="collapsed"` **and** `maximizable="maximized"` | Added automatically, it is the flag the plugin uses to keep the body of a maximized card visible and to return to the collapsed state when the card is restored.
+`expanding-card` | — | Not exposed, see the note below.
+
+```blade
+{{-- Starts maximized, the tool button restores it --}}
+<x-adminlte-card title="Maximized Card" theme="primary" maximizable="maximized">
+    This card covers the viewport as soon as the page loads...
+</x-adminlte-card>
+```
+
+Any other value of `maximizable` (including a bare `maximizable` attribute) only adds the tool button, exactly as before.
+
+> [!Note]
+> The AdminLTE plugin also sets `maximized-card` on the `<html>` element to lock the page scroll while a card is maximized. Since no click took place on an initially maximized card, the component pushes a **one line script** into the `js` stack that does it, so the initial state behaves like the toggled one. The script is only pushed when a card actually uses `maximizable="maximized"`.
+
+> [!Note]
+> **`expanding-card` is deliberately not exposed.** It is not a resting state: the card plugin adds it when the expand animation starts and removes it when the animation ends. The only rules that read it are the `.card-tabs:not(.expanding-card).collapsed-card` ones, which keep the tabs navigation of a collapsed tabbed card from being restyled mid animation. Rendering it in the initial markup would leave a collapsed tabbed card stuck in the animating look until the first toggle, so the component leaves it to the plugin.
+
+### Card Utilities
+
+Class | Effect
+------|-------
+`height-control` | Caps the card body at `300px` and scrolls it.
+`.card .nav.flex-column` | A vertical nav inside a card gets dividers between the items and none after the last one.
+
+The `height-control` rule of the stylesheet is `.card.height-control .card-body`, so it belongs on the **card** element, which the plain `class` attribute already reaches (every unknown attribute is merged into the `div.card`):
+
+```blade
+<x-adminlte-card title="Long list" class="height-control">
+    A very long content that scrolls inside the card body...
+</x-adminlte-card>
+```
+
+No dedicated attribute is provided for it, since `class="height-control"` is not longer than an attribute would be and composes with the rest of your utility classes.
 
 ### Slots
 
@@ -286,6 +380,14 @@ The card body is wrapped in a `div.tab-content` automatically, and the card gets
     An info theme card with all the tool buttons...
 </x-adminlte-card>
 
+{{-- States and utilities --}}
+<x-adminlte-card title="Maximized Card" theme="primary" maximizable="maximized">
+    A card that starts covering the viewport...
+</x-adminlte-card>
+<x-adminlte-card title="Scrollable Card" theme="secondary" class="height-control">
+    A card whose body is capped at 300px and scrolls...
+</x-adminlte-card>
+
 {{-- Complex / Extra tool / Footer --}}
 <x-adminlte-card title="Form Card" theme="pink" theme-mode="outline"
     class="shadow" header-class="bg-body-secondary"
@@ -310,6 +412,141 @@ The card body is wrapped in a `div.tab-content` automatically, and the card gets
 Use the next image as reference to check how every example is rendered. Please, note in the image the cards were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Card Component](/imgs/components/widget_components/card-component.png)
+
+# Direct Chat
+
+These components represent an `AdminLTE` direct chat widget, a card holding a conversation and a contacts pane that slides over it. The widget is built out of three cooperating components:
+
+- **`x-adminlte-direct-chat`**: the card itself, it holds both sliding panes.
+- **`x-adminlte-direct-chat-msg`**: one message of the conversation.
+- **`x-adminlte-direct-chat-contact`**: one entry of the contacts pane.
+
+The following attributes are available on the **direct chat container**:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+badge | The content of the badge shown on the card header, usually the amount of unread messages | string | `null` | no
+badge-theme | The theme of the header badge. Falls back to the widget `theme` | string | `null` | no
+body-class | Additional classes for the `card-body` container | string | `null` | no
+collapsible | Enables a collapsible card with a button to collapse/expand it. Use the `'collapsed'` string value to initiate the card on collapsed mode | any | `null` | no
+contacts-light | Enables the light style of the contacts pane, which paints it over the subtle light background instead of over the inverted one | any | `null` | no
+contacts-open | Initiates the widget with the contacts pane already slid in | any | `null` | no
+footer-class | Additional classes for the `card-footer` container | string | `null` | no
+header-class | Additional classes for the `card-header` container | string | `null` | no
+height | The height of **both** panes. A bare number is taken as pixels | string\|int | `null` | no
+icon | An icon for the card header (Bootstrap Icons by default) | string | `null` | no
+maximizable | Enables a maximizable card with a button to maximize it | any | `null` | no
+removable | Enables a removable card with a button to remove it | any | `null` | no
+theme | The widget theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `primary` | no
+timestamp-mode | The contrast mode of the message timestamps (`light` or `dark`). Any other value leaves the stylesheet default in place | string | `null` | no
+title | The title for the card header | string | `null` | no
+
+Any other attribute you define will be directly inserted into the underlying `div.card.direct-chat` element. So, for example, you can define extra classes on the card by using `class`, or use `onclick`, `id` or any other attribute you may need.
+
+The following attributes are available on the **direct chat message**:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+end | Marks the message as an outgoing one. The whole entry is mirrored and the bubble is painted with the theme color of the enclosing widget | any | `null` | no
+img | The avatar of the author of the message | string | `null` | no
+name | The name of the author of the message | string | `null` | no
+timestamp | The timestamp of the message | string | `null` | no
+
+The default slot holds the text of the message, which is rendered as the `div.direct-chat-text` bubble. Any other attribute you define will be directly inserted into the underlying `div.direct-chat-msg` element.
+
+The following attributes are available on the **direct chat contact**:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+date | The date of the last message exchanged with the contact | string | `null` | no
+img | The avatar of the contact | string | `null` | no
+msg | An excerpt of the last message exchanged with the contact. The default slot takes precedence over this attribute | string | `null` | no
+name | The name of the contact | string | `null` | no
+url | An url for the contact. When defined, the whole entry is wrapped inside a link | string | `null` | no
+
+Any other attribute you define will be directly inserted into the underlying `li` element of the contacts list.
+
+> [!Important]
+> The `theme` attribute defaults to **`primary`** here, unlike on the other widgets. The bubble of an `end` message is painted through the `--lte-direct-chat-color` and `--lte-direct-chat-bg` custom properties, and those are **only declared by the `.direct-chat-{color}` variants**. A widget left without a theme would render its outgoing bubbles transparent.
+
+> [!Note]
+> **Both panes share the `height`.** The messages pane and the contacts pane are stacked one over the other inside the card body, so the component always writes the same height on both of them. A mismatch makes the contacts pane slide in misaligned, which is why the height is a single attribute of the container instead of one per pane.
+>
+> A bare number is taken as pixels (`height="250"` &rarr; `height: 250px`), and the `px`, `rem`, `em`, `vh` and `%` units are accepted as well. Any other value is dropped, so no arbitrary text can reach the generated `style` attribute. Without the attribute, both panes keep the `250px` default of the stylesheet.
+
+> [!Note]
+> The widget is a card, so it follows the same **`mb-4`** default spacing rule described on the [Card](#card) component, and its collapse, remove and maximize buttons use the very same `data-lte-toggle` hooks.
+
+### Contacts Pane
+
+The contacts pane and its toggle button are **only rendered when the `contactsSlot` is filled**, since without contacts there is nothing to slide in. The pane is driven by the AdminLTE v4 `DirectChat` plugin, which listens for the `data-lte-toggle="chat-pane"` attribute the component puts on the button, and toggles the `direct-chat-contacts-open` class on the card.
+
+If you add your own toggle button through the `toolsSlot`, use that attribute value. The `contacts-open` attribute renders the same class the plugin toggles, so a pane that starts open keeps working with the button.
+
+### Slots
+
+The **direct chat container** provides the following slots:
+
+- The **default slot** holds the conversation, it is rendered inside the `div.direct-chat-messages` pane.
+- **contactsSlot**: Use this slot to fill the contacts pane. The component wraps it in the `ul.contacts-list` element, so the slot has to hold `li` entries, which is what the `x-adminlte-direct-chat-contact` component renders.
+- **footerSlot**: Use this slot to fill the card footer, usually with the message input form.
+- **toolsSlot**: Use this slot to add extra elements on the card header.
+
+### Examples
+
+```blade
+{{-- Minimal --}}
+<x-adminlte-direct-chat title="Direct Chat">
+    <x-adminlte-direct-chat-msg name="Alexander Pierce" timestamp="23 Jan 2:00 pm"
+        img="/img/user1-128x128.jpg">
+        Is this template really for free? That's unbelievable!
+    </x-adminlte-direct-chat-msg>
+    <x-adminlte-direct-chat-msg name="Sarah Bullock" timestamp="23 Jan 2:05 pm"
+        img="/img/user3-128x128.jpg" end>
+        You better believe it!
+    </x-adminlte-direct-chat-msg>
+</x-adminlte-direct-chat>
+
+{{-- Complete --}}
+<x-adminlte-direct-chat title="Direct Chat" theme="info" badge="3"
+    badge-theme="warning" height="250" timestamp-mode="light" contacts-light
+    collapsible removable>
+
+    <x-adminlte-direct-chat-msg name="Alexander Pierce" timestamp="23 Jan 2:00 pm"
+        img="/img/user1-128x128.jpg">
+        Working with AdminLTE on a great new app! Wanna join?
+    </x-adminlte-direct-chat-msg>
+
+    <x-adminlte-direct-chat-msg name="Sarah Bullock" timestamp="23 Jan 6:10 pm"
+        img="/img/user3-128x128.jpg" end>
+        I would love to.
+    </x-adminlte-direct-chat-msg>
+
+    <x-slot name="contactsSlot">
+        <x-adminlte-direct-chat-contact name="Count Dracula" url="/chats/1"
+            img="/img/user1-128x128.jpg" date="2/28/2023"
+            msg="How have you been? I was..."/>
+        <x-adminlte-direct-chat-contact name="Sarah Doe" url="/chats/2"
+            img="/img/user7-128x128.jpg" date="2/23/2023"
+            msg="I will be waiting for..."/>
+        <x-adminlte-direct-chat-contact name="Nadia Jolie" url="/chats/3"
+            img="/img/user3-128x128.jpg" date="2/20/2023"
+            msg="I'll call you back at..."/>
+    </x-slot>
+
+    <x-slot name="footerSlot">
+        <form action="/chats/1/messages" method="post">
+            @csrf
+            <div class="input-group">
+                <input type="text" name="message" class="form-control"
+                    placeholder="Type Message ...">
+                <button type="submit" class="btn btn-primary">Send</button>
+            </div>
+        </form>
+    </x-slot>
+
+</x-adminlte-direct-chat>
+```
 
 # Info Box
 
@@ -604,6 +841,7 @@ This component represents an `AdminLTE` styled progress bar. The following attri
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 animated | Enables the animated mode on the progress bar | any | `null` | no
+segments | A set of segments rendered as a Bootstrap `progress-stacked` track. See [Stacked Progress Bars](#stacked-progress-bars) | array | `null` | no
 size | The progress bar size (`sm`, `xs` or `xxs`) | string | `null` | no
 striped | Enables stripes on the progress bar | any | `null` | no
 theme | The progress bar theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute). Set it to an empty value to inherit the color of the container | string | `info` | no
@@ -642,6 +880,37 @@ Any other attribute you define will be directly inserted into the underlying `di
 > [!Note]
 > A label provided through the slot is owned by your application, so the `setValue()` method of the Javascript helper below leaves it untouched. Only the built-in percentage label is refreshed automatically.
 
+### Stacked Progress Bars
+
+**Bootstrap 5.3** stacks several bars in one track with the `progress-stacked` layout, where every segment is a `.progress` element of its own carrying the percentage, and the `.progress-bar` inside it always fills its track. Pass the segments through the `segments` attribute to get that markup:
+
+```blade
+<x-adminlte-progress :segments="[
+    ['value' => 15, 'theme' => 'success', 'label' => 'Docs'],
+    ['value' => 30, 'theme' => 'info', 'label' => 'Images'],
+    ['value' => 20, 'theme' => 'warning', 'label' => 'Other'],
+]"/>
+```
+
+Every entry accepts the following keys, and a bare number is accepted as a shorthand for `['value' => n]`:
+
+Key | Description | Default
+----|-------------|--------
+value | The percentage of the segment (an integer between 0 and 100) | `0`
+theme | The theme color of the segment. Set it to an empty value to inherit the color of the container | the `theme` attribute of the component
+label | The text shown inside the segment. It is also used as its accessible label | the percentage when `with-label` is set, empty otherwise
+striped | Enables stripes on the segment | the `striped` attribute of the component
+animated | Enables the animated mode on the segment | the `animated` attribute of the component
+
+The `segments` attribute was preferred over nesting several `<x-adminlte-progress>` components inside a wrapper, because the stacked layout is **not** a set of independent progress bars: the percentage moves from the `.progress-bar` to the `.progress` track, the inner bar becomes full width, and each track needs the `aria` attributes that the single bar mode puts on the wrapper. A nested syntax would need a different rendering mode on the child anyway, and the segments of a stacked bar are almost always built from one data set.
+
+> [!Note]
+> The `size`, `class` and any other attribute you define still apply to the `div.progress-stacked` container, and the `size` class is repeated on every segment track, since the height of a `.progress` element is not inherited from the stacked container.
+>
+> The `vertical` attribute is **ignored** on a stacked bar. The vertical mode is an AdminLTE modifier of a single `.progress` track (`.progress.vertical`) and the Bootstrap stacked layout has no vertical counterpart.
+>
+> The `labelSlot` is ignored too, the labels of a stacked bar come from the `label` key of each segment.
+
 ### Javascript Utility Class
 
 This component also provides a `Javascript` utility class called **_AdminLTE_Progress**. You can use this class to interact or update an already rendered progress bar element. To use the class, first you need to assign an `id` attribute to your progress bar element, then you create an object using the `id` attribute previously assigned in the class constructor, for example:
@@ -658,9 +927,17 @@ let myProgress = new _AdminLTE_Progress("myProgress");
 
 Then you can use the next methods from the instantiated object:
 
-- **`myProgress.getValue()`**: To get the current progress bar value.
+- **`myProgress.getValue(index = 0)`**: To get the current progress bar value.
 
-- **`myProgress.setValue(value)`**: To update the progress bar value. The **value** should be an integer.
+- **`myProgress.setValue(value, index = 0)`**: To update the progress bar value. The **value** should be an integer.
+
+On a [stacked](#stacked-progress-bars) progress bar the `index` argument selects the segment to read or update (`0` is the first one), and the percentage is moved to the segment track, which is where the stacked layout keeps it:
+
+```js
+let myProgress = new _AdminLTE_Progress("myStackedProgress");
+
+myProgress.setValue(45, 1); // Update the second segment
+```
 
 ### Examples
 
@@ -688,6 +965,18 @@ Then you can use the next methods from the instantiated object:
 <x-adminlte-progress theme="orange" value=80 vertical animated/>
 <x-adminlte-progress theme="navy" value=70 vertical striped with-label/>
 <x-adminlte-progress theme="olive" size="xxs" value=90 vertical/>
+
+{{-- Stacked --}}
+<x-adminlte-progress :segments="[15, 30, 20]"/>
+<x-adminlte-progress size="sm" :segments="[
+    ['value' => 25, 'theme' => 'success'],
+    ['value' => 35, 'theme' => 'warning', 'striped' => true],
+    ['value' => 15, 'theme' => 'danger', 'animated' => true],
+]"/>
+<x-adminlte-progress with-label :segments="[
+    ['value' => 40, 'theme' => 'primary', 'label' => 'Used'],
+    ['value' => 25, 'theme' => 'sky'],
+]"/>
 
 {{-- Dinamic Change --}}
 <x-adminlte-progress id="pbDinamic" value="5" theme="sky" animated with-label/>
@@ -1205,3 +1494,74 @@ Then you can use the next methods from the instantiated object:
     The record was saved.
 </x-adminlte-toast>
 ```
+
+# Stylesheet Utilities
+
+Not everything the **AdminLTE v4** stylesheet offers deserves a component. The classes below are plain **opt-in utilities**: you add them to markup you already write, so a component wrapper around them would be more typing, not less. They are documented here because they are the ones the widgets above are most often combined with.
+
+## Avatar Sizes
+
+The `_miscellaneous.scss` partial provides three fixed width helpers for the avatar images used by the [User Block](#user-block), the [Profile Widget](#profile-widget), the [Timeline](#timeline) and the user menu:
+
+Class | Width | Height
+------|-------|-------
+`img-size-32` | `32px` | `auto`
+`img-size-50` | `50px` | `auto`
+`img-size-64` | `64px` | `auto`
+
+The height is always `auto`, so the image keeps its aspect ratio. Combine them with the Bootstrap `rounded-circle` utility for a round avatar:
+
+```blade
+<img src="/img/user.jpg" class="img-size-50 rounded-circle" alt="Avatar">
+```
+
+> [!Note]
+> These are utility classes on an `<img>` element you own, so no component exposes them as an attribute. The components that render an avatar for you already size it on their own (the [User Block](#user-block) does it through the `size` attribute, which is read by the `.user-block` rules of the stylesheet), so reach for `img-size-*` on the images you place yourself, for example inside the body of a [Card](#card) or in a [Timeline](#timeline) entry.
+
+## Table Extras
+
+The `_table.scss` partial adds a handful of modifiers on top of the Bootstrap `.table` classes, and `_accessibility.scss` adds one more. They all go on the `<table>` element itself:
+
+Class | Effect
+------|-------
+`table-head-fixed` | Makes the first `thead` row sticky at the top of the scrolling container. It follows the light/dark mode, since the background comes from `--bs-body-bg`.
+`table-valign-middle` | Vertically centers the content of every `thead` and `tbody` cell.
+`no-border` | Removes the borders of the table and of every `th` and `td`.
+`table-accessible` | Emphasizes the header cells (bolder, subtle background), adds a `2px` separator under a `th[scope="col"]` and next to a `th[scope="row"]`, and styles the `<caption>` as a heading placed above the table.
+
+```blade
+<table class="table table-hover table-valign-middle table-accessible">
+    <caption>Monthly orders</caption>
+    <thead>
+        <tr><th scope="col">Order</th><th scope="col">Status</th></tr>
+    </thead>
+    <tbody>
+        <tr><th scope="row">#1</th><td>Shipped</td></tr>
+    </tbody>
+</table>
+```
+
+### Tables Inside a Card
+
+A table placed inside a **card body with no padding** is a special case the stylesheet takes care of. The `.card-body.p-0 .table` rule gives the first and the last cell of every row the horizontal padding the card body dropped, so the table content stays aligned with the card header:
+
+```blade
+<x-adminlte-card title="Latest orders" body-class="p-0">
+    <table class="table table-hover table-valign-middle">
+        ...
+    </table>
+</x-adminlte-card>
+```
+
+Use `body-class="p-0"` (not `class="p-0"`, which lands on the card element) to get it. The `table-head-fixed` modifier needs a scrolling container to stick to, so combine it with a height cap on the body:
+
+```blade
+<x-adminlte-card title="Latest orders" body-class="p-0" class="height-control">
+    <table class="table table-head-fixed table-valign-middle">
+        ...
+    </table>
+</x-adminlte-card>
+```
+
+> [!Note]
+> No wrapper component is provided for these modifiers. A table is written as plain markup (or comes from the [Datatables](/sections/components/tool_components#datatables) component), and every class above is a single word added to it, so a component would only stand between you and the markup.

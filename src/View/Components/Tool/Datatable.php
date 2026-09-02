@@ -156,10 +156,15 @@ class Datatable extends Component
 
         $this->config = is_array($config) ? $config : [];
 
-        // When buttons are enabled, change the default table layout.
+        // When buttons are enabled, change the default table layout. Note the
+        // 'dom' option is the deprecated Datatables 1.x API, it's only honored
+        // when explicitly provided.
 
-        if (isset($withButtons) && ! isset($this->config['dom'])) {
-            $this->config['dom'] = $this->makeDomCfg();
+        $hasLayout = isset($this->config['dom'])
+            || isset($this->config['layout']);
+
+        if (isset($withButtons) && ! $hasLayout) {
+            $this->config['layout'] = $this->makeLayoutCfg();
         }
 
         // When buttons are enabled, setup the set of visible buttons and they
@@ -231,7 +236,25 @@ class Datatable extends Component
     }
 
     /**
+     * Make the Datatables 'layout' configuration with the buttons extension.
+     * The layout option replaces the 'dom' one of the Datatables 1.x releases.
+     *
+     * @return array
+     */
+    protected function makeLayoutCfg()
+    {
+        return [
+            'topStart' => 'buttons',
+            'topEnd' => 'search',
+            'bottomStart' => 'info',
+            'bottomEnd' => 'paging',
+        ];
+    }
+
+    /**
      * Make the Datatables 'dom' configuration with the buttons extension.
+     *
+     * @deprecated Use the {@see makeLayoutCfg()} method instead.
      *
      * @return string
      */
@@ -278,7 +301,7 @@ class Datatable extends Component
             'extend' => 'print',
             'className' => 'btn-secondary',
             'text' => '<i class="bi bi-printer"></i>',
-            'titleAttr' => 'Print',
+            'titleAttr' => __('adminlte::adminlte.datatable_print'),
             'exportOptions' => ['columns' => $colSelector],
         ];
 
@@ -288,7 +311,7 @@ class Datatable extends Component
             'extend' => 'csv',
             'className' => 'btn-secondary',
             'text' => '<i class="bi bi-filetype-csv text-primary"></i>',
-            'titleAttr' => 'Export to CSV',
+            'titleAttr' => __('adminlte::adminlte.datatable_csv'),
             'exportOptions' => ['columns' => $colSelector],
         ];
 
@@ -298,7 +321,7 @@ class Datatable extends Component
             'extend' => 'excel',
             'className' => 'btn-secondary',
             'text' => '<i class="bi bi-file-earmark-excel text-success"></i>',
-            'titleAttr' => 'Export to Excel',
+            'titleAttr' => __('adminlte::adminlte.datatable_excel'),
             'exportOptions' => ['columns' => $colSelector],
         ];
 
@@ -308,7 +331,7 @@ class Datatable extends Component
             'extend' => 'pdf',
             'className' => 'btn-secondary',
             'text' => '<i class="bi bi-file-earmark-pdf text-danger"></i>',
-            'titleAttr' => 'Export to PDF',
+            'titleAttr' => __('adminlte::adminlte.datatable_pdf'),
             'exportOptions' => ['columns' => $colSelector],
         ];
 

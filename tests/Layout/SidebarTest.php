@@ -207,6 +207,108 @@ class SidebarTest extends TestCase
         }
     }
 
+    public function testMakeNavClassesWithoutConfig()
+    {
+        config(['adminlte' => []]);
+
+        // Without configuration, only the base classes of the menu are used.
+
+        $this->assertEquals(
+            ['nav', 'sidebar-menu', 'flex-column'],
+            Sidebar::makeNavClasses()
+        );
+    }
+
+    public function testMakeNavClassesWithTheStyleVariants()
+    {
+        config(['adminlte' => []]);
+
+        $variants = [
+            'sidebar_nav_compact' => 'nav-compact',
+            'sidebar_nav_indent' => 'nav-indent',
+            'sidebar_nav_pills' => 'nav-pills',
+        ];
+
+        foreach ($variants as $option => $class) {
+            config(["adminlte.{$option}" => true]);
+
+            $this->assertEquals(
+                ['nav', 'sidebar-menu', 'flex-column', $class],
+                Sidebar::makeNavClasses()
+            );
+
+            config(["adminlte.{$option}" => false]);
+
+            $this->assertEquals(
+                ['nav', 'sidebar-menu', 'flex-column'],
+                Sidebar::makeNavClasses()
+            );
+        }
+    }
+
+    public function testMakeNavClassesWithEveryStyleVariant()
+    {
+        config([
+            'adminlte.sidebar_nav_compact' => true,
+            'adminlte.sidebar_nav_indent' => true,
+            'adminlte.sidebar_nav_pills' => true,
+        ]);
+
+        // The variants are always added on the same order.
+
+        $this->assertEquals(
+            [
+                'nav',
+                'sidebar-menu',
+                'flex-column',
+                'nav-compact',
+                'nav-indent',
+                'nav-pills',
+            ],
+            Sidebar::makeNavClasses()
+        );
+    }
+
+    public function testMakeNavClassesWithTheCustomClasses()
+    {
+        config([
+            'adminlte.sidebar_nav_compact' => false,
+            'adminlte.sidebar_nav_indent' => false,
+            'adminlte.sidebar_nav_pills' => false,
+            'adminlte.classes_sidebar_nav' => 'my-cls1 my-cls2',
+        ]);
+
+        // The custom classes always go after the built-in variants.
+
+        $this->assertEquals(
+            ['nav', 'sidebar-menu', 'flex-column', 'my-cls1 my-cls2'],
+            Sidebar::makeNavClasses()
+        );
+
+        config(['adminlte.sidebar_nav_indent' => true]);
+
+        $this->assertEquals(
+            ['nav', 'sidebar-menu', 'flex-column', 'nav-indent', 'my-cls1 my-cls2'],
+            Sidebar::makeNavClasses()
+        );
+    }
+
+    public function testMakeNavClassesWithInvalidCustomClasses()
+    {
+        config(['adminlte' => []]);
+
+        // Only a non empty string is accepted as custom classes.
+
+        foreach (['', null, false, ['nav-compact'], 10] as $cfg) {
+            config(['adminlte.classes_sidebar_nav' => $cfg]);
+
+            $this->assertEquals(
+                ['nav', 'sidebar-menu', 'flex-column'],
+                Sidebar::makeNavClasses()
+            );
+        }
+    }
+
     public function testMakeAttributesWithTheSidebarTheme()
     {
         config(['adminlte.sidebar_collapse_remember' => false]);
@@ -254,15 +356,59 @@ class SidebarTest extends TestCase
         $this->assertEquals([], Sidebar::makeAttributes());
     }
 
+    public function testMakeAttributesWithTheBreakpointOption()
+    {
+        config([
+            'adminlte.sidebar_theme' => null,
+            'adminlte.sidebar_collapse_remember' => false,
+        ]);
+
+        // Any numeric value (integer, float or numeric string) is accepted.
+
+        foreach ([768, 991.98, '1200'] as $breakpoint) {
+            config(['adminlte.sidebar_breakpoint' => $breakpoint]);
+
+            $this->assertEquals(
+                ["data-sidebar-breakpoint=\"{$breakpoint}\""],
+                Sidebar::makeAttributes()
+            );
+        }
+
+        // A non numeric value is ignored, so the plugin keeps its own default.
+
+        foreach ([null, '', 'invalid', true, false, ['768']] as $breakpoint) {
+            config(['adminlte.sidebar_breakpoint' => $breakpoint]);
+
+            $this->assertEquals([], Sidebar::makeAttributes());
+        }
+    }
+
+    public function testMakeAttributesWithoutTheBreakpointOption()
+    {
+        config(['adminlte' => []]);
+
+        // Without the option, no breakpoint attribute is added at all.
+
+        $this->assertStringNotContainsString(
+            'data-sidebar-breakpoint',
+            implode(' ', Sidebar::makeAttributes())
+        );
+    }
+
     public function testMakeAttributesWithEveryOptionEnabled()
     {
         config([
             'adminlte.sidebar_theme' => 'light',
             'adminlte.sidebar_collapse_remember' => true,
+            'adminlte.sidebar_breakpoint' => 768,
         ]);
 
         $this->assertEquals(
-            ['data-bs-theme="light"', 'data-enable-persistence="true"'],
+            [
+                'data-bs-theme="light"',
+                'data-enable-persistence="true"',
+                'data-sidebar-breakpoint="768"',
+            ],
             Sidebar::makeAttributes()
         );
     }

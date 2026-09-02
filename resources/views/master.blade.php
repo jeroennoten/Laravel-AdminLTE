@@ -36,6 +36,28 @@
 
     $setupScrollbars = $overlayScrollbarsJs && ! $layoutHelper->isLayoutTopnavEnabled();
 
+    // Extra options for the OverlayScrollbars instance of the sidebar. They
+    // are merged into the 'scrollbars' object of its setup, so they may also
+    // override the ones the dedicated options above resolve.
+
+    $scrollbarOptions = config('adminlte.sidebar_scrollbar_options', []);
+
+    $scrollbarExtraOptions = is_array($scrollbarOptions) && ! empty($scrollbarOptions)
+        ? "\n".str_repeat(' ', 32).'...'.json_encode(
+            $scrollbarOptions,
+            JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
+        ).','
+        : '';
+
+    // The viewport width (in pixels) at or below which the OverlayScrollbars
+    // instance is not created, so touch scrolling is not disturbed.
+
+    $scrollbarDisableBelow = config('adminlte.sidebar_scrollbar_disable_below', 992);
+
+    $scrollbarDisableBelow = is_numeric($scrollbarDisableBelow)
+        ? 0 + $scrollbarDisableBelow
+        : 992;
+
     // The 'crossorigin' attribute is only required on the assets served from
     // an external origin (usually a CDN).
 
@@ -261,7 +283,7 @@
 
                     // Disable OverlayScrollbars on mobile devices to prevent
                     // touch interference.
-                    const isMobile = window.innerWidth <= 992;
+                    const isMobile = window.innerWidth <= @json($scrollbarDisableBelow);
 
                     if (
                         sidebarWrapper &&
@@ -273,7 +295,7 @@
                             scrollbars: {
                                 theme: Default.scrollbarTheme,
                                 autoHide: Default.scrollbarAutoHide,
-                                clickScroll: Default.scrollbarClickScroll,
+                                clickScroll: Default.scrollbarClickScroll,{!! $scrollbarExtraOptions !!}
                             },
                         });
                     }

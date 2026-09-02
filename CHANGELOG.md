@@ -49,6 +49,27 @@ guide before updating.
   `user-block` and `toast`.
 - New slots and options on the existing components, so fewer cases require
   publishing a view.
+- The AdminLTE v4 **direct chat** widget, through the new `direct-chat`,
+  `direct-chat-msg` and `direct-chat-contact` components. The contacts pane is
+  driven by the AdminLTE plugin, so it needs no javascript of its own.
+- Navbar dropdown menus, through the new `navbar-dropdown`,
+  `navbar-dropdown-item` and `navbar-custom-menu` components. They cover the
+  `dropdown-menu-lg`, `dropdown-menu-xl`, `dropdown-item-title` and
+  `animated-dropdown-menu` families of the stylesheet.
+- AdminLTE styled **error views** for the 401, 403, 404, 419, 429, 500 and 503
+  status codes, published into the application with
+  `adminlte:install --only=error_views`. The published files only extend the
+  package ones, so a package update reaches them without republishing.
+- Sidebar navigation variants (`sidebar_nav_compact`, `sidebar_nav_indent` and
+  `sidebar_nav_pills`), the `sidebar_breakpoint` option of the push menu
+  plugin, and the `sidebar_scrollbar_options` and
+  `sidebar_scrollbar_disable_below` options of the scrollbars.
+- The `maximizable="maximized"` initial card state, the `callout-link` support
+  of the callout component through its new `url` and `url-text` options, and
+  the stacked progress bars through the new `segments` option.
+- The Datatables **Buttons** extension, as the new `DatatablesButtons` plugin
+  entry and the `datatablesButtons` console catalog entry. The `with-buttons`
+  attribute used to configure export buttons the installer could not provide.
 
 ### Changed
 
@@ -69,6 +90,9 @@ guide before updating.
   `aria-invalid` and `aria-describedby`.
 - The color mode of a themed modal header is derived from the palette, which
   fixes the invisible close button on the v3 color aliases.
+- The datatable component configures the table through the Datatables 2.x
+  `layout` option instead of the deprecated 1.x `dom` one, which is still
+  honored when provided explicitly. Its export tooltips are translated.
 - Bootstrap Icons replaced Font Awesome on every default of the package.
 - The right sidebar is now a Bootstrap offcanvas panel.
 - The iframe mode is implemented by the package itself, since AdminLTE v4
@@ -94,6 +118,8 @@ guide before updating.
   close button of a dark header stays visible with the v3 color aliases too.
 - The `data-lte-toggle="toast"` controls resolve a `data-bs-target` that
   carries the leading `#` of the Bootstrap convention.
+- A dummy configuration file left behind by an interrupted console test used to
+  break every later test run. The suite drops it on startup.
 
 ### Removed
 

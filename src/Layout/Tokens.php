@@ -82,6 +82,48 @@ class Tokens
     public const SIDEBAR_WITHOUT_HOVER = 'sidebar-without-hover';
 
     /**
+     * The class of the sidebar navigation menu element.
+     *
+     * @var string
+     */
+    public const SIDEBAR_MENU = 'sidebar-menu';
+
+    /**
+     * The base class of any navigation menu (provided by Bootstrap).
+     *
+     * @var string
+     */
+    public const NAV = 'nav';
+
+    /**
+     * The class that stacks the navigation items vertically (Bootstrap).
+     *
+     * @var string
+     */
+    public const NAV_COLUMN = 'flex-column';
+
+    /**
+     * The class that applies the compact style to the sidebar menu.
+     *
+     * @var string
+     */
+    public const NAV_COMPACT = 'nav-compact';
+
+    /**
+     * The class that indents the submenus of the sidebar menu.
+     *
+     * @var string
+     */
+    public const NAV_INDENT = 'nav-indent';
+
+    /**
+     * The class that applies the pills style to the sidebar menu (Bootstrap).
+     *
+     * @var string
+     */
+    public const NAV_PILLS = 'nav-pills';
+
+    /**
      * The attribute that holds the color mode of an element.
      *
      * @var string
@@ -101,6 +143,14 @@ class Tokens
      * @var string
      */
     public const SIDEBAR_PERSISTENCE_ATTRIBUTE = 'data-enable-persistence';
+
+    /**
+     * The attribute that holds the breakpoint (in pixels) where the sidebar
+     * switches between its desktop and its mobile behavior.
+     *
+     * @var string
+     */
+    public const SIDEBAR_BREAKPOINT_ATTRIBUTE = 'data-sidebar-breakpoint';
 
     /**
      * The breakpoints supported by the sidebar expand classes.

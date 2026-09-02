@@ -1,3 +1,29 @@
+@if($isStacked())
+
+{{-- Bootstrap v5.3 stacked markup: every segment is a track of its own --}}
+<div {{ $attributes->merge(['class' => $makeProgressClass()]) }}>
+
+    {{-- Progress segments --}}
+    @foreach($segments as $segment)
+        <div class="{{ $makeSegmentClass() }}" style="{{ $makeSegmentStyle($segment) }}"
+            role="progressbar" aria-valuenow="{{ $segment['value'] }}" aria-valuemin="0"
+            aria-valuemax="100" aria-label="{{ $makeSegmentAriaLabel($segment) }}">
+
+            {{-- Segment bar --}}
+            <div class="{{ $makeSegmentBarClass($segment) }}"@if($isSegmentLabelAuto($segment)) data-progress-label="auto"@endif>
+
+                {{-- Segment label --}}
+                {{ $makeSegmentLabel($segment) }}
+
+            </div>
+
+        </div>
+    @endforeach
+
+</div>
+
+@else
+
 {{-- Bootstrap v5.3 markup: the aria attributes live on the .progress wrapper --}}
 <div {{ $attributes->merge([
     'class' => $makeProgressClass(),
@@ -17,6 +43,8 @@
     </div>
 
 </div>
+
+@endif
 
 {{-- Register Javascript utility class for this component --}}
 
@@ -38,8 +66,10 @@
 
         /**
          * Get the underlying .progress element.
+         *
+         * index: The segment index, for a stacked progress bar.
          */
-        getProgress()
+        getProgress(index = 0)
         {
             const t = document.getElementById(this.target);
 
@@ -49,15 +79,17 @@
 
             return t.classList.contains('progress')
                 ? t
-                : t.querySelector('.progress');
+                : t.querySelectorAll('.progress')[index] ?? null;
         }
 
         /**
          * Get the current progress value.
+         *
+         * index: The segment index, for a stacked progress bar.
          */
-        getValue()
+        getValue(index = 0)
         {
-            const p = this.getProgress();
+            const p = this.getProgress(index);
 
             if (! p) {
                 return;
@@ -70,10 +102,11 @@
          * Update the current progress value.
          *
          * value: The new percentage value (between 0 and 100).
+         * index: The segment index, for a stacked progress bar.
          */
-        setValue(value)
+        setValue(value, index = 0)
         {
-            const p = this.getProgress();
+            const p = this.getProgress(index);
 
             if (! p) {
                 return;
@@ -88,7 +121,12 @@
                 return;
             }
 
-            if (p.classList.contains('vertical')) {
+            // On the Bootstrap stacked markup the percentage lives on the
+            // track, the inner bar always fills it.
+
+            if (p.parentElement?.classList.contains('progress-stacked')) {
+                p.style.width = value + '%';
+            } else if (p.classList.contains('vertical')) {
                 bar.style.height = value + '%';
             } else {
                 bar.style.width = value + '%';

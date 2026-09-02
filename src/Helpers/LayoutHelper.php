@@ -182,6 +182,17 @@ class LayoutHelper
     }
 
     /**
+     * Makes and return the set of classes related to the main sidebar
+     * navigation menu element.
+     *
+     * @return string
+     */
+    public static function makeSidebarNavClasses()
+    {
+        return self::join(Sidebar::makeNavClasses());
+    }
+
+    /**
      * Makes and return the data attributes of the main sidebar element.
      *
      * @return string

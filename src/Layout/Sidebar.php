@@ -58,6 +58,38 @@ class Sidebar
     }
 
     /**
+     * Makes the set of classes of the sidebar navigation menu element.
+     *
+     * @return array
+     */
+    public static function makeNavClasses()
+    {
+        $classes = [Tokens::NAV, Tokens::SIDEBAR_MENU, Tokens::NAV_COLUMN];
+
+        // The style variants that AdminLTE defines for the sidebar menu.
+
+        $variants = [
+            'sidebar_nav_compact' => Tokens::NAV_COMPACT,
+            'sidebar_nav_indent' => Tokens::NAV_INDENT,
+            'sidebar_nav_pills' => Tokens::NAV_PILLS,
+        ];
+
+        foreach ($variants as $option => $token) {
+            if (config("adminlte.{$option}", false)) {
+                $classes[] = $token;
+            }
+        }
+
+        $cfg = config('adminlte.classes_sidebar_nav', '');
+
+        if (is_string($cfg) && ! empty($cfg)) {
+            $classes[] = $cfg;
+        }
+
+        return $classes;
+    }
+
+    /**
      * Makes the set of data attributes of the sidebar element.
      *
      * @return array
@@ -76,6 +108,15 @@ class Sidebar
 
         if (config('adminlte.sidebar_collapse_remember', false)) {
             $attrs[] = Tokens::SIDEBAR_PERSISTENCE_ATTRIBUTE.'="true"';
+        }
+
+        // The plugin uses its own breakpoint (991.98 pixels) to tell a desktop
+        // viewport from a mobile one. This attribute overrides it.
+
+        $breakpoint = config('adminlte.sidebar_breakpoint');
+
+        if (is_numeric($breakpoint)) {
+            $attrs[] = Tokens::SIDEBAR_BREAKPOINT_ATTRIBUTE.'="'.$breakpoint.'"';
         }
 
         return $attrs;

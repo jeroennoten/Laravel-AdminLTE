@@ -19,6 +19,12 @@ class TokensTest extends TestCase
         $this->assertEquals('sidebar-mini', Tokens::SIDEBAR_MINI);
         $this->assertEquals('sidebar-collapse', Tokens::SIDEBAR_COLLAPSE);
         $this->assertEquals('sidebar-without-hover', Tokens::SIDEBAR_WITHOUT_HOVER);
+        $this->assertEquals('sidebar-menu', Tokens::SIDEBAR_MENU);
+        $this->assertEquals('nav', Tokens::NAV);
+        $this->assertEquals('flex-column', Tokens::NAV_COLUMN);
+        $this->assertEquals('nav-compact', Tokens::NAV_COMPACT);
+        $this->assertEquals('nav-indent', Tokens::NAV_INDENT);
+        $this->assertEquals('nav-pills', Tokens::NAV_PILLS);
     }
 
     public function testTheLayoutAttributeNames()
@@ -26,6 +32,7 @@ class TokensTest extends TestCase
         $this->assertEquals('data-bs-theme', Tokens::COLOR_MODE_ATTRIBUTE);
         $this->assertEquals('data-lte-color-mode', Tokens::COLOR_MODE_DISABLED_ATTRIBUTE);
         $this->assertEquals('data-enable-persistence', Tokens::SIDEBAR_PERSISTENCE_ATTRIBUTE);
+        $this->assertEquals('data-sidebar-breakpoint', Tokens::SIDEBAR_BREAKPOINT_ATTRIBUTE);
     }
 
     public function testTheSupportedTokenSets()

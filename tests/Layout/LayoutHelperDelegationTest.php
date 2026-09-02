@@ -92,6 +92,14 @@ class LayoutHelperDelegationTest extends TestCase
                 'adminlte.sidebar_theme' => 'light',
                 'adminlte.sidebar_collapse_remember' => true,
                 'adminlte.classes_sidebar' => 'bg-dark',
+                'adminlte.sidebar_breakpoint' => 768,
+            ],
+
+            'sidebar nav tuning' => [
+                'adminlte.sidebar_nav_compact' => true,
+                'adminlte.sidebar_nav_indent' => true,
+                'adminlte.sidebar_nav_pills' => true,
+                'adminlte.classes_sidebar_nav' => 'my-nav-cls',
             ],
 
             'invalid sidebar tuning' => [
@@ -99,6 +107,8 @@ class LayoutHelperDelegationTest extends TestCase
                 'adminlte.sidebar_mini' => 'invalid',
                 'adminlte.sidebar_theme' => 'invalid',
                 'adminlte.classes_sidebar' => null,
+                'adminlte.sidebar_breakpoint' => 'invalid',
+                'adminlte.classes_sidebar_nav' => ['nav-compact'],
             ],
 
             'dark color mode' => [
@@ -262,6 +272,12 @@ class LayoutHelperDelegationTest extends TestCase
         );
 
         $this->assertSame(
+            trim(implode(' ', Sidebar::makeNavClasses())),
+            LayoutHelper::makeSidebarNavClasses(),
+            $msg
+        );
+
+        $this->assertSame(
             trim(implode(' ', Sidebar::makeAttributes())),
             LayoutHelper::makeSidebarData(),
             $msg
@@ -337,8 +353,9 @@ class LayoutHelperDelegationTest extends TestCase
             'getHtmlDirection', 'getColorMode', 'isDarkModeEnabled',
             'isFixedNavbarEnabled', 'isFixedFooterEnabled', 'makeHtmlData',
             'makeBodyClasses', 'makeBodyData', 'makeWrapperData',
-            'makeSidebarWrapperClasses', 'makeSidebarData',
-            'makeWrapperClasses', 'makeContentWrapperClasses',
+            'makeSidebarWrapperClasses', 'makeSidebarNavClasses',
+            'makeSidebarData', 'makeWrapperClasses',
+            'makeContentWrapperClasses',
         ];
 
         $reflection = new ReflectionClass(LayoutHelper::class);

@@ -47,8 +47,23 @@ All other extra attributes you define will be inserted directly on the underlyin
 > [!Note]
 > The `head-theme` and `footer-theme` attributes are rendered as the Bootstrap 5 `table-{theme}` class on the `<thead>` / `<tfoot>` elements (the Bootstrap 4 `thead-light` / `thead-dark` classes do not exist anymore).
 
+> [!Important]
+> The `with-buttons` attribute needs the **Datatables Buttons** extension, which is a separate plugin. Enable it together with the base plugin on the blade file:
+>
+> ```blade
+> @section('plugins.Datatables', true)
+> @section('plugins.DatatablesButtons', true)
+> ```
+>
+> The `DatatablesButtons` plugin loads the extension, its Bootstrap 5 styling, the HTML5 and print button sets, plus **JSZip** (needed by the excel export) and **pdfmake** (needed by the pdf one). Drop the two last files from the plugin configuration when you do not export to those formats.
+>
+> To serve them from your own domain instead of the CDN, publish them with `php artisan adminlte:plugins install --plugin=datatablesButtons`.
+
 > [!Note]
-> When the `with-buttons` attribute is enabled, the export buttons are rendered with **Bootstrap Icons**: `bi bi-printer` (print), `bi bi-filetype-csv` (CSV), `bi bi-file-earmark-excel` (Excel) and `bi bi-file-earmark-pdf` (PDF).
+> When the `with-buttons` attribute is enabled, the export buttons are rendered with **Bootstrap Icons**: `bi bi-printer` (print), `bi bi-filetype-csv` (CSV), `bi bi-file-earmark-excel` (Excel) and `bi bi-file-earmark-pdf` (PDF). Their tooltips are translated, see the [accessibility strings](/sections/configuration/translations#accessibility-strings).
+
+> [!Note]
+> The component configures the table through the Datatables **2.x `layout`** option (`topStart`, `topEnd`, `bottomStart`, `bottomEnd`). The `dom` option of the 1.x releases is deprecated in the pinned version, but it is still honored when you pass it explicitly on the `config` attribute, in which case the component adds no `layout` of its own.
 
 > [!Note]
 > You can always do all the plugin configuration from `Javascript/jQuery` using the `id` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://datatables.net/reference/api/destroy()) method first.
@@ -184,10 +199,17 @@ npm i datatables.net@^2.1 datatables.net-bs5
 php artisan adminlte:plugins install --plugin=datatables
 ```
 
-> [!Warning]
-> The `datatablesPlugins` key of **AdminLTE v3**, which provided the **Buttons** extension files used by the `with-buttons` attribute, is **not available anymore**. To use the export buttons you have to add the files of the [Buttons extension](https://datatables.net/extensions/buttons/) (plus `jszip` and `pdfmake` for the Excel and PDF exports) to the `files` array of the `Datatables` entry by yourself, using their own CDN or a local copy.
+For the export buttons, install the **Buttons** extension as well:
 
-Finally, you need to use the `@section('plugins.Datatables', true)` sentence on the blade file where you expect to use the component.
+```sh
+npm i datatables.net-buttons@^4.0 datatables.net-buttons-bs5 jszip pdfmake
+php artisan adminlte:plugins install --plugin=datatablesButtons
+```
+
+> [!Note]
+> The `datatablesPlugins` key of **AdminLTE v3** was renamed to **`datatablesButtons`**. The old key is still accepted by the console command and redirects to the new one.
+
+Finally, you need to use the `@section('plugins.Datatables', true)` sentence on the blade file where you expect to use the component, plus `@section('plugins.DatatablesButtons', true)` when you use the export buttons.
 
 # Modal
 

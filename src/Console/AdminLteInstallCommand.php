@@ -8,6 +8,7 @@ use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\ErrorViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\VendorAssetsResource;
@@ -88,6 +89,7 @@ class AdminLteInstallCommand extends Command
             'auth_views' => new AuthViewsResource(),
             'auth_routes' => new AuthRoutesResource(),
             'components' => new BladeComponentsResource(),
+            'error_views' => new ErrorViewsResource(),
         ];
 
         // Add the resources related to each available --type option.
@@ -115,6 +117,7 @@ class AdminLteInstallCommand extends Command
             'auth_views' => ['auth_views'],
             'auth_routes' => ['auth_routes'],
             'components' => ['components'],
+            'error_views' => ['error_views'],
         ];
 
         // Add the resources related to each available --with option.
@@ -125,6 +128,7 @@ class AdminLteInstallCommand extends Command
             'auth_views' => ['auth_views'],
             'auth_routes' => ['auth_routes'],
             'components' => ['components'],
+            'error_views' => ['error_views'],
         ];
     }
 
