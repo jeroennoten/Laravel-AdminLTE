@@ -14,7 +14,7 @@
         value="{{ implode(',', $makeStartValue()) }}"
         {{ $attributes->except(['value', 'class', 'type', 'min', 'max', 'step', 'disabled']) }}>
 
-    <div id="{{ $config['id'] }}" class="{{ $makeSliderClass() }}"></div>
+    <div id="{{ $config['id'] }}" class="{{ $makeSliderClass() }}"{{ $makeSliderAttributes() }}></div>
 
 @overwrite
 

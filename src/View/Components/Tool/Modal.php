@@ -11,23 +11,15 @@ class Modal extends Component
     use HandlesThemeColors;
 
     /**
-     * The available modal sizes.
+     * The available modal sizes. Note the fullscreen sizes are provided by
+     * Bootstrap 5 with an optional breakpoint suffix.
      *
      * @var array
      */
-    protected $mSizes = ['sm', 'lg', 'xl'];
-
-    /**
-     * The set of themes that provide a dark background. On these themes, the
-     * close button of the modal header requires the dark color mode in order
-     * to get enough contrast.
-     *
-     * @var array
-     */
-    protected $darkThemes = [
-        'primary', 'secondary', 'success', 'danger', 'dark', 'indigo',
-        'navy', 'violet', 'fuchsia', 'pink', 'olive', 'teal', 'steel',
-        'slate', 'graphite', 'midnight',
+    protected $mSizes = [
+        'sm', 'lg', 'xl', 'fullscreen', 'fullscreen-sm-down',
+        'fullscreen-md-down', 'fullscreen-lg-down', 'fullscreen-xl-down',
+        'fullscreen-xxl-down',
     ];
 
     /**
@@ -97,6 +89,22 @@ class Modal extends Component
     public $disableAnimations;
 
     /**
+     * Indicates if the modal footer is suppressed. When enabled, neither the
+     * default dismiss button nor the 'footerSlot' content are rendered.
+     *
+     * @var bool|mixed
+     */
+    public $disableFooter;
+
+    /**
+     * Extra classes for the modal dialog element (to customize the dialog
+     * section).
+     *
+     * @var string
+     */
+    public $dialogClass;
+
+    /**
      * Create a new component instance.
      *
      * @return void
@@ -104,7 +112,7 @@ class Modal extends Component
     public function __construct(
         $id, $title = null, $icon = null, $size = null, $theme = null,
         $vCentered = null, $scrollable = null, $staticBackdrop = null,
-        $disableAnimations = null
+        $disableAnimations = null, $disableFooter = null, $dialogClass = null
     ) {
         $this->id = $id;
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
@@ -115,6 +123,8 @@ class Modal extends Component
         $this->scrollable = $scrollable;
         $this->staticBackdrop = $staticBackdrop;
         $this->disableAnimations = $disableAnimations;
+        $this->disableFooter = $disableFooter;
+        $this->dialogClass = $dialogClass;
     }
 
     /**
@@ -154,7 +164,27 @@ class Modal extends Component
             $classes[] = "modal-{$this->size}";
         }
 
+        if (! empty($this->dialogClass)) {
+            $classes[] = $this->dialogClass;
+        }
+
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the 'aria-labelledby' attribute for the modal. The attribute is
+     * only emitted when there is a title, otherwise it would point to an
+     * element without any accessible name.
+     *
+     * @return string
+     */
+    public function makeAriaLabelledBy()
+    {
+        if (! isset($this->title) || trim($this->title) === '') {
+            return '';
+        }
+
+        return 'aria-labelledby="'.e($this->id).'-title"';
     }
 
     /**
@@ -185,7 +215,7 @@ class Modal extends Component
     {
         $theme = $this->resolveThemeColor($this->theme);
 
-        if (! empty($theme) && in_array($theme, $this->darkThemes)) {
+        if (! empty($theme) && ! UtilsHelper::hasDarkText($theme)) {
             return 'data-bs-theme="dark"';
         }
 

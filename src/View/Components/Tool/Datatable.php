@@ -4,6 +4,7 @@ namespace JeroenNoten\LaravelAdminLte\View\Components\Tool;
 
 use Illuminate\Support\Arr;
 use Illuminate\View\Component;
+use Illuminate\View\ComponentAttributeBag;
 
 class Datatable extends Component
 {
@@ -109,6 +110,21 @@ class Datatable extends Component
     public $withButtons;
 
     /**
+     * Extra classes for the responsive wrapper of the table.
+     *
+     * @var string
+     */
+    public $wrapperClass;
+
+    /**
+     * The attributes of the responsive wrapper of the table. Array with
+     * 'key => value' pairs.
+     *
+     * @var array
+     */
+    public $wrapperAttributes;
+
+    /**
      * Create a new component instance.
      *
      * @return void
@@ -117,7 +133,8 @@ class Datatable extends Component
         $id, $heads, $theme = null, $headTheme = null, $bordered = null,
         $hoverable = null, $striped = null, $compressed = null,
         $withFooter = null, $footerTheme = null, $beautify = null,
-        $withButtons = null, $config = []
+        $withButtons = null, $config = [], $wrapperClass = null,
+        $wrapperAttributes = []
     ) {
         $this->id = $id;
         $this->heads = $heads;
@@ -131,6 +148,11 @@ class Datatable extends Component
         $this->footerTheme = $footerTheme;
         $this->beautify = $beautify;
         $this->withButtons = $withButtons;
+        $this->wrapperClass = $wrapperClass;
+
+        $this->wrapperAttributes = is_array($wrapperAttributes)
+            ? $wrapperAttributes
+            : [];
 
         $this->config = is_array($config) ? $config : [];
 
@@ -178,6 +200,34 @@ class Datatable extends Component
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for the responsive wrapper of the table.
+     *
+     * @return string
+     */
+    public function makeWrapperClass()
+    {
+        $classes = ['table-responsive'];
+
+        if (! empty($this->wrapperClass)) {
+            $classes[] = $this->wrapperClass;
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Makes the attribute bag of the responsive wrapper of the table. The
+     * plugin mutates the table, so a Livewire app may need to mark the
+     * wrapper with 'wire:ignore' in order to survive a re-render.
+     *
+     * @return \Illuminate\View\ComponentAttributeBag
+     */
+    public function makeWrapperAttributes()
+    {
+        return new ComponentAttributeBag($this->wrapperAttributes);
     }
 
     /**

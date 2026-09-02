@@ -20,10 +20,11 @@ class BodyClassesTest extends TestCase
     {
         config(['adminlte' => []]);
 
-        // Without configuration, only the sidebar defaults are expected.
+        // Without configuration, the sidebar defaults are expected. Note
+        // the fixed sidebar is part of them, since it is the shipped default.
 
         $this->assertEquals(
-            ['sidebar-expand-lg', 'sidebar-mini'],
+            ['layout-fixed', 'sidebar-expand-lg', 'sidebar-mini'],
             BodyClasses::make()
         );
     }

@@ -2157,4 +2157,94 @@ class FormComponentsTest extends TestCase
         $this->assertEquals('rtl', $config['direction']);
         $this->assertFalse($config['tooltips']);
     }
+
+    public function testTheValidationStateIsWiredToTheFeedbackBlock()
+    {
+        $component = new Components\Form\Input('fname', 'fid');
+
+        // Without errors the control declares no validation state.
+
+        $attrs = $component->makeItemAttributes();
+
+        $this->assertArrayNotHasKey('aria-invalid', $attrs);
+        $this->assertArrayNotHasKey('aria-describedby', $attrs);
+
+        // With errors it announces the state and points at the feedback block.
+
+        $this->addErrorOnSessionFor('fname');
+        $attrs = $component->makeItemAttributes();
+
+        $this->assertEquals('true', $attrs['aria-invalid']);
+        $this->assertEquals('fid-error', $attrs['aria-describedby']);
+        $this->assertEquals('fid-error', $component->makeInvalidFeedbackId());
+    }
+
+    public function testTheItemAttributesKeepTheItemClassAndTheExtras()
+    {
+        $component = new Components\Form\Input('fname', 'fid');
+
+        $attrs = $component->makeItemAttributes(['type' => 'color']);
+
+        $this->assertEquals($component->makeItemClass(), $attrs['class']);
+        $this->assertEquals('color', $attrs['type']);
+    }
+
+    public function testTheValidationStateReachesEveryInputGroupComponent()
+    {
+        $this->addErrorOnSessionFor('fname');
+
+        $components = [
+            new Components\Form\Input('fname', 'fid'),
+            new Components\Form\Textarea('fname', 'fid'),
+            new Components\Form\Select('fname', 'fid'),
+            new Components\Form\SelectBs('fname', 'fid'),
+            new Components\Form\Select2('fname', 'fid'),
+            new Components\Form\InputColor('fname', 'fid'),
+            new Components\Form\InputDate('fname', 'fid'),
+            new Components\Form\InputFile('fname', 'fid'),
+            new Components\Form\InputSwitch('fname', 'fid'),
+            new Components\Form\DateRange('fname', 'fid'),
+            new Components\Form\TextEditor('fname', 'fid'),
+        ];
+
+        foreach ($components as $component) {
+            $attrs = $component->makeItemAttributes();
+            $name = get_class($component);
+
+            $this->assertEquals('true', $attrs['aria-invalid'] ?? null, $name);
+            $this->assertEquals('fid-error', $attrs['aria-describedby'] ?? null, $name);
+        }
+    }
+
+    public function testTheSliderWiresItsPluginElementToTheFeedbackBlock()
+    {
+        $this->addErrorOnSessionFor('fname');
+
+        $component = new Components\Form\InputSlider('fname', 'fid');
+        $attrs = (string) $component->makeSliderAttributes();
+
+        $this->assertStringContainsString('aria-invalid="true"', $attrs);
+        $this->assertStringContainsString('aria-describedby="fid-error"', $attrs);
+    }
+
+    public function testTheSliderExposesTheAttributesOfItsPluginElement()
+    {
+        $html = $this->renderComponent(
+            '<x-adminlte-input-slider name="fname" id="fid"
+                :slider-attributes="[\'wire:ignore\' => \'\', \'data-x\' => \'y\']"/>'
+        );
+
+        $this->assertStringContainsString('wire:ignore', $html);
+        $this->assertStringContainsString('data-x="y"', $html);
+    }
+
+    public function testTheButtonRendersItsSlotContent()
+    {
+        $html = $this->renderComponent(
+            '<x-adminlte-button label="Save"><span class="badge">3</span></x-adminlte-button>'
+        );
+
+        $this->assertStringContainsString('Save', $html);
+        $this->assertStringContainsString('<span class="badge">3</span>', $html);
+    }
 }

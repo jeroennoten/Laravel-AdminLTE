@@ -51,6 +51,16 @@ class ColorMode
     }
 
     /**
+     * Checks whether the AdminLTE color mode plugin is enabled.
+     *
+     * @return bool
+     */
+    public static function isEnabled()
+    {
+        return config('adminlte.color_mode.enabled', true) !== false;
+    }
+
+    /**
      * Makes the set of attributes that declare the color mode on the html tag.
      *
      * @return array
@@ -59,6 +69,16 @@ class ColorMode
     {
         $attrs = [];
         $mode = self::get();
+
+        // The color mode plugin is opted out completely, so the application
+        // takes over the theming of the template.
+
+        if (! self::isEnabled()) {
+            return [
+                Tokens::COLOR_MODE_ATTRIBUTE.'="'.($mode === 'auto' ? 'light' : $mode).'"',
+                Tokens::COLOR_MODE_DISABLED_ATTRIBUTE.'="off"',
+            ];
+        }
 
         // The automatic mode is resolved on the client side, so it declares no
         // color mode at all.

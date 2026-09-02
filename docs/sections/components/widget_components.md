@@ -2,7 +2,7 @@ These components are classified under the **Widget** category and represents som
 
 |Components
 |-----------
-| [Alert](#alert), [Callout](#callout), [Card](#card), [Info Box](#info-box), [ProfileColItem](#profile-col-item-profile-row-item), [ProfileRowItem](#profile-col-item-profile-row-item), [ProfileWidget](#profile-widget), [Progress](#progress), [Small Box](#small-box)
+| [Alert](#alert), [Callout](#callout), [Card](#card), [Info Box](#info-box), [ProfileColItem](#profile-col-item-profile-row-item), [ProfileRowItem](#profile-col-item-profile-row-item), [ProfileWidget](#profile-widget), [Progress](#progress), [Progress Group](#progress-group), [Ribbon](#ribbon), [Small Box](#small-box), [Toast](#toast), [User Block](#user-block), [Timeline](#timeline), [TimelineItem](#timeline), [TimelineLabel](#timeline)
 
 ## About the `theme` Attribute
 
@@ -177,6 +177,9 @@ removable | Enables a removable card with a button to remove it | any | `null` |
 theme | The card theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
 theme-mode | The theme mode (`full` or `outline`) | string | `null` | no
 title | The title for the card header | string | `null` | no
+title-class | Additional classes for the card title element | string | `null` | no
+title-tag | The tag of the card title element. One of `h1` to `h6`, `div` or `span`. Any other value falls back to the default | string | `h3` | no
+tabs | A set of tabs rendered as a `nav-tabs` navigation in the card header. See [Cards with Tabs](#cards-with-tabs) | array | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.card` element. So, for example, you can define extra classes on the card by using `class`, or use `onclick`, `id` or any other attribute you may need.
 
@@ -193,7 +196,7 @@ Any other attribute you define will be directly inserted into the underlying `di
 >
 > This check exists because the Bootstrap spacing utilities are all declared with `!important` at the same specificity, so simply adding a second margin class would not reliably override the first one — the winner would be decided by the order of the rules in the stylesheet, not by the order you wrote them.
 >
-> Note the [ProfileWidget](#profile-widget) component is **not** covered by this: although it is also a card, it adds no default margin, so give it a `mb-*` class of your own when you stack several of them.
+> The [ProfileWidget](#profile-widget) component follows the same rule, since it is a card too.
 
 > [!Note]
 > The `theme-mode` values render as follows on **AdminLTE v4**:
@@ -220,6 +223,32 @@ If you add your own card tool buttons through the `toolsSlot`, use those attribu
 
 - **toolsSlot**: Use this slot to add extra elements on the card header.
 - **footerSlot**: Use this slot to fill the card footer.
+- **titleSlot**: Use this slot when the title needs markup (a badge, a link, an inline form). It replaces the `title` attribute and keeps the `icon` and the card tools in place.
+- **headerSlot**: Use this slot to replace the **whole** header content, both the title and the tools. This is the escape hatch for a header layout the attributes cannot express.
+- **tabsSlot**: Use this slot to provide your own `ul.nav.nav-tabs` navigation instead of the generated one. Providing it turns the card into a tabbed card on its own. See [Cards with Tabs](#cards-with-tabs).
+
+### Cards with Tabs
+
+AdminLTE v4 provides a tabbed card layout, where the header holds a Bootstrap **nav-tabs** navigation instead of a title. Pass the tabs through the `tabs` attribute, and place one `.tab-pane` per tab in the card body:
+
+```blade
+<x-adminlte-card theme="primary" theme-mode="outline" :tabs="[
+    ['id' => 'tab-home', 'label' => 'Home', 'icon' => 'bi bi-house'],
+    ['id' => 'tab-profile', 'label' => 'Profile'],
+    ['id' => 'tab-about', 'label' => 'About', 'active' => true],
+]">
+    <div class="tab-pane fade" id="tab-home" role="tabpanel" tabindex="0">Home pane</div>
+    <div class="tab-pane fade" id="tab-profile" role="tabpanel" tabindex="0">Profile pane</div>
+    <div class="tab-pane fade show active" id="tab-about" role="tabpanel" tabindex="0">About pane</div>
+</x-adminlte-card>
+```
+
+Every entry accepts an `id`, a `label`, an optional `icon` and an optional `active` flag. When no entry is flagged, the **first one** is activated. The identifiers are sanitized down to letters, digits, `_` and `-`, and an entry left without a usable one gets a generated identifier.
+
+The card body is wrapped in a `div.tab-content` automatically, and the card gets the `card-tabs` class (or `card-outline-tabs` with `theme-mode="outline"`).
+
+> [!Note]
+> The panes are plain Bootstrap markup, so the `id` of each pane has to match the `id` of its tab, and the initially visible one carries `show active`. The tab switching itself is handled by the Bootstrap tab plugin.
 
 ### Examples
 
@@ -298,11 +327,28 @@ theme | The info box theme: light, dark, primary, secondary, info, success, warn
 title | A title/header for the info box | string | `null` | no
 url | An url for the info box. By default, will be placed on the `title` | string | `null` | no
 url-target | The target element where to place the url: `title` or `text` | string | `'title'` | no
+more | A label for the `info-box-more` link, rendered below the content | string | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.info-box` element. So, for example, you can define extra classes using the `class` attribute, use the `onclick`, the `id` or any other attribute you may need.
 
 > [!Warning]
 > The **AdminLTE v3** `gradient-{color}` theme values (for example `theme="gradient-teal"`) are **not supported anymore**, they would render an invalid `text-bg-gradient-teal` class. Use a plain theme name and add the Bootstrap `bg-gradient` helper through the `class` attribute instead.
+
+### Slots
+
+The `title` and `text` attributes are escaped, so they cannot carry markup. Use the slots when the reference layouts do, for example for the unit of a number:
+
+- **titleSlot**: Replaces the `title` attribute and fills the `span.info-box-text` element.
+- **textSlot**: Replaces the `text` attribute and fills the `span.info-box-number` element.
+
+```blade
+<x-adminlte-info-box icon="bi bi-bookmark" theme="info">
+    <x-slot name="titleSlot">Bookmarks</x-slot>
+    <x-slot name="textSlot">10 <small>%</small></x-slot>
+</x-adminlte-info-box>
+```
+
+A slot wins over the attribute of the same name, and the `url`/`url-target` wiring keeps working on both.
 
 ### Javascript Utility Class
 
@@ -391,6 +437,7 @@ title | The title/header for the item | string | `null` | no
 size | The item size. Used to wrap the item inside a `col-size` div | integer | `4` (col item) / `12` (row item) | no
 url | An url for the item. By default, it'll be placed on the title attribute | string | `null` | no
 url-target | The target element where to place the url: `title` (default) or `text` | string | `'title'` | no
+layout-type | Only on the **profile-row-item**: `default` keeps the historic markup, `nav` emits the AdminLTE v4 reference markup. See [The `nav` Row Layout](#the-nav-row-layout) | string | `'default'` | no
 
 The available themes for the badge are: light, dark, primary, secondary, info, success, warning, danger or any color of the **AdminLTE v4** extended palette like `sky` or `teal`. See [About the `theme` Attribute](#about-the-theme-attribute) for the details, the badge is rendered with the Bootstrap 5 `badge text-bg-{theme}` classes.
 
@@ -401,6 +448,35 @@ The available themes for the badge are: light, dark, primary, secondary, info, s
 > On the **profile-row-item** the text is right aligned with the Bootstrap 5 `float-end` class (the Bootstrap 4 `float-right` class does not exist anymore).
 
 Any other attribute you define will be directly inserted into the underlying `div.col-<size>` element. So, for example, you can define `class`, `onclick`, `id` or any other attribute you may need. To see usage examples, check the [Profile Widget Component](#profile-widget).
+
+### Slots
+
+- **textSlot**: Replaces the escaped `text` attribute, for a badge, an icon or any other markup.
+
+### The `nav` Row Layout
+
+The **AdminLTE v4** reference layouts build the footer list of a profile widget as a `ul.nav.flex-column` of list items, which is what the `.card .nav.flex-column > li` divider rule of the stylesheet expects. The historic markup of this package uses a grid row instead, so the dividers never appear and the item is a non-interactive `span`.
+
+Set `layout-type="nav"` on the **profile-row-item** to get the reference markup. The items then have to be wrapped in the list yourself, and the footer needs `p-0` so the rows are not padded twice:
+
+```blade
+<x-adminlte-profile-widget name="Nadia Carmichael" desc="Lead Developer"
+    theme="lightblue" img="vendor/adminlte/dist/assets/img/AdminLTELogo.png"
+    layout-type="classic" footer-class="p-0">
+    <x-slot name="footerSlot">
+        <ul class="nav flex-column">
+            <x-adminlte-profile-row-item layout-type="nav" title="Projects" url="#">
+                <x-slot name="textSlot"><span class="badge text-bg-primary">31</span></x-slot>
+            </x-adminlte-profile-row-item>
+            <x-adminlte-profile-row-item layout-type="nav" title="Tasks" url="#">
+                <x-slot name="textSlot"><span class="badge text-bg-info">5</span></x-slot>
+            </x-adminlte-profile-row-item>
+        </ul>
+    </x-slot>
+</x-adminlte-profile-widget>
+```
+
+The `default` layout stays the default, so existing views are unaffected.
 
 # Profile Widget
 
@@ -551,7 +627,20 @@ Any other attribute you define will be directly inserted into the underlying `di
 > This check exists because the Bootstrap spacing utilities are all declared with `!important` at the same specificity, so simply adding a second margin class would not reliably override the first one — the winner would be decided by the order of the rules in the stylesheet, not by the order you wrote them.
 
 > [!Note]
-> The component emits the **Bootstrap 5.3** progress markup: the `role="progressbar"` and the `aria-value*` attributes live on the `.progress` wrapper (not on the inner `.progress-bar` element as on Bootstrap 4). The theme is rendered as a `bg-{theme}` class on the inner bar.
+> The component emits the **Bootstrap 5.3** progress markup: the `role="progressbar"` and the `aria-value*` attributes live on the `.progress` wrapper (not on the inner `.progress-bar` element as on Bootstrap 4). The theme is rendered as a `text-bg-{theme}` class on the inner bar, which is what the AdminLTE reference layouts use, and which keeps the label readable over the light theme colors such as `warning`.
+
+### Slots
+
+- **labelSlot**: Replaces the built-in percentage label. Useful for a ratio label such as `160/200`.
+
+```blade
+<x-adminlte-progress :value="80" theme="primary" with-label>
+    <x-slot name="labelSlot">160/200</x-slot>
+</x-adminlte-progress>
+```
+
+> [!Note]
+> A label provided through the slot is owned by your application, so the `setValue()` method of the Javascript helper below leaves it untouched. Only the built-in percentage label is refreshed automatically.
 
 ### Javascript Utility Class
 
@@ -624,6 +713,120 @@ Use the next image as reference to check how every example is rendered. Please, 
 
 ![Progress Component](/imgs/components/widget_components/progress-component.png)
 
+# Progress Group
+
+This component represents an `AdminLTE` progress group, a labelled progress bar with a `current/total` counter, like the ones used on the **Goal Completion** panel of the AdminLTE dashboard. The following attributes are available:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+label | The label/description of the group | string | `null` | no
+max | The maximum value of the group | int | `100` | no
+size | The progress bar size (`sm`, `xs` or `xxs`) | string | `'sm'` | no
+theme | The progress bar theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute). Set it to an empty value to inherit the color of the container | string | `'primary'` | no
+value | The current value of the group | int | `0` | no
+
+Any other attribute you define will be directly inserted into the underlying `div.progress-group` element. So, for example, you can define a `class`, `onclick`, `id` or any other attribute you may need.
+
+The percentage of the bar is derived from the `value` and `max` attributes (`value / max`), and is always clamped to the `[0, 100]` range. A `max` value of zero (or lower) renders an empty bar instead of raising a division by zero error.
+
+The default slot, when filled, **replaces the `current/total` counter** placed at the end of the label line, which is useful to render a unit or a different notation.
+
+> [!Note]
+> The bar is a nested [Progress](#progress) component, so the **_AdminLTE_Progress** javascript utility class works on a progress group too. The `.progress-group` element already provides the bottom spacing, so the nested bar is rendered with a `mb-0` class instead of the default `mb-2` one.
+>
+> The theme is rendered as a `bg-{theme}` class on the inner bar (the class emitted by the [Progress](#progress) component), instead of the `text-bg-{theme}` class used by the AdminLTE reference page. Both paint the same background, and the contrast color of the utility is not observable on a bar without a label.
+
+### Javascript Utility Class
+
+Assign an `id` attribute to the progress group and use the **_AdminLTE_Progress** class described on the [Progress](#progress) section with that same `id`, for example:
+
+```blade
+{{-- On the blade file... --}}
+<x-adminlte-progress-group id="myGroup" label="Add Products to Cart" :value="160" :max="200"/>
+```
+
+```js
+// On your Javascript code...
+let myGroup = new _AdminLTE_Progress("myGroup");
+myGroup.setValue(90);
+```
+
+The nested progress bar also gets its own `progress-{id}` identifier (`progress-myGroup` on the previous example), so it can be targeted directly when needed.
+
+### Examples
+
+```blade
+{{-- Minimal --}}
+<x-adminlte-progress-group label="Add Products to Cart" :value="160" :max="200"/>
+
+{{-- Themes --}}
+<x-adminlte-progress-group label="Complete Purchase" :value="310" :max="400" theme="danger"/>
+<x-adminlte-progress-group label="Visit Premium Page" :value="480" :max="800" theme="success"/>
+<x-adminlte-progress-group label="Send Inquiries" :value="250" :max="500" theme="warning"/>
+
+{{-- Custom bar size (the extended palette requires 'assets.extended_colors') --}}
+<x-adminlte-progress-group label="Disk Usage" :value="34" :max="50" theme="teal" size="xs"/>
+
+{{-- Custom counter through the default slot --}}
+<x-adminlte-progress-group label="Storage" :value="34" :max="50" theme="indigo">
+    <b>34</b> of 50 GB
+</x-adminlte-progress-group>
+```
+
+# Ribbon
+
+This component represents an `AdminLTE` ribbon, a diagonal banner pinned to the top corner of a positioned parent. A [Card](#card) is already positioned, any other container needs the Bootstrap `position-relative` class (and `overflow-hidden` when it has rounded corners). The following attributes are available:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+label | The label of the ribbon | string | `null` | no
+size | The ribbon size (`lg` or `xl`) | string | `null` | no
+theme | The ribbon theme: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
+url | An url for the ribbon. When defined, the label is wrapped inside a link that inherits the contrast color of the theme | string | `null` | no
+
+Any other attribute you define will be directly inserted into the underlying `div.ribbon-wrapper` element. So, for example, you can define a `class`, `onclick`, `id` or any other attribute you may need.
+
+The default slot, when filled, **replaces the `label` attribute**, which is useful to place markup (an icon, for example) inside the banner.
+
+> [!Note]
+> The banner is clipped to the corner, so only about `64px` of the label are readable at the default size, roughly six characters. Use `size="lg"` or `size="xl"` for longer words.
+>
+> Without a `theme`, the ribbon is painted with the secondary background color of the active color mode.
+
+### Examples
+
+```blade
+{{-- On a card --}}
+<x-adminlte-card title="New arrivals" theme="light">
+    <x-adminlte-ribbon label="New" theme="primary"/>
+    Card content.
+</x-adminlte-card>
+
+{{-- Themes --}}
+<x-adminlte-ribbon label="Draft" theme="secondary"/>
+<x-adminlte-ribbon label="Live" theme="success"/>
+<x-adminlte-ribbon label="Hot" theme="danger"/>
+<x-adminlte-ribbon label="Beta" theme="warning"/>
+
+{{-- Sizes --}}
+<x-adminlte-ribbon label="Large" theme="success" size="lg"/>
+<x-adminlte-ribbon label="X-Large" theme="danger" size="xl"/>
+
+{{-- Wrapping a link --}}
+<x-adminlte-ribbon label="Linked" theme="info" size="lg" url="/offers"/>
+
+{{-- Outside a card --}}
+<div class="position-relative overflow-hidden rounded border bg-body p-4">
+    <x-adminlte-ribbon label="New" theme="warning"/>
+    Any positioned element.
+</div>
+
+{{-- With markup through the default slot --}}
+<x-adminlte-ribbon theme="violet" size="lg">
+    <i class="bi bi-star-fill" aria-hidden="true"></i> Top
+</x-adminlte-ribbon>
+```
+
 # Small Box
 
 This component represents an `AdminLTE` small box widget. The following attributes are available:
@@ -637,11 +840,30 @@ theme | The small box theme: light, dark, primary, secondary, info, success, war
 title | The title/header for the small box | string | `null` | no
 url | An url for the small box. When enabled, a link-styled footer section will be visible pointing to that url | string | `null` | no
 url-text | A text/label associated with the footer url | string | `null` | no
+footer-icon | The icon of the footer link. Pass an empty string to drop it | string | `'bi bi-arrow-right-circle'` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.small-box` element. So, for example, you can define extra classes using the `class` attribute, use the `onclick`, the `id` or any other attribute you may need.
 
 > [!Note]
 > The **AdminLTE v3** `.overlay` element does not exist on v4, so the loading overlay is now built with **Bootstrap 5** utilities and renders a `spinner-border` element. The `small-box-overlay` class is kept only as a hook for the Javascript helper below. The footer link arrow is now a `bi bi-arrow-right-circle` icon.
+
+> [!Note]
+> **Footer link contrast.** Suppressing the underline of the footer link needs a Bootstrap `link-*` class, and that class also decides the text color. So the component picks `link-dark` on the theme colors whose background is light (`info`, `warning`, `light`, and their v3 aliases) and `link-light` on every other one, exactly like the AdminLTE reference layouts do. The [contrast correction](/sections/configuration/other#the-contrast-correction) of the v3 palette is taken into account.
+
+### Slots
+
+The `title` and `text` attributes are escaped, so use the slots when they need markup, as the reference layouts do:
+
+- **titleSlot**: Replaces the `title` attribute and fills the `h3` element.
+- **textSlot**: Replaces the `text` attribute and fills the `p` element.
+- **footerSlot**: Replaces the content of the footer. With an `url` it stays a link, without one it renders a plain `div.small-box-footer`.
+
+```blade
+<x-adminlte-small-box theme="warning" icon="bi bi-graph-up" url="/reports">
+    <x-slot name="titleSlot">53<sup class="fs-5">%</sup></x-slot>
+    <x-slot name="textSlot">Bounce rate</x-slot>
+</x-adminlte-small-box>
+```
 
 ### Javascript Utility Class
 
@@ -729,3 +951,257 @@ Then you can use the next methods from the instantiated object:
 Use the next image as reference to check how every example is rendered. Please, note in the image the elements were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them.
 
 ![Small Box Component](/imgs/components/widget_components/small-box-component.png)
+
+# User Block
+
+This component represents an `AdminLTE` user block, the avatar plus name plus description header used by the social and feed widgets. The following attributes are available:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+description | A short description for the block, usually a timestamp or the context of the entry | string | `null` | no
+img | The user image of the block | string | `null` | no
+name | The user name of the block | string | `null` | no
+size | The user block size (`sm`). The small size shrinks the avatar and the font sizes, it is the one used on the comments of a feed | string | `null` | no
+url | An url for the block. When defined, the user name is wrapped inside a link | string | `null` | no
+
+Any other attribute you define will be directly inserted into the underlying `div.user-block` element. So, for example, you can define extra classes using the `class` attribute, use the `onclick`, the `id` or any other attribute you may need.
+
+The default slot, when filled, is rendered as the `span.comment` element of the block, below the description.
+
+> [!Note]
+> The avatar is only rendered when an `img` attribute is given, and it uses the `name` attribute as its alternative text. Every other section of the block is omitted as well when its attribute is not defined.
+>
+> Inside a `.card-header`, the AdminLTE v4 stylesheet floats the user block automatically, so it can stand in for the card title without pushing the card tools to the next line.
+
+### Examples
+
+```blade
+{{-- Minimal --}}
+<x-adminlte-user-block name="Jonathan Burke Jr." img="/img/user1-128x128.jpg"/>
+
+{{-- With a description and a link on the name --}}
+<x-adminlte-user-block name="Jonathan Burke Jr." img="/img/user1-128x128.jpg"
+    description="Shared publicly &middot; 7:30 PM today" url="/profiles/1"/>
+
+{{-- As the header of a social card --}}
+<div class="card">
+    <div class="card-header">
+        <x-adminlte-user-block name="Jonathan Burke Jr." img="/img/user1-128x128.jpg"
+            description="Shared publicly &middot; 7:30 PM today" url="/profiles/1"/>
+    </div>
+    <div class="card-body">
+        I took this photo this morning. What do you guys think?
+    </div>
+</div>
+
+{{-- Small size with a comment (the feed entries) --}}
+<x-adminlte-user-block size="sm" name="Maria Gonzales" img="/img/user4-128x128.jpg"
+    description="Posted 5 minutes ago" url="/profiles/4" class="mb-3">
+    It is a long established fact that a reader will be distracted by the
+    readable content of a page.
+</x-adminlte-user-block>
+
+<x-adminlte-user-block size="sm" name="Nora Havisham" img="/img/user5-128x128.jpg"
+    description="Posted 27 minutes ago" url="/profiles/5">
+    The point of using Lorem Ipsum is that it has a more-or-less normal
+    distribution of letters.
+</x-adminlte-user-block>
+```
+
+# Timeline
+
+These components represent an `AdminLTE` timeline. A timeline is built out of three cooperating components:
+
+- **`x-adminlte-timeline`**: the timeline container, it draws the vertical line.
+- **`x-adminlte-timeline-label`**: an optional date separator placed between the entries.
+- **`x-adminlte-timeline-item`**: one entry of the timeline.
+
+> [!Important]
+> The `x-adminlte-timeline-label` and `x-adminlte-timeline-item` components must be **direct children** of the `x-adminlte-timeline` component. The AdminLTE v4 stylesheet styles them with the `.timeline > .time-label` and `.timeline > div` child selectors, so they lose their layout when wrapped inside an extra element.
+
+The following attributes are available on the **timeline container**:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+end-icon | An icon for the entry that closes the timeline (Bootstrap Icons by default). When defined, an extra entry holding only that icon is appended to the timeline | string | `null` | no
+end-icon-theme | A theme color for the closing icon: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
+inverse | Enables the inverse style, the entries drop their shadow and get a plain border instead | any | `null` | no
+
+Any other attribute you define will be directly inserted into the underlying `div.timeline` element. So, for example, you can define a `class`, `onclick`, `id` or any other attribute you may need.
+
+The following attributes are available on the **timeline label**:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+label | The text for the label. When not defined, the content of the default slot is used instead | string | `null` | no
+theme | A theme color: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
+
+Any other attribute you define will be directly inserted into the underlying `div.time-label` element.
+
+The following attributes are available on the **timeline item**:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+header | The text for the item header. The `headerSlot` takes precedence over this attribute | string | `null` | no
+icon | An icon for the round marker attached to the timeline line (Bootstrap Icons by default) | string | `null` | no
+icon-theme | A theme color for the round marker: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
+no-border | Removes the separator line between the item header and the item body. Useful on the items that have neither body nor footer | any | `null` | no
+time | The time (or elapsed time) shown on the top right corner of the item | string | `null` | no
+time-icon | An icon shown next to the time. Use an empty value to render the time without any icon | string | `bi bi-clock-fill` | no
+url | An URL for the item | string | `null` | no
+url-target | The target element of the item for the URL (`header` or `time`) | string | `header` | no
+
+Any other attribute you define will be directly inserted into the underlying wrapper of the item, which is the element that the `.timeline > div` selector styles. So, for example, you can define a `class`, `onclick`, `id` or any other attribute you may need.
+
+> [!Note]
+> The AdminLTE v3 `.no-border` modifier of the timeline header **does not exist on the v4 stylesheet** anymore. The `no-border` attribute renders the Bootstrap 5 `border-bottom-0` utility instead, which gives the same result.
+
+> [!Note]
+> The round marker is always rendered, even when no `icon` is given, because it is the dot that attaches the entry to the vertical line of the timeline. The marker and the time icon are decorative, so they get an `aria-hidden="true"` attribute, and the time gets a translated screen reader label (the `timeline_time` translation key).
+
+### Slots
+
+The **timeline item** provides the following slots:
+
+- **headerSlot**: Use this slot to fill the item header with markup, for example to place a link inside a sentence. It takes precedence over the `header` attribute.
+- **footerSlot**: Use this slot to fill the item footer, usually with a set of buttons.
+
+The default slot of the item fills the item body, and the default slot of the timeline holds its entries.
+
+### Examples
+
+```blade
+{{-- Minimal --}}
+<x-adminlte-timeline>
+    <x-adminlte-timeline-item icon="bi bi-envelope" icon-theme="primary"
+        time="12:05" header="A new email arrived"/>
+</x-adminlte-timeline>
+
+{{-- Complete --}}
+<x-adminlte-timeline end-icon="bi bi-clock-fill" end-icon-theme="secondary">
+
+    <x-adminlte-timeline-label label="10 Feb. 2023" theme="danger"/>
+
+    <x-adminlte-timeline-item icon="bi bi-envelope" icon-theme="primary"
+        time="12:05" url="/mail/1">
+        <x-slot name="headerSlot">
+            <a href="/users/1">Support Team</a> sent you an email
+        </x-slot>
+        Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles.
+        <x-slot name="footerSlot">
+            <a class="btn btn-primary btn-sm">Read more</a>
+            <a class="btn btn-danger btn-sm">Delete</a>
+        </x-slot>
+    </x-adminlte-timeline-item>
+
+    <x-adminlte-timeline-item icon="bi bi-person" icon-theme="success"
+        time="5 mins ago" header="Sarah Young accepted your friend request"
+        no-border/>
+
+    <x-adminlte-timeline-label label="3 Jan. 2023" theme="success"/>
+
+    <x-adminlte-timeline-item icon="bi bi-camera" icon-theme="primary"
+        time="2 days ago" header="Mina Lee uploaded new photos"
+        time-icon="bi bi-calendar-event">
+        <img src="/imgs/photo1.jpg" alt="..."/>
+        <img src="/imgs/photo2.jpg" alt="..."/>
+    </x-adminlte-timeline-item>
+
+</x-adminlte-timeline>
+
+{{-- Inverse style --}}
+<x-adminlte-timeline inverse>
+    <x-adminlte-timeline-item icon="bi bi-chat-text-fill" icon-theme="warning"
+        time="27 mins ago" header="Jay White" url="/posts/1"
+        url-target="header">
+        Take me to your leader!
+    </x-adminlte-timeline-item>
+</x-adminlte-timeline>
+```
+
+# Toast
+
+This component represents an `AdminLTE` styled [Bootstrap toast](https://getbootstrap.com/docs/5.3/components/toasts/), a lightweight notification that floats over the page. The following attributes are available:
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+autohide | Whether the toast hides itself after the `delay` time. When not provided, the Bootstrap default is used (the toast hides itself) | bool | `null` | no
+delay | The time (in milliseconds) the toast stays visible before hiding itself. When not provided, the Bootstrap default is used (`5000`) | int | `null` | no
+icon | An icon for the toast header (Bootstrap Icons by default) | string | `null` | no
+id | The id of the toast. It is required to target the toast from a trigger control or from the javascript utility class | string | `null` | no
+position | The screen position of the container holding the toast: `top-start`, `top-center`, `top-end`, `middle-start`, `middle-center`, `middle-end`, `bottom-start`, `bottom-center` or `bottom-end`. An unknown value falls back to the default | string | `bottom-end` | no
+theme | A theme color: dark, light, primary, secondary, info, success, warning or danger. See [About the `theme` Attribute](#about-the-theme-attribute) | string | `null` | no
+time | A timestamp hint shown on the right side of the toast header, for example `11 mins ago` | string | `null` | no
+title | The title for the toast header | string | `null` | no
+
+The default slot fills the body of the toast. Any other attribute you define will be directly inserted into the underlying `div.toast` element. So, for example, you can define a `class`, `onclick` or any other attribute you may need.
+
+> [!Important]
+> The `.toast-{color}` variants are provided by the **AdminLTE v4 core stylesheet** and only exist for the eight **Bootstrap 5.3** theme colors. The extended palette does not ship a toast family, so a color like `sky` or `teal` renders a class that has no styling attached to it.
+
+> [!Note]
+> All the toasts sharing a `position` are collected into **one single** `.toast-container` element, so they stack on the screen instead of overlapping. The container is rendered only once per position and the toasts are moved into it on `DOMContentLoaded`, which means you can declare a toast anywhere on your view.
+
+> [!Note]
+> When neither a `title`, an `icon` nor a `time` is provided, the toast is rendered with the **headerless** Bootstrap markup: the body and the dismiss button are placed side by side. The dismiss button is always available and its label uses the `close` translation key.
+
+### Toast Triggers
+
+**Bootstrap** does not provide a declarative way to show a toast, so the component ships a small delegated listener that wires any control carrying the `data-bs-toggle="toast"` and `data-bs-target="{id}"` attributes (the same convention used by the **AdminLTE v4** reference pages):
+
+```blade
+<x-adminlte-toast id="savedToast" theme="success" title="Saved"/>
+
+<button type="button" class="btn btn-success" data-bs-toggle="toast"
+    data-bs-target="savedToast">Save</button>
+```
+
+### Javascript Utility Class
+
+This component also provides a `Javascript` utility class called **_AdminLTE_Toast**. You can use this class to show, hide or update an already rendered toast element. To use the class, first you need to assign an `id` attribute to your toast, then you create an object using the `id` attribute previously assigned in the class constructor, for example:
+
+```blade
+{{-- On the blade file... --}}
+<x-adminlte-toast id="myToast" .../>
+```
+
+```js
+// On your Javascript code...
+let myToast = new _AdminLTE_Toast("myToast");
+```
+
+Then you can use the next methods from the instantiated object:
+
+- **`myToast.show(data)`**: To show the toast. The **data** argument is optional, when provided the toast content is updated before showing it.
+
+- **`myToast.hide()`**: To hide the toast.
+
+- **`myToast.update(data)`**: To update the toast content. The **data** argument should be an object that may hold a `title`, a `time`, an `icon` and a `body` property. Note the text properties are written as plain text, any markup on them is not interpreted.
+
+- **`myToast.getInstance()`**: To get the underlying `bootstrap.Toast` instance, or `null` when the toast (or Bootstrap itself) is not available.
+
+### Examples
+
+```blade
+{{-- Minimal --}}
+<x-adminlte-toast id="basicToast">Hello, world!</x-adminlte-toast>
+
+{{-- With a header --}}
+<x-adminlte-toast id="mailToast" title="AdminLTE" icon="bi bi-envelope"
+    time="11 mins ago">
+    You have a new message.
+</x-adminlte-toast>
+
+{{-- Themed, placed on the top right corner and kept on screen --}}
+<x-adminlte-toast id="errorToast" theme="danger" title="Error"
+    icon="bi bi-x-octagon-fill" position="top-end" :autohide="false">
+    The record could not be saved.
+</x-adminlte-toast>
+
+{{-- Themed, centered on the top of the screen and hidden after 3 seconds --}}
+<x-adminlte-toast id="savedToast" theme="success" title="Saved"
+    icon="bi bi-check-circle" time="just now" position="top-center"
+    autohide :delay="3000">
+    The record was saved.
+</x-adminlte-toast>
+```

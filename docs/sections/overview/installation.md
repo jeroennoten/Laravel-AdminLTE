@@ -41,6 +41,19 @@ The package detects the published files automatically. See the [assets configura
 > 
 > You can check the installation status of the package resources with the command **`php artisan adminlte:status`**.
 
+#### The `vendor:publish` alternative
+
+The `adminlte:install` command is the recommended way to install the resources, since it knows the individual files of the AdminLTE distribution and can report their status. For the cases where the standard Laravel workflow fits better (an automated deployment, for example), the package also registers the usual publish tags:
+
+```sh
+php artisan vendor:publish --tag=adminlte-config    # config/adminlte.php
+php artisan vendor:publish --tag=adminlte-views     # resources/views/vendor/adminlte
+php artisan vendor:publish --tag=adminlte-lang      # lang/vendor/adminlte
+php artisan vendor:publish --tag=adminlte-assets    # public/vendor/adminlte/dist
+```
+
+Note the `adminlte-assets` tag copies the **whole** AdminLTE distribution folder, while `adminlte:install` publishes only the files the package actually serves.
+
 ### 4. Install the legacy authentication scaffolding (optional)
 
 Optionally, this package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding. If you are planning to use these views, then first require the **laravel/ui** package using composer and install the `bootstrap` scaffolding:

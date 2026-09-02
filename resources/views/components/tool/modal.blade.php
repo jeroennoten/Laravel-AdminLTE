@@ -1,5 +1,5 @@
 <div {{ $attributes->merge(['class' => $makeModalClass(), 'id' => $id]) }}
-     tabindex="-1" aria-labelledby="{{ $id }}-title" aria-hidden="true"
+     tabindex="-1" {!! $makeAriaLabelledBy() !!} aria-hidden="true"
      @isset($staticBackdrop) data-bs-backdrop="static" data-bs-keyboard="false" @endisset>
 
     <div class="{{ $makeModalDialogClass() }}">
@@ -21,15 +21,17 @@
         @endif
 
         {{-- Modal footer --}}
-        <div class="modal-footer">
-            @isset($footerSlot)
-                {{ $footerSlot }}
-            @else
-                <button type="button" class="{{ $makeCloseButtonClass }}" data-bs-dismiss="modal">
-                    {{ __('adminlte::adminlte.close') }}
-                </button>
-            @endisset
-        </div>
+        @if(! isset($disableFooter))
+            <div class="modal-footer">
+                @isset($footerSlot)
+                    {{ $footerSlot }}
+                @else
+                    <button type="button" class="{{ $makeCloseButtonClass }}" data-bs-dismiss="modal">
+                        {{ __('adminlte::adminlte.close') }}
+                    </button>
+                @endisset
+            </div>
+        @endif
 
     </div>
     </div>

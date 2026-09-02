@@ -31,6 +31,14 @@ The following configuration options are available:
 
   Loads `adminlte-colors-v3.css` instead of `adminlte-colors.css`, which keeps the AdminLTE v3 color names (for example `lightblue` and `maroon`, renamed to `sky` and `pink` in v4). Only has an effect when `assets.extended_colors` is enabled.
 
+- __`assets.palette.primary`__
+
+  Remaps the **primary color** of the whole template to any other color of the active palette. See [Tuning the palette](#tuning-the-palette) below.
+
+- __`assets.palette.contrast`__
+
+  Applies the WCAG AA contrast correction of the palette. See [Tuning the palette](#tuning-the-palette) below.
+
 - __`assets.bootstrap_js`__, __`assets.bootstrap_icons`__, __`assets.overlayscrollbars`__
 
   Set any of them to `false` when you provide that resource on your own (for example through your asset bundling setup).
@@ -107,6 +115,42 @@ The practical consequence:
 > [!Tip]
 > The generated `btn-*` rules assume a **white foreground** on the solid variant, which is the right choice for the saturated colors of both palettes. If you enable the v3 aliases and use a light color such as `yellow` or `lime` on a solid button, add your own `text-dark` class to keep the label readable.
 
+### Tuning the palette
+
+The palette stylesheets provide two attributes on the `<html>` element that this package sets for you. Both **require `assets.extended_colors` to be enabled**, since the attributes only exist inside those stylesheets.
+
+#### Remapping the primary color
+
+```php
+'assets' => [
+    'extended_colors' => true,
+
+    'palette' => [
+        'primary' => 'teal',
+    ],
+],
+```
+
+This emits `data-lte-primary="teal"` on the `<html>` element, which repoints `--bs-primary` and everything derived from it. It is the cheapest way to brand the whole panel: every `btn-primary`, `text-bg-primary`, link and focus ring follows, with no stylesheet of your own.
+
+The accepted values are the colors of the **active palette** plus the Bootstrap theme colors, except `primary` itself. An unknown value is ignored, and the attribute is not emitted at all.
+
+#### The contrast correction
+
+Eight of the eighteen colors of the **v3 palette** miss the WCAG AA contrast ratio of 4.5:1. The stylesheet ships a correction for exactly those, enabled by the `data-lte-contrast="aa"` attribute.
+
+Since this package steers you into that palette through `extended_colors_v3_aliases`, the correction is **applied automatically** whenever the v3 palette is active:
+
+```php
+'palette' => [
+    'contrast' => null,   // Automatic: applied on the v3 palette (the default)
+    // 'contrast' => 'aa',   // Always apply it
+    // 'contrast' => false,  // Never apply it
+],
+```
+
+The correction also feeds the contrast decisions of the components: with it active, the footer link of a [Small Box](/sections/components/widget_components#small-box) and the close button of a themed [Modal](/sections/components/tool_components#modal) switch to their dark variants on the affected colors.
+
 ## Laravel Mix
 
 > [!Important]
@@ -149,11 +193,14 @@ Also, you can change the paths used to lookup for the compiled `JS` and `CSS` fi
 
 - __`laravel_css_path`__
 
-  Path (including file name) to the compiled `CSS` file. This path should be relative to the public folder. Default value is `css/app.css`
+  Path (including file name) to the compiled `CSS` file. This path should be relative to the **public** folder, typically `css/app.css`.
 
 - __`laravel_js_path`__
 
-  Path (including file name) to the compiled `JS` file. This path should be relative to the public folder. Default value is `js/app.js`
+  Path (including file name) to the compiled `JS` file. This path should be relative to the **public** folder, typically `js/app.js`.
+
+> [!Warning]
+> The two options are shared by the Mix and the Vite setups, and the two tools expect different path shapes. The shipped defaults (`resources/css/app.css` and `resources/js/app.js`) are the **Vite** ones, since Vite is the Laravel default. When you set `laravel_asset_bundling => 'mix'`, change both options to their public folder relative form.
 
 ## Laravel Vite
 
@@ -166,11 +213,11 @@ Also, you can change the paths used to lookup for the bundled `JS` and `CSS` fil
 
 - __`laravel_css_path`__
 
-  Path (including file name) to the bundled `CSS` file. This path should be relative to the root folder. Default value is `resources/css/app.css` if the configuration option does not exists.
+  Path (including file name) to the bundled `CSS` file. This path should be relative to the **root** folder. The default value is `resources/css/app.css`.
 
 - __`laravel_js_path`__
 
-  Path (including file name) to the bundled `JS` file. This path should be relative to the root folder. Default value is `resources/js/app.js` if the configuration option does not exists.
+  Path (including file name) to the bundled `JS` file. This path should be relative to the **root** folder. The default value is `resources/js/app.js`.
 
 > [!Note]
 > When you bundle the assets yourself, the package stops emitting the AdminLTE core stylesheet and script, but it still emits the third party resources that are enabled on the [assets](#assets) configuration. Disable `assets.bootstrap_js`, `assets.bootstrap_icons` and `assets.overlayscrollbars` when your bundle already includes them.

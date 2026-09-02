@@ -19,18 +19,18 @@
         @endisset
 
         {{-- Text --}}
-        @isset($text)
+        @if(isset($textSlot) || isset($text))
             <span class="description-text">
                 <span class="{{ $makeTextWrapperClass() }}"
                     @isset($textTooltip) title="{{ $textTooltip }}" style="cursor:help;" @endisset>
                     @if(! empty($url) && $urlTarget === 'text')
-                        <a href="{{ $url }}">{{ $text }}</a>
+                        <a href="{{ $url }}">{{ $textSlot ?? $text }}</a>
                     @else
-                        {{ $text }}
+                        {{ $textSlot ?? $text }}
                     @endif
                 </span>
             </span>
-        @endisset
+        @endif
 
     </div>
 

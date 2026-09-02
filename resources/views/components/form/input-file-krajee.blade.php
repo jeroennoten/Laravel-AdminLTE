@@ -22,7 +22,7 @@ one provided by the mentioned layout. So instead, we define a new layout.
 
     {{-- Krajee file input --}}
     <input type="file" id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
+        {{ $attributes->merge($makeItemAttributes()) }}>
 
     {{-- Error feedback --}}
     @if($isInvalid())

@@ -58,9 +58,18 @@ trait ComponentTestHelpers
 
         $separator = '<!--ADMINLTE_PUSHED_ASSETS-->';
 
+        // A named slot leaves its output buffer open on this direct render
+        // path, so the level is restored once the render is done.
+
+        $obLevel = ob_get_level();
+
         $output = Blade::render(
             "{$template}\n{$separator}\n@stack('js')\n@stack('css')"
         );
+
+        while (ob_get_level() > $obLevel) {
+            ob_end_clean();
+        }
 
         [$markup, $this->pushedAssets] = explode($separator, $output, 2);
 

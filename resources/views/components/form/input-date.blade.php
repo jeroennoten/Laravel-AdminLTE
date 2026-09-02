@@ -11,7 +11,7 @@
     {{-- Input Date --}}
     <input id="{{ $id }}" name="{{ $name }}"
         value="{{ $getOldValue($errorKey, $attributes->get('value')) }}"
-        {{ $attributes->except('value')->merge(['class' => $makeItemClass()]) }}>
+        {{ $attributes->except('value')->merge($makeItemAttributes()) }}>
 
 @overwrite
 

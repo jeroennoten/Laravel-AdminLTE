@@ -10,6 +10,8 @@ Section | Type | Description
 `title` | **main** | To fill the content of the `<title>` tag, to define the title of the document that is shown in the browser page's tab
 `content_header` | **main** | To fill the header element of the page (will be placed above the main content)
 `content` | **main** | To fill all of the main content of the page
+`content_top_area` | misc | To fill the `div.app-content-top-area` element of **AdminLTE v4** (placed between the content header and the main content). Useful for a filter bar or a set of statistic widgets that should span the full content width
+`content_bottom_area` | misc | To fill the `div.app-content-bottom-area` element of **AdminLTE v4** (placed below the main content and above the footer)
 `footer` | **main** | To fill the content of the footer section
 `right_sidebar` | **main** | To fill the content of the right sidebar. On **AdminLTE v4** the right sidebar is a [Bootstrap offcanvas](https://getbootstrap.com/docs/5.3/components/offcanvas/) panel (the v3 _control sidebar_ does not exist anymore)
 `css` | **main** | To add extra style sheets (inside the `<head>` tag)

@@ -28,6 +28,8 @@ id | The table identification (`id`) attribute | string | - | **yes**
 striped | When enabled, a striped effect will be available for the table rows | any | `null` | no
 theme | The table theme, rendered as a Bootstrap 5 `table-{theme}` class (light, dark, primary, secondary, success, info, warning or danger) | string | `null` | no
 with-buttons | When enabled, a set of tool buttons for exporting the data of the table will be available | any | `null` | no
+wrapper-class | Additional classes for the `div.table-responsive` wrapper | string | `null` | no
+wrapper-attributes | Extra attributes for the `div.table-responsive` wrapper, as `key => value` pairs. Use it to put `wire:ignore` on the scroll container of a Livewire app | array | `[]` | no
 with-footer | Enables a footer with header cells. The footer can be fully customized using the [footerCallback](https://datatables.net/reference/option/footerCallback) option | any | `null` | no
 
 The available options for the `config` attribute are those explained on the [plugin documentation](https://datatables.net/reference/option/). You can define each `header` of the `heads` attribute with an inner array, the next properties are available:
@@ -37,7 +39,10 @@ The available options for the `config` attribute are those explained on the [plu
 - `no-export`: to disable data export for the column (useful for columns with buttons or actions).
 - `classes`: to add extra classes for the column title.
 
-All other extra attributes you define will be inserted directly on the underlying `table` element. The whole table is wrapped inside a `div.table-responsive` element.
+All other extra attributes you define will be inserted directly on the underlying `table` element. The whole table is wrapped inside a `div.table-responsive` element, which is reachable through the `wrapper-class` and `wrapper-attributes` options.
+
+> [!Note]
+> The `width:100%` style of the table is a **default**, so a `style` attribute of your own wins over it.
 
 > [!Note]
 > The `head-theme` and `footer-theme` attributes are rendered as the Bootstrap 5 `table-{theme}` class on the `<thead>` / `<tfoot>` elements (the Bootstrap 4 `thead-light` / `thead-dark` classes do not exist anymore).
@@ -194,7 +199,9 @@ disable-animations | Disables the show/hide modal fade animations | any | `null`
 icon | An icon for the modal header (Bootstrap Icons by default) | string | `null` | no
 id | The modal `id` attribute, used to target the modal and show it | string | - | **yes**
 scrollable | Enables a scrollable modal. Use this when the modal content is large | any | `null` | no
-size | The modal size (`sm`, `lg` or `xl`). | string | `null` | no
+size | The modal size: `sm`, `lg`, `xl`, `fullscreen` or a responsive `fullscreen-{breakpoint}-down` value (`sm`, `md`, `lg`, `xl`, `xxl`) | string | `null` | no
+dialog-class | Additional classes for the `div.modal-dialog` element | string | `null` | no
+disable-footer | Renders the modal without a footer | any | `null` | no
 static-backdrop | Enables a static backdrop. The modal will not close when clicking outside it | any | `null` | no
 theme | The modal theme, rendered as a `text-bg-{theme}` class on the modal header: light, dark, primary, secondary, info, success, warning, danger or any color of the AdminLTE extended palette like sky or teal | string | `null` | no
 title | The title for the modal header | string | `null` | no
@@ -205,11 +212,16 @@ Any other attribute you define will be directly inserted into the underlying `di
 The modal also defines the next extra **slot** (the main slot is used for the modal body content):
 - **footerSlot**: Use this slot to customize the modal footer.
 
+Use the `disable-footer` attribute when the modal needs no footer at all. Without it, a footer with a single close button is rendered.
+
+> [!Note]
+> The `aria-labelledby` attribute is only emitted when a `title` is given. Pointing it at an empty heading would declare an empty accessible name, which is worse than declaring none.
+
 > [!Important]
 > The modal is built with the **Bootstrap 5** markup and data attributes: use `data-bs-toggle="modal"` and `data-bs-target="#id"` to open it, and `data-bs-dismiss="modal"` to close it (the Bootstrap 4 `data-toggle`, `data-target` and `data-dismiss` attributes do not work anymore). The close control of the header is a `button.btn-close`, and the `static-backdrop` attribute emits `data-bs-backdrop="static"` together with `data-bs-keyboard="false"`.
 
 > [!Note]
-> Bootstrap 5.3 resolves the color of the `btn-close` control from the active color mode, so when the theme paints a dark header (`primary`, `secondary`, `success`, `danger`, `dark`, `indigo`, `navy`, `midnight`, `slate`, `steel`, `graphite`, `violet`, `fuchsia`, `pink`, `olive` or `teal`) the component adds `data-bs-theme="dark"` to the header, so that the close icon keeps enough contrast. The check runs on the **resolved** color name, so the AdminLTE v3 aliases of those colors (`purple`, `maroon`, `lime`, `blue`, `red`, `green` and `gray-dark`) are covered as well.
+> Bootstrap 5.3 resolves the color of the `btn-close` control from the active color mode, so when the theme paints a **dark header** the component adds `data-bs-theme="dark"` to the header, and the close icon keeps enough contrast. Whether a color is dark is derived from the palette itself: every theme color except `info`, `warning` and `light` (and their v3 aliases `cyan` and `yellow`) paints a light text on a dark background. The [contrast correction](/sections/configuration/other#the-contrast-correction) of the v3 palette is taken into account, so the v3 color aliases are covered too.
 
 > [!Note]
 > Just like the widget components, this component maps the **AdminLTE v3** color names on the fly, so a `theme="lightblue"` value renders `text-bg-sky`. See [About the `theme` Attribute](/sections/components/widget_components#about-the-theme-attribute) for the complete translation table. The literal v3 name (`text-bg-lightblue`) is only emitted when the `assets.extended_colors_v3_aliases` option is enabled, since in that case the old names exist as real CSS classes and no mapping is applied. Remember that any color outside the eight Bootstrap ones also requires `assets.extended_colors` to be enabled.

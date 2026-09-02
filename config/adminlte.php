@@ -189,6 +189,23 @@ return [
 
         'extended_colors_v3_aliases' => false,
 
+        // Palette tuning. Both options are provided by the palette
+        // stylesheets, so they require the extended colors to be enabled.
+        //
+        // The 'primary' option remaps the primary color of the whole template
+        // to any other color of the enabled palette (for example 'teal' or
+        // 'navy'). Set it to null to keep the default blue.
+        //
+        // The 'contrast' option applies the WCAG AA correction of the palette.
+        // Use null to apply it automatically on the v3 palette (where some of
+        // the colors miss the 4.5:1 ratio), 'aa' to force it, or false to
+        // always disable it.
+
+        'palette' => [
+            'primary' => null,
+            'contrast' => null,
+        ],
+
         // The third party resources required by the template. Set any of them
         // to false when you provide the resource on your own (for example,
         // through your Laravel asset bundling setup).
@@ -259,15 +276,22 @@ return [
     */
 
     'color_mode' => [
+        'enabled' => true,
         'default' => 'auto',
         'remember' => true,
         'no_flash_script' => true,
+
+        // Register the color mode routes of the package (the server side dark
+        // mode toggle). Set it to false when your application provides its own
+        // endpoint, or when the color mode is fully client side.
+
+        'routes' => true,
 
         // The color used for the 'theme-color' meta tags. These are used by
         // some browsers to colorize parts of their user interface.
 
         'theme_color' => [
-            'light' => '#007bff',
+            'light' => '#0d6efd',
             'dark' => '#1a1a1a',
         ],
     ],
@@ -307,19 +331,16 @@ return [
     |
     | Here we change the layout of your admin panel.
     |
-    | Note that AdminLTE v4 dropped the boxed layout, so the 'layout_boxed'
-    | option is kept only for backward compatibility and has no effect.
-    |
     | For detailed instructions you can look the layout section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
     |
     */
 
     'layout_topnav' => null,
-    'layout_boxed' => null,
     'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => null,
     'layout_fixed_footer' => null,
+    'layout_compact' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -355,10 +376,13 @@ return [
     'classes_body' => 'bg-body-tertiary',
     'classes_brand' => '',
     'classes_brand_text' => 'fw-light',
+    'classes_wrapper' => '',
     'classes_content_wrapper' => '',
     'classes_footer' => '',
     'classes_content_header' => '',
     'classes_content' => '',
+    'classes_content_top_area' => '',
+    'classes_content_bottom_area' => '',
     'classes_sidebar' => 'bg-body-secondary shadow',
     'classes_sidebar_nav' => '',
     'classes_topnav' => 'bg-body',
@@ -387,12 +411,11 @@ return [
     'sidebar_expand' => 'lg',
     'sidebar_collapse' => false,
     'sidebar_without_hover' => false,
-    'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
-    'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'leave',
     'sidebar_scrollbar_click_scroll' => true,
+    'sidebar_nav_aria_label' => null,
     'sidebar_nav_accordion' => true,
     'sidebar_nav_animation_speed' => 300,
 
@@ -412,7 +435,7 @@ return [
 
     'right_sidebar' => false,
     'right_sidebar_icon' => 'bi bi-gear',
-    'right_sidebar_theme' => 'dark',
+    'right_sidebar_theme' => null,
     'right_sidebar_title' => null,
     'right_sidebar_placement' => 'end',
     'right_sidebar_backdrop' => true,
@@ -463,8 +486,8 @@ return [
     */
 
     'laravel_asset_bundling' => false,
-    'laravel_css_path' => 'css/app.css',
-    'laravel_js_path' => 'js/app.js',
+    'laravel_css_path' => 'resources/css/app.css',
+    'laravel_js_path' => 'resources/js/app.js',
 
     /*
     |--------------------------------------------------------------------------
@@ -483,6 +506,10 @@ return [
         [
             'type' => 'navbar-search',
             'text' => 'search',
+            'topnav_right' => true,
+        ],
+        [
+            'type' => 'darkmode-widget',
             'topnav_right' => true,
         ],
         [

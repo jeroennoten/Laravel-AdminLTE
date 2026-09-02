@@ -1,8 +1,11 @@
 {{-- Table --}}
 
-<div class="table-responsive">
+<div {{ $makeWrapperAttributes()->merge(['class' => $makeWrapperClass()]) }}>
 
-<table id="{{ $id }}" style="width:100%" {{ $attributes->merge(['class' => $makeTableClass()]) }}>
+<table id="{{ $id }}" {{ $attributes->merge([
+    'class' => $makeTableClass(),
+    'style' => 'width:100%',
+]) }}>
 
     {{-- Table head --}}
     <thead @isset($headTheme) class="table-{{ $headTheme }}" @endisset>

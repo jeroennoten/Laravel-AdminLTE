@@ -275,13 +275,33 @@ The **`layout_dark_mode`** option was **removed from the shipped configuration f
     'remember' => true,         // store the visitor choice in the browser localStorage
     'no_flash_script' => true,
     'theme_color' => [
-        'light' => '#007bff',
+        'light' => '#0d6efd',
         'dark' => '#1a1a1a',
     ],
 ],
 ```
 
 With `remember => true` (the default), the AdminLTE v4 color mode plugin persists the choice of the visitor in the **browser `localStorage`**. Pick `remember => false` together with an explicit `'light'` or `'dark'` default when the preference has to be resolved on the **server** instead (for example, persisted per user in your database through the `ReadingDarkModePreference` and `DarkModeWasToggled` events). See [color mode](/sections/configuration/layout_and_styling#color-mode).
+
+### Options Removed from the Shipped Configuration
+
+Three options that AdminLTE v4 cannot honour left the shipped configuration file. Delete them from your published `config/adminlte.php`:
+
+| Option | Replacement |
+| ------ | ----------- |
+| `layout_boxed` | None. AdminLTE v4 has no boxed layout. Still read, but it has no effect. |
+| `sidebar_collapse_auto_size` | `sidebar_expand`. The PushMenu plugin collapses the sidebar on its own below that breakpoint. |
+| `sidebar_collapse_remember_no_transition` | None. The plugin suppresses the transition of the restored state by itself. |
+
+### Changed Defaults
+
+| Option | `3.x` | Laravel-AdminLTE v4 | Why |
+| ------ | ----- | ------------------- | --- |
+| `laravel_css_path` | `css/app.css` | `resources/css/app.css` | The shipped values are the **Vite** ones now, since Vite is the Laravel default. Mix users have to set the public folder relative paths explicitly. |
+| `laravel_js_path` | `js/app.js` | `resources/js/app.js` | Same as above. |
+| `right_sidebar_theme` | `'dark'` | `null` | The AdminLTE v4 right sidebar is a plain Bootstrap offcanvas, so it follows the color mode of the page. |
+| `color_mode.theme_color.light` | `#007bff` | `#0d6efd` | The old value was the Bootstrap 4 blue, which disagreed with the actual primary color of the page. |
+| `menu` | no color mode entry | ships `darkmode-widget` | The color mode selector is the headline feature of AdminLTE v4, and every reference layout shows it in the topbar. |
 
 ### `sidebar_mini` Was Split in Two
 

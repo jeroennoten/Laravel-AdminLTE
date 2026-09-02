@@ -18,7 +18,5 @@ use JeroenNoten\LaravelAdminLte\Http\Controllers\DarkModeController;
 // Dark Mode routes.
 //-----------------------------------------------------------------------------
 
-if (! config('adminlte.disable_darkmode_routes', false)) {
-    Route::post('/darkmode/toggle', [DarkModeController::class, 'toggle'])
-        ->name('darkmode.toggle');
-}
+Route::post('/darkmode/toggle', [DarkModeController::class, 'toggle'])
+    ->name('darkmode.toggle');

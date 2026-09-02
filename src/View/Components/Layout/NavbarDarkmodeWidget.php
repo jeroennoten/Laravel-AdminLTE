@@ -32,6 +32,13 @@ class NavbarDarkmodeWidget extends Component
     public $iconAuto = 'bi bi-circle-half';
 
     /**
+     * The color mode resolved for the current request.
+     *
+     * @var string
+     */
+    protected $colorMode;
+
+    /**
      * The color to use for the icon when dark mode is disabled.
      *
      * @var string
@@ -112,7 +119,7 @@ class NavbarDarkmodeWidget extends Component
      */
     public function makeIconClass()
     {
-        $classes = LayoutHelper::getColorMode() === 'dark'
+        $classes = $this->currentColorMode() === 'dark'
             ? $this->makeIconEnabledClass()
             : $this->makeIconDisabledClass();
 
@@ -150,13 +157,19 @@ class NavbarDarkmodeWidget extends Component
     }
 
     /**
-     * Gets the currently configured color mode.
+     * Gets the currently configured color mode. The resolved mode is kept on
+     * the component, since the view reads it on every entry of the selector
+     * and resolving it may dispatch the 'ReadingDarkModePreference' event.
      *
      * @return string
      */
     public function currentColorMode()
     {
-        return LayoutHelper::getColorMode();
+        if (! isset($this->colorMode)) {
+            $this->colorMode = LayoutHelper::getColorMode();
+        }
+
+        return $this->colorMode;
     }
 
     /**

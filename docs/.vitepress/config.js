@@ -40,6 +40,7 @@ export default {
                     { text: 'Intro & Categories', link: '/sections/components/components_categories' },
                     { text: 'Basic form components', link: '/sections/components/basic_forms_components' },
                     { text: 'Advanced form components', link: '/sections/components/advanced_forms_components' },
+                    { text: 'Layout components', link: '/sections/components/layout_components' },
                     { text: 'Tool components', link: '/sections/components/tool_components' },
                     { text: 'Widget components', link: '/sections/components/widget_components' },
                     { text: 'Components customization', link: '/sections/components/components_customization' }

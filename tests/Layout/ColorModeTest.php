@@ -244,4 +244,54 @@ class ColorModeTest extends TestCase
             ColorMode::makeHtmlAttributes()
         );
     }
+
+    public function testTheColorModePluginIsEnabledByDefault()
+    {
+        config(['adminlte' => []]);
+
+        $this->assertTrue(ColorMode::isEnabled());
+    }
+
+    public function testTheColorModePluginCanBeOptedOut()
+    {
+        config([
+            'adminlte.color_mode.enabled' => false,
+            'adminlte.color_mode.default' => 'dark',
+        ]);
+
+        $this->assertFalse(ColorMode::isEnabled());
+
+        $attrs = ColorMode::makeHtmlAttributes();
+
+        $this->assertContains('data-bs-theme="dark"', $attrs);
+        $this->assertContains('data-lte-color-mode="off"', $attrs);
+    }
+
+    public function testTheOptedOutAutomaticModeFallsBackToLight()
+    {
+        // The automatic mode is resolved by the plugin, so it cannot survive
+        // the opt out.
+
+        config([
+            'adminlte.color_mode.enabled' => false,
+            'adminlte.color_mode.default' => 'auto',
+        ]);
+
+        $this->assertContains(
+            'data-bs-theme="light"',
+            ColorMode::makeHtmlAttributes()
+        );
+    }
+
+    public function testOnlyAnExplicitFalseOptsOut()
+    {
+        foreach ([true, null, 1, 'yes'] as $value) {
+            config(['adminlte.color_mode.enabled' => $value]);
+
+            $this->assertTrue(
+                ColorMode::isEnabled(),
+                var_export($value, true)
+            );
+        }
+    }
 }

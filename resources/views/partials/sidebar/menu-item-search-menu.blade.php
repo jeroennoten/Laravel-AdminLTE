@@ -6,7 +6,7 @@
     $searchTarget = '#'.($sidebarMenuId ?? 'adminlte-sidebar-menu');
 
     // The message to display when the filter matches no menu items.
-    $searchEmptyText = $item['empty_text'] ?? 'No matching pages.';
+    $searchEmptyText = $item['empty_text'] ?? __('adminlte::adminlte.no_matching_pages');
 @endphp
 
 <div class="sidebar-search" role="search">

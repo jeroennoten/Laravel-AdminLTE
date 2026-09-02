@@ -2,6 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\Helpers;
 
+use JeroenNoten\LaravelAdminLte\Layout\Palette;
+
 class UtilsHelper
 {
     /**
@@ -27,7 +29,7 @@ class UtilsHelper
      */
     public static function hasBottomMarginClass($classes)
     {
-        return (bool) preg_match('/(^|\s)m[by]-(auto|[0-5])(\s|$)/', (string) $classes);
+        return (bool) preg_match('/(^|\s)m[by]-((sm|md|lg|xl|xxl)-)?(auto|[0-5])(\s|$)/', (string) $classes);
     }
 
     /**
@@ -52,6 +54,49 @@ class UtilsHelper
         'lightblue', 'lime', 'maroon', 'navy', 'olive', 'orange', 'pink',
         'purple', 'red', 'teal', 'yellow',
     ];
+
+    /**
+     * The colors whose 'text-bg-*' utility paints a dark text, since their
+     * background is light enough. Note the v3 names are part of the set, since
+     * they are real colors when the v3 alias stylesheet is loaded.
+     *
+     * @var array
+     */
+    protected static $darkTextColors = [
+        'info', 'warning', 'light', 'cyan', 'yellow',
+    ];
+
+    /**
+     * The additional colors of the v3 palette that get a dark text once the
+     * WCAG AA contrast correction is applied over that palette.
+     *
+     * @var array
+     */
+    protected static $darkTextColorsOnContrastAa = [
+        'blue', 'fuchsia', 'green', 'lightblue', 'olive', 'pink', 'teal',
+    ];
+
+    /**
+     * Checks whether a color paints a dark text over its own background. It's
+     * the predicate behind the contrast of any element placed over a themed
+     * background (links, close buttons, ...).
+     *
+     * @param  string|null  $color  The theme color name
+     * @return bool
+     */
+    public static function hasDarkText($color)
+    {
+        if (empty($color) || ! is_string($color)) {
+            return false;
+        }
+
+        if (in_array($color, self::$darkTextColors, true)) {
+            return true;
+        }
+
+        return Palette::getContrast() === 'aa'
+            && in_array($color, self::$darkTextColorsOnContrastAa, true);
+    }
 
     /**
      * Gets the set of colors provided by the enabled extended palette. It

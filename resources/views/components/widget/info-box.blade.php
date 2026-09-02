@@ -11,32 +11,32 @@
     <div class="info-box-content">
 
         {{-- Box title --}}
-        @isset($title)
+        @if(isset($titleSlot) || isset($title))
             <span class="info-box-text">
 
                 @if(isset($url) && $urlTarget == 'title')
                     <a class="info-box-url link-underline link-underline-opacity-25 link-underline-opacity-100-hover text-reset"
-                        href="{{ $url }}">{{ $title }}</a>
+                        href="{{ $url }}">{{ $titleSlot ?? $title }}</a>
                 @else
-                    {{ $title }}
+                    {{ $titleSlot ?? $title }}
                 @endif
 
             </span>
-        @endisset
+        @endif
 
         {{-- Box short text --}}
-        @isset($text)
+        @if(isset($textSlot) || isset($text))
             <span class="info-box-number">
 
                 @if(isset($url) && $urlTarget == 'text')
                     <a class="info-box-url link-underline link-underline-opacity-25 link-underline-opacity-100-hover text-reset"
-                        href="{{ $url }}">{{ $text }}</a>
+                        href="{{ $url }}">{{ $textSlot ?? $text }}</a>
                 @else
-                    {{ $text }}
+                    {{ $textSlot ?? $text }}
                 @endif
 
             </span>
-        @endisset
+        @endif
 
         {{-- Box progress bar --}}
         @if(isset($progress) && isset($attributes['id']))
@@ -50,6 +50,16 @@
         @isset($description)
             <span class="progress-description">{{ $description }}</span>
         @endisset
+
+        {{-- Box extra line --}}
+        @if(isset($moreSlot) || isset($more))
+            <span class="info-box-more">{{ $moreSlot ?? $more }}</span>
+        @endif
+
+        {{-- Box free content --}}
+        @if(! $slot->isEmpty())
+            {{ $slot }}
+        @endif
 
     </div>
 
@@ -87,23 +97,28 @@
             }
 
             if (data.title) {
-                t.querySelector('.info-box-text').innerHTML = data.title;
+                const title = t.querySelector('.info-box-text');
+                if (title) { title.textContent = data.title; }
             }
 
             if (data.text) {
-                t.querySelector('.info-box-number').innerHTML = data.text;
+                const text = t.querySelector('.info-box-number');
+                if (text) { text.textContent = data.text; }
             }
 
             if (data.icon) {
-                t.querySelector('.info-box-icon i').className = data.icon;
+                const icon = t.querySelector('.info-box-icon i');
+                if (icon) { icon.className = data.icon; }
             }
 
             if (data.description) {
-                t.querySelector('.progress-description').innerHTML = data.description;
+                const desc = t.querySelector('.progress-description');
+                if (desc) { desc.textContent = data.description; }
             }
 
             if (data.url) {
-                t.querySelector('.info-box-url').href = data.url;
+                const url = t.querySelector('.info-box-url');
+                if (url) { url.href = data.url; }
             }
 
             if (data.progress) {

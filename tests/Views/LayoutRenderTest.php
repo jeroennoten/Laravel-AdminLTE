@@ -95,11 +95,13 @@ class LayoutRenderTest extends TestCase
         $html = $this->renderPage();
         $this->assertMatchesRegularExpression('/<html[^>]*data-bs-theme="dark"/', $html);
 
-        // The no flash script can be disabled.
+        // The no flash script can be disabled. Note the color mode widget
+        // holds its own 'data-lte-theme-icon' attributes, so the check is done
+        // over the storage key read by the script.
 
         config(['adminlte.color_mode.no_flash_script' => false]);
         $html = $this->renderPage();
-        $this->assertStringNotContainsString('lte-theme', $html);
+        $this->assertStringNotContainsString("'lte-theme'", $html);
     }
 
     public function testRenderTopnavUsesOneContainer()
@@ -400,5 +402,177 @@ class LayoutRenderTest extends TestCase
             $this->assertStringNotContainsString('input-group-prepend', $html);
             $this->assertStringNotContainsString('fas fa-', $html);
         }
+    }
+
+    public function testRenderWithTheCompactMode()
+    {
+        config(['adminlte.layout_compact' => true]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('app-wrapper compact-mode', $html);
+    }
+
+    public function testRenderWithTheConfiguredWrapperClasses()
+    {
+        config(['adminlte.classes_wrapper' => 'my-wrapper-cls']);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('app-wrapper my-wrapper-cls', $html);
+    }
+
+    public function testRenderWithTheContentAreas()
+    {
+        // Without the sections, the areas are not part of the layout.
+
+        $html = $this->renderPage();
+
+        $this->assertStringNotContainsString('app-content-top-area', $html);
+        $this->assertStringNotContainsString('app-content-bottom-area', $html);
+
+        // The areas are rendered when their section is available.
+
+        View::startSection('content_top_area');
+        echo 'THE-TOP-AREA';
+        View::stopSection();
+
+        View::startSection('content_bottom_area');
+        echo 'THE-BOTTOM-AREA';
+        View::stopSection();
+
+        $html = View::make('adminlte::page')->render();
+
+        $this->assertStringContainsString('app-content-top-area', $html);
+        $this->assertStringContainsString('THE-TOP-AREA', $html);
+        $this->assertStringContainsString('app-content-bottom-area', $html);
+        $this->assertStringContainsString('THE-BOTTOM-AREA', $html);
+
+        View::flushSections();
+    }
+
+    public function testTheContentAreasUseTheConfiguredContainers()
+    {
+        config([
+            'adminlte.classes_content_top_area' => 'my-top-cls',
+            'adminlte.classes_content_bottom_area' => 'my-bottom-cls',
+        ]);
+
+        View::startSection('content_top_area');
+        echo 'top';
+        View::stopSection();
+
+        View::startSection('content_bottom_area');
+        echo 'bottom';
+        View::stopSection();
+
+        $html = View::make('adminlte::page')->render();
+
+        $this->assertStringContainsString('my-top-cls', $html);
+        $this->assertStringContainsString('my-bottom-cls', $html);
+
+        View::flushSections();
+    }
+
+    public function testTheTopAreaProvidesTheContentSpacing()
+    {
+        // Without a content header the spacing comes from the content, but the
+        // top area provides it on its own.
+
+        $html = $this->renderPage();
+        $this->assertMatchesRegularExpression(
+            '/<div class="app-content\s+pt-3\s*"/',
+            $html
+        );
+
+        View::startSection('content_top_area');
+        echo 'top';
+        View::stopSection();
+
+        $html = View::make('adminlte::page')->render();
+        $this->assertDoesNotMatchRegularExpression(
+            '/<div class="app-content\s+pt-3/',
+            $html
+        );
+
+        View::flushSections();
+    }
+
+    public function testRenderWithThePaletteAttributes()
+    {
+        config([
+            'adminlte.assets.extended_colors' => true,
+            'adminlte.assets.palette.primary' => 'teal',
+        ]);
+
+        $html = $this->renderPage();
+
+        $this->assertMatchesRegularExpression(
+            '/<html[^>]*data-lte-primary="teal"/',
+            $html
+        );
+    }
+
+    public function testRenderTheLocalizedSkipLinks()
+    {
+        // The AdminLTE accessibility script injects an English container when
+        // the document has none, so the package emits a localized one.
+
+        $html = $this->renderPage();
+
+        $this->assertEquals(1, substr_count($html, 'class="skip-links"'));
+        $this->assertStringContainsString('href="#main"', $html);
+        $this->assertStringContainsString('href="#navigation"', $html);
+        $this->assertStringContainsString(
+            __('adminlte::adminlte.skip_to_content'),
+            $html
+        );
+    }
+
+    public function testTheSkipLinksPrecedeTheWrapper()
+    {
+        $html = $this->renderPage();
+
+        $this->assertLessThan(
+            strpos($html, 'app-wrapper'),
+            strpos($html, 'class="skip-links"')
+        );
+    }
+
+    public function testTheSkipLinksFollowTheApplicationLocale()
+    {
+        app()->setLocale('de');
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString(
+            __('adminlte::adminlte.skip_to_content'),
+            $html
+        );
+        $this->assertStringNotContainsString('Skip to main content', $html);
+
+        app()->setLocale('en');
+    }
+
+    public function testTheSidebarNavigationLabelIsLocalized()
+    {
+        app()->setLocale('de');
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString(
+            'aria-label="'.__('adminlte::adminlte.main_navigation').'"',
+            $html
+        );
+
+        // The configuration option wins over the translation.
+
+        config(['adminlte.sidebar_nav_aria_label' => 'My navigation']);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('aria-label="My navigation"', $html);
+
+        app()->setLocale('en');
     }
 }

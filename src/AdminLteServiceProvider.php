@@ -30,6 +30,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @var array
      */
     protected $layoutComponents = [
+        'content-header' => Layout\ContentHeader::class,
         'navbar-darkmode-widget' => Layout\NavbarDarkmodeWidget::class,
         'navbar-notification' => Layout\NavbarNotification::class,
     ];
@@ -81,7 +82,14 @@ class AdminLteServiceProvider extends BaseServiceProvider
         'profile-row-item' => Widget\ProfileRowItem::class,
         'profile-widget' => Widget\ProfileWidget::class,
         'progress' => Widget\Progress::class,
+        'progress-group' => Widget\ProgressGroup::class,
+        'ribbon' => Widget\Ribbon::class,
         'small-box' => Widget\SmallBox::class,
+        'timeline' => Widget\Timeline::class,
+        'timeline-item' => Widget\TimelineItem::class,
+        'timeline-label' => Widget\TimelineLabel::class,
+        'toast' => Widget\Toast::class,
+        'user-block' => Widget\UserBlock::class,
     ];
 
     /**
@@ -113,6 +121,37 @@ class AdminLteServiceProvider extends BaseServiceProvider
         $this->registerViewComposers();
         $this->loadComponents();
         $this->loadRoutes();
+        $this->registerPublishGroups();
+    }
+
+    /**
+     * Register the publish groups of the package. Note the 'adminlte:install'
+     * command is the richer way to install the package resources, these groups
+     * only provide the vendor:publish workflow expected on a Laravel package.
+     *
+     * @return void
+     */
+    protected function registerPublishGroups()
+    {
+        if (! $this->app->runningInConsole()) {
+            return;
+        }
+
+        $this->publishes([
+            $this->packagePath('config/adminlte.php') => config_path('adminlte.php'),
+        ], 'adminlte-config');
+
+        $this->publishes([
+            $this->packagePath('resources/views') => resource_path('views/vendor/adminlte'),
+        ], 'adminlte-views');
+
+        $this->publishes([
+            $this->packagePath('resources/lang') => lang_path('vendor/adminlte'),
+        ], 'adminlte-lang');
+
+        $this->publishes([
+            base_path('vendor/almasaeed2010/adminlte/dist') => public_path('vendor/adminlte/dist'),
+        ], 'adminlte-assets');
     }
 
     /**
@@ -120,7 +159,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    private function loadViews()
+    protected function loadViews()
     {
         $viewsPath = $this->packagePath('resources/views');
         $this->loadViewsFrom($viewsPath, $this->pkgPrefix);
@@ -131,7 +170,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    private function loadTranslations()
+    protected function loadTranslations()
     {
         $transPath = $this->packagePath('resources/lang');
         $this->loadTranslationsFrom($transPath, $this->pkgPrefix);
@@ -142,7 +181,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    private function loadConfig()
+    protected function loadConfig()
     {
         $configPath = $this->packagePath('config/adminlte.php');
         $this->mergeConfigFrom($configPath, $this->pkgPrefix);
@@ -153,7 +192,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    private function registerCommands()
+    protected function registerCommands()
     {
         if ($this->app->runningInConsole()) {
             $this->commands([
@@ -174,7 +213,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    private function registerViewComposers()
+    protected function registerViewComposers()
     {
         // Bind the AdminLte singleton instance into each adminlte page view.
 
@@ -188,7 +227,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    private function loadComponents()
+    protected function loadComponents()
     {
         // Load all the blade-x components.
 
@@ -207,8 +246,17 @@ class AdminLteServiceProvider extends BaseServiceProvider
      *
      * @return void
      */
-    private function loadRoutes()
+    protected function loadRoutes()
     {
+        // The check belongs here and not inside the route file, otherwise the
+        // 'route:cache' command would freeze the current value of the option
+        // into the compiled routes.
+
+        if (config('adminlte.color_mode.routes', true) === false
+            || config('adminlte.disable_darkmode_routes', false) === true) {
+            return;
+        }
+
         $routesCfg = [
             'as' => "{$this->pkgPrefix}.",
             'prefix' => $this->pkgPrefix,
@@ -227,7 +275,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
      * @param  string  $path  The relative path to the resource
      * @return string
      */
-    private function packagePath($path)
+    protected function packagePath($path)
     {
         return __DIR__."/../$path";
     }

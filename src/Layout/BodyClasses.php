@@ -49,7 +49,7 @@ class BodyClasses
 
         // The fixed sidebar is not compatible with the topnav layout.
 
-        if (! Layout::isTopnavEnabled() && config('adminlte.layout_fixed_sidebar', false)) {
+        if (! Layout::isTopnavEnabled() && config('adminlte.layout_fixed_sidebar', true)) {
             $classes[] = Tokens::LAYOUT_FIXED;
         }
 

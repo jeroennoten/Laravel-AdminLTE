@@ -114,6 +114,13 @@ class ProfileWidget extends Component
     {
         $classes = ['card'];
 
+        // The AdminLTE v4 stylesheet gives the cards no bottom margin, so the
+        // widget carries the same default as the card component.
+
+        if (! UtilsHelper::hasBottomMarginClass($this->attributes?->get('class'))) {
+            $classes[] = 'mb-4';
+        }
+
         if ($this->layoutType === 'modern') {
             $classes[] = 'widget-user';
         } elseif ($this->layoutType === 'classic') {
