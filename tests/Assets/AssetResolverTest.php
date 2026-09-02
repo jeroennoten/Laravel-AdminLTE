@@ -357,4 +357,47 @@ class AssetResolverTest extends TestCase
             AssetResolver::resolve('adminlte_css')
         );
     }
+
+    public function testATrimmedConfigStillResolvesTheCoreAssets()
+    {
+        // A published configuration that predates a key, or one trimmed by
+        // hand, used to resolve to null and the layout rendered without the
+        // AdminLTE stylesheet and script, without a word. The shallow
+        // 'mergeConfigFrom' cannot cover it, and it is skipped altogether
+        // once the configuration is cached.
+
+        config(['adminlte.assets' => ['mode' => 'local']]);
+
+        $this->assertIsString(AssetResolver::resolve('adminlte_css'));
+        $this->assertIsString(AssetResolver::resolve('adminlte_js'));
+
+        config(['adminlte.assets' => ['mode' => 'cdn']]);
+
+        $this->assertIsString(AssetResolver::resolve('adminlte_css'));
+        $this->assertIsString(AssetResolver::resolve('adminlte_js'));
+    }
+
+    public function testAnExplicitNullStillOptsOutOfAnAsset()
+    {
+        config(['adminlte.assets' => [
+            'mode' => 'local',
+            'local' => ['adminlte_css' => null],
+            'cdn' => ['adminlte_css' => null],
+        ]]);
+
+        $this->assertNull(AssetResolver::resolve('adminlte_css'));
+    }
+
+    public function testAConfiguredLocationWinsOverTheShippedOne()
+    {
+        config(['adminlte.assets' => [
+            'mode' => 'cdn',
+            'cdn' => ['adminlte_css' => 'https://my.cdn.test/x.css'],
+        ]]);
+
+        $this->assertEquals(
+            'https://my.cdn.test/x.css',
+            AssetResolver::resolve('adminlte_css')
+        );
+    }
 }

@@ -6,6 +6,11 @@ These components are classified under the **Layout** category and represents the
 | [Navbar Dropdown](#navbar-dropdown)
 | [Navbar Dropdown Item](#navbar-dropdown-item)
 | [Navbar Custom Menu](#navbar-custom-menu)
+| [Navbar Notification](/sections/configuration/special_menu_items#navbar-notification)
+| [Navbar Darkmode Widget](/sections/configuration/special_menu_items#navbar-darkmode-widget)
+
+> [!Note]
+> The **Navbar Notification** (`<x-adminlte-navbar-notification>`) and the **Navbar Darkmode Widget** (`<x-adminlte-navbar-darkmode-widget>`) also belong to this category, but they are normally placed through the `menu` configuration instead of by hand, so they are documented on the [special menu items](/sections/configuration/special_menu_items) page.
 
 # Content Header
 

@@ -21,7 +21,7 @@ class AdminLteRemoveCommand extends Command
      * @var string
      */
     protected $signature = 'adminlte:remove
-        {resource* : The resource to uninstall: assets, config, translations, auth_views, auth_routes, main_views or components}
+        {resource* : The resource to uninstall: assets, vendor_assets, config, translations, auth_views, auth_routes, main_views, components or error_views}
         {--force : To force the uninstall procedure without warnings alerts}
         {--interactive : To allow the uninstall process guide you through it}';
 

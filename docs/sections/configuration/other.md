@@ -1,6 +1,7 @@
 | Other Configuration
 | -------------------
 | [Assets](#assets)
+| [CSS Variables](#css-variables)
 | [Laravel Mix](#laravel-mix)
 | [Laravel Vite](#laravel-vite)
 | [Livewire](#livewire)
@@ -169,7 +170,7 @@ The AdminLTE v4 theming is driven by the **Bootstrap 5.3 and AdminLTE custom pro
 // The sidebar properties need their own block, see below.
 'css_variables_sidebar' => [
     '--lte-sidebar-color' => 'rgba(255, 255, 255, .8)',
-    '--lte-sidebar-active-color' => '#fff',
+    '--lte-sidebar-menu-active-color' => '#fff',
 ],
 ```
 
@@ -189,7 +190,13 @@ The AdminLTE v4 theming is driven by the **Bootstrap 5.3 and AdminLTE custom pro
   [data-bs-theme=dark] .app-sidebar { --lte-sidebar-color: #c2c7d0; ... }
   ```
 
-  That rule is more specific than `:root`, and the sidebar carries `data-bs-theme` by default (see the `sidebar_theme` option), so a `--lte-sidebar-color` placed in `css_variables` would be **silently ignored**. The values of this option are emitted as `[data-bs-theme] .app-sidebar, .app-sidebar`, which matches that specificity and comes later on the document, so it wins in both color modes.
+  That rule is more specific than `:root`, and the sidebar carries `data-bs-theme` by default (see the `sidebar_theme` option), so a `--lte-sidebar-color` placed in `css_variables` would be **silently ignored**. The values of this option are emitted as `[data-bs-theme] .app-sidebar, [data-bs-theme].app-sidebar, .app-sidebar`, which matches that specificity in both of the shapes AdminLTE uses, and comes later on the document, so it wins in both color modes.
+
+> [!Warning]
+> **These options are not color-mode aware.** A value you set here applies to the **light and the dark mode alike**, because the block is emitted after the AdminLTE dark tokens and wins over them. Setting `'--bs-body-bg' => '#fbfbfe'` therefore gives you a white body in dark mode too. When a property has to differ per mode, declare it in a stylesheet of your own under `[data-bs-theme="dark"]` instead, and keep only the mode-independent values here (the border radius, the font stack, the spacing).
+
+> [!Note]
+> Not every `--lte-*` property in the stylesheet is actually consumed. `--lte-sidebar-active-color`, for example, is declared but never read — the active sidebar link is painted by `--lte-sidebar-menu-active-color`. And the two search widgets (`.navbar-search`, `.sidebar-search`) declare their `--lte-search-field-*` properties **on the element itself**, which no ancestor scope can override; those need a stylesheet of your own.
 
 > [!Tip]
 > To repoint the **primary color** of the whole template, prefer [`assets.palette.primary`](#tuning-the-palette): it uses the AdminLTE `data-lte-primary` attribute and recomputes every derived shade, while overriding `--bs-primary` by hand only changes the base color. Use `css_variables` for the properties the palette does not cover, such as the border radius, the font stack or the sidebar colors.

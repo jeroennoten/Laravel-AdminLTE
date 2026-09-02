@@ -1163,7 +1163,7 @@ class FormComponentsTest extends TestCase
         );
 
         $this->assertStringContainsString(
-            '<div id="slider-slider" class="adminlte-slider flex-fill align-self-center">',
+            '<div id="slider-slider" class="adminlte-slider flex-fill align-self-center" >',
             $html
         );
 
@@ -2246,5 +2246,22 @@ class FormComponentsTest extends TestCase
 
         $this->assertStringContainsString('Save', $html);
         $this->assertStringContainsString('<span class="badge">3</span>', $html);
+    }
+
+    public function testTheSliderAttributesAreSeparatedFromTheClass()
+    {
+        // The attribute bag carries no leading space of its own, so without
+        // one the markup collapses into class="…"wire:ignore="".
+
+        $html = $this->renderComponent(
+            '<x-adminlte-input-slider name="fname" id="fid"
+                :slider-attributes="[\'wire:ignore\' => \'\']"/>'
+        );
+
+        $this->assertStringNotContainsString('"wire:ignore', $html);
+        $this->assertMatchesRegularExpression(
+            '/class="adminlte-slider[^"]*"\s+wire:ignore/',
+            $html
+        );
     }
 }

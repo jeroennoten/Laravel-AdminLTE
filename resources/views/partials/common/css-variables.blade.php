@@ -44,7 +44,7 @@
     // a color mode selector, which beats any ':root' declaration. So, the
     // sidebar block matches that specificity and comes later on the document.
 
-    $cssVarsSidebarScope = '[data-bs-theme] .app-sidebar, .app-sidebar';
+    $cssVarsSidebarScope = '[data-bs-theme] .app-sidebar, [data-bs-theme].app-sidebar, .app-sidebar';
 @endphp
 
 @if(! empty($cssVars) || ! empty($cssVarsSidebar))

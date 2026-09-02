@@ -24,7 +24,7 @@ class BodyClassesTest extends TestCase
         // the fixed sidebar is part of them, since it is the shipped default.
 
         $this->assertEquals(
-            ['layout-fixed', 'sidebar-expand-lg', 'sidebar-mini'],
+            ['layout-fixed', 'sidebar-expand-lg', 'sidebar-mini', 'bg-body-tertiary'],
             BodyClasses::make()
         );
     }
@@ -235,5 +235,37 @@ class BodyClassesTest extends TestCase
         );
 
         $this->assertEquals($classes, array_unique($classes));
+    }
+
+    public function testMakeWithTheCompactMode()
+    {
+        // Two AdminLTE rules compound the token with 'sidebar-mini' and
+        // 'sidebar-collapse' on a single element, so it has to share the body
+        // with them, otherwise the collapsed compact rail never applies.
+
+        config([
+            'adminlte.layout_compact' => true,
+            'adminlte.sidebar_mini' => true,
+            'adminlte.sidebar_collapse' => true,
+        ]);
+
+        $classes = BodyClasses::make();
+
+        $this->assertContains('compact-mode', $classes);
+        $this->assertContains('sidebar-mini', $classes);
+        $this->assertContains('sidebar-collapse', $classes);
+    }
+
+    public function testTheCompactModeRequiresAnExplicitTrue()
+    {
+        foreach ([false, null, 0, '', 'yes', 1] as $value) {
+            config(['adminlte.layout_compact' => $value]);
+
+            $this->assertNotContains(
+                'compact-mode',
+                BodyClasses::make(),
+                var_export($value, true)
+            );
+        }
     }
 }

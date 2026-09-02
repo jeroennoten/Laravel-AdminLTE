@@ -542,13 +542,16 @@ The `Select2` entry is already present on the `plugins` section of the configura
                 'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.1.0-rc.0/css/select2.min.css',
             ],
 
-            // The AdminLTE v4 compatibility theme for Select2. Replace it
-            // by the 'adminlte-select2.rtl.min.css' file on RTL mode.
+            // The AdminLTE v4 compatibility theme for Select2. The 'rtl' key
+            // replaces the location when the RTL mode is active, and the
+            // '{version}' placeholder resolves to the installed AdminLTE
+            // version.
 
             [
                 'type' => 'css',
                 'asset' => false,
-                'location' => '//cdn.jsdelivr.net/npm/admin-lte@4.8.5/dist/css/adminlte-select2.min.css',
+                'location' => '//cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-select2.min.css',
+                'rtl' => '//cdn.jsdelivr.net/npm/admin-lte@{version}/dist/css/adminlte-select2.rtl.min.css',
             ],
         ],
     ],

@@ -1,4 +1,4 @@
-At the moment, translations for **26 locales** are available out of the box: `ar`, `bn`, `ca`, `de`, `en`, `es`, `fa`, `fr`, `hr`, `hu`, `id`, `it`, `ja`, `lo`, `nl`, `pl`, `pt-br`, `pt-pt`, `ru`, `sk`, `sr`, `tr`, `uk`, `vi`, `zh-CN` (plus the `la` alias described below). Each of them ships the three files the package uses: `adminlte.php` for the layout and the components, `menu.php` for the example menu, and `iframe.php` for the iframe mode. You just need to specify the `locale` configuration option in `config/app.php` file of your Laravel project. The translation files are published by default when installing this package, however if that's not the case, you can publish the language files with the next command:
+At the moment, translations for **25 locales** are available out of the box: `ar`, `bn`, `ca`, `de`, `en`, `es`, `fa`, `fr`, `hr`, `hu`, `id`, `it`, `ja`, `lo`, `nl`, `pl`, `pt-br`, `pt-pt`, `ru`, `sk`, `sr`, `tr`, `uk`, `vi`, `zh-CN` (plus the `la` alias described below, which makes 26 folders). Each of them ships the three files the package uses: `adminlte.php` for the layout and the components, `menu.php` for the example menu, and `iframe.php` for the iframe mode. You just need to specify the `locale` configuration option in `config/app.php` file of your Laravel project. The translation files are published by default when installing this package, however if that's not the case, you can publish the language files with the next command:
 
 ```sh
 php artisan adminlte:install --only=translations
@@ -30,7 +30,7 @@ Key | Used by
 
 **AdminLTE v4** injects a set of skip links at the top of the document, with hardcoded English text. The package emits its own **localized** container instead, which suppresses that injection. The links are visually hidden until they receive the keyboard focus, and they jump to the main content and to the navigation.
 
-When you publish the views, keep that container as the first child of the `body` element, otherwise the AdminLTE script takes over again and the links revert to English.
+When you publish the views, keep that `.skip-links` container in the document: the AdminLTE script only skips its own injection when an element with that class already exists. Keep it as the first child of the `body` element too, so it is the first thing the keyboard focus reaches.
 
 ## Menu Translations
 

@@ -24,27 +24,15 @@ class WrapperClassesTest extends TestCase
         $this->assertEquals('app-wrapper', LayoutHelper::makeWrapperClasses());
     }
 
-    public function testMakeWithTheCompactMode()
+    public function testTheCompactModeIsNotAWrapperClass()
     {
+        // Two AdminLTE rules compound 'compact-mode' with the sidebar tokens
+        // on a single element, and those live on the body, so the class
+        // belongs there. See BodyClassesTest for its coverage.
+
         config(['adminlte.layout_compact' => true]);
 
-        $this->assertEquals(
-            ['app-wrapper', 'compact-mode'],
-            Layout::wrapperClasses()
-        );
-    }
-
-    public function testTheCompactModeRequiresAnExplicitTrue()
-    {
-        foreach ([false, null, 0, '', 'yes', 1] as $value) {
-            config(['adminlte.layout_compact' => $value]);
-
-            $this->assertNotContains(
-                'compact-mode',
-                Layout::wrapperClasses(),
-                var_export($value, true)
-            );
-        }
+        $this->assertEquals(['app-wrapper'], Layout::wrapperClasses());
     }
 
     public function testMakeWithTheConfiguredClasses()
@@ -98,7 +86,7 @@ class WrapperClassesTest extends TestCase
         ]);
 
         $this->assertEquals(
-            'app-wrapper compact-mode my-cls',
+            'app-wrapper my-cls',
             LayoutHelper::makeWrapperClasses()
         );
     }

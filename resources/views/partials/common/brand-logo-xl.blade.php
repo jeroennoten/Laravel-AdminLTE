@@ -11,7 +11,7 @@
 
     $logoImg = asset(config('adminlte.logo_img', 'vendor/adminlte/dist/assets/img/AdminLTELogo.png'));
     $logoImgXl = asset(config('adminlte.logo_img_xl'));
-    $logoImgAlt = config('adminlte.logo_img_alt', 'AdminLTE');
+    $logoImgAlt = config('adminlte.logo_img_alt', 'Admin Logo');
     $brandClass = config('adminlte.classes_brand', '');
 
     // On AdminLTE v4 the logo switch places both images absolutely, and the
@@ -38,7 +38,7 @@
     );
 
     $logoImgXlClass = $sizeClass(
-        config('adminlte.logo_img_xl_class', 'brand-image-xs'), 'brand-image-xs'
+        config('adminlte.logo_img_xl_class', 'brand-image-xs opacity-75'), 'brand-image-xs'
     );
 @endphp
 

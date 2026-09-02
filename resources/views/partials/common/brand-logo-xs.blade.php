@@ -10,7 +10,7 @@
     }
 
     $logoImg = asset(config('adminlte.logo_img', 'vendor/adminlte/dist/assets/img/AdminLTELogo.png'));
-    $logoImgAlt = config('adminlte.logo_img_alt', 'AdminLTE');
+    $logoImgAlt = config('adminlte.logo_img_alt', 'Admin Logo');
     $logoImgClass = config('adminlte.logo_img_class', 'brand-image opacity-75 shadow');
     $logoText = config('adminlte.logo', '<b>Admin</b>LTE');
     $brandClass = config('adminlte.classes_brand', '');

@@ -219,9 +219,11 @@ class SidebarTest extends TestCase
         );
     }
 
-    public function testMakeNavClassesWithTheStyleVariants()
+    public function testTheStyleVariantsAreBodyClasses()
     {
-        config(['adminlte' => []]);
+        // AdminLTE compounds the variants with the sidebar body tokens on a
+        // single element and then reaches the sidebar as a descendant, so the
+        // variants belong to the body and not to the menu element.
 
         $variants = [
             'sidebar_nav_compact' => 'nav-compact',
@@ -230,23 +232,18 @@ class SidebarTest extends TestCase
         ];
 
         foreach ($variants as $option => $class) {
-            config(["adminlte.{$option}" => true]);
+            config(['adminlte' => [$option => true]]);
 
-            $this->assertEquals(
-                ['nav', 'sidebar-menu', 'flex-column', $class],
-                Sidebar::makeNavClasses()
-            );
+            $this->assertContains($class, Sidebar::makeBodyClasses(), $class);
+            $this->assertNotContains($class, Sidebar::makeNavClasses(), $class);
 
-            config(["adminlte.{$option}" => false]);
+            config(['adminlte' => [$option => false]]);
 
-            $this->assertEquals(
-                ['nav', 'sidebar-menu', 'flex-column'],
-                Sidebar::makeNavClasses()
-            );
+            $this->assertNotContains($class, Sidebar::makeBodyClasses(), $class);
         }
     }
 
-    public function testMakeNavClassesWithEveryStyleVariant()
+    public function testEveryStyleVariantIsAddedOnTheSameOrder()
     {
         config([
             'adminlte.sidebar_nav_compact' => true,
@@ -254,18 +251,15 @@ class SidebarTest extends TestCase
             'adminlte.sidebar_nav_pills' => true,
         ]);
 
-        // The variants are always added on the same order.
+        $classes = Sidebar::makeBodyClasses();
+        $variants = array_values(array_intersect(
+            $classes,
+            ['nav-compact', 'nav-indent', 'nav-pills']
+        ));
 
         $this->assertEquals(
-            [
-                'nav',
-                'sidebar-menu',
-                'flex-column',
-                'nav-compact',
-                'nav-indent',
-                'nav-pills',
-            ],
-            Sidebar::makeNavClasses()
+            ['nav-compact', 'nav-indent', 'nav-pills'],
+            $variants
         );
     }
 
@@ -273,22 +267,11 @@ class SidebarTest extends TestCase
     {
         config([
             'adminlte.sidebar_nav_compact' => false,
-            'adminlte.sidebar_nav_indent' => false,
-            'adminlte.sidebar_nav_pills' => false,
             'adminlte.classes_sidebar_nav' => 'my-cls1 my-cls2',
         ]);
 
-        // The custom classes always go after the built-in variants.
-
         $this->assertEquals(
             ['nav', 'sidebar-menu', 'flex-column', 'my-cls1 my-cls2'],
-            Sidebar::makeNavClasses()
-        );
-
-        config(['adminlte.sidebar_nav_indent' => true]);
-
-        $this->assertEquals(
-            ['nav', 'sidebar-menu', 'flex-column', 'nav-indent', 'my-cls1 my-cls2'],
             Sidebar::makeNavClasses()
         );
     }

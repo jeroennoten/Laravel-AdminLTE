@@ -36,6 +36,10 @@ This package provides some artisan commands in order to manage and publish its r
 
   **Target:** The components views will be published in the `resources/views/vendor/adminlte/components/` folder of your Laravel project, and the components classes will be published in the `app/View/Components/Adminlte/` folder.
 
+- __`error_views`__: The set of AdminLTE styled error views (`401`, `403`, `404`, `419`, `429`, `500` and `503`). Each published file is a one-liner that extends the related package view, so a package update reaches your error pages without republishing them. Note this resource is not part of any `--type` option, since publishing it replaces the error pages your application may already have.
+
+  **Target:** The error views will be published in the `resources/views/errors/` folder of your Laravel project, which is where Laravel looks for them.
+
 ## The `adminlte:install` Command
 
 You can install all the required and some additional package resources using the `php artisan adminlte:install` command. Without any options it will install the AdminLTE package assets, the configuration file and the translations. For the installation of additional resources check the available command options.
@@ -44,14 +48,14 @@ You can install all the required and some additional package resources using the
 
 - `--force`: Use this option to force the overwrite of any existing files during the installation process.
 
-- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (a basic installation plus the `auth_views`, `auth_routes`, `main_views` and `components` resources). Note that no installation type includes the optional `vendor_assets` resource, install it with `--with=vendor_assets` or `--only=vendor_assets`.
+- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (a basic installation plus the `auth_views`, `auth_routes`, `main_views` and `components` resources). Note that no installation type includes the optional `vendor_assets` and `error_views` resources, install them with `--with=` or `--only=`.
 
-- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views** or **components**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
+- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views**, **components** or **error_views**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
   ```sh
   php artisan adminlte:install --only=config --only=main_views
   ```
 
-- `--with=*`: Use this option to install with additional resources, the available resources are: **vendor_assets**, **main_views**, **auth_views**, **auth_routes** or **components**. This option can be used multiple times, examples:
+- `--with=*`: Use this option to install with additional resources, the available resources are: **vendor_assets**, **main_views**, **auth_views**, **auth_routes**, **components** or **error_views**. This option can be used multiple times, examples:
   ```sh
   php artisan adminlte:install --with=auth_views --with=auth_routes
   php artisan adminlte:install --with=main_views

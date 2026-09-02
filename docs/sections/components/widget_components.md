@@ -700,16 +700,14 @@ Set `layout-type="nav"` on the **profile-row-item** to get the reference markup.
 <x-adminlte-profile-widget name="Nadia Carmichael" desc="Lead Developer"
     theme="lightblue" img="vendor/adminlte/dist/assets/img/AdminLTELogo.png"
     layout-type="classic" footer-class="p-0">
-    <x-slot name="footerSlot">
-        <ul class="nav flex-column">
-            <x-adminlte-profile-row-item layout-type="nav" title="Projects" url="#">
-                <x-slot name="textSlot"><span class="badge text-bg-primary">31</span></x-slot>
-            </x-adminlte-profile-row-item>
-            <x-adminlte-profile-row-item layout-type="nav" title="Tasks" url="#">
-                <x-slot name="textSlot"><span class="badge text-bg-info">5</span></x-slot>
-            </x-adminlte-profile-row-item>
-        </ul>
-    </x-slot>
+    <ul class="nav flex-column w-100">
+        <x-adminlte-profile-row-item layout-type="nav" title="Projects" url="#">
+            <x-slot name="textSlot"><span class="badge text-bg-primary">31</span></x-slot>
+        </x-adminlte-profile-row-item>
+        <x-adminlte-profile-row-item layout-type="nav" title="Tasks" url="#">
+            <x-slot name="textSlot"><span class="badge text-bg-info">5</span></x-slot>
+        </x-adminlte-profile-row-item>
+    </ul>
 </x-adminlte-profile-widget>
 ```
 
@@ -1021,9 +1019,7 @@ The percentage of the bar is derived from the `value` and `max` attributes (`val
 The default slot, when filled, **replaces the `current/total` counter** placed at the end of the label line, which is useful to render a unit or a different notation.
 
 > [!Note]
-> The bar is a nested [Progress](#progress) component, so the **_AdminLTE_Progress** javascript utility class works on a progress group too. The `.progress-group` element already provides the bottom spacing, so the nested bar is rendered with a `mb-0` class instead of the default `mb-2` one.
->
-> The theme is rendered as a `bg-{theme}` class on the inner bar (the class emitted by the [Progress](#progress) component), instead of the `text-bg-{theme}` class used by the AdminLTE reference page. Both paint the same background, and the contrast color of the utility is not observable on a bar without a label.
+> The bar is a nested [Progress](#progress) component, so the **_AdminLTE_Progress** javascript utility class works on a progress group too. The `.progress-group` element already provides the bottom spacing, so the nested bar is rendered with a `mb-0` class instead of the default `mb-2` one. The theme is rendered as a `text-bg-{theme}` class on the inner bar, exactly like on a standalone [Progress](#progress).
 
 ### Javascript Utility Class
 

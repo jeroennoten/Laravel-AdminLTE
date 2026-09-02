@@ -49,11 +49,6 @@ class Layout
     public static function wrapperClasses(): array
     {
         $classes = [Tokens::WRAPPER];
-
-        if (config('adminlte.layout_compact', false) === true) {
-            $classes[] = Tokens::COMPACT_MODE;
-        }
-
         $cfg = config('adminlte.classes_wrapper', '');
 
         if (is_string($cfg) && ! empty($cfg)) {

@@ -33,6 +33,23 @@ class Sidebar
             $classes[] = Tokens::SIDEBAR_COLLAPSE;
         }
 
+        // The menu style variants belong here and not to the menu element:
+        // AdminLTE compounds them with the tokens above on a single element,
+        // and then reaches the sidebar as a descendant. Their remaining rules
+        // are descendant selectors, so they keep matching from the body.
+
+        $variants = [
+            'sidebar_nav_compact' => Tokens::NAV_COMPACT,
+            'sidebar_nav_indent' => Tokens::NAV_INDENT,
+            'sidebar_nav_pills' => Tokens::NAV_PILLS,
+        ];
+
+        foreach ($variants as $option => $token) {
+            if (config("adminlte.{$option}", false)) {
+                $classes[] = $token;
+            }
+        }
+
         if (config('adminlte.sidebar_without_hover', false)) {
             $classes[] = Tokens::SIDEBAR_WITHOUT_HOVER;
         }
@@ -65,21 +82,6 @@ class Sidebar
     public static function makeNavClasses(): array
     {
         $classes = [Tokens::NAV, Tokens::SIDEBAR_MENU, Tokens::NAV_COLUMN];
-
-        // The style variants that AdminLTE defines for the sidebar menu.
-
-        $variants = [
-            'sidebar_nav_compact' => Tokens::NAV_COMPACT,
-            'sidebar_nav_indent' => Tokens::NAV_INDENT,
-            'sidebar_nav_pills' => Tokens::NAV_PILLS,
-        ];
-
-        foreach ($variants as $option => $token) {
-            if (config("adminlte.{$option}", false)) {
-                $classes[] = $token;
-            }
-        }
-
         $cfg = config('adminlte.classes_sidebar_nav', '');
 
         if (is_string($cfg) && ! empty($cfg)) {
