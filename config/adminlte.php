@@ -412,10 +412,16 @@ return [
     'sidebar_collapse' => false,
     'sidebar_without_hover' => false,
     'sidebar_collapse_remember' => false,
+    'sidebar_breakpoint' => null,
     'sidebar_scrollbar_theme' => 'os-theme-light',
     'sidebar_scrollbar_auto_hide' => 'leave',
     'sidebar_scrollbar_click_scroll' => true,
+    'sidebar_scrollbar_options' => [],
+    'sidebar_scrollbar_disable_below' => 992,
     'sidebar_nav_aria_label' => null,
+    'sidebar_nav_compact' => false,
+    'sidebar_nav_indent' => false,
+    'sidebar_nav_pills' => false,
     'sidebar_nav_accordion' => true,
     'sidebar_nav_animation_speed' => 300,
 
@@ -653,6 +659,55 @@ return [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/2.1.8/css/dataTables.bootstrap5.min.css',
+                ],
+            ],
+        ],
+        // The Datatables 'Buttons' extension, required by the 'with-buttons'
+        // attribute of the datatable component. JSZip powers the excel export
+        // and pdfmake the pdf one, drop them when you don't need those.
+
+        'DatatablesButtons' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/4.0.2/js/dataTables.buttons.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/4.0.2/js/buttons.bootstrap5.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/4.0.2/js/buttons.html5.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/4.0.2/js/buttons.print.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.3.3/pdfmake.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/pdfmake/0.3.3/vfs_fonts.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/4.0.2/css/buttons.bootstrap5.min.css',
                 ],
             ],
         ],

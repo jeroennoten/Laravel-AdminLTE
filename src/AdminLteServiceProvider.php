@@ -31,7 +31,10 @@ class AdminLteServiceProvider extends BaseServiceProvider
      */
     protected $layoutComponents = [
         'content-header' => Layout\ContentHeader::class,
+        'navbar-custom-menu' => Layout\NavbarCustomMenu::class,
         'navbar-darkmode-widget' => Layout\NavbarDarkmodeWidget::class,
+        'navbar-dropdown' => Layout\NavbarDropdown::class,
+        'navbar-dropdown-item' => Layout\NavbarDropdownItem::class,
         'navbar-notification' => Layout\NavbarNotification::class,
     ];
 
@@ -77,6 +80,9 @@ class AdminLteServiceProvider extends BaseServiceProvider
         'alert' => Widget\Alert::class,
         'callout' => Widget\Callout::class,
         'card' => Widget\Card::class,
+        'direct-chat' => Widget\DirectChat::class,
+        'direct-chat-contact' => Widget\DirectChatContact::class,
+        'direct-chat-msg' => Widget\DirectChatMsg::class,
         'info-box' => Widget\InfoBox::class,
         'profile-col-item' => Widget\ProfileColItem::class,
         'profile-row-item' => Widget\ProfileRowItem::class,

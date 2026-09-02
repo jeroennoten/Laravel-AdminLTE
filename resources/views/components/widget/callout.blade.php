@@ -11,4 +11,11 @@
     {{-- Callout content --}}
     {{ $slot }}
 
+    {{-- Callout link --}}
+    @isset($url)
+        <a href="{{ $url }}" class="callout-link">
+            @isset($linkSlot){{ $linkSlot }}@else{{ $urlText ?? $url }}@endisset
+        </a>
+    @endisset
+
 </div>

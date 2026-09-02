@@ -575,4 +575,173 @@ class LayoutRenderTest extends TestCase
 
         app()->setLocale('en');
     }
+
+    public function testRenderTheSidebarNavigationWithoutVariants()
+    {
+        $html = $this->renderPage();
+
+        // Without the options, the sidebar menu keeps its base classes only.
+
+        $this->assertStringContainsString(
+            '<ul class="nav sidebar-menu flex-column"',
+            $html
+        );
+
+        foreach (['nav-compact', 'nav-indent', 'nav-pills'] as $variant) {
+            $this->assertStringNotContainsString($variant, $html);
+        }
+    }
+
+    public function testRenderTheSidebarNavigationVariants()
+    {
+        config(['adminlte.sidebar_nav_compact' => true]);
+
+        $this->assertStringContainsString(
+            '<ul class="nav sidebar-menu flex-column nav-compact"',
+            $this->renderPage()
+        );
+
+        config([
+            'adminlte.sidebar_nav_compact' => false,
+            'adminlte.sidebar_nav_indent' => true,
+        ]);
+
+        $this->assertStringContainsString(
+            '<ul class="nav sidebar-menu flex-column nav-indent"',
+            $this->renderPage()
+        );
+
+        config([
+            'adminlte.sidebar_nav_indent' => false,
+            'adminlte.sidebar_nav_pills' => true,
+        ]);
+
+        $this->assertStringContainsString(
+            '<ul class="nav sidebar-menu flex-column nav-pills"',
+            $this->renderPage()
+        );
+
+        // The variants can be combined, and they precede the custom classes.
+
+        config([
+            'adminlte.sidebar_nav_compact' => true,
+            'adminlte.sidebar_nav_indent' => true,
+            'adminlte.classes_sidebar_nav' => 'my-nav-cls',
+        ]);
+
+        $this->assertStringContainsString(
+            '<ul class="nav sidebar-menu flex-column nav-compact nav-indent nav-pills my-nav-cls"',
+            $this->renderPage()
+        );
+    }
+
+    public function testRenderTheSidebarBreakpointAttribute()
+    {
+        // Without the option, the plugin keeps its own default breakpoint.
+
+        $this->assertStringNotContainsString(
+            'data-sidebar-breakpoint',
+            $this->renderPage()
+        );
+
+        config(['adminlte.sidebar_breakpoint' => 767.98]);
+
+        $this->assertStringContainsString(
+            'data-sidebar-breakpoint="767.98"',
+            $this->renderPage()
+        );
+
+        // A non numeric value is ignored.
+
+        config(['adminlte.sidebar_breakpoint' => 'invalid']);
+
+        $this->assertStringNotContainsString(
+            'data-sidebar-breakpoint',
+            $this->renderPage()
+        );
+    }
+
+    public function testRenderTheDefaultSidebarScrollbarSetup()
+    {
+        $html = $this->renderPage();
+
+        // Without the options, the scrollbars setup is not modified at all.
+
+        $this->assertStringContainsString(
+            'const isMobile = window.innerWidth <= 992;',
+            $html
+        );
+
+        $this->assertStringContainsString(
+            implode("\n", [
+                '                            scrollbars: {',
+                '                                theme: Default.scrollbarTheme,',
+                '                                autoHide: Default.scrollbarAutoHide,',
+                '                                clickScroll: Default.scrollbarClickScroll,',
+                '                            },',
+            ]),
+            $html
+        );
+    }
+
+    public function testRenderTheSidebarScrollbarOptions()
+    {
+        config(['adminlte.sidebar_scrollbar_options' => [
+            'visibility' => 'auto',
+            'dragScroll' => false,
+        ]]);
+
+        $html = $this->renderPage();
+
+        // The extra options are merged into the 'scrollbars' object.
+
+        $this->assertStringContainsString(
+            implode("\n", [
+                '                                clickScroll: Default.scrollbarClickScroll,',
+                '                                ...{"visibility":"auto","dragScroll":false},',
+                '                            },',
+            ]),
+            $html
+        );
+
+        // An invalid or empty value changes nothing.
+
+        foreach ([[], null, 'visibility', 10] as $cfg) {
+            config(['adminlte.sidebar_scrollbar_options' => $cfg]);
+
+            $this->assertStringContainsString(
+                implode("\n", [
+                    '                                clickScroll: Default.scrollbarClickScroll,',
+                    '                            },',
+                ]),
+                $this->renderPage()
+            );
+        }
+    }
+
+    public function testRenderTheSidebarScrollbarDisableBelowOption()
+    {
+        config(['adminlte.sidebar_scrollbar_disable_below' => 0]);
+
+        $this->assertStringContainsString(
+            'const isMobile = window.innerWidth <= 0;',
+            $this->renderPage()
+        );
+
+        config(['adminlte.sidebar_scrollbar_disable_below' => '768']);
+
+        $this->assertStringContainsString(
+            'const isMobile = window.innerWidth <= 768;',
+            $this->renderPage()
+        );
+
+        // A non numeric value falls back to the default cut-off.
+
+        config(['adminlte.sidebar_scrollbar_disable_below' => 'invalid']);
+
+        $this->assertStringContainsString(
+            'const isMobile = window.innerWidth <= 992;',
+            $this->renderPage()
+        );
+    }
 }

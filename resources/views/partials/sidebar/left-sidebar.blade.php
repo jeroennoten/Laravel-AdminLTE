@@ -35,7 +35,7 @@
     {{-- Sidebar menu --}}
     <div class="sidebar-wrapper">
         <nav class="mt-2" aria-label="{{ config('adminlte.sidebar_nav_aria_label') ?: __('adminlte::adminlte.main_navigation') }}">
-            <ul class="nav sidebar-menu flex-column {{ config('adminlte.classes_sidebar_nav', '') }}"
+            <ul class="{{ $layoutHelper->makeSidebarNavClasses() }}"
                 id="{{ $sidebarMenuId }}"
                 data-lte-toggle="treeview"
                 @if(config('adminlte.sidebar_nav_animation_speed', 300) != 300)

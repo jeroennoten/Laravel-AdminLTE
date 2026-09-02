@@ -118,6 +118,7 @@ All plugins checked succesfully!
 | ApexCharts                          | apexcharts              | Not Installed |
 | Chart.js                            | chartJs                 | Not Installed |
 | Datatables (requires jQuery)        | datatables              | Not Installed |
+| Datatables Buttons                  | datatablesButtons       | Not Installed |
 | Dropzone                            | dropzone                | Not Installed |
 | EasyMDE (Markdown editor)           | easymde                 | Not Installed |
 | FilePond                            | filepond                | Not Installed |

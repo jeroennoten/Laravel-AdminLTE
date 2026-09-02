@@ -252,7 +252,7 @@ The following config options are available:
 
 - __`classes_sidebar_nav`__
 
-  Extra classes for the sidebar navigation. Classes will be added to the element `ul.nav.sidebar-menu`. The `nav-compact` built-in class is available to get a compact navigation style.
+  Extra classes for the sidebar navigation. Classes will be added to the element `ul.nav.sidebar-menu`, after the built-in style variants. The three variants that AdminLTE v4 styles (`nav-compact`, `nav-indent` and `nav-pills`) have their own options on the [sidebar](#sidebar) section, so there is no need to write them here.
 
 > [!Important]
 > The `nav-child-indent`, `nav-flat` and `nav-legacy` classes of AdminLTE v3 no longer exist.
@@ -274,7 +274,7 @@ The following config options are available:
 
 ## Sidebar
 
-You can modify the sidebar properties, for example you can disable the collapsed mini sidebar mode, start with a collapsed sidebar, choose the breakpoint where the sidebar expands, remember the collapsed state between page loads, change the scrollbar theme or auto hide option, disable the sidebar navigation accordion and change the sidebar animation speed.
+You can modify the sidebar properties, for example you can disable the collapsed mini sidebar mode, start with a collapsed sidebar, choose the breakpoint where the sidebar expands, remember the collapsed state between page loads, change the scrollbar theme or auto hide option, pick one of the built-in navigation styles, disable the sidebar navigation accordion and change the sidebar animation speed.
 
 The following configuration options are available:
 
@@ -309,6 +309,13 @@ The following configuration options are available:
 
   Removed from the shipped configuration file and not read any more. The **AdminLTE v4 PushMenu plugin** suppresses the transition on the restored state by itself, so the flicker this option used to work around no longer happens.
 
+- __`sidebar_breakpoint`__
+
+  The viewport width (in pixels) where the sidebar switches between its desktop and its mobile behavior. When set to a numeric value, the package adds the `data-sidebar-breakpoint` attribute to the `aside.app-sidebar` element, which is the breakpoint the **AdminLTE v4 PushMenu plugin** watches. Leave it `null` (the default) to keep the plugin default of `991.98` pixels, the one that matches the Bootstrap `lg` breakpoint. A non numeric value is ignored.
+
+> [!Important]
+> This option only moves the breakpoint of the **plugin**, not the one of the **stylesheet**. The CSS side is driven by the `.sidebar-expand-*` class of the `sidebar_expand` option, so both have to agree: set `sidebar_breakpoint` to the *maximum* width of the viewport that must still behave like mobile (for example `767.98` for `sidebar_expand => 'md'`). When they disagree, the sidebar animates on one side of the breakpoint and not on the other.
+
 - __`sidebar_scrollbar_theme`__
 
   Changes the sidebar vertical scrollbar theme. Possible values are: `'os-theme-light'`, `'os-theme-dark'` or `'os-theme-none'` to hide the scrollbar.
@@ -326,10 +333,40 @@ The following configuration options are available:
 
   Enables/Disables the click scroll behavior of the sidebar scrollbar (clicking on the scrollbar track scrolls the sidebar).
 
+- __`sidebar_scrollbar_options`__
+
+  Extra options for the sidebar scrollbar, as an array. They are merged into the `scrollbars` object of the **OverlayScrollbars** setup, after the three options above, so they may also override the values those resolve. The default value is an empty array, which leaves the setup exactly as it was. Any non array value is ignored.
+
+  ```php
+  'sidebar_scrollbar_options' => [
+      'visibility' => 'auto',
+      'dragScroll' => false,
+  ],
+  ```
+
+- __`sidebar_scrollbar_disable_below`__
+
+  The viewport width (in pixels) at or below which the **OverlayScrollbars** instance is not created at all, so the sidebar uses the native scrollbar of the browser. The default value is `992`, which covers the phones and the small tablets. Use `0` to always create the instance. A non numeric value falls back to the default.
+
 > [!Note]
-> The three `sidebar_scrollbar_*` options above configure the **OverlayScrollbars** instance that the package attaches to the `.sidebar-wrapper` element. That setup is emitted whenever the layout **has a left sidebar** (so it is skipped only on the [top navigation layout](#layout)) and the `assets.overlayscrollbars` resource is not disabled — it is **not** tied to the fixed sidebar mode. On top of that, the instance is not created when the viewport is **992 pixels wide or narrower**, to avoid interfering with touch scrolling on mobile devices, so the sidebar simply uses the native scrollbar there.
+> The `sidebar_scrollbar_*` options above configure the **OverlayScrollbars** instance that the package attaches to the `.sidebar-wrapper` element. That setup is emitted whenever the layout **has a left sidebar** (so it is skipped only on the [top navigation layout](#layout)) and the `assets.overlayscrollbars` resource is not disabled — it is **not** tied to the fixed sidebar mode. On top of that, the instance is not created when the viewport is at or below the `sidebar_scrollbar_disable_below` width, to avoid interfering with touch scrolling on mobile devices.
 >
 > The values are handed over to **OverlayScrollbars 2.x** verbatim, so they must be valid options of that library.
+
+- __`sidebar_nav_compact`__
+
+  Enables/Disables the compact style of the sidebar navigation (adds the `.nav-compact` class to the element `ul.nav.sidebar-menu`). It removes the rounded corners and the spacing between the links, which fits more items on a screen.
+
+- __`sidebar_nav_indent`__
+
+  Enables/Disables the indentation of the sidebar submenus (adds the `.nav-indent` class to the element `ul.nav.sidebar-menu`). The children of a treeview get an extra left padding, so the hierarchy of the menu is easier to follow. It can be combined with `sidebar_nav_compact`, AdminLTE styles that combination on its own.
+
+- __`sidebar_nav_pills`__
+
+  Enables/Disables the Bootstrap pills style of the sidebar navigation (adds the `.nav-pills` class to the element `ul.nav.sidebar-menu`). The active link is then painted with the `--bs-nav-pills-link-active-bg` color of Bootstrap instead of the sidebar one.
+
+> [!Note]
+> The three options above are the built-in style variants of the AdminLTE v4 sidebar menu. They are added before the extra classes of `classes_sidebar_nav`, so those still win. Note the `.sidebar-collapse` refinements that AdminLTE defines for the indented menu (the padding of the submenus while a mini sidebar is hovered) are written against the **body**, so they only apply when you also add `nav-indent` to `classes_body`.
 
 - __`sidebar_nav_accordion`__
 

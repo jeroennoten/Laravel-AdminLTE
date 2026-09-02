@@ -72,6 +72,26 @@ php artisan adminlte:install --only=auth_views
 > [!Important]
 > The authentication scaffolding offers features like login, logout and registration. It is a recommendation to always read the [Laravel Authentication Documentation](https://laravel.com/docs/authentication) for details about the authentication scaffolding. Note that **Laravel** offers some starter kits (like [Laravel-Breeze](https://laravel.com/docs/starter-kits#laravel-breeze)) besides the legacy [laravel/ui](https://github.com/laravel/ui) package. So, using the authentication views from this package is **OPTIONAL** and **UP TO YOU**.
 
-### 5. Use the package
+### 5. Install the error views (optional)
+
+The package ships **AdminLTE styled error pages** for the http status codes Laravel renders (`401`, `403`, `404`, `419`, `429`, `500` and `503`). Publish them with:
+
+```sh
+php artisan adminlte:install --only=error_views
+```
+
+The command writes one thin view per status code into `resources/views/errors/`, which is where Laravel looks for them:
+
+```blade
+{{-- resources/views/errors/404.blade.php --}}
+@extends('adminlte::errors.404')
+```
+
+Because the published file only **extends** the package view, an update of the package reaches your error pages without republishing them. See [error views](/sections/configuration/views_customization#error-views) for how to customize their content.
+
+> [!Note]
+> The error views are not part of any `--type` option, since publishing them replaces the error pages your application may already have. They are only installed when you ask for them explicitly, either with `--only=error_views` or with `--with=error_views`.
+
+### 6. Use the package
 
 Jump to the [Usage Section](/sections/overview/usage) to read how to use the main **AdminLTE blade template** provided by this package.

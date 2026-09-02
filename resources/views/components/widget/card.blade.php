@@ -116,3 +116,17 @@
     @endif
 
 </div>
+
+{{-- Lock the page scroll for a card initiated on maximized mode --}}
+
+@if($isCardMaximized())
+@once
+@push('js')
+<script>
+
+    document.documentElement.classList.add('maximized-card');
+
+</script>
+@endpush
+@endonce
+@endif

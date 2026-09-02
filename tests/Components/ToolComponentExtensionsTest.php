@@ -155,4 +155,60 @@ class ToolComponentExtensionsTest extends TestCase
         $this->assertStringContainsString('wire:ignore', $html);
         $this->assertStringContainsString('data-x="y"', $html);
     }
+
+    public function testDatatableButtonsUseTheModernLayoutOption()
+    {
+        // The 'dom' option is the deprecated Datatables 1.x API, the pinned
+        // 2.x release configures the table through 'layout'.
+
+        $component = new Components\Tool\Datatable('t', ['A'], null, null,
+            null, null, null, null, null, null, null, true);
+
+        $this->assertArrayHasKey('layout', $component->config);
+        $this->assertArrayNotHasKey('dom', $component->config);
+        $this->assertEquals('buttons', $component->config['layout']['topStart']);
+        $this->assertEquals('search', $component->config['layout']['topEnd']);
+    }
+
+    public function testDatatableHonorsAnExplicitLegacyDom()
+    {
+        $component = new Components\Tool\Datatable('t', ['A'], null, null,
+            null, null, null, null, null, null, null, true, ['dom' => 'Bfrtip']);
+
+        $this->assertEquals('Bfrtip', $component->config['dom']);
+        $this->assertArrayNotHasKey('layout', $component->config);
+    }
+
+    public function testDatatableHonorsAnExplicitLayout()
+    {
+        $layout = ['topStart' => 'info'];
+
+        $component = new Components\Tool\Datatable('t', ['A'], null, null,
+            null, null, null, null, null, null, null, true, ['layout' => $layout]);
+
+        $this->assertEquals($layout, $component->config['layout']);
+    }
+
+    public function testDatatableWithoutButtonsConfiguresNoLayout()
+    {
+        $component = new Components\Tool\Datatable('t', ['A']);
+
+        $this->assertArrayNotHasKey('layout', $component->config);
+        $this->assertArrayNotHasKey('dom', $component->config);
+    }
+
+    public function testDatatableExportTooltipsAreTranslated()
+    {
+        app()->setLocale('de');
+
+        $component = new Components\Tool\Datatable('t', ['A'], null, null,
+            null, null, null, null, null, null, null, true);
+
+        $titles = array_column($component->config['buttons']['buttons'], 'titleAttr');
+
+        $this->assertContains(__('adminlte::adminlte.datatable_print'), $titles);
+        $this->assertNotContains('Print', $titles);
+
+        app()->setLocale('en');
+    }
 }

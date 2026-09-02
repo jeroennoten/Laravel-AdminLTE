@@ -44,7 +44,8 @@ class PluginsCatalogTest extends TestCase
         // The keys of the plugins that AdminLTE v4 recommends.
 
         $expected = [
-            'apexcharts', 'chartJs', 'datatables', 'dropzone', 'easymde',
+            'apexcharts', 'chartJs', 'datatables', 'datatablesButtons',
+            'dropzone', 'easymde',
             'filepond', 'flatpickr', 'fullcalendar', 'glightbox', 'imask',
             'jsvectormap', 'noUiSlider', 'pickr', 'quill', 'select2',
             'sortablejs', 'sweetalert2', 'tabulator', 'tomSelect',

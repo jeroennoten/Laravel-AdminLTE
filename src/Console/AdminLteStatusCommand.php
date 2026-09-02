@@ -8,6 +8,7 @@ use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\ErrorViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\VendorAssetsResource;
@@ -78,6 +79,7 @@ class AdminLteStatusCommand extends Command
             'auth_views' => new AuthViewsResource(),
             'auth_routes' => new AuthRoutesResource(),
             'components' => new BladeComponentsResource(),
+            'error_views' => new ErrorViewsResource(),
         ];
     }
 

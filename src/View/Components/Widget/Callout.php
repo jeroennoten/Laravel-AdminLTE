@@ -42,17 +42,38 @@ class Callout extends Component
     public $titleClass;
 
     /**
+     * An url for the callout. When provided, a "callout-link" styled anchor
+     * will be rendered at the end of the callout content, pointing to that
+     * url. The AdminLTE v4 stylesheet paints it with the emphasis color of
+     * the callout theme.
+     *
+     * @var string
+     */
+    public $url;
+
+    /**
+     * A text/label associated with the callout url. Defaults to the url
+     * itself when not provided.
+     *
+     * @var string
+     */
+    public $urlText;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
     public function __construct(
-        $theme = null, $icon = null, $title = null, $titleClass = null
+        $theme = null, $icon = null, $title = null, $titleClass = null,
+        $url = null, $urlText = null
     ) {
         $this->theme = $theme;
         $this->icon = $icon;
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->titleClass = $titleClass;
+        $this->url = $url;
+        $this->urlText = UtilsHelper::applyHtmlEntityDecoder($urlText);
     }
 
     /**

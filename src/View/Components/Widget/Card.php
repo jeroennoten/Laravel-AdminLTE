@@ -135,9 +135,10 @@ class Card extends Component
 
     /**
      * Indicates if the card is maximizable. When enabled, a button to maximize
-     * the card will be available.
+     * the card will be available. If is set to 'maximized' string, the card
+     * will be initiated on maximized mode.
      *
-     * @var bool|mixed
+     * @var mixed
      */
     public $maximizable;
 
@@ -261,6 +262,16 @@ class Card extends Component
     }
 
     /**
+     * Check if the card is initiated on maximized mode.
+     *
+     * @return bool
+     */
+    public function isCardMaximized()
+    {
+        return $this->maximizable === 'maximized';
+    }
+
+    /**
      * Make the class attribute for the card.
      *
      * @param  bool  $hasTabsSlot  Whether the card tabs slot is defined
@@ -309,6 +320,18 @@ class Card extends Component
 
         if ($this->isCardCollapsed()) {
             $classes[] = 'collapsed-card';
+        }
+
+        if ($this->isCardMaximized()) {
+            $classes[] = 'maximized-card';
+
+            // The AdminLTE card plugin flags a card that was collapsed when
+            // it got maximized, so restoring it returns to the collapsed
+            // state. The same flag keeps the body visible while maximized.
+
+            if ($this->isCardCollapsed()) {
+                $classes[] = 'was-collapsed';
+            }
         }
 
         return implode(' ', $classes);
