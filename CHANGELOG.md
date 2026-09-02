@@ -398,8 +398,9 @@ guide walks through them with more context.
 - The skip link pointed at no element, so the AdminLTE accessibility script
   fell back to the first `nav` of the document and "skip to navigation"
   focused the header toolbar. The sidebar navigation carries the id now.
-- A bare `empty-option` attribute on the options component rendered an option
-  labelled `1`, since the boolean reached the entity decoder.
+- A bare `empty-option` or `placeholder` attribute on the options component
+  rendered an option labelled `1`, since the boolean reached the entity
+  decoder.
 - The slider element and its extra attributes were emitted without a
   separator, producing `class="…"wire:ignore=""`.
 - The progress bar carried an untranslated `aria-label`, while its stacked

@@ -409,7 +409,7 @@ The plugin setup is exactly the same one described for the [DateRange](#daterang
 > [!Warning]
 > The Krajee file input plugin **still requires jQuery**, which **AdminLTE v4** does not bundle anymore. The component initialization code is guarded: when neither jQuery nor the plugin are present, the element stays a plain **Bootstrap 5** file input and nothing breaks. If you want a jQuery free alternative, **AdminLTE v4** recommends [FilePond](https://pqina.nl/filepond/) or [Dropzone](https://www.dropzone.dev/), both installable with `php artisan adminlte:plugins install --plugin=filepond` (or `--plugin=dropzone`).
 
-This component represents an advanced **file-input** component with file preview and other features. The component extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. The component also defines the next additional attributes:
+This component represents an advanced **file-input** component with file preview and other features. The component accepts all the attributes of the base [Input Group Component](/sections/components/basic_forms_components#input-group-component). The component also defines the next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
@@ -418,6 +418,9 @@ preset-mode | Used to make specific plugin configuration for some particular sce
 
 > [!Note]
 > The `enable-old-support` attribute is not supported here, due to **security** reasons related to file inputs.
+
+> [!Warning]
+> **The `prependSlot`, `appendSlot` and `bottomSlot` slots are silently discarded by this component.** Unlike every other form component, it does not extend the base layout: the Krajee plugin builds its own `input-group` structure, which would conflict with the one of the layout. Content placed in those slots therefore renders nowhere. Put your add-ons around the component instead.
 
 The available plugin configuration are those explained on the [plugin documentation](https://plugins.krajee.com/file-input#options). All other attributes you define will be inserted directly on the underlying `input` element, so you can also use `data-* attributes` to configure the plugin.
 
@@ -905,7 +908,7 @@ Finally, you need to use the `@section('plugins.TomSelect', true)` sentence on t
 > [!Important]
 > This component requires the `Quill` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.Quill', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [Summernote](https://summernote.org/) plugin is **not used anymore** (it required jQuery).
 
-This component represents a **WYSIWYG editor** and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes from it will be inherited. However, the append and prepend slots used for addons are not supported here due to conflicts with the underlying plugin. The component also defines next additional attributes:
+This component represents a **WYSIWYG editor** and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes and the three slots from it are inherited and rendered. The component also defines next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------

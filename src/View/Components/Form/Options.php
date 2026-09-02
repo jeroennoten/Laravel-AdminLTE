@@ -73,7 +73,10 @@ class Options extends Component
         $this->emptyOption = is_string($emptyOption)
             ? UtilsHelper::applyHtmlEntityDecoder($emptyOption)
             : $emptyOption;
-        $this->placeholder = UtilsHelper::applyHtmlEntityDecoder($placeholder);
+
+        $this->placeholder = is_string($placeholder)
+            ? UtilsHelper::applyHtmlEntityDecoder($placeholder)
+            : $placeholder;
     }
 
     /**

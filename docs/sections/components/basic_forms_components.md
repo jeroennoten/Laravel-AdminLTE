@@ -77,7 +77,7 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 icon | An icon for the button (Bootstrap Icons by default) | string | `null` | no
 label | The visible label (text) for the button | string | `null` | no
-theme | The button style theme: primary, secondary, info, success, warning, danger, light, dark, or any `outline-*` variant | string | `'default'` | no
+theme | The button style theme: primary, secondary, info, success, warning, danger, light, dark, any `outline-*` variant, or any color of the AdminLTE extended palette like `teal` or `navy`. The AdminLTE v3 color names are mapped on the fly. See [About the `theme` Attribute](/sections/components/widget_components#about-the-theme-attribute) | string | `'default'` | no
 type | The button type (`button`, `submit` or `reset`) | string | `'button'` | no
 
 Any other attribute you define will be directly inserted into the underlying `button` tag. You can, for example, define a `class`, `onclick`, `title` or any other attribute you may need.

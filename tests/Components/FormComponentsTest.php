@@ -2264,4 +2264,64 @@ class FormComponentsTest extends TestCase
             $html
         );
     }
+
+    public function testABareEmptyOptionAndPlaceholderCarryNoLabel()
+    {
+        // The bare attribute reaches the component as a boolean, and the
+        // entity decoder used to turn it into the literal '1'.
+
+        foreach (['empty-option', 'placeholder'] as $attribute) {
+            $html = $this->renderComponent(
+                '<x-adminlte-options :options="[\'a\' => \'A\']" '.$attribute.'/>'
+            );
+
+            preg_match('/<option[^>]*value>\s*([^<]*)</', $html, $matches);
+
+            $this->assertSame('', trim($matches[1] ?? 'no match'), $attribute);
+        }
+    }
+
+    public function testAStringEmptyOptionAndPlaceholderKeepTheirLabel()
+    {
+        foreach (['empty-option', 'placeholder'] as $attribute) {
+            $html = $this->renderComponent(
+                '<x-adminlte-options :options="[\'a\' => \'A\']" '.$attribute.'="Pick one"/>'
+            );
+
+            $this->assertStringContainsString('Pick one', $html, $attribute);
+        }
+    }
+
+    public function testTheTextEditorRendersEveryInheritedSlot()
+    {
+        $html = $this->renderComponent(
+            '<x-adminlte-text-editor name="f" id="f">'.
+            '<x-slot name="prependSlot"><span>PRE</span></x-slot>'.
+            '<x-slot name="appendSlot"><span>APP</span></x-slot>'.
+            '<x-slot name="bottomSlot"><span>BOT</span></x-slot>'.
+            '</x-adminlte-text-editor>'
+        );
+
+        foreach (['PRE', 'APP', 'BOT'] as $marker) {
+            $this->assertStringContainsString($marker, $html, $marker);
+        }
+    }
+
+    public function testTheKrajeeInputDiscardsTheInheritedSlots()
+    {
+        // The component does not extend the base layout, because the plugin
+        // builds its own input group. The documentation warns about it.
+
+        $html = $this->renderComponent(
+            '<x-adminlte-input-file-krajee name="f" id="f">'.
+            '<x-slot name="prependSlot"><span>PRE</span></x-slot>'.
+            '<x-slot name="appendSlot"><span>APP</span></x-slot>'.
+            '<x-slot name="bottomSlot"><span>BOT</span></x-slot>'.
+            '</x-adminlte-input-file-krajee>'
+        );
+
+        foreach (['PRE', 'APP', 'BOT'] as $marker) {
+            $this->assertStringNotContainsString($marker, $html, $marker);
+        }
+    }
 }
