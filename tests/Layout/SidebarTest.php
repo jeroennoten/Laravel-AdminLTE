@@ -221,14 +221,13 @@ class SidebarTest extends TestCase
 
     public function testTheStyleVariantsAreBodyClasses()
     {
-        // AdminLTE compounds the variants with the sidebar body tokens on a
-        // single element and then reaches the sidebar as a descendant, so the
-        // variants belong to the body and not to the menu element.
+        // AdminLTE compounds the compact and the indent variants with the
+        // sidebar body tokens on a single element and then reaches the sidebar
+        // as a descendant, so those two belong to the body.
 
         $variants = [
             'sidebar_nav_compact' => 'nav-compact',
             'sidebar_nav_indent' => 'nav-indent',
-            'sidebar_nav_pills' => 'nav-pills',
         ];
 
         foreach ($variants as $option => $class) {
@@ -243,22 +242,38 @@ class SidebarTest extends TestCase
         }
     }
 
+    public function testThePillsVariantIsAMenuClass()
+    {
+        // The pills variant is the plain Bootstrap one: no rule compounds it
+        // with a layout token, and its two rules are descendant selectors. On
+        // the body it would also paint the navbar links and the open user menu
+        // toggler, so it belongs to the menu element.
+
+        config(['adminlte' => ['sidebar_nav_pills' => true]]);
+
+        $this->assertContains('nav-pills', Sidebar::makeNavClasses());
+        $this->assertNotContains('nav-pills', Sidebar::makeBodyClasses());
+
+        config(['adminlte' => ['sidebar_nav_pills' => false]]);
+
+        $this->assertNotContains('nav-pills', Sidebar::makeNavClasses());
+    }
+
     public function testEveryStyleVariantIsAddedOnTheSameOrder()
     {
         config([
             'adminlte.sidebar_nav_compact' => true,
             'adminlte.sidebar_nav_indent' => true,
-            'adminlte.sidebar_nav_pills' => true,
         ]);
 
         $classes = Sidebar::makeBodyClasses();
         $variants = array_values(array_intersect(
             $classes,
-            ['nav-compact', 'nav-indent', 'nav-pills']
+            ['nav-compact', 'nav-indent']
         ));
 
         $this->assertEquals(
-            ['nav-compact', 'nav-indent', 'nav-pills'],
+            ['nav-compact', 'nav-indent'],
             $variants
         );
     }

@@ -213,7 +213,7 @@ The following config options are available:
 
 - __`classes_brand_text`__
 
-  Extra classes for the brand text. Classes will be added to element `span.brand-text`.
+  Extra classes for the brand text. Classes will be added to the element `span.brand-text` of the sidebar brand, or to the plain `span` holding the brand text when `layout_topnav` is used (the AdminLTE v4 topnav brand carries no `brand-text` element).
 
 - __`classes_content_header`__
 
@@ -311,10 +311,20 @@ The following configuration options are available:
 
 - __`sidebar_breakpoint`__
 
-  The viewport width (in pixels) where the sidebar switches between its desktop and its mobile behavior. When set to a numeric value, the package adds the `data-sidebar-breakpoint` attribute to the `aside.app-sidebar` element, which is the breakpoint the **AdminLTE v4 PushMenu plugin** watches. Leave it `null` (the default) to keep the plugin default of `991.98` pixels, the one that matches the Bootstrap `lg` breakpoint. A non numeric value is ignored.
+  The viewport width (in pixels) where the sidebar switches between its desktop and its mobile behavior. When set, the package adds the `data-sidebar-breakpoint` attribute to the `aside.app-sidebar` element and, at the same time, selects the `.sidebar-expand-*` class that already uses that width — so the **AdminLTE v4 PushMenu plugin** and the media queries of the stylesheet agree on where the switch happens. It therefore takes precedence over `sidebar_expand`. Leave it `null` (the default) to let `sidebar_expand` decide.
+
+  The accepted widths are the five AdminLTE ships a stylesheet for. Both the width itself and the upper bound of its media query are understood, so `768` and `767.98` both select `md`:
+
+  | Width | Selected class |
+  |---|---|
+  | `576` | `sidebar-expand-sm` |
+  | `768` | `sidebar-expand-md` |
+  | `992` | `sidebar-expand-lg` |
+  | `1200` | `sidebar-expand-xl` |
+  | `1400` | `sidebar-expand-xxl` |
 
 > [!Important]
-> This option only moves the breakpoint of the **plugin**, not the one of the **stylesheet**. The CSS side is driven by the `.sidebar-expand-*` class of the `sidebar_expand` option, so both have to agree: set `sidebar_breakpoint` to the *maximum* width of the viewport that must still behave like mobile (for example `767.98` for `sidebar_expand => 'md'`). When they disagree, the sidebar animates on one side of the breakpoint and not on the other.
+> Any other value is ignored and `sidebar_expand` keeps deciding. AdminLTE hardcodes these five widths in the media queries of its stylesheet and makes the plugin read the width back from the active `.sidebar-expand-*` class, so an arbitrary width can not be honored: the plugin would treat the viewport as desktop while the stylesheet still renders the mobile overlay, and the sidebar could no longer be opened at all in between.
 
 - __`sidebar_scrollbar_theme`__
 

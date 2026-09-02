@@ -7,10 +7,18 @@
 
         {{--Modal header --}}
         <div class="{{ $makeModalHeaderClass() }}" {!! $makeModalHeaderData() !!}>
-            <h1 class="modal-title fs-5" id="{{ $id }}-title">
-                @isset($icon)<i class="{{ $icon }} me-2"></i>@endisset
-                @isset($title){{ $title }}@endisset
-            </h1>
+            {{-- An empty heading is an accessibility defect, so the heading is
+                 only rendered when it holds a title to announce (the same
+                 condition that emits the 'aria-labelledby' above). The close
+                 button is pushed to the end by its own 'margin-left:auto'. --}}
+            @if($hasTitle())
+                <h1 class="modal-title fs-5" id="{{ $id }}-title">
+                    @isset($icon)<i class="{{ $icon }} me-2" aria-hidden="true"></i>@endisset
+                    {{ $title }}
+                </h1>
+            @elseif(isset($icon))
+                <i class="{{ $icon }} me-2" aria-hidden="true"></i>
+            @endif
             <button type="button" class="btn-close" data-bs-dismiss="modal"
                     aria-label="{{ __('adminlte::adminlte.close') }}"></button>
         </div>

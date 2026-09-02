@@ -4,7 +4,16 @@
     @if(! $isCardHeaderEmpty(isset($toolsSlot), isset($contactsSlot)))
         <div class="{{ $makeCardHeaderClass() }}">
 
-            {{-- Tools (floated to the right, so they come first) --}}
+            {{-- Title. The reference (dist/index.html) puts it before the
+                 tools, so a screen reader reaches the chat name before its
+                 buttons. Both boxes are floated, so the source order does not
+                 change the rendered layout. --}}
+            <h3 class="card-title">
+                @isset($icon)<i class="{{ $icon }} me-1" aria-hidden="true"></i>@endisset
+                @isset($title){{ $title }}@endisset
+            </h3>
+
+            {{-- Tools (floated to the right) --}}
             <div class="card-tools">
 
                 {{-- Unread messages badge --}}
@@ -56,12 +65,6 @@
                 @endisset
 
             </div>
-
-            {{-- Title --}}
-            <h3 class="card-title">
-                @isset($icon)<i class="{{ $icon }} me-1" aria-hidden="true"></i>@endisset
-                @isset($title){{ $title }}@endisset
-            </h3>
 
         </div>
     @endif

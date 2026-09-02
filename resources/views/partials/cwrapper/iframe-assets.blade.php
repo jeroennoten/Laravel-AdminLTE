@@ -133,10 +133,40 @@
     // Reads a boolean written by blade into a data attribute.
     const asBool = (value) => ! ['', '0', 'false', 'null'].includes(String(value ?? ''));
 
+    // The menu links are caught on the document itself, so the listener is
+    // bound at most once per javascript context: it survives the body swap of
+    // a single page navigation, and binding it per instance would pile up one
+    // listener on every visit. The live instance is resolved from the element.
+
+    const setupMenuLinks = () => window._AdminLTE_Once('iframe-menu-links', () => {
+        document.addEventListener('click', (event) => {
+            const link = event.target.closest('a[href]');
+
+            if (! link) {
+                return;
+            }
+
+            const iframe = document.querySelector(SELECTOR_ROOT)?._adminlteIFrame;
+
+            if (! iframe || ! iframe.isMenuLink(link)) {
+                return;
+            }
+
+            event.preventDefault();
+            iframe.open(link.getAttribute('href'), iframe.readLinkTitle(link));
+        });
+    });
+
     class AdminLteIFrame {
 
         constructor(root) {
             this.root = root;
+
+            // The document level listener resolves the live instance from the
+            // element, so it keeps working after a single page navigation
+            // replaced the body (and this element with it).
+            root._adminlteIFrame = this;
+
             this.tabList = root.querySelector('[role="tablist"]');
             this.tabContent = root.querySelector('.tab-content');
             this.loading = root.querySelector('.tab-loading');
@@ -146,7 +176,7 @@
             this.useNavbarItems = asBool(root.dataset.useNavbarItems);
             this.loadingTime = Number.parseInt(root.dataset.loadingScreen ?? '0', 10) || 0;
 
-            this.setupMenuLinks();
+            setupMenuLinks();
             this.setupControls();
             this.setupKeyboard();
 
@@ -161,19 +191,6 @@
         }
 
         // ------------------------------------------------------------- setup
-
-        setupMenuLinks() {
-            document.addEventListener('click', (event) => {
-                const link = event.target.closest('a[href]');
-
-                if (! link || ! this.isMenuLink(link)) {
-                    return;
-                }
-
-                event.preventDefault();
-                this.open(link.getAttribute('href'), this.readLinkTitle(link));
-            });
-        }
 
         setupControls() {
             this.root.addEventListener('click', (event) => {
@@ -284,6 +301,7 @@
 
             const tab = document.createElement('a');
             tab.className = 'nav-link';
+            tab.id = id.concat('-tab');
             tab.href = '#'.concat(id);
             tab.dataset.lteToggle = 'iframe-tab';
             tab.setAttribute('role', 'tab');
@@ -307,6 +325,7 @@
             panel.id = id;
             panel.className = 'tab-pane fade';
             panel.setAttribute('role', 'tabpanel');
+            panel.setAttribute('aria-labelledby', tab.id);
 
             const frame = document.createElement('iframe');
             frame.title = title;

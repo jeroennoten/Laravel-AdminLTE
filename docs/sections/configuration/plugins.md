@@ -108,43 +108,44 @@ php artisan adminlte:plugins
 The result will be something like next, depending on the installation status of each plugin:
 
 ```sh
-Checking the plugins installation ...
+Verifying the installation of the plugins...
  20/20 [▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓] 100%
-All plugins checked succesfully!
+All plugins verified successfully!
 
-+-------------------------------------+-------------------------+---------------+
-| Plugin Name                         | Plugin Key              | Status        |
-+-------------------------------------+-------------------------+---------------+
-| ApexCharts                          | apexcharts              | Not Installed |
-| Chart.js                            | chartJs                 | Not Installed |
-| Datatables (requires jQuery)        | datatables              | Not Installed |
-| Datatables Buttons                  | datatablesButtons       | Not Installed |
-| Dropzone                            | dropzone                | Not Installed |
-| EasyMDE (Markdown editor)           | easymde                 | Not Installed |
-| FilePond                            | filepond                | Not Installed |
-| Flatpickr (date, time and range)    | flatpickr               | Installed     |
-| FullCalendar                        | fullcalendar            | Not Installed |
-| GLightbox                           | glightbox               | Not Installed |
-| IMask (input masks)                 | imask                   | Not Installed |
-| jsVectorMap                         | jsvectormap             | Not Installed |
-| noUiSlider                          | noUiSlider              | Installed     |
-| Pickr (color picker)                | pickr                   | Not Installed |
-| Quill (rich text editor)            | quill                   | Installed     |
-| Select2 (requires jQuery)           | select2                 | Not Installed |
-| SortableJS                          | sortablejs              | Not Installed |
-| SweetAlert2                         | sweetalert2             | Not Installed |
-| Tabulator (data tables)             | tabulator               | Not Installed |
-| Tom Select                          | tomSelect               | Not Installed |
-+-------------------------------------+-------------------------+---------------+
+Plugins Status:
++-----------------------------------------------------+-------------------+---------------+
+| Plugin Name                                         | Plugin Key        | Status        |
++-----------------------------------------------------+-------------------+---------------+
+| ApexCharts                                          | apexcharts        | Not Installed |
+| Chart.js                                            | chartJs           | Not Installed |
+| Datatables (requires jQuery)                        | datatables        | Not Installed |
+| Datatables Buttons (requires jQuery and Datatables) | datatablesButtons | Not Installed |
+| Dropzone                                            | dropzone          | Not Installed |
+| EasyMDE (Markdown editor)                           | easymde           | Not Installed |
+| FilePond                                            | filepond          | Not Installed |
+| Flatpickr (date, time and range picker)             | flatpickr         | Installed     |
+| FullCalendar                                        | fullcalendar      | Not Installed |
+| GLightbox                                           | glightbox         | Not Installed |
+| IMask (input masks)                                 | imask             | Not Installed |
+| jsVectorMap                                         | jsvectormap       | Not Installed |
+| noUiSlider                                          | noUiSlider        | Installed     |
+| Pickr (color picker)                                | pickr             | Not Installed |
+| Quill (rich text editor)                            | quill             | Installed     |
+| Select2 (requires jQuery)                           | select2           | Not Installed |
+| SortableJS                                          | sortablejs        | Not Installed |
+| SweetAlert2                                         | sweetalert2       | Not Installed |
+| Tabulator (data tables)                             | tabulator         | Not Installed |
+| Tom Select                                          | tomSelect         | Not Installed |
++-----------------------------------------------------+-------------------+---------------+
 
 Status legends:
-+---------------+----------------------------------------------------------------------------------------+
-| Status        | Description                                                                            |
-+---------------+----------------------------------------------------------------------------------------+
-| Installed     | The plugin is installed and matches with the default package plugin                    |
-| Mismatch      | The installed plugin mismatch the package plugin (update available or plugin modified) |
-| Not Installed | The plugin is not installed                                                            |
-+---------------+----------------------------------------------------------------------------------------+
++---------------+---------------------------------------------------------------------------------------------------------------+
+| Status        | Description                                                                                                   |
++---------------+---------------------------------------------------------------------------------------------------------------+
+| Installed     | The plugin is published and matches with the package original plugin                                          |
+| Mismatch      | The plugin is published but mismatches with the package original plugin (update available or plugin modified) |
+| Not Installed | The plugin is not published                                                                                   |
++---------------+---------------------------------------------------------------------------------------------------------------+
 ```
 
 To install one of these plugins locally, you need to use the **plugin key** listed in the above table. Note the plugin files come from the `node_modules` folder of your project, so install the related npm package first, for example, to install **Flatpickr**:

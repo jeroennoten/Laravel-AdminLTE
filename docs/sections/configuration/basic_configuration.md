@@ -53,8 +53,8 @@ Favicons could be used easily. There are two different ways to do this. Take in 
   <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicons/favicon-16x16.png') }}">
   <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicons/favicon-32x32.png') }}">
   <link rel="icon" type="image/png" sizes="96x96" href="{{ asset('favicons/favicon-96x96.png') }}">
-  <link rel="icon" type="image/png" sizes="192x192"  href="{{ asset('favicons/android-icon-192x192.png') }}">
-  <link rel="manifest" href="{{ asset('favicons/manifest.json') }}">
+  <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('favicons/android-icon-192x192.png') }}">
+  <link rel="manifest" crossorigin="use-credentials" href="{{ asset('favicons/manifest.json') }}">
   <meta name="msapplication-TileColor" content="#ffffff">
   <meta name="msapplication-TileImage" content="{{ asset('favicons/ms-icon-144x144.png') }}">
   ```
@@ -95,7 +95,7 @@ The next options allows you to enable, disable and configure the preloader anima
 - __`preloader.mode`__: The preloader animantion mode: `fullscreen` or `cwrapper`. On `fullscreen` mode (the default), the preloader animation will cover the entire page. When using `cwrapper` mode, the preloader animation will be attached into the content wrapper (`main.app-main`) element to avoid covering the sidebars and navbars.
 - __`preloader.img.path`__: The path to the logo image that will be used on the preloader animation. This image should be available somewhere inside the `public` folder of your Laravel project (if you did not change the `asset_url` config).
 - __`preloader.img.alt`__: The alternative text to use when the image can't be found or isn't available.
-- __`preloader.img.effect`__: The animation effect to use on the image, the available values are: `animation__shake` or `animation__wobble`.
+- __`preloader.img.effect`__: The animation effect to use on the image. The accepted values are `animation__shake`, `animation__wobble`, `animation__flipInX`, `animation__fadeIn`, `animation__fadeOut` and `animation__spin` (the keyframes provided by the AdminLTE v4 stylesheet). Any other value leaves the image without animation.
 - __`preloader.img.width`__: The width (on pixels) to use for the image.
 - __`preloader.img.height`__: The height (on pixels) to use for the image.
 

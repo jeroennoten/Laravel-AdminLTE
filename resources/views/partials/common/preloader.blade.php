@@ -60,6 +60,20 @@
 
 </div>
 
+{{-- The fade out and the image effect are applied through the style
+     attribute, so the reduced motion override has to outrank it. --}}
+<style>
+    @media (prefers-reduced-motion: reduce) {
+        #adminlte-preloader {
+            transition: none !important;
+        }
+
+        #adminlte-preloader img {
+            animation: none !important;
+        }
+    }
+</style>
+
 {{-- Hide the preloader once the page is fully loaded --}}
 <script>
     (() => {

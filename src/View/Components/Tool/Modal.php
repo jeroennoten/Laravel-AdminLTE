@@ -172,6 +172,18 @@ class Modal extends Component
     }
 
     /**
+     * Check whether the modal holds a title to announce. An empty heading is
+     * an accessibility defect, so the '.modal-title' element is only rendered
+     * (and only referenced by 'aria-labelledby') when this holds.
+     *
+     * @return bool
+     */
+    public function hasTitle()
+    {
+        return isset($this->title) && trim($this->title) !== '';
+    }
+
+    /**
      * Make the 'aria-labelledby' attribute for the modal. The attribute is
      * only emitted when there is a title, otherwise it would point to an
      * element without any accessible name.
@@ -180,7 +192,7 @@ class Modal extends Component
      */
     public function makeAriaLabelledBy()
     {
-        if (! isset($this->title) || trim($this->title) === '') {
+        if (! $this->hasTitle()) {
             return '';
         }
 

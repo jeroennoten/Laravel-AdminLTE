@@ -600,10 +600,11 @@ class LayoutRenderTest extends TestCase
 
     public function testRenderTheSidebarNavigationVariants()
     {
-        // The variants land on the body, where AdminLTE compounds them with
-        // the sidebar tokens, and the menu element keeps its own classes.
+        // The compact and the indent variants land on the body, where AdminLTE
+        // compounds them with the sidebar tokens, and the menu element keeps
+        // its own classes.
 
-        foreach (['compact', 'indent', 'pills'] as $variant) {
+        foreach (['compact', 'indent'] as $variant) {
             config(['adminlte' => ["sidebar_nav_{$variant}" => true]]);
 
             $html = $this->renderPage();
@@ -619,6 +620,27 @@ class LayoutRenderTest extends TestCase
         }
     }
 
+    public function testRenderTheSidebarNavigationPillsVariant()
+    {
+        // Nothing compounds '.nav-pills' with a layout token, and both of its
+        // rules are descendant selectors. On the body they would reach every
+        // '.nav-link' of the document (the navbar links, the open user menu
+        // toggler, the iframe tabs), so the class sits on the menu element.
+
+        config(['adminlte' => ['sidebar_nav_pills' => true]]);
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString(
+            '<ul class="nav sidebar-menu flex-column nav-pills"',
+            $html
+        );
+        $this->assertDoesNotMatchRegularExpression(
+            '/<body[^>]*class="[^"]*nav-pills/',
+            $html
+        );
+    }
+
     public function testTheSidebarNavigationVariantsCanBeCombined()
     {
         config([
@@ -631,16 +653,59 @@ class LayoutRenderTest extends TestCase
         $html = $this->renderPage();
 
         $this->assertMatchesRegularExpression(
-            '/<body[^>]*class="[^"]*nav-compact nav-indent nav-pills/',
+            '/<body[^>]*class="[^"]*nav-compact nav-indent/',
             $html
         );
 
-        // The custom classes stay on the menu element.
+        // The pills variant and the custom classes stay on the menu element.
 
         $this->assertStringContainsString(
-            '<ul class="nav sidebar-menu flex-column my-nav-cls"',
+            '<ul class="nav sidebar-menu flex-column nav-pills my-nav-cls"',
             $html
         );
+    }
+
+    public function testTheSidebarBreakpointSelectsTheMatchingExpandClass()
+    {
+        // The push menu reads 'data-sidebar-breakpoint' from the sidebar, but
+        // its 'init()' then replaces the value with the one the
+        // 'sidebar-expand-*' class publishes through its '::before' content.
+        // AdminLTE hardcodes that content, and the matching width, in the
+        // media queries of its stylesheet, so the only way to honor the
+        // option is to pick the expand class that already uses the width.
+
+        $html = $this->renderPage();
+
+        $this->assertStringNotContainsString('data-sidebar-breakpoint', $html);
+        $this->assertStringContainsString('sidebar-expand-lg', $html);
+
+        config(['adminlte.sidebar_breakpoint' => 768]);
+
+        $html = $this->renderPage();
+
+        $this->assertMatchesRegularExpression(
+            '/<aside[^>]*data-sidebar-breakpoint="768"/',
+            $html
+        );
+        $this->assertMatchesRegularExpression(
+            '/<body[^>]*class="[^"]*sidebar-expand-md/',
+            $html
+        );
+        $this->assertStringNotContainsString('sidebar-expand-lg', $html);
+
+        // A width AdminLTE ships no stylesheet for leaves the configured
+        // expand breakpoint alone, so the script and the media queries keep
+        // agreeing on where the sidebar turns into an overlay.
+
+        config(['adminlte.sidebar_breakpoint' => 850]);
+
+        $html = $this->renderPage();
+
+        $this->assertMatchesRegularExpression(
+            '/<body[^>]*class="[^"]*sidebar-expand-lg/',
+            $html
+        );
+        $this->assertStringNotContainsString('sidebar-expand-md', $html);
     }
 
     public function testRenderTheSidebarBreakpointAttribute()

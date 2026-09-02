@@ -58,7 +58,7 @@ The next legacy properties are still accepted, and are **translated** into their
 Legacy property | Translated into
 ----------------|----------------
 `minDate`, `maxDate` | `minDate`, `maxDate`
-`minYear`, `maxYear` | `minDate`, `maxDate`
+`minYear`, `maxYear` | `minDate`, `maxDate` (a bare year is widened to `YYYY-01-01` / `YYYY-12-31`)
 `singleDatePicker` | `mode: 'single'`
 `timePicker` | `enableTime: true`
 `timePicker24Hour` | `time_24hr`

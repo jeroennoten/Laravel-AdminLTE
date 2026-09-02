@@ -7,6 +7,25 @@ use Illuminate\Support\Facades\View;
 class Sidebar
 {
     /**
+     * Gets the name of the expand breakpoint of the sidebar. A configured
+     * 'sidebar_breakpoint' width wins over the 'sidebar_expand' option when it
+     * matches one of the widths AdminLTE ships, so both the media queries and
+     * the push menu script agree on where the sidebar turns into an overlay.
+     * A width AdminLTE has no stylesheet for is ignored, since honoring it
+     * would leave them disagreeing.
+     *
+     * @return string|null
+     */
+    protected static function expandBreakpoint(): ?string
+    {
+        $fromWidth = Tokens::sidebarBreakpointName(
+            config('adminlte.sidebar_breakpoint')
+        );
+
+        return $fromWidth ?? config('adminlte.sidebar_expand', 'lg');
+    }
+
+    /**
      * Makes the set of classes that the sidebar adds to the body tag. Note the
      * topnav layout has no sidebar, so it adds none of them.
      *
@@ -19,7 +38,7 @@ class Sidebar
         }
 
         $classes = [];
-        $expand = Tokens::sidebarExpand(config('adminlte.sidebar_expand', 'lg'));
+        $expand = Tokens::sidebarExpand(self::expandBreakpoint());
 
         if (isset($expand)) {
             $classes[] = $expand;
@@ -33,15 +52,16 @@ class Sidebar
             $classes[] = Tokens::SIDEBAR_COLLAPSE;
         }
 
-        // The menu style variants belong here and not to the menu element:
-        // AdminLTE compounds them with the tokens above on a single element,
-        // and then reaches the sidebar as a descendant. Their remaining rules
-        // are descendant selectors, so they keep matching from the body.
+        // The compact and the indent variants belong here and not to the menu
+        // element: AdminLTE compounds them with the tokens above on a single
+        // element, and then reaches the sidebar as a descendant. Their
+        // remaining rules are descendant selectors, so they keep matching from
+        // the body. Note the pills variant is not one of them, see the
+        // {@see makeNavClasses()} method.
 
         $variants = [
             'sidebar_nav_compact' => Tokens::NAV_COMPACT,
             'sidebar_nav_indent' => Tokens::NAV_INDENT,
-            'sidebar_nav_pills' => Tokens::NAV_PILLS,
         ];
 
         foreach ($variants as $option => $token) {
@@ -82,6 +102,17 @@ class Sidebar
     public static function makeNavClasses(): array
     {
         $classes = [Tokens::NAV, Tokens::SIDEBAR_MENU, Tokens::NAV_COLUMN];
+
+        // The pills variant is the plain Bootstrap one: it is never compounded
+        // with a layout token, and its two rules ('.nav-pills .nav-link' and
+        // '.nav-pills .show > .nav-link') are descendant selectors. So it
+        // belongs to the menu element. On the body it would also reach the
+        // navbar, the user menu toggler and the iframe tabs.
+
+        if (config('adminlte.sidebar_nav_pills', false)) {
+            $classes[] = Tokens::NAV_PILLS;
+        }
+
         $cfg = config('adminlte.classes_sidebar_nav', '');
 
         if (is_string($cfg) && ! empty($cfg)) {

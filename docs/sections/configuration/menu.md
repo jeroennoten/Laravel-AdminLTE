@@ -275,7 +275,7 @@ Even more, you can define a route with parameters using an array where the first
 > [!Caution]
 > This attribute will be dropped on the future. So, you should favor the usage of the [classes attribute](/sections/configuration/menu#the-classes-attribute) instead.
 
-This attribute provides a way to inject classes into the list item for a given menu item. It's intended to allow the specification of custom margins on a submenu item to create an indented appearance. Example:
+This attribute provides a way to inject classes into the `a.nav-link` element of a given menu item (the same element the [classes attribute](#the-classes-attribute) reaches on a link item, not the wrapping `<li>`). It's intended to allow the specification of custom margins on a submenu item to create an indented appearance. Example:
 
 ```php
 [

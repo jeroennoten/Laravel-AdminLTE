@@ -330,7 +330,9 @@ class ToolComponentsTest extends TestCase
         $this->assertStringContainsString('modal-dialog-scrollable', $html);
         $this->assertStringContainsString('modal-xl', $html);
         $this->assertStringContainsString('modal-header text-bg-primary', $html);
-        $this->assertStringContainsString('<i class="bi bi-bell me-2"></i>', $html);
+        $this->assertStringContainsString(
+            '<i class="bi bi-bell me-2" aria-hidden="true"></i>', $html
+        );
 
         // The static backdrop uses the Bootstrap 5 data attributes.
 

@@ -9,7 +9,23 @@
                 {{ $headerSlot }}
             @else
 
-                {{-- Tools (floated to the right, so they come first) --}}
+                {{-- Title. The reference (dist/docs/components/card.html) puts
+                     it before the tools, so a screen reader reaches the card
+                     name before its buttons. Both boxes are floated, so the
+                     source order does not change the rendered layout. --}}
+                @if(! $hasTabs(isset($tabsSlot)))
+                    <{{ $titleTag }} class="{{ $makeCardTitleClass() }}">
+                        @isset($icon)<i class="{{ $icon }} me-1" aria-hidden="true"></i>@endisset
+                        @isset($titleSlot)
+                            {{ $titleSlot }}
+                        @else
+                            @isset($title){{ $title }}@endisset
+                        @endisset
+                    </{{ $titleTag }}>
+                @endif
+
+                {{-- Tools (floated to the right). On a tabbed card they must
+                     still come before the block level tabs navigation. --}}
                 <div class="card-tools">
 
                     {{-- Extra tools slot --}}
@@ -66,18 +82,6 @@
                             @endforeach
                         </ul>
                     @endisset
-
-                @else
-
-                    {{-- Title --}}
-                    <{{ $titleTag }} class="{{ $makeCardTitleClass() }}">
-                        @isset($icon)<i class="{{ $icon }} me-1" aria-hidden="true"></i>@endisset
-                        @isset($titleSlot)
-                            {{ $titleSlot }}
-                        @else
-                            @isset($title){{ $title }}@endisset
-                        @endisset
-                    </{{ $titleTag }}>
 
                 @endif
 
