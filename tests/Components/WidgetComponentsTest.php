@@ -814,7 +814,7 @@ class WidgetComponentsTest extends TestCase
             '</x-adminlte-profile-widget>'
         );
 
-        $this->assertStringContainsString('class="card widget-user-2"', $html);
+        $this->assertStringContainsString('class="card mb-4 widget-user-2"', $html);
         $this->assertStringContainsString('widget-user-header h-cls', $html);
         $this->assertStringContainsString('background: url(&#039;/cover.png&#039;)', $html);
         $this->assertStringContainsString('class="widget-user-image"', $html);
@@ -950,7 +950,7 @@ class WidgetComponentsTest extends TestCase
         );
 
         $this->assertStringContainsString('progress mb-2 progress-xs vertical', $html);
-        $this->assertStringContainsString('progress-bar fw-bold bg-danger', $html);
+        $this->assertStringContainsString('progress-bar fw-bold text-bg-danger', $html);
         $this->assertStringContainsString('progress-bar-striped', $html);
         $this->assertStringContainsString('progress-bar-animated', $html);
         $this->assertStringContainsString('style="height:75%"', $html);
@@ -1101,5 +1101,68 @@ class WidgetComponentsTest extends TestCase
         $this->assertStringContainsString('class _AdminLTE_SmallBox', $js);
         $this->assertStringContainsString('toggleLoading', $js);
         $this->assertFreeOfJquery($js);
+    }
+
+    public function testProfileWidgetCarriesTheSameSpacingAsACard()
+    {
+        $widget = new Components\Widget\ProfileWidget('Jane', 'Dev');
+        $card = new Components\Widget\Card();
+
+        $this->assertStringContainsString('mb-4', $widget->makeCardClass());
+        $this->assertStringContainsString('mb-4', $card->makeCardClass());
+    }
+
+    public function testSmallBoxFooterLinkFollowsTheBackgroundContrast()
+    {
+        // The underline suppression needs a 'link-*' class, so the link color
+        // has to follow the contrast of the box background.
+
+        $box = new Components\Widget\SmallBox(null, null, null, 'warning');
+        $this->assertStringContainsString('link-dark', $box->makeFooterLinkClass());
+
+        $box = new Components\Widget\SmallBox(null, null, null, 'primary');
+        $this->assertStringContainsString('link-light', $box->makeFooterLinkClass());
+
+        // An unthemed box keeps the light link of the reference layouts.
+
+        $box = new Components\Widget\SmallBox();
+        $this->assertStringContainsString('link-light', $box->makeFooterLinkClass());
+    }
+
+    public function testSmallBoxFooterLinkKeepsTheUnderlineSuppression()
+    {
+        $box = new Components\Widget\SmallBox(null, null, null, 'info');
+        $classes = $box->makeFooterLinkClass();
+
+        $this->assertStringContainsString('small-box-footer', $classes);
+        $this->assertStringContainsString('link-underline-opacity-0', $classes);
+        $this->assertStringContainsString('link-underline-opacity-50-hover', $classes);
+    }
+
+    public function testSmallBoxFooterLinkWithTheV3Aliases()
+    {
+        config([
+            'adminlte.assets.extended_colors' => true,
+            'adminlte.assets.extended_colors_v3_aliases' => true,
+        ]);
+
+        $box = new Components\Widget\SmallBox(null, null, null, 'yellow');
+        $this->assertStringContainsString('link-dark', $box->makeFooterLinkClass());
+
+        $box = new Components\Widget\SmallBox(null, null, null, 'maroon');
+        $this->assertStringContainsString('link-light', $box->makeFooterLinkClass());
+    }
+
+    public function testProgressBarUsesTheContrastAwareBackground()
+    {
+        // The reference emits 'text-bg-*', which keeps the label readable over
+        // the light backgrounds.
+
+        $progress = new Components\Widget\Progress(null, 'warning');
+
+        $this->assertStringContainsString(
+            'text-bg-warning',
+            $progress->makeProgressBarClass()
+        );
     }
 }

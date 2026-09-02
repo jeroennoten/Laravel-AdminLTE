@@ -34,14 +34,14 @@
 
     {{-- Sidebar menu --}}
     <div class="sidebar-wrapper">
-        <nav class="mt-2" aria-label="{{ config('adminlte.sidebar_nav_aria_label', 'Main navigation') }}">
+        <nav class="mt-2" aria-label="{{ config('adminlte.sidebar_nav_aria_label') ?: __('adminlte::adminlte.main_navigation') }}">
             <ul class="nav sidebar-menu flex-column {{ config('adminlte.classes_sidebar_nav', '') }}"
                 id="{{ $sidebarMenuId }}"
                 data-lte-toggle="treeview"
-                @if(config('adminlte.sidebar_nav_animation_speed') != 300)
-                    data-animation-speed="{{ config('adminlte.sidebar_nav_animation_speed') }}"
+                @if(config('adminlte.sidebar_nav_animation_speed', 300) != 300)
+                    data-animation-speed="{{ config('adminlte.sidebar_nav_animation_speed', 300) }}"
                 @endif
-                @if(! config('adminlte.sidebar_nav_accordion'))
+                @if(! config('adminlte.sidebar_nav_accordion', true))
                     data-accordion="false"
                 @endif>
                 {{-- Configured sidebar links --}}

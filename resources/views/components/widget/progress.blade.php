@@ -9,10 +9,10 @@
 ]) }}>
 
     {{-- Progress bar --}}
-    <div class="{{ $makeProgressBarClass() }}" style="{{ $makeProgressBarStyle() }}">
+    <div class="{{ $makeProgressBarClass() }}" style="{{ $makeProgressBarStyle() }}"@if(isset($withLabel) && ! isset($labelSlot)) data-progress-label="auto"@endif>
 
         {{-- Progress bar label --}}
-        @isset($withLabel){{ $value }}%@endisset
+        @isset($labelSlot){{ $labelSlot }}@elseif(isset($withLabel)){{ $value }}%@endisset
 
     </div>
 
@@ -84,15 +84,21 @@
 
             p.setAttribute('aria-valuenow', value);
 
+            if (! bar) {
+                return;
+            }
+
             if (p.classList.contains('vertical')) {
                 bar.style.height = value + '%';
             } else {
                 bar.style.width = value + '%';
             }
 
-            // Refresh the label when the progress bar is showing one.
+            // Refresh the label when the progress bar is showing the built-in
+            // percentage one. A label provided through the 'labelSlot' is
+            // owned by the application and is left untouched.
 
-            if (bar.textContent.trim() !== '') {
+            if (bar.dataset.progressLabel === 'auto') {
                 bar.textContent = value + '%';
             }
         }

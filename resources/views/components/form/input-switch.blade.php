@@ -16,7 +16,7 @@
             @if($isChecked()) checked @endif
             @if(! empty($config['disabled'])) disabled @endif
             @if(! empty($config['readonly'])) readonly @endif
-            {{ $attributes->merge(['class' => $makeItemClass(), 'value' => 'true']) }}>
+            {{ $attributes->merge($makeItemAttributes(['value' => 'true'])) }}>
 
         @if($getSwitchLabel())
             <label class="form-check-label mb-0" for="{{ $id }}">

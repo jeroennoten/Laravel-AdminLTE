@@ -2,13 +2,13 @@
 
     {{-- Box title and description --}}
     <div class="inner">
-        @isset($title)
-            <h3>{{ $title }}</h3>
-        @endisset
+        @if(isset($titleSlot) || isset($title))
+            <h3>{{ $titleSlot ?? $title }}</h3>
+        @endif
 
-        @isset($text)
-            <p>{{ $text }}</p>
-        @endisset
+        @if(isset($textSlot) || isset($text))
+            <p>{{ $textSlot ?? $text }}</p>
+        @endif
     </div>
 
     {{-- Box icon --}}
@@ -16,23 +16,30 @@
         <i class="{{ $makeIconClass() }}" aria-hidden="true"></i>
     @endisset
 
-    {{-- Box link --}}
-    @isset($url)
+    {{-- Box footer --}}
+    @if(isset($footerSlot) && isset($url))
         <a href="{{ $url }}"
-            class="small-box-footer link-light link-underline-opacity-0 link-underline-opacity-50-hover">
+            class="{{ $makeFooterLinkClass() }}">{{ $footerSlot }}</a>
+    @elseif(isset($footerSlot))
+        <div class="small-box-footer">{{ $footerSlot }}</div>
+    @elseif(isset($url))
+        <a href="{{ $url }}"
+            class="{{ $makeFooterLinkClass() }}">
 
             @if(! empty($urlText))
                 {{ $urlText }}
             @endif
 
-            <i class="bi bi-arrow-right-circle" aria-hidden="true"></i>
+            @if(! empty($footerIcon))
+                <i class="{{ $footerIcon }}" aria-hidden="true"></i>
+            @endif
         </a>
-    @endisset
+    @endif
 
     {{-- Box loading overlay --}}
     <div class="{{ $makeOverlayClass() }}" style="z-index:20;">
         <div class="spinner-border text-body-secondary" role="status">
-            <span class="visually-hidden">Loading</span>
+            <span class="visually-hidden">{{ __('adminlte::adminlte.loading') }}</span>
         </div>
     </div>
 
@@ -70,11 +77,13 @@
             }
 
             if (data.title) {
-                t.querySelector('.inner h3').innerHTML = data.title;
+                const title = t.querySelector('.inner h3');
+                if (title) { title.textContent = data.title; }
             }
 
             if (data.text) {
-                t.querySelector('.inner p').innerHTML = data.text;
+                const text = t.querySelector('.inner p');
+                if (text) { text.textContent = data.text; }
             }
 
             if (data.icon) {
@@ -86,7 +95,8 @@
             }
 
             if (data.url) {
-                t.querySelector('.small-box-footer').href = data.url;
+                const footer = t.querySelector('a.small-box-footer');
+                if (footer) { footer.href = data.url; }
             }
         }
 
@@ -101,7 +111,11 @@
                 return;
             }
 
-            t.querySelector('.small-box-overlay').classList.toggle('d-none');
+            const overlay = t.querySelector('.small-box-overlay');
+
+            if (overlay) {
+                overlay.classList.toggle('d-none');
+            }
         }
     }
 

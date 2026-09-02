@@ -15,7 +15,7 @@ The next set of configuration options enables you to change the layout and style
 It's possible to change the admin panel layout, you can use a top navigation (navbar) only layout, or enable the fixed mode for the sidebar, the navbar or the footer.
 
 > [!Caution]
-> AdminLTE v4 removed the **boxed layout**. The `layout_boxed` option is still read for backward compatibility, but it has no effect any more.
+> AdminLTE v4 removed the **boxed layout**. The `layout_boxed` option is no longer part of the shipped configuration file. It is still read for backward compatibility, but it has no effect any more.
 
 The following config options are available:
 
@@ -26,9 +26,9 @@ The following config options are available:
 > [!Tip]
 > When enabling `layout_topnav`, the recommendation is to also tune the `classes_topnav_nav` configuration to add the class `navbar-expand-md` or `navbar-expand-lg` instead of `navbar-expand`, in order to get a correct functionality of the hamburger button at low screen sizes.
 
-- __`layout_boxed`__ <Badge type="warning">deprecated</Badge>
+- __`layout_boxed`__ <Badge type="warning">removed</Badge>
 
-  Removed in AdminLTE v4, the option has no effect.
+  Removed from the shipped configuration file. Still read for backward compatibility, but it has no effect.
 
 - __`layout_fixed_sidebar`__
 
@@ -42,6 +42,10 @@ The following config options are available:
 
   Enables/Disables the fixed mode for the footer (adds the `.fixed-footer` class to the body).
 
+- __`layout_compact`__
+
+  Enables/Disables the AdminLTE v4 compact mode (adds the `.compact-mode` class to the `.app-wrapper` element). It reduces the height of the header, the padding of the sidebar links and the spacing of the content, which fits more information on a screen.
+
 > [!Important]
 > AdminLTE v4 has no responsive fixed modes any more, the `.fixed-header` and `.fixed-footer` classes apply to every viewport size. For backward compatibility, an array value (the old [responsive usage](#responsive-usage-deprecated)) is still accepted on `layout_fixed_navbar` and `layout_fixed_footer`, and it enables the fixed mode when any of its entries is `true`.
 
@@ -54,6 +58,10 @@ Up to AdminLTE v3 the fixed navbar and the fixed footer could be enabled per vie
 AdminLTE v4 replaces the old dark mode class by the [Bootstrap 5.3 color modes](https://getbootstrap.com/docs/5.3/customize/color-modes/): the `data-bs-theme` attribute is set on the `<html>` element and every component follows it automatically.
 
 The following configuration options are available:
+
+- __`color_mode.enabled`__
+
+  Enables/Disables the AdminLTE color mode plugin. When disabled, the `data-lte-color-mode="off"` attribute is set on the `<html>` element, the plugin restores nothing from the browser storage, and the configured mode is applied as is. Use it when your application takes over the theming completely. Note the `'auto'` mode can only be resolved by that plugin, so it falls back to `'light'` here.
 
 - __`color_mode.default`__
 
@@ -211,6 +219,10 @@ The following config options are available:
 
   Classes for the content header container. Classes will be added to the container of the element `div.app-content-header`. If you left this empty, the default is `container-fluid`, except on the `layout_topnav` layout, where the value of the `classes_topnav_container` option is used instead.
 
+- __`classes_wrapper`__
+
+  Extra classes for the layout wrapper. Classes will be added to the element `div.app-wrapper`.
+
 - __`classes_content_wrapper`__
 
   Classes for the content wrapper container. Classes will be added to the element `main.app-main`.
@@ -218,6 +230,10 @@ The following config options are available:
 - __`classes_content`__
 
   Classes for the content container. Classes will be added to the container of the element `div.app-content`. If you left this empty, the default is `container-fluid`, except on the `layout_topnav` layout, where the value of the `classes_topnav_container` option is used instead.
+
+- __`classes_content_top_area`__ / __`classes_content_bottom_area`__
+
+  Classes for the containers of the optional `content_top_area` and `content_bottom_area` sections. They follow the same fallback rules as `classes_content`. Both sections are described on the [usage](/sections/overview/usage) page.
 
 - __`classes_footer`__
 
@@ -285,13 +301,13 @@ The following configuration options are available:
 
   Enables/Disables the remembering of the collapsed state of the sidebar between page loads. When set to `true`, the package adds the `data-enable-persistence="true"` attribute to the `aside.app-sidebar` element, which is the switch of the **AdminLTE v4 PushMenu plugin** for its own persistence feature. The plugin then stores the state in the browser and restores it on the next page load, all on the client side.
 
-- __`sidebar_collapse_auto_size`__ <Badge type="warning">no-op</Badge>
+- __`sidebar_collapse_auto_size`__ <Badge type="warning">removed</Badge>
 
-  Kept for backward compatibility only, the option is not read any more. The **AdminLTE v4 PushMenu plugin** collapses the sidebar on its own below the breakpoint configured through `sidebar_expand`, so there is no separate width bound to set. Use `sidebar_expand` instead.
+  Removed from the shipped configuration file and not read any more. The **AdminLTE v4 PushMenu plugin** collapses the sidebar on its own below the breakpoint configured through `sidebar_expand`, so there is no separate width bound to set. Use `sidebar_expand` instead.
 
-- __`sidebar_collapse_remember_no_transition`__ <Badge type="warning">no-op</Badge>
+- __`sidebar_collapse_remember_no_transition`__ <Badge type="warning">removed</Badge>
 
-  Kept for backward compatibility only, the option is not read any more. The **AdminLTE v4 PushMenu plugin** suppresses the transition on the restored state by itself, so the flicker this option used to work around no longer happens.
+  Removed from the shipped configuration file and not read any more. The **AdminLTE v4 PushMenu plugin** suppresses the transition on the restored state by itself, so the flicker this option used to work around no longer happens.
 
 - __`sidebar_scrollbar_theme`__
 
@@ -345,7 +361,7 @@ The following configuration options are available:
 
 - __`right_sidebar_theme`__
 
-  Changes the color mode of the right sidebar, the following options are available: `'dark'`, `'light'` or `null` to inherit the color mode of the page.
+  Changes the color mode of the right sidebar, the following options are available: `'dark'`, `'light'` or `null` (the default) to inherit the color mode of the page. Note the AdminLTE v4 right sidebar is a plain Bootstrap offcanvas, so forcing a mode here makes it fight the color mode of the rest of the page.
 
 - __`right_sidebar_title`__
 

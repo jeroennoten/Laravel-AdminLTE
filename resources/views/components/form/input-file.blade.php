@@ -12,7 +12,7 @@
          the 'form-control-file' class, a file input is now styled with the
          regular 'form-control' class. --}}
     <input type="file" id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
+        {{ $attributes->merge($makeItemAttributes()) }}>
 
     {{-- Optional legend. The native browse button can't be relabeled on
          Bootstrap 5, so the legend is rendered as an input group addon. --}}

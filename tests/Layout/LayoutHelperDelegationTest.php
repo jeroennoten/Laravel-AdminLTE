@@ -268,6 +268,12 @@ class LayoutHelperDelegationTest extends TestCase
         );
 
         $this->assertSame(
+            trim(implode(' ', Layout::makeWrapperClasses())),
+            LayoutHelper::makeWrapperClasses(),
+            $msg
+        );
+
+        $this->assertSame(
             trim(implode(' ', Layout::makeContentWrapperClasses())),
             LayoutHelper::makeContentWrapperClasses(),
             $msg
@@ -332,7 +338,7 @@ class LayoutHelperDelegationTest extends TestCase
             'isFixedNavbarEnabled', 'isFixedFooterEnabled', 'makeHtmlData',
             'makeBodyClasses', 'makeBodyData', 'makeWrapperData',
             'makeSidebarWrapperClasses', 'makeSidebarData',
-            'makeContentWrapperClasses',
+            'makeWrapperClasses', 'makeContentWrapperClasses',
         ];
 
         $reflection = new ReflectionClass(LayoutHelper::class);

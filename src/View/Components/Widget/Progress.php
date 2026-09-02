@@ -129,7 +129,7 @@ class Progress extends Component
         $theme = $this->resolveThemeColor($this->theme);
 
         if (! empty($theme)) {
-            $classes[] = "bg-{$theme}";
+            $classes[] = "text-bg-{$theme}";
         }
 
         if (isset($this->striped) || isset($this->animated)) {

@@ -199,6 +199,36 @@ class InputGroupComponent extends Component
     }
 
     /**
+     * Makes the set of default attributes of the input group item. The
+     * validation state is wired to the feedback block, so a screen reader
+     * announces the error together with the control.
+     *
+     * @param  array  $extra  Additional default attributes
+     * @return array
+     */
+    public function makeItemAttributes($extra = [])
+    {
+        $attrs = array_merge(['class' => $this->makeItemClass()], (array) $extra);
+
+        if ($this->isInvalid()) {
+            $attrs['aria-invalid'] = 'true';
+            $attrs['aria-describedby'] = $this->makeInvalidFeedbackId();
+        }
+
+        return $attrs;
+    }
+
+    /**
+     * Make the id attribute for the invalid feedback block.
+     *
+     * @return string
+     */
+    public function makeInvalidFeedbackId()
+    {
+        return "{$this->id}-error";
+    }
+
+    /**
      * Make the class attribute for the invalid feedback block.
      *
      * @return string

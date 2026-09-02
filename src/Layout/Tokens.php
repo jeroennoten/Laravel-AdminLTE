@@ -117,6 +117,27 @@ class Tokens
     public const COLOR_MODES = ['light', 'dark', 'auto'];
 
     /**
+     * The class that reduces the dimensions of the layout elements.
+     *
+     * @var string
+     */
+    public const COMPACT_MODE = 'compact-mode';
+
+    /**
+     * The attribute that remaps the primary color of the palette.
+     *
+     * @var string
+     */
+    public const PALETTE_PRIMARY_ATTRIBUTE = 'data-lte-primary';
+
+    /**
+     * The attribute that applies the contrast correction of the palette.
+     *
+     * @var string
+     */
+    public const PALETTE_CONTRAST_ATTRIBUTE = 'data-lte-contrast';
+
+    /**
      * The breakpoint tokens accepted by the legacy 'sidebar_mini' option.
      *
      * @var array

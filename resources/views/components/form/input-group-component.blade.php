@@ -33,7 +33,8 @@
 
     {{-- Error feedback --}}
     @if($isInvalid())
-        <span class="{{ $makeInvalidFeedbackClass() }}" role="alert">
+        <span id="{{ $makeInvalidFeedbackId() }}"
+              class="{{ $makeInvalidFeedbackClass() }}" role="alert">
             <strong>{{ $errors->first($errorKey) }}</strong>
         </span>
     @endif

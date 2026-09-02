@@ -12,10 +12,9 @@
          legacy 'Bootstrap Colorpicker' jQuery plugin is not required. --}}
     <input id="{{ $id }}" name="{{ $name }}"
         value="{{ $makeColorValue($attributes->get('value')) }}"
-        {{ $attributes->except('value')->merge([
-            'class' => $makeItemClass(),
+        {{ $attributes->except('value')->merge($makeItemAttributes([
             'type' => 'color',
-        ]) }}>
+        ])) }}>
 
 @overwrite
 

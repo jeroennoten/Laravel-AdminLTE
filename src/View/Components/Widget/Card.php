@@ -10,6 +10,24 @@ class Card extends Component
     use HandlesThemeColors;
 
     /**
+     * The set of tags accepted for the card title container. The AdminLTE
+     * docs state the 'card-title' class is a style and not a heading level,
+     * so the tag is up to the document outline of the underlying page.
+     *
+     * @var array
+     */
+    protected const TITLE_TAGS = [
+        'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'span',
+    ];
+
+    /**
+     * The default tag for the card title container.
+     *
+     * @var string
+     */
+    protected const DEFAULT_TITLE_TAG = 'h3';
+
+    /**
      * The title for the card header.
      *
      * @var string
@@ -66,6 +84,31 @@ class Card extends Component
     public $footerClass;
 
     /**
+     * Extra classes for the "card-title" element. This provides a way to
+     * customize the card title style.
+     *
+     * @var string
+     */
+    public $titleClass;
+
+    /**
+     * The tag used for the card title container (h1, h2, h3, h4, h5, h6, div
+     * or span). Any other value falls back to the default tag.
+     *
+     * @var string
+     */
+    public $titleTag;
+
+    /**
+     * The set of tabs of the card. When provided, the card header holds a
+     * "nav-tabs" navigation instead of a title. Each entry accepts an 'id',
+     * a 'label', an optional 'icon' and an optional 'active' flag.
+     *
+     * @var array
+     */
+    public $tabs;
+
+    /**
      * Indicates if the card is disabled. When enabled, an overay will show
      * over the card.
      *
@@ -107,7 +150,8 @@ class Card extends Component
         $title = null, $icon = null, $theme = null, $themeMode = null,
         $headerClass = null, $bodyClass = null, $footerClass = null,
         $disabled = null, $collapsible = null, $removable = null,
-        $maximizable = null
+        $maximizable = null, $titleClass = null, $titleTag = null,
+        $tabs = null
     ) {
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->icon = $icon;
@@ -120,14 +164,109 @@ class Card extends Component
         $this->removable = $removable;
         $this->collapsible = $collapsible;
         $this->maximizable = $maximizable;
+        $this->titleClass = $titleClass;
+        $this->titleTag = $this->resolveTitleTag($titleTag);
+        $this->tabs = $this->resolveTabs($tabs);
+    }
+
+    /**
+     * Resolve the tag to use for the card title container. Any tag out of the
+     * allowed set falls back to the default one, so an arbitrary value can
+     * never reach the generated markup.
+     *
+     * @param  mixed  $tag  The tag requested by the user
+     * @return string
+     */
+    protected function resolveTitleTag($tag)
+    {
+        if (! is_string($tag)) {
+            return self::DEFAULT_TITLE_TAG;
+        }
+
+        $tag = strtolower(trim($tag));
+
+        return in_array($tag, self::TITLE_TAGS, true)
+            ? $tag
+            : self::DEFAULT_TITLE_TAG;
+    }
+
+    /**
+     * Resolve the set of card tabs into a normalized array of items. Every
+     * item is guaranteed to hold a safe 'id', a 'label', an 'icon' and an
+     * 'active' flag, with exactly one item flagged as the active one.
+     *
+     * @param  mixed  $tabs  The set of tabs requested by the user
+     * @return array
+     */
+    protected function resolveTabs($tabs)
+    {
+        if (! is_array($tabs) || empty($tabs)) {
+            return [];
+        }
+
+        $items = [];
+        $activeIdx = null;
+
+        foreach ($tabs as $key => $tab) {
+            if (! is_array($tab)) {
+                $tab = ['label' => $tab];
+            }
+
+            $id = $tab['id'] ?? (is_string($key) ? $key : null);
+            $id = UtilsHelper::applyHtmlEntityDecoder((string) $id);
+            $id = preg_replace('/[^A-Za-z0-9_-]/', '', (string) $id);
+
+            if ($id === '') {
+                $id = 'card-tab-'.(count($items) + 1);
+            }
+
+            $label = $tab['label'] ?? $id;
+
+            if (! isset($activeIdx) && ! empty($tab['active'])) {
+                $activeIdx = count($items);
+            }
+
+            $items[] = [
+                'id' => $id,
+                'label' => UtilsHelper::applyHtmlEntityDecoder($label),
+                'icon' => $tab['icon'] ?? null,
+                'active' => false,
+            ];
+        }
+
+        $items[$activeIdx ?? 0]['active'] = true;
+
+        return $items;
+    }
+
+    /**
+     * Check if the card is a tabbed card.
+     *
+     * @param  bool  $hasSlot  Whether the card tabs slot is defined
+     * @return bool
+     */
+    public function hasTabs($hasSlot = false)
+    {
+        return $hasSlot || ! empty($this->tabs);
+    }
+
+    /**
+     * Check if the card is initiated on collapsed mode.
+     *
+     * @return bool
+     */
+    public function isCardCollapsed()
+    {
+        return $this->collapsible === 'collapsed';
     }
 
     /**
      * Make the class attribute for the card.
      *
+     * @param  bool  $hasTabsSlot  Whether the card tabs slot is defined
      * @return string
      */
-    public function makeCardClass()
+    public function makeCardClass($hasTabsSlot = false)
     {
         $classes = ['card'];
 
@@ -157,7 +296,18 @@ class Card extends Component
             }
         }
 
-        if ($this->collapsible === 'collapsed') {
+        if ($this->hasTabs($hasTabsSlot)) {
+            $classes[] = 'card-tabs';
+
+            // The outline cards get an extra modifier, which moves the accent
+            // from the top border of the card to the tabs navigation.
+
+            if ($this->themeMode === 'outline') {
+                $classes[] = 'card-outline-tabs';
+            }
+        }
+
+        if ($this->isCardCollapsed()) {
             $classes[] = 'collapsed-card';
         }
 
@@ -167,11 +317,20 @@ class Card extends Component
     /**
      * Make the class attribute for the card header.
      *
+     * @param  bool  $hasTabsSlot  Whether the card tabs slot is defined
      * @return string
      */
-    public function makeCardHeaderClass()
+    public function makeCardHeaderClass($hasTabsSlot = false)
     {
         $classes = ['card-header'];
+
+        // A tabbed card header holds the tabs navigation, which needs to sit
+        // flush against the body seam.
+
+        if ($this->hasTabs($hasTabsSlot)) {
+            $classes[] = 'p-0';
+            $classes[] = 'pt-1';
+        }
 
         if (isset($this->headerClass)) {
             $classes[] = $this->headerClass;
@@ -222,17 +381,49 @@ class Card extends Component
         // Note the AdminLTE v4 outline cards keep a plain title, the theme
         // color is only applied to the top border of the card.
 
-        return 'card-title';
+        $classes = ['card-title'];
+
+        if (isset($this->titleClass)) {
+            $classes[] = $this->titleClass;
+        }
+
+        return implode(' ', $classes);
+    }
+
+    /**
+     * Make the class attribute for a card tab navigation link.
+     *
+     * @param  array  $tab  A normalized card tab item
+     * @return string
+     */
+    public function makeTabLinkClass($tab)
+    {
+        $classes = ['nav-link'];
+
+        if (! empty($tab['active'])) {
+            $classes[] = 'active';
+        }
+
+        return implode(' ', $classes);
     }
 
     /**
      * Check if the card header is empty (no items defined for the header).
      *
-     * @param  bool  $hasSlot  Whether the card header slot is defined
+     * @param  bool  $hasSlot  Whether the card tools slot is defined
+     * @param  bool  $hasTitleSlot  Whether the card title slot is defined
+     * @param  bool  $hasHeaderSlot  Whether the card header slot is defined
+     * @param  bool  $hasTabsSlot  Whether the card tabs slot is defined
      * @return bool
      */
-    public function isCardHeaderEmpty($hasSlot = false)
-    {
+    public function isCardHeaderEmpty(
+        $hasSlot = false, $hasTitleSlot = false, $hasHeaderSlot = false,
+        $hasTabsSlot = false
+    ) {
+        if ($hasHeaderSlot || $hasTitleSlot || $this->hasTabs($hasTabsSlot)) {
+            return false;
+        }
+
         $hasTools = isset($this->collapsible) ||
                     isset($this->maximizable) ||
                     isset($this->removable) ||

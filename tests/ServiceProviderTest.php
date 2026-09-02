@@ -96,8 +96,9 @@ class ServiceProviderTest extends TestCase
         $adminlte = $this->app->make(AdminLte::class);
         $menu = $adminlte->menu();
 
-        $this->assertCount(12, $menu);
+        $this->assertCount(13, $menu);
         $this->assertEquals('search', $menu[0]['text']);
+        $this->assertEquals('darkmode-widget', $menu[1]['type']);
     }
 
     public function testBootLoadComponents()
@@ -153,5 +154,39 @@ class ServiceProviderTest extends TestCase
         // Refresh route names after loading routes again.
 
         Route::getRoutes()->refreshNameLookups();
+    }
+
+    public function testBootRegisterThePublishGroups()
+    {
+        // The vendor:publish workflow is what every Laravel user tries first,
+        // so the package provides its own tags for it.
+
+        $groups = \Illuminate\Support\ServiceProvider::$publishGroups;
+
+        foreach (['adminlte-config', 'adminlte-views', 'adminlte-lang', 'adminlte-assets'] as $tag) {
+            $this->assertArrayHasKey($tag, $groups);
+            $this->assertNotEmpty($groups[$tag]);
+        }
+
+        // The config group targets the application config file.
+
+        $target = reset($groups['adminlte-config']);
+        $this->assertStringEndsWith('adminlte.php', $target);
+    }
+
+    public function testBootLoadTheNewComponents()
+    {
+        $components = [
+            'layout.content-header', 'widget.timeline', 'widget.timeline-item',
+            'widget.timeline-label', 'widget.ribbon', 'widget.progress-group',
+            'widget.user-block', 'widget.toast',
+        ];
+
+        foreach ($components as $component) {
+            $this->assertTrue(
+                View::exists("adminlte::components.{$component}"),
+                $component
+            );
+        }
     }
 }

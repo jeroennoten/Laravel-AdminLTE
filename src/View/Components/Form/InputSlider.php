@@ -2,6 +2,8 @@
 
 namespace JeroenNoten\LaravelAdminLte\View\Components\Form;
 
+use Illuminate\View\ComponentAttributeBag;
+
 class InputSlider extends InputGroupComponent
 {
     use Traits\OldValueSupportTrait;
@@ -52,7 +54,8 @@ class InputSlider extends InputGroupComponent
     public function __construct(
         $name, $id = null, $label = null, $igroupSize = null, $labelClass = null,
         $fgroupClass = null, $igroupClass = null, $disableFeedback = null,
-        $errorKey = null, $config = [], $color = null, $enableOldSupport = null
+        $errorKey = null, $config = [], $color = null, $enableOldSupport = null,
+        $sliderAttributes = []
     ) {
         parent::__construct(
             $name, $id, $label, $igroupSize, $labelClass, $fgroupClass,
@@ -67,7 +70,18 @@ class InputSlider extends InputGroupComponent
         // that holds the slider, it's not the id of the underlying input.
 
         $this->config['id'] = $this->config['id'] ?? "{$this->id}-slider";
+
+        $this->sliderAttributes = is_array($sliderAttributes)
+            ? $sliderAttributes
+            : [];
     }
+
+    /**
+     * The attributes of the DOM element that holds the slider.
+     *
+     * @var array
+     */
+    public $sliderAttributes = [];
 
     /**
      * Get the configuration that will be handed over to the 'noUiSlider'
@@ -269,6 +283,25 @@ class InputSlider extends InputGroupComponent
         }
 
         return implode(' ', $classes);
+    }
+
+    /**
+     * Makes the attribute bag of the DOM element that holds the slider. The
+     * plugin mutates that element, so a Livewire app needs to mark it with
+     * 'wire:ignore' in order to survive a re-render.
+     *
+     * @return \Illuminate\View\ComponentAttributeBag
+     */
+    public function makeSliderAttributes()
+    {
+        $attrs = $this->sliderAttributes;
+
+        if ($this->isInvalid()) {
+            $attrs['aria-invalid'] = 'true';
+            $attrs['aria-describedby'] = $this->makeInvalidFeedbackId();
+        }
+
+        return new ComponentAttributeBag($attrs);
     }
 
     /**

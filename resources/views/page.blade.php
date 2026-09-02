@@ -15,7 +15,16 @@
 @endphp
 
 @section('body')
-    <div class="app-wrapper">
+    {{-- Skip Links. The AdminLTE accessibility script injects its own English
+         container when the document has no '.skip-links' element, so emitting
+         a localized one here (as the first child of the body) replaces it.
+         The script still stamps the '#main' and '#navigation' targets. --}}
+    <div class="skip-links">
+        <a href="#main" class="skip-link">{{ __('adminlte::adminlte.skip_to_content') }}</a>
+        <a href="#navigation" class="skip-link">{{ __('adminlte::adminlte.skip_to_navigation') }}</a>
+    </div>
+
+    <div class="{{ $layoutHelper->makeWrapperClasses() }}">
 
         {{-- Preloader Animation (fullscreen mode) --}}
         @if($preloaderHelper->isPreloaderEnabled())

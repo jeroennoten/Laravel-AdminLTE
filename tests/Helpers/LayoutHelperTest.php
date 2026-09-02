@@ -59,10 +59,10 @@ class LayoutHelperTest extends TestCase
 
         $data = LayoutHelper::makeBodyClasses();
 
-        // Without configuration, only the sidebar related defaults of the
-        // helper are expected (the mini sidebar is enabled by default).
+        // Without configuration, the sidebar related defaults of the helper
+        // are expected (the fixed and the mini sidebar are the defaults).
 
-        $this->assertEquals('sidebar-expand-lg sidebar-mini', $data);
+        $this->assertEquals('layout-fixed sidebar-expand-lg sidebar-mini', $data);
     }
 
     public function testMakeBodyClassesWithSidebarMiniConfig()

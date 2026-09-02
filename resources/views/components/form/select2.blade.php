@@ -10,7 +10,7 @@
 
     {{-- Select (Bootstrap 5 uses the 'form-select' class) --}}
     <select id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}>
+        {{ $attributes->merge($makeItemAttributes()) }}>
         {{ $slot }}
     </select>
 

@@ -37,6 +37,16 @@ Attribute | Description | Type | Default | Required
 config | Array with the plugin configuration parameters | array | `[]` | no
 enable-default-ranges | Preselects one of the predefined ranges. The accepted string values are: `'Today'`, `'Yesterday'`, `'Last 7 Days'`, `'Last 30 Days'`, `'This Month'` or `'Last Month'` | string | `null` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
+slider-attributes | Extra attributes for the `div` element the plugin renders into, as `key => value` pairs | array | `[]` | no
+
+> [!Tip]
+> The plugin **mutates the DOM** of the slider element, so a **Livewire** re-render would wipe its markup. Use `slider-attributes` to exclude that element:
+>
+> ```blade
+> <x-adminlte-input-slider name="range" :slider-attributes="['wire:ignore' => '']"/>
+> ```
+>
+> The validation state (`aria-invalid` and `aria-describedby`) is emitted on that same element, since it is the one the user actually interacts with.
 
 > [!Important]
 > The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.

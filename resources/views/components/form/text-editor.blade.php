@@ -10,7 +10,7 @@
 
     {{-- Hidden textarea holding the value submitted with the form --}}
     <textarea id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}
+        {{ $attributes->merge($makeItemAttributes()) }}
     >{{ $getOldValue($errorKey, $slot) }}</textarea>
 
     {{-- The wrapper of the 'Quill' editor. The plugin injects its toolbar as

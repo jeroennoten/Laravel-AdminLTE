@@ -10,7 +10,7 @@
 
     {{-- Textarea --}}
     <textarea id="{{ $id }}" name="{{ $name }}"
-        {{ $attributes->merge(['class' => $makeItemClass()]) }}
+        {{ $attributes->merge($makeItemAttributes()) }}
     >{{ $getOldValue($errorKey, $slot) }}</textarea>
 
 @overwrite

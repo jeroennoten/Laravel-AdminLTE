@@ -31,11 +31,44 @@ guide before updating.
   OverlayScrollbars) from the node modules folder of the application.
 - New `sidebar_expand`, `sidebar_without_hover`, `sidebar_theme`,
   `classes_footer`, `logout_method` and `right_sidebar_*` options.
+- Palette tuning through the new `assets.palette` section: `primary` remaps the
+  primary color of the whole template with the AdminLTE `data-lte-primary`
+  attribute, and `contrast` applies the WCAG AA correction of the palette
+  (`data-lte-contrast`), which is enabled by default on the v3 palette.
+- New `layout_compact` option, which enables the AdminLTE v4 compact mode, and
+  a new `classes_wrapper` option for the `.app-wrapper` element.
+- New `content_top_area` and `content_bottom_area` blade sections, together
+  with their `classes_content_top_area` and `classes_content_bottom_area`
+  options. They fill the AdminLTE v4 custom content areas.
+- New `color_mode.enabled` option, which opts out of the AdminLTE color mode
+  plugin explicitly when the application does its own theming.
+- Publish groups for the standard Laravel workflow: `adminlte-config`,
+  `adminlte-views`, `adminlte-lang` and `adminlte-assets`.
+- New blade components: `content-header` (title plus breadcrumbs), `timeline`
+  with `timeline-item` and `timeline-label`, `ribbon`, `progress-group`,
+  `user-block` and `toast`.
+- New slots and options on the existing components, so fewer cases require
+  publishing a view.
 
 ### Changed
 
 - The whole layout, all the partials and all the blade components were
   rewritten with the AdminLTE v4 markup and Bootstrap 5.3.
+- The default menu ships the color mode selector, so the headline feature of
+  AdminLTE v4 is visible on a fresh installation.
+- The `laravel_css_path` and `laravel_js_path` defaults changed to
+  `resources/css/app.css` and `resources/js/app.js`. The previous values were
+  Laravel Mix shaped and made the Vite setup throw on the first request.
+- The `right_sidebar_theme` default changed to `null`, so the offcanvas panel
+  follows the color mode of the page instead of forcing the dark one.
+- The progress bar emits `text-bg-{color}` instead of `bg-{color}`, which keeps
+  its label readable over the light theme colors.
+- The footer link of the small box follows the contrast of the box background,
+  instead of always using the light variant.
+- Every form component wires its validation state to the feedback block with
+  `aria-invalid` and `aria-describedby`.
+- The color mode of a themed modal header is derived from the palette, which
+  fixes the invisible close button on the v3 color aliases.
 - Bootstrap Icons replaced Font Awesome on every default of the package.
 - The right sidebar is now a Bootstrap offcanvas panel.
 - The iframe mode is implemented by the package itself, since AdminLTE v4
@@ -49,6 +82,19 @@ guide before updating.
 - Cards, progress bars and form groups provide their own default spacing, which
   a caller supplied margin utility overrides.
 
+### Fixed
+
+- The user menu partial mixed the inline `@php(...)` and the block
+  `@php ... @endphp` directives. The block form is matched lazily, so the
+  compiler swallowed everything in between and emitted the `@else` and
+  `@endif` of the url resolution as literal text, which broke the partial for
+  every authenticated user. A test now compiles every shipped view and rejects
+  that mix.
+- The color mode of a themed modal header is derived from the palette, so the
+  close button of a dark header stays visible with the v3 color aliases too.
+- The `data-lte-toggle="toast"` controls resolve a `data-bs-target` that
+  carries the leading `#` of the Bootstrap convention.
+
 ### Removed
 
 - Support for Laravel 11 and older, and for PHP 8.1 and older. The package
@@ -57,3 +103,6 @@ guide before updating.
 - The legacy `enabled_laravel_mix`, `laravel_mix_css_path` and
   `laravel_mix_js_path` options. Use `laravel_asset_bundling => 'mix'` with
   `laravel_css_path` and `laravel_js_path` instead.
+- The `layout_boxed`, `sidebar_collapse_auto_size` and
+  `sidebar_collapse_remember_no_transition` options left the shipped
+  configuration file. They had no effect on AdminLTE v4.

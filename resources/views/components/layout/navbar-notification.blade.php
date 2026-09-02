@@ -1,5 +1,12 @@
 {{-- Navbar notification --}}
 
+@php
+    // The badge is announced by assistive technology when it is polled, so the
+    // live region is only required on that variant.
+
+    $isPolled = ! is_null($makeUpdateUrl()) && $makeUpdatePeriod() > 0;
+@endphp
+
 <li class="{{ $makeListItemClass() }}" id="{{ $id }}">
 
     {{-- Link --}}
@@ -8,9 +15,11 @@
         {{-- Icon --}}
         <i class="{{ $makeIconClass() }}" aria-hidden="true"></i>
 
-        {{-- Badge --}}
+        {{-- Badge. The visually hidden suffix is a sibling of the badge, so
+             the periodic update (which rewrites the badge text) keeps it. --}}
         @isset($badgeLabel)
-            <span class="{{ $makeBadgeClass() }}">{{ $badgeLabel }}</span>
+            <span class="{{ $makeBadgeClass() }}"@if($isPolled) aria-live="polite"@endif>{{ $badgeLabel }}</span>
+            <span class="visually-hidden">{{ __('adminlte::adminlte.notifications') }}</span>
         @endisset
 
     </a>
@@ -43,7 +52,7 @@
 
 {{-- If required, update the notification periodically --}}
 
-@if (! is_null($makeUpdateUrl()) && $makeUpdatePeriod() > 0)
+@if ($isPolled)
 @push('js')
 <script>
 
@@ -94,22 +103,20 @@
 
             // Update the badge label.
 
-            if (data.label && data.label > 0) {
-                badge.innerHTML = data.label;
-            } else {
-                badge.innerHTML = '';
+            if (badge) {
+                badge.textContent = (data.label && data.label > 0) ? data.label : '';
             }
 
             // Update the badge color (Bootstrap 5: bg-* instead of badge-*).
 
-            if (data.label_color) {
+            if (data.label_color && badge) {
                 badge.className = badge.className.replace(/\bbg-\S+/g, '');
                 badge.classList.add(`bg-${data.label_color}`);
             }
 
             // Update the icon color.
 
-            if (data.icon_color) {
+            if (data.icon_color && icon) {
                 icon.className = icon.className.replace(/\btext-\S+/g, '');
                 icon.classList.add(`text-${data.icon_color}`);
             }

@@ -41,6 +41,28 @@ class Layout
     }
 
     /**
+     * Makes the set of classes of the wrapper element.
+     *
+     * @return array
+     */
+    public static function makeWrapperClasses()
+    {
+        $classes = [Tokens::WRAPPER];
+
+        if (config('adminlte.layout_compact', false) === true) {
+            $classes[] = Tokens::COMPACT_MODE;
+        }
+
+        $cfg = config('adminlte.classes_wrapper', '');
+
+        if (is_string($cfg) && ! empty($cfg)) {
+            $classes[] = $cfg;
+        }
+
+        return $classes;
+    }
+
+    /**
      * Makes the set of classes of the content wrapper element.
      *
      * @return array

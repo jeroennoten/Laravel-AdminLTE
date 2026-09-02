@@ -31,6 +31,14 @@ class InfoBox extends Component
     public $description;
 
     /**
+     * An extra line of content for the box, rendered inside an element with
+     * the '.info-box-more' class.
+     *
+     * @var string
+     */
+    public $more;
+
+    /**
      * A Bootstrap Icon for the box.
      *
      * @var string
@@ -93,10 +101,11 @@ class InfoBox extends Component
     public function __construct(
         $title = null, $text = null, $icon = null, $description = null,
         $url = null, $urlTarget = 'title', $theme = null, $iconTheme = null,
-        $progress = null, $progressTheme = null
+        $progress = null, $progressTheme = null, $more = null
     ) {
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->text = UtilsHelper::applyHtmlEntityDecoder($text);
+        $this->more = UtilsHelper::applyHtmlEntityDecoder($more);
         $this->icon = $icon;
         $this->description = UtilsHelper::applyHtmlEntityDecoder($description);
         $this->url = $url;

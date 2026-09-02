@@ -52,6 +52,23 @@ You should note that all the others components that extends from this one will h
 - **appendSlot**: Use this slot to append an add-on in the input group item.
 - **bottomSlot**: Use this slot to add extra information or markup below the input group item.
 
+### Validation State and Accessibility
+
+When the input group is invalid, the control itself declares the state and points at the block holding the message:
+
+```html
+<input id="email" class="form-control is-invalid"
+       aria-invalid="true" aria-describedby="email-error">
+...
+<span id="email-error" class="invalid-feedback d-block" role="alert">
+    <strong>The email field is required.</strong>
+</span>
+```
+
+The identifier of the feedback block is always the `id` of the control suffixed with `-error`. A screen reader therefore announces the error together with the field instead of leaving it unassociated. An `aria-describedby` of your own **wins** over the generated one, so pass both identifiers when the field also has a hint.
+
+Every component extending the input group inherits this behaviour, the [InputSlider](/sections/components/advanced_forms_components#inputslider) included, where the attributes land on the element the plugin renders into rather than on the hidden input.
+
 # Button
 
 This component represents an `AdminLTE` styled button. The following attributes are available:
@@ -67,6 +84,16 @@ Any other attribute you define will be directly inserted into the underlying `bu
 
 > [!Important]
 > **Bootstrap 5** removed the `btn-default` class, so the legacy `'default'` theme is mapped to the Bootstrap 5 `secondary` theme. The `btn-flat` class of **AdminLTE v3** does not exist anymore either.
+
+### Slots
+
+The default slot is rendered after the `icon` and the `label`, so a button can carry markup that the escaped `label` attribute cannot express:
+
+```blade
+<x-adminlte-button theme="primary" icon="bi bi-inbox" label="Inbox">
+    <span class="badge text-bg-light ms-1">3</span>
+</x-adminlte-button>
+```
 
 ### Examples
 

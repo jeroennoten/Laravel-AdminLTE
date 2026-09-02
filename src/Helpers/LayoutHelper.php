@@ -6,6 +6,7 @@ use JeroenNoten\LaravelAdminLte\Layout\BodyClasses;
 use JeroenNoten\LaravelAdminLte\Layout\ColorMode;
 use JeroenNoten\LaravelAdminLte\Layout\Direction;
 use JeroenNoten\LaravelAdminLte\Layout\Layout;
+use JeroenNoten\LaravelAdminLte\Layout\Palette;
 use JeroenNoten\LaravelAdminLte\Layout\Sidebar;
 
 class LayoutHelper
@@ -129,7 +130,11 @@ class LayoutHelper
             $attrs[] = 'dir="rtl"';
         }
 
-        return self::join(array_merge($attrs, ColorMode::makeHtmlAttributes()));
+        return self::join(array_merge(
+            $attrs,
+            ColorMode::makeHtmlAttributes(),
+            Palette::makeHtmlAttributes()
+        ));
     }
 
     /**
@@ -184,6 +189,17 @@ class LayoutHelper
     public static function makeSidebarData()
     {
         return self::join(Sidebar::makeAttributes());
+    }
+
+    /**
+     * Makes and return the set of classes related to the wrapper element
+     * (app-wrapper in AdminLTE v4).
+     *
+     * @return string
+     */
+    public static function makeWrapperClasses()
+    {
+        return self::join(Layout::makeWrapperClasses());
     }
 
     /**
