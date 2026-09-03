@@ -9,6 +9,9 @@ In case you still choose to use the legacy [laravel/ui](https://github.com/larav
 php artisan adminlte:install --only=auth_views
 ```
 
+> [!Note]
+> The **email verification** view posts to the `verification.resend` route, which `Auth::routes()` only registers when it is called as `Auth::routes(['verify' => true])`. If your application uses the Laravel email verification, add that option to the `Auth::routes()` call in your `routes/web.php`, otherwise the view raises a `RouteNotFoundException`.
+
 Please, note this command just replaces the authentication blade views. The controllers and routes of the authentication scaffolding that where installed in the **Laravel** framework are not touched. On the other hand, to get login, logout, and register features fully working you will need to setup a database and run the proper migrations as indicated on the **Laravel** documentation.
 
 By default, the installed login view contains a link to the registration and password reset views. If you don't want a registration or password reset form, set the `register_url` or `password_reset_url` setting to `null` on the `adminlte.php` configuration file and the respective link will not be displayed.
