@@ -1,5 +1,26 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Laravel AdminLTE Configuration
+|--------------------------------------------------------------------------
+|
+| The options below are grouped by topic, and every group is introduced by
+| the comment block right above it. The order of the groups is: the basics
+| (title, logos, urls), the assets, the layout and the styling, the
+| authentication views, the menu, the plugins and finally the integrations.
+|
+| Note the options added for AdminLTE v4 live inside a nested array of their
+| own (like 'color_mode' or 'lockscreen'), while the older ones keep their
+| flat name (like 'sidebar_nav_pills'). Renaming the flat ones would break
+| every configuration file already published into an application, so they
+| are kept as they are.
+|
+| The full documentation is available here:
+| https://jeroennoten.github.io/Laravel-AdminLTE/
+|
+*/
+
 return [
 
     /*
@@ -7,7 +28,9 @@ return [
     | Title
     |--------------------------------------------------------------------------
     |
-    | Here you can change the default title of your admin panel.
+    | Here you can change the default title of your admin panel. The prefix and
+    | the postfix are placed around the title of every page, and a view can
+    | override any of the three through the section of the same name.
     |
     | For detailed instructions you can look the title section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
@@ -23,7 +46,10 @@ return [
     | Favicon
     |--------------------------------------------------------------------------
     |
-    | Here you can activate the favicon.
+    | Here you can activate the favicon. Enable 'use_ico_only' to link the
+    | 'public/favicons/favicon.ico' file alone, or 'use_full_favicon' to also
+    | link the whole set of touch icons, png sizes and the web app manifest
+    | that the same folder is expected to provide.
     |
     | For detailed instructions you can look the favicon section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
@@ -35,30 +61,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Web Fonts
-    |--------------------------------------------------------------------------
-    |
-    | Here you can allow or not the use of the external web font used by the
-    | AdminLTE v4 template (Source Sans 3, served from a CDN). Disabling the
-    | web fonts may be useful if your admin panel internet access is
-    | restricted somehow. The font source can be changed on the 'assets'
-    | section below.
-    |
-    | For detailed instructions you can look the google fonts section here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
-    |
-    */
-
-    'google_fonts' => [
-        'allowed' => true,
-    ],
-
-    /*
-    |--------------------------------------------------------------------------
     | Admin Panel Logo
     |--------------------------------------------------------------------------
     |
-    | Here you can change the logo of your admin panel.
+    | Here you can change the logo of your admin panel. The 'logo' option holds
+    | the brand text (html is allowed) and 'logo_img' the image placed next to
+    | it, relative to the public folder.
+    |
+    | The optional 'logo_img_xl' option enables the AdminLTE logo switch: the
+    | 'logo_img' one is then only shown while the sidebar is collapsed, and
+    | this larger image replaces it while the sidebar is expanded.
     |
     | For detailed instructions you can look the logo section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
@@ -105,6 +117,15 @@ return [
     | modes are supported: 'fullscreen' for a fullscreen preloader animation
     | and 'cwrapper' to attach the preloader animation into the content-wrapper
     | element and avoid overlapping it with the sidebars and the top navbar.
+    | Any other value falls back to the 'fullscreen' mode.
+    |
+    | The 'img' options configure the default preloader content, which a view
+    | can replace altogether through its 'preloader' section. The 'effect' one
+    | accepts the legacy 'animation__shake', 'animation__wobble',
+    | 'animation__flipInX', 'animation__fadeIn', 'animation__fadeOut' and
+    | 'animation__spin' tokens; any other value emits no animation. Note the
+    | animation is always suppressed for the visitors who ask for reduced
+    | motion.
     |
     | For detailed instructions you can look the preloader section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
@@ -128,7 +149,18 @@ return [
     | User Menu
     |--------------------------------------------------------------------------
     |
-    | Here you can activate and change the user menu.
+    | Here you can activate and change the user menu, the dropdown of the
+    | navbar that holds the data of the authenticated user. When it is
+    | disabled, a plain logout link is rendered instead.
+    |
+    | The 'usermenu_header' option adds the colored header of the dropdown, and
+    | 'usermenu_header_class' holds its classes (a legacy 'bg-{color}' value is
+    | translated to the Bootstrap 5.3 'text-bg-{color}' helper).
+    |
+    | The 'usermenu_image', 'usermenu_desc' and 'usermenu_profile_url' options
+    | read their value from the authenticated user model, so they require it to
+    | provide, respectively, an 'adminlte_image()', an 'adminlte_desc()' and an
+    | 'adminlte_profile_url()' method. A missing method is ignored.
     |
     | For detailed instructions you can look the user menu section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
@@ -141,6 +173,35 @@ return [
     'usermenu_image' => false,
     'usermenu_desc' => false,
     'usermenu_profile_url' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | URLs
+    |--------------------------------------------------------------------------
+    |
+    | Here we can modify the url settings of the admin panel. Every option
+    | below holds a plain url by default, or the name of a route when the
+    | 'use_route_url' option is enabled. A route name that can not be resolved
+    | falls back to a plain url, so a missing route does not break the panel.
+    |
+    | For detailed instructions you can look the urls section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
+    |
+    */
+
+    'use_route_url' => false,
+    'dashboard_url' => 'home',
+    'logout_url' => 'logout',
+
+    // The HTTP method spoofed on the logout form. Set it to 'GET' when your
+    // logout route is not a POST one, or leave it as null to post the form.
+
+    'logout_method' => null,
+    'login_url' => 'login',
+    'register_url' => 'register',
+    'password_reset_url' => 'password/reset',
+    'password_email_url' => 'password/email',
+    'profile_url' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -158,6 +219,8 @@ return [
     |            see the artisan console commands section of the docs), the CDN
     |            location is used as a fallback when 'cdn_fallback' is enabled.
     | 'cdn'   => Always serve the assets from the configured CDN locations.
+    |
+    | Any other value falls back to the 'local' mode.
     |
     | Note the RTL variant of a stylesheet is picked automatically when the RTL
     | mode is active (see the 'rtl' section below).
@@ -194,12 +257,14 @@ return [
         //
         // The 'primary' option remaps the primary color of the whole template
         // to any other color of the enabled palette (for example 'teal' or
-        // 'navy'). Set it to null to keep the default blue.
+        // 'navy'). Set it to null to keep the default blue. A color the
+        // enabled palette does not provide is ignored.
         //
         // The 'contrast' option applies the WCAG AA correction of the palette.
-        // Use null to apply it automatically on the v3 palette (where some of
-        // the colors miss the 4.5:1 ratio), 'aa' to force it, or false to
-        // always disable it.
+        // Only the v3 alias stylesheet ships that correction, since some of
+        // its colors miss the 4.5:1 ratio. Use null to apply it automatically
+        // on that palette, 'aa' to declare it in any case, or false to always
+        // disable it.
 
         'palette' => [
             'primary' => null,
@@ -251,6 +316,51 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Web Fonts
+    |--------------------------------------------------------------------------
+    |
+    | Here you can allow or not the use of the external web font used by the
+    | AdminLTE v4 template (Source Sans 3, served from a CDN). Disabling the
+    | web fonts may be useful if your admin panel internet access is
+    | restricted somehow, or when you do not want the browsers of your
+    | visitors to reach a third party host. The font source can be changed on
+    | the 'assets' section above (the 'fonts_css' locations).
+    |
+    | For detailed instructions you can look the google fonts section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
+    |
+    */
+
+    'google_fonts' => [
+        'allowed' => true,
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Laravel Asset Bundling
+    |--------------------------------------------------------------------------
+    |
+    | Here we can enable the Laravel Asset Bundling option for the admin panel.
+    | Currently, the next modes are supported: 'mix', 'vite' and 'vite_js_only'.
+    | When using 'vite_js_only', it's expected that your CSS is imported using
+    | JavaScript. Typically, in your application's 'resources/js/app.js' file.
+    | If you are not using any of these, leave it as 'false'.
+    |
+    | Note the AdminLTE stylesheet and script are then expected to be part of
+    | your own bundle, so they are not linked by the layout anymore. Any other
+    | value behaves like 'false'.
+    |
+    | For detailed instructions you can look the asset bundling section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/other.html
+    |
+    */
+
+    'laravel_asset_bundling' => false,
+    'laravel_css_path' => 'resources/css/app.css',
+    'laravel_js_path' => 'resources/js/app.js',
+
+    /*
+    |--------------------------------------------------------------------------
     | Color Mode (AdminLTE v4)
     |--------------------------------------------------------------------------
     |
@@ -262,9 +372,14 @@ return [
     | 'dark'  => Always start on dark mode.
     | 'auto'  => Follow the operating system preference of the visitor.
     |
+    | Any other value falls back to the 'auto' mode.
+    |
     | When 'remember' is enabled, the AdminLTE color mode widget stores the
     | visitor choice on the browser local storage (the AdminLTE v4 default
-    | behavior). Disable it to always start with the configured default.
+    | behavior) and the navbar widget offers the three modes above. Disable it
+    | to always start with the configured default, in which case the navbar
+    | widget becomes a two states toggle that persists the choice on the
+    | server through the routes below.
     |
     | The 'no_flash_script' option adds a tiny inline script on the head of the
     | document to apply the resolved color mode before the first paint, and
@@ -296,6 +411,11 @@ return [
         ],
     ],
 
+    // The legacy alias of the 'color_mode.routes' option above. Set it to true
+    // to unregister the color mode routes of the package.
+
+    'disable_darkmode_routes' => false,
+
     /*
     |--------------------------------------------------------------------------
     | RTL Mode (AdminLTE v4)
@@ -326,10 +446,49 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Print Mode (AdminLTE v4)
+    |--------------------------------------------------------------------------
+    |
+    | AdminLTE tunes the printed output of the panel through the
+    | 'data-lte-print' attribute of the <html> element. Here you can list the
+    | tokens to declare on it, either as an array or as a space separated
+    | string.
+    |
+    | The bundled stylesheet provides the next token:
+    | 'plain' => Do not print the url after every external link, and drop the
+    |            border printed around the buttons.
+    |
+    | The 'app' token is accepted as well, but only the AdminLTE releases whose
+    | stylesheet provides it react to it (the bundled one always prints the
+    | header, the sidebar and the footer).
+    |
+    | Leave the array empty (the default) and no attribute is emitted at all,
+    | so the AdminLTE print styles apply as they ship. Any other token is
+    | dropped.
+    |
+    | For detailed instructions you can look the layout section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
+    |
+    */
+
+    'print' => [],
+
+    /*
+    |--------------------------------------------------------------------------
     | Layout
     |--------------------------------------------------------------------------
     |
     | Here we change the layout of your admin panel.
+    |
+    | The 'layout_topnav' option removes the sidebar and moves the whole
+    | navigation into the top navbar. The 'layout_fixed_sidebar' option keeps
+    | the sidebar in place while the content scrolls, and it is ignored on the
+    | topnav layout. The 'layout_fixed_navbar' and 'layout_fixed_footer' ones
+    | do the same for the navbar and the footer; note AdminLTE v4 has no
+    | responsive fixed modes anymore, so an array value is read as enabled
+    | whenever any of its entries is true.
+    |
+    | The 'layout_compact' option reduces the spacing of the layout elements.
     |
     | For detailed instructions you can look the layout section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
@@ -344,10 +503,186 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Authentication Views Classes
+    | Admin Panel Classes
+    |--------------------------------------------------------------------------
+    |
+    | Here you can change the look and behavior of the admin panel. Every
+    | option holds the extra classes added to one element of the layout, and
+    | they are all appended to the classes the template requires.
+    |
+    | Note the 'classes_topnav_nav' option is the place of the Bootstrap
+    | 'navbar-expand*' class of the navbar. Removing it collapses the navbar
+    | items into a single column on every viewport.
+    |
+    | For detailed instructions you can look the admin panel classes here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
+    |
+    */
+
+    'classes_body' => 'bg-body-tertiary',
+    'classes_brand' => '',
+    'classes_brand_text' => 'fw-light',
+    'classes_wrapper' => '',
+    'classes_content_wrapper' => '',
+    'classes_footer' => '',
+    'classes_content_header' => '',
+    'classes_content' => '',
+    'classes_content_top_area' => '',
+    'classes_content_bottom_area' => '',
+    'classes_sidebar' => 'bg-body-secondary shadow',
+    'classes_sidebar_nav' => '',
+    'classes_topnav' => 'bg-body',
+    'classes_topnav_nav' => 'navbar-expand',
+    'classes_topnav_container' => 'container-fluid',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Sidebar
+    |--------------------------------------------------------------------------
+    |
+    | Here we can modify the sidebar of the admin panel.
+    |
+    | For detailed instructions you can look the sidebar section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
+    |
+    */
+
+    // The 'data-bs-theme' value applied to the main sidebar. Use 'dark' for
+    // the classic AdminLTE dark sidebar, 'light' for a light one, or null to
+    // inherit the color mode of the page. Any other value is read as 'dark'.
+
+    'sidebar_theme' => 'dark',
+
+    // Behavior of the sidebar. The mini mode keeps the icons of a collapsed
+    // sidebar visible, 'sidebar_collapse' starts the panel with the sidebar
+    // already collapsed, and 'sidebar_without_hover' stops a collapsed
+    // sidebar from expanding again on mouse hover.
+
+    'sidebar_mini' => true,
+    'sidebar_collapse' => false,
+    'sidebar_without_hover' => false,
+
+    // Persist the collapsed state of the sidebar on the browser, so it
+    // survives a page load (the AdminLTE push menu plugin takes care of it).
+
+    'sidebar_collapse_remember' => false,
+
+    // The breakpoint where the sidebar turns into an overlay. AdminLTE only
+    // provides the 'sm', 'md', 'lg', 'xl' and 'xxl' stylesheets, so any other
+    // value falls back to 'lg'. The 'sidebar_breakpoint' option is the same
+    // setting expressed as a viewport width in pixels: only the widths of
+    // those breakpoints are honored (576, 768, 992, 1200 and 1400, or the
+    // '.98' upper bound of their media query), any other width is ignored.
+    // Leave it as null to just use the option above.
+
+    'sidebar_expand' => 'lg',
+    'sidebar_breakpoint' => null,
+
+    // The OverlayScrollbars instance of the sidebar. The 'theme' is a class
+    // name of that plugin, 'auto_hide' accepts its 'never', 'scroll', 'leave'
+    // and 'move' tokens, and 'click_scroll' jumps to the clicked position of
+    // the track. Any extra option of the plugin can be declared on the
+    // 'sidebar_scrollbar_options' array, which is merged into (and thus wins
+    // over) the three above. At or below the 'disable_below' viewport width
+    // no instance is created at all, so touch scrolling is left alone.
+
+    'sidebar_scrollbar_theme' => 'os-theme-light',
+    'sidebar_scrollbar_auto_hide' => 'leave',
+    'sidebar_scrollbar_click_scroll' => true,
+    'sidebar_scrollbar_options' => [],
+    'sidebar_scrollbar_disable_below' => 992,
+
+    // The navigation menu of the sidebar. The 'aria_label' option names it for
+    // the assistive technologies (null uses the translated default), the
+    // 'compact', 'indent' and 'pills' options are the AdminLTE menu variants,
+    // 'accordion' keeps at most one submenu open at a time and
+    // 'animation_speed' is the duration, in milliseconds, of the submenu
+    // animation (a value that is not a number falls back to 300).
+
+    'sidebar_nav_aria_label' => null,
+    'sidebar_nav_compact' => false,
+    'sidebar_nav_indent' => false,
+    'sidebar_nav_pills' => false,
+    'sidebar_nav_accordion' => true,
+    'sidebar_nav_animation_speed' => 300,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Right Sidebar (Offcanvas)
+    |--------------------------------------------------------------------------
+    |
+    | Here we can modify the right sidebar of the admin panel. Note the old
+    | AdminLTE v3 control sidebar was removed on AdminLTE v4, so the right
+    | sidebar is now built on top of the Bootstrap 5 offcanvas component.
+    |
+    | Enable 'right_sidebar' to add its toggler to the navbar and to render the
+    | panel, whose content comes from the 'right_sidebar' section of your view.
+    | The 'placement' option accepts the Bootstrap 'start', 'end', 'top' and
+    | 'bottom' values (any other one falls back to 'end'), the 'theme' one
+    | accepts 'light' and 'dark' (null inherits the color mode of the page),
+    | 'backdrop' dims the rest of the page while the panel is open and
+    | 'scroll' keeps the page scrollable meanwhile. A null 'title' falls back
+    | to the title of the panel, kept for the assistive technologies only.
+    |
+    | For detailed instructions you can look the right sidebar section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
+    |
+    */
+
+    'right_sidebar' => false,
+    'right_sidebar_icon' => 'bi bi-gear',
+    'right_sidebar_theme' => null,
+    'right_sidebar_title' => null,
+    'right_sidebar_placement' => 'end',
+    'right_sidebar_backdrop' => true,
+    'right_sidebar_scroll' => false,
+    'right_sidebar_classes' => '',
+
+    /*
+    |--------------------------------------------------------------------------
+    | CSS Variables (AdminLTE v4)
+    |--------------------------------------------------------------------------
+    |
+    | The AdminLTE v4 theming is driven by the Bootstrap 5.3 and the AdminLTE
+    | custom properties, so overriding them is enough for most brandings and
+    | needs no stylesheet of your own. The declarations are emitted on an
+    | inline <style> block of the document head.
+    |
+    | Only well formed custom property names ('--name') and values that can
+    | not break out of the declaration are accepted, any other entry is
+    | silently dropped.
+    |
+    | For detailed instructions you can look the css variables section here:
+    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
+    |
+    */
+
+    // The custom properties applied on the whole document. For example:
+    // 'css_variables' => ['--bs-primary' => '#6f42c1'],
+
+    'css_variables' => [],
+
+    // The selector of the block above. Only ':root' and 'body' are accepted,
+    // any other value falls back to ':root'.
+
+    'css_variables_scope' => ':root',
+
+    // The custom properties applied on the sidebar element only. AdminLTE
+    // redeclares the sidebar properties under a color mode selector, so these
+    // are emitted with a matching specificity. For example:
+    // 'css_variables_sidebar' => ['--lte-sidebar-bg' => '#1f2d3d'],
+
+    'css_variables_sidebar' => [],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Authentication Views
     |--------------------------------------------------------------------------
     |
     | Here you can change the look and behavior of the authentication views.
+    | The 'classes_auth_*' options hold the extra classes of the card of those
+    | views and of its parts, and the social links below add an extra block of
+    | buttons at the bottom of the login and register cards.
     |
     | For detailed instructions you can look the auth classes section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
@@ -363,7 +698,9 @@ return [
 
     // The social login buttons of the authentication views. Every entry
     // accepts an 'url', a 'text', an 'icon' and a 'theme'. Leave the array
-    // empty (the default) and no block is rendered at all.
+    // empty (the default) and no block is rendered at all. The separator is
+    // the text placed above the block: null uses the translated default and
+    // an empty string drops it.
     //
     // 'auth_social_links' => [
     //     [
@@ -409,192 +746,6 @@ return [
 
         'except' => [],
     ],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Admin Panel Classes
-    |--------------------------------------------------------------------------
-    |
-    | Here you can change the look and behavior of the admin panel.
-    |
-    | For detailed instructions you can look the admin panel classes here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
-    |
-    */
-
-    'classes_body' => 'bg-body-tertiary',
-    'classes_brand' => '',
-    'classes_brand_text' => 'fw-light',
-    'classes_wrapper' => '',
-    'classes_content_wrapper' => '',
-    'classes_footer' => '',
-    'classes_content_header' => '',
-    'classes_content' => '',
-    'classes_content_top_area' => '',
-    'classes_content_bottom_area' => '',
-    'classes_sidebar' => 'bg-body-secondary shadow',
-    'classes_sidebar_nav' => '',
-    'classes_topnav' => 'bg-body',
-    'classes_topnav_nav' => 'navbar-expand',
-    'classes_topnav_container' => 'container-fluid',
-
-    // The 'data-bs-theme' value applied to the main sidebar. Use 'dark' for
-    // the classic AdminLTE dark sidebar, 'light' for a light one, or null to
-    // inherit the color mode of the page.
-
-    'sidebar_theme' => 'dark',
-
-    /*
-    |--------------------------------------------------------------------------
-    | Sidebar
-    |--------------------------------------------------------------------------
-    |
-    | Here we can modify the sidebar of the admin panel.
-    |
-    | For detailed instructions you can look the sidebar section here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
-    |
-    */
-
-    'sidebar_mini' => true,
-    'sidebar_expand' => 'lg',
-    'sidebar_collapse' => false,
-    'sidebar_without_hover' => false,
-    'sidebar_collapse_remember' => false,
-    'sidebar_breakpoint' => null,
-    'sidebar_scrollbar_theme' => 'os-theme-light',
-    'sidebar_scrollbar_auto_hide' => 'leave',
-    'sidebar_scrollbar_click_scroll' => true,
-    'sidebar_scrollbar_options' => [],
-    'sidebar_scrollbar_disable_below' => 992,
-    'sidebar_nav_aria_label' => null,
-    'sidebar_nav_compact' => false,
-    'sidebar_nav_indent' => false,
-    'sidebar_nav_pills' => false,
-    'sidebar_nav_accordion' => true,
-    'sidebar_nav_animation_speed' => 300,
-
-    /*
-    |--------------------------------------------------------------------------
-    | Right Sidebar (Offcanvas)
-    |--------------------------------------------------------------------------
-    |
-    | Here we can modify the right sidebar of the admin panel. Note the old
-    | AdminLTE v3 control sidebar was removed on AdminLTE v4, so the right
-    | sidebar is now built on top of the Bootstrap 5 offcanvas component.
-    |
-    | For detailed instructions you can look the right sidebar section here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
-    |
-    */
-
-    'right_sidebar' => false,
-    'right_sidebar_icon' => 'bi bi-gear',
-    'right_sidebar_theme' => null,
-    'right_sidebar_title' => null,
-    'right_sidebar_placement' => 'end',
-    'right_sidebar_backdrop' => true,
-    'right_sidebar_scroll' => false,
-    'right_sidebar_classes' => '',
-
-    /*
-    |--------------------------------------------------------------------------
-    | URLs
-    |--------------------------------------------------------------------------
-    |
-    | Here we can modify the url settings of the admin panel.
-    |
-    | For detailed instructions you can look the urls section here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/basic_configuration.html
-    |
-    */
-
-    'use_route_url' => false,
-    'dashboard_url' => 'home',
-    'logout_url' => 'logout',
-
-    // The HTTP method spoofed on the logout form. Set it to 'GET' when your
-    // logout route is not a POST one, or leave it as null to post the form.
-
-    'logout_method' => null,
-    'login_url' => 'login',
-    'register_url' => 'register',
-    'password_reset_url' => 'password/reset',
-    'password_email_url' => 'password/email',
-    'profile_url' => false,
-    'disable_darkmode_routes' => false,
-
-    /*
-    |--------------------------------------------------------------------------
-    | CSS Variables (AdminLTE v4)
-    |--------------------------------------------------------------------------
-    |
-    | The AdminLTE v4 theming is driven by the Bootstrap 5.3 and the AdminLTE
-    | custom properties, so overriding them is enough for most brandings and
-    | needs no stylesheet of your own. The declarations are emitted on an
-    | inline <style> block of the document head.
-    |
-    | Only well formed custom property names ('--name') and values that can
-    | not break out of the declaration are accepted, any other entry is
-    | silently dropped.
-    |
-    | For detailed instructions you can look the css variables section here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/layout_and_styling.html
-    |
-    */
-
-    // The custom properties applied on the whole document. For example:
-    // 'css_variables' => ['--bs-primary' => '#6f42c1'],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Single Page Navigation
-    |--------------------------------------------------------------------------
-    |
-    | AdminLTE re-initializes its plugins on the 'turbo:load' event of Turbo
-    | Drive, but it knows nothing about Livewire. So, after a 'wire:navigate'
-    | visit the sidebar, the treeview and the card tools would stay dead.
-    |
-    | With this option enabled, the package bridges the Livewire navigation
-    | event to the AdminLTE lifecycle. Disable it when your application takes
-    | care of that on its own.
-    |
-    */
-
-    'spa_navigation' => true,
-
-    'css_variables' => [],
-
-    // The selector of the block above. Only ':root' and 'body' are accepted.
-
-    'css_variables_scope' => ':root',
-
-    // The custom properties applied on the sidebar element only. AdminLTE
-    // redeclares the sidebar properties under a color mode selector, so these
-    // are emitted with a matching specificity. For example:
-    // 'css_variables_sidebar' => ['--lte-sidebar-bg' => '#1f2d3d'],
-
-    'css_variables_sidebar' => [],
-
-    /*
-    |--------------------------------------------------------------------------
-    | Laravel Asset Bundling
-    |--------------------------------------------------------------------------
-    |
-    | Here we can enable the Laravel Asset Bundling option for the admin panel.
-    | Currently, the next modes are supported: 'mix', 'vite' and 'vite_js_only'.
-    | When using 'vite_js_only', it's expected that your CSS is imported using
-    | JavaScript. Typically, in your application's 'resources/js/app.js' file.
-    | If you are not using any of these, leave it as 'false'.
-    |
-    | For detailed instructions you can look the asset bundling section here:
-    | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/other.html
-    |
-    */
-
-    'laravel_asset_bundling' => false,
-    'laravel_css_path' => 'resources/css/app.css',
-    'laravel_js_path' => 'resources/js/app.js',
 
     /*
     |--------------------------------------------------------------------------
@@ -957,6 +1108,13 @@ return [
     | Here we change the IFrame mode configuration. Note these changes will
     | only apply to the view that extends and enable the IFrame mode.
     |
+    | The 'default_tab' options add a tab that is always open, the 'buttons'
+    | ones pick the controls of the tab bar, and the 'options' ones tune the
+    | behavior: 'loading_screen' is the duration in milliseconds of the
+    | loading overlay of a tab (zero disables it), 'auto_show_new_tab' focuses
+    | a tab as soon as it is created and 'use_navbar_items' also turns the
+    | links of the top navbar into tabs.
+    |
     | For detailed instructions you can look the iframe mode section here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/iframe_mode.html
     |
@@ -987,7 +1145,8 @@ return [
     | Livewire
     |--------------------------------------------------------------------------
     |
-    | Here we can enable the Livewire support.
+    | Here we can enable the Livewire support. When enabled, the Livewire
+    | styles and scripts are added to the layout.
     |
     | For detailed instructions you can look the livewire here:
     | https://jeroennoten.github.io/Laravel-AdminLTE/sections/configuration/other.html
@@ -995,4 +1154,21 @@ return [
     */
 
     'livewire' => false,
+
+    /*
+    |--------------------------------------------------------------------------
+    | Single Page Navigation
+    |--------------------------------------------------------------------------
+    |
+    | AdminLTE re-initializes its plugins on the 'turbo:load' event of Turbo
+    | Drive, but it knows nothing about Livewire. So, after a 'wire:navigate'
+    | visit the sidebar, the treeview and the card tools would stay dead.
+    |
+    | With this option enabled, the package bridges the Livewire navigation
+    | event to the AdminLTE lifecycle. Disable it when your application takes
+    | care of that on its own.
+    |
+    */
+
+    'spa_navigation' => true,
 ];

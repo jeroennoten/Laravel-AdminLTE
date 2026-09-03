@@ -43,12 +43,7 @@
             <ul class="{{ $layoutHelper->makeSidebarNavClasses() }}"
                 id="{{ $sidebarMenuId }}"
                 data-lte-toggle="treeview"
-                @if(config('adminlte.sidebar_nav_animation_speed', 300) != 300)
-                    data-animation-speed="{{ config('adminlte.sidebar_nav_animation_speed', 300) }}"
-                @endif
-                @if(! config('adminlte.sidebar_nav_accordion', true))
-                    data-accordion="false"
-                @endif>
+                {!! $layoutHelper->makeSidebarNavData() !!}>
                 {{-- Configured sidebar links --}}
                 @each('adminlte::partials.sidebar.menu-item', $sidebarMenuItems, 'item')
             </ul>

@@ -100,11 +100,12 @@ class LayoutHelperTest extends TestCase
             $this->assertStringContainsString("sidebar-expand-{$bp}", $data);
         }
 
-        // Test with an invalid breakpoint.
+        // Test with an invalid breakpoint. Note it falls back to the default
+        // one, the sidebar layout does not work without an expand class.
 
         config(['adminlte.sidebar_expand' => 'invalid']);
         $data = LayoutHelper::makeBodyClasses();
-        $this->assertStringNotContainsString('sidebar-expand', $data);
+        $this->assertStringContainsString('sidebar-expand-lg', $data);
     }
 
     public function testMakeBodyClassesWithSidebarCollapseConfig()
@@ -583,9 +584,10 @@ class LayoutHelperTest extends TestCase
             'adminlte.classes_body' => null,
         ]);
 
-        // Note an invalid 'sidebar_expand' value adds no class at all.
+        // Note the expand class is always there, it falls back to the
+        // default breakpoint when the option provides no valid one.
 
-        $this->assertEquals('', LayoutHelper::makeBodyClasses());
+        $this->assertEquals('sidebar-expand-lg', LayoutHelper::makeBodyClasses());
     }
 
     public function testIsLayoutBoxedEnabledIsDeprecated()
@@ -757,15 +759,23 @@ class LayoutHelperTest extends TestCase
 
     public function testMakeSidebarDataWithAnInvalidTheme()
     {
-        // An unsupported theme is ignored, so the sidebar inherits the color
-        // mode of the page.
+        // An unsupported theme falls back to the documented default, so a
+        // typo does not silently drop the theme of the sidebar.
 
         config([
             'adminlte.sidebar_theme' => 'invalid',
             'adminlte.sidebar_collapse_remember' => false,
         ]);
 
-        $this->assertEquals('', LayoutHelper::makeSidebarData());
+        $this->assertEquals('data-bs-theme="dark"', LayoutHelper::makeSidebarData());
+
+        // Only a null, false or empty value opts out of the attribute.
+
+        foreach ([null, false, ''] as $theme) {
+            config(['adminlte.sidebar_theme' => $theme]);
+
+            $this->assertEquals('', LayoutHelper::makeSidebarData());
+        }
     }
 
     public function testMakeSidebarDataWithTheCollapseRememberOption()

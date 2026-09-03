@@ -66,7 +66,7 @@ class BodyClasses
         // element, and those live here. Every other rule is a descendant
         // selector, so it keeps matching from the body too.
 
-        if (config('adminlte.layout_compact', false) === true) {
+        if (config('adminlte.layout_compact', false)) {
             $classes[] = Tokens::COMPACT_MODE;
         }
 

@@ -684,7 +684,7 @@ class LayoutRenderTest extends TestCase
         $html = $this->renderPage();
 
         $this->assertMatchesRegularExpression(
-            '/<aside[^>]*data-sidebar-breakpoint="768"/',
+            '/<aside[^>]*data-sidebar-breakpoint="767\.98"/',
             $html
         );
         $this->assertMatchesRegularExpression(
@@ -706,6 +706,30 @@ class LayoutRenderTest extends TestCase
             $html
         );
         $this->assertStringNotContainsString('sidebar-expand-md', $html);
+        $this->assertStringNotContainsString('data-sidebar-breakpoint', $html);
+    }
+
+    public function testTheExpandBreakpointPublishesItsWidthToThePushMenu()
+    {
+        // The push menu plugin assumes the 'lg' width (991.98 pixels) unless
+        // the sidebar publishes another one, and it only reads the width of
+        // the expand class back from the stylesheet while that media query is
+        // already active. So, a layout expanding on another breakpoint has to
+        // publish the width of its own media query here, or the script and the
+        // stylesheet would place the overlay switch on different viewports.
+
+        config(['adminlte.sidebar_expand' => 'md']);
+
+        $html = $this->renderPage();
+
+        $this->assertMatchesRegularExpression(
+            '/<body[^>]*class="[^"]*sidebar-expand-md/',
+            $html
+        );
+        $this->assertMatchesRegularExpression(
+            '/<aside[^>]*data-sidebar-breakpoint="767\.98"/',
+            $html
+        );
     }
 
     public function testRenderTheSidebarBreakpointAttribute()
@@ -816,6 +840,167 @@ class LayoutRenderTest extends TestCase
             'const isMobile = window.innerWidth <= 992;',
             $this->renderPage()
         );
+    }
+
+    public function testTheSidebarScrollbarThemeIsValidated()
+    {
+        config(['adminlte.sidebar_scrollbar_theme' => 'os-theme-dark']);
+
+        $this->assertStringContainsString(
+            'scrollbarTheme: "os-theme-dark",',
+            $this->renderPage()
+        );
+
+        // OverlayScrollbars expects a class name here, so anything that is
+        // not a usable string falls back to the default theme.
+
+        foreach ([null, '', '   ', true, 10, ['os-theme-dark']] as $cfg) {
+            config(['adminlte.sidebar_scrollbar_theme' => $cfg]);
+
+            $this->assertStringContainsString(
+                'scrollbarTheme: "os-theme-light",',
+                $this->renderPage(),
+                var_export($cfg, true)
+            );
+        }
+    }
+
+    public function testTheSidebarScrollbarAutoHideIsValidated()
+    {
+        foreach (['never', 'scroll', 'leave', 'move'] as $cfg) {
+            config(['adminlte.sidebar_scrollbar_auto_hide' => $cfg]);
+
+            $this->assertStringContainsString(
+                "scrollbarAutoHide: \"{$cfg}\",",
+                $this->renderPage()
+            );
+        }
+
+        // A token the plugin does not know falls back to the default one,
+        // instead of reaching the plugin and being rejected there.
+
+        foreach (['invalid', null, true, 10] as $cfg) {
+            config(['adminlte.sidebar_scrollbar_auto_hide' => $cfg]);
+
+            $this->assertStringContainsString(
+                'scrollbarAutoHide: "leave",',
+                $this->renderPage(),
+                var_export($cfg, true)
+            );
+        }
+    }
+
+    public function testRenderTheTreeviewAnimationSpeed()
+    {
+        // The default speed is the one of the plugin, so nothing is declared.
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('data-lte-toggle="treeview"', $html);
+        $this->assertStringNotContainsString('data-animation-speed', $html);
+
+        config(['adminlte.sidebar_nav_animation_speed' => 600]);
+
+        $this->assertStringContainsString(
+            'data-animation-speed="600"',
+            $this->renderPage()
+        );
+
+        // The plugin parses the attribute with 'Number()', so a value it can
+        // not parse is dropped instead of being published as it is.
+
+        config(['adminlte.sidebar_nav_animation_speed' => 'fast']);
+
+        $this->assertStringNotContainsString(
+            'data-animation-speed',
+            $this->renderPage()
+        );
+    }
+
+    public function testRenderTheTreeviewAccordionAttribute()
+    {
+        config(['adminlte.sidebar_nav_accordion' => false]);
+
+        $this->assertStringContainsString(
+            'data-accordion="false"',
+            $this->renderPage()
+        );
+
+        config(['adminlte.sidebar_nav_accordion' => true]);
+
+        $this->assertStringNotContainsString(
+            'data-accordion',
+            $this->renderPage()
+        );
+    }
+
+    public function testAnUnsupportedExpandBreakpointKeepsTheSidebarLayout()
+    {
+        // Without an expand class the sidebar gets no column on the layout
+        // grid, so an unsupported breakpoint falls back to the default one.
+
+        foreach (['invalid', 'xs', null, true] as $cfg) {
+            config(['adminlte.sidebar_expand' => $cfg]);
+
+            $this->assertStringContainsString(
+                'sidebar-expand-lg',
+                $this->renderPage(),
+                var_export($cfg, true)
+            );
+        }
+    }
+
+    public function testAnUnsupportedPreloaderModeStillRendersOnePreloader()
+    {
+        config([
+            'adminlte.preloader.enabled' => true,
+            'adminlte.preloader.mode' => 'invalid',
+        ]);
+
+        $html = $this->renderPage();
+
+        // Exactly one preloader, on the fullscreen mode.
+
+        $this->assertEquals(1, substr_count($html, 'id="adminlte-preloader"'));
+        $this->assertStringContainsString('position-fixed', $html);
+    }
+
+    public function testTheShippedDefaultsRenderAUsablePanel()
+    {
+        // The panel an application gets right after the installation, with no
+        // edit of its own on the published configuration file.
+
+        config(['adminlte' => require __DIR__.'/../../config/adminlte.php']);
+
+        $html = $this->renderPage();
+
+        // The layout skeleton, with a sidebar that has a grid column, the
+        // mini mode and the dark theme of the shipped defaults.
+
+        $this->assertStringContainsString('class="app-wrapper"', $html);
+        $this->assertStringContainsString('sidebar-expand-lg', $html);
+        $this->assertStringContainsString('sidebar-mini', $html);
+        $this->assertStringContainsString('layout-fixed', $html);
+        $this->assertStringContainsString('bg-body-tertiary', $html);
+        $this->assertStringContainsString('data-bs-theme="dark"', $html);
+
+        // The stylesheet and the script of the template, the brand logo and
+        // the preloader image (all of them published by the installer).
+
+        $this->assertStringContainsString('adminlte.min.css', $html);
+        $this->assertStringContainsString('adminlte.min.js', $html);
+        $this->assertStringContainsString('AdminLTELogo.png', $html);
+
+        // The navigation of the panel, including its search box.
+
+        $this->assertStringContainsString('data-lte-toggle="treeview"', $html);
+        $this->assertStringContainsString('data-lte-toggle="sidebar"', $html);
+        $this->assertStringContainsString('data-lte-toggle="sidebar-search"', $html);
+
+        // And no print attribute at all, so the AdminLTE print styles apply
+        // exactly as they ship.
+
+        $this->assertStringNotContainsString('data-lte-print', $html);
     }
 
     public function testNoStyleBlockIsRenderedWithoutCssVariables()
