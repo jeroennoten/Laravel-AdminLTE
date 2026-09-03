@@ -5,6 +5,24 @@ export default {
     base: '/Laravel-AdminLTE',
     themeConfig: {
         logo: '/imgs/AdminLTELogo.ico',
+        // The version switcher. Every entry that leaves the current version
+        // has to be an absolute url: a link that looks internal is taken over
+        // by the VitePress router, which resolves it against the page map of
+        // this version only and answers its own 404.
+        nav: [
+            {
+                text: 'v4',
+                items: [
+                    { text: 'v4 (current)', link: '/' },
+                    {
+                        text: 'v3',
+                        link: 'https://jeroennoten.github.io/Laravel-AdminLTE/v3/',
+                        target: '_self',
+                        noIcon: true,
+                    },
+                ],
+            },
+        ],
         outline: {
             level: [2, 3],
             label: 'On this page'

@@ -1,5 +1,6 @@
 # A workflow for building the documentation with VitePress and deploying it on
-# GitHub Pages.
+# GitHub Pages. The current major is served from the root and every older one
+# from its own folder, all built by the docs/build-versions.sh script.
 #
 name: Build and Deploy Documentation
 
@@ -33,7 +34,11 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0 # Not needed if lastUpdated is not enabled
+          # The full history is needed twice: for the 'lastUpdated' timestamps,
+          # and because the documentation of the older majors is built from
+          # their release tag.
+          fetch-depth: 0
+          fetch-tags: true
 
       # Setup Node.js JavaScript runtime.
       - name: Setup Node.js
@@ -50,9 +55,11 @@ jobs:
       - name: Install Node.js Dependencies
         run: npm ci
 
-      # Build documentation with VitePress
+      # Build the documentation of every published major version. The script
+      # installs the dependencies of the older ones itself, since each of them
+      # keeps the VitePress release it was written for.
       - name: Build Docs
-        run: npm run docs:build
+        run: docs/build-versions.sh
 
       # Package and upload the website documentation as an artifact (named
       # github-pages by default) to be used on the deployment job. An artifact
