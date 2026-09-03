@@ -22,8 +22,12 @@ guide walks through them with more context.
 **Requirements**
 
 - **Laravel 12 or 13** on **PHP 8.2 or higher** is required, and the template
-  dependency moved to `almasaeed2010/adminlte:^4.8`. Upgrade the framework
+  dependency moved to `almasaeed2010/adminlte:^4.9`. Upgrade the framework
   first, verify the application boots, and only then bump this package.
+- **AdminLTE 4.9 stopped printing the layout chrome.** Up to 4.8 a printed page
+  carried the header, the sidebar and the footer; from 4.9 on it carries only
+  the content. Set the new `print => ['app']` option to get the old behavior
+  back.
 
 **Markup**
 
@@ -166,6 +170,16 @@ guide walks through them with more context.
 
 ### Added
 
+- The `full` installation type now also publishes the **error views**, so
+  `php artisan adminlte:install --type=full` gives the AdminLTE styled `401`,
+  `403`, `404`, `419`, `429`, `500` and `503` pages without having to know the
+  `--with=error_views` flag.
+- The **Source Sans 3 web font** joined the `vendor_assets` resource, so the
+  typeface AdminLTE is designed with can be served from your own domain
+  instead of a CDN. Only the regular weight the stylesheet declares is
+  published (188 KB), not the other seventeen weight and style combinations
+  the npm package ships.
+
 - Right-to-left (RTL) support through the new `rtl` configuration section, with
   an automatic detection based on the application locale.
 - Color mode support built on the Bootstrap 5.3 native color modes, through the
@@ -288,6 +302,16 @@ guide walks through them with more context.
 - The test suite grew from 23 to 63 test files, covering the layout classes,
   the rendered views, the translations, the lockscreen and the blade
   compilation of every shipped view.
+- New **Events** documentation page, gathering the five events the package
+  dispatches (`BuildingMenu`, `ReadingDarkModePreference`, `DarkModeWasToggled`,
+  `ScreenWasLocked` and `ScreenWasUnlocked`) with their payload, where a
+  listener goes on a Laravel 12 application, and the routes the package
+  registers with the options that gate them.
+- The documentation gained a **How to Use a Component** introduction (what a
+  blade component, an attribute and a slot are), a **Where to Start** reading
+  path on the home page, a **Next Steps** section on the usage page, and a
+  documented section for the `<x-adminlte-navbar-notification>` component,
+  which was only reachable as a menu item before.
 
 ### Changed
 
@@ -446,6 +470,16 @@ guide walks through them with more context.
 
 ### Security
 
+- **The basic installation now publishes the third party assets.**
+  `php artisan adminlte:install` used to publish only the AdminLTE
+  distribution, and whatever was missing was silently loaded from
+  `cdn.jsdelivr.net` — which means the browser of every visitor sent its ip
+  address to a third party without the operator ever choosing that. The
+  `vendor_assets` resource is now part of the basic installation, so
+  installing it after `npm i` keeps the panel on your own domain. The
+  resource skips whatever the node modules folder does not hold, so an
+  application without npm keeps working exactly as before, and
+  `google_fonts.allowed => false` still drops the web font entirely.
 - The **lockscreen** verifies the password through the user provider of the
   configured guard, so a custom hasher of the application is honored. The
   password is never written to the session and never logged: a rejection is

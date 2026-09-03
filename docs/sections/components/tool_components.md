@@ -1,10 +1,12 @@
+# Tool Components
+
 These components are classified under the **Tool** category. At next you can see the list of available components:
 
 |Components
 |-----------
 | [Datatables](#datatables), [Modal](#modal)
 
-# Datatables
+## Datatables
 
 > [!Important]
 > This component requires the `Datatables` plugin to be enabled on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins), and use the `@section('plugins.Datatables', true)` sentence on the blade file where you expect to use the component.
@@ -68,6 +70,10 @@ All other extra attributes you define will be inserted directly on the underlyin
 > [!Note]
 > You can always do all the plugin configuration from `Javascript/jQuery` using the `id` property of the component as the selector for the `id` attribute, instead of using the `config` property of the component. However, you may need to invoke the [destroy](https://datatables.net/reference/api/destroy()) method first.
 
+### Slots
+
+- **default slot**: The rows of the table, the content of the `tbody` element. Fill it with your own `<tr>` elements, usually generated with a `@foreach` loop over your dataset. Leave it empty and the plugin renders its own empty state message.
+
 ### Examples
 
 ```blade
@@ -118,11 +124,13 @@ $config = [
 ```
 
 > [!Important]
-> Please, note the differences between the previous two examples, on the first one the rows and cells were manually constructed using loops over they available dataset. On the second example, the dataset is passed directly to the underlying plugin using the `$config['data']` property. You can't mix both strategies, use one or another.
+> Please, note the differences between the previous two examples, on the first one the rows and cells were manually constructed using loops over the available dataset. On the second example, the dataset is passed directly to the underlying plugin using the `$config['data']` property. You can't mix both strategies, use one or another.
 
 Use the next image as reference to check how every example is rendered. Please, note in the image the tables were wrapped inside a [Bootstrap Grid System](https://getbootstrap.com/docs/5.3/layout/grid/) to organize them. This same consideration is valid for all the other examples below.
 
 ![Datatables Component Example 1](/imgs/components/tool_components/datatables-component-example-1.png)
+
+The next examples reuse the `$heads` and the `$config` variables defined on the first example above, they are not repeated on every block:
 
 ```blade
 {{-- Themes --}}
@@ -145,7 +153,7 @@ Use the next image as reference to check how every example is rendered. Please, 
     striped hoverable with-buttons/>
 
 {{-- With buttons + customization --}}
-@php        
+@php
 $config['dom'] = '<"row" <"col-sm-7" B> <"col-sm-5 d-flex justify-content-end" i> >
                   <"row" <"col-12" tr> >
                   <"row" <"col-sm-12 d-flex justify-content-start" f> >';
@@ -211,7 +219,7 @@ php artisan adminlte:plugins install --plugin=datatablesButtons
 
 Finally, you need to use the `@section('plugins.Datatables', true)` sentence on the blade file where you expect to use the component, plus `@section('plugins.DatatablesButtons', true)` when you use the export buttons.
 
-# Modal
+## Modal
 
 This component represents an `AdminLTE` modal notification. The following attributes are available:
 
@@ -231,7 +239,9 @@ v-centered | Enables a vertically centered modal | any | `null` | no
 
 Any other attribute you define will be directly inserted into the underlying `div.modal` element. For example, you may define a `class`, `onclick`, or any other attribute you may need.
 
-The modal also defines the next extra **slot** (the main slot is used for the modal body content):
+### Slots
+
+- **default slot**: The body of the modal, the content of the `div.modal-body` element.
 - **footerSlot**: Use this slot to customize the modal footer.
 
 Use the `disable-footer` attribute when the modal needs no footer at all. Without it, a footer with a single close button is rendered.

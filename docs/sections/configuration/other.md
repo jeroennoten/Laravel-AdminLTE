@@ -1,11 +1,4 @@
-| Other Configuration
-| -------------------
-| [Assets](#assets)
-| [CSS Variables](#css-variables)
-| [Laravel Mix](#laravel-mix)
-| [Laravel Vite](#laravel-vite)
-| [Livewire](#livewire)
-| [Single Page Navigation](#single-page-navigation)
+# Assets and Integrations
 
 ## Assets
 
@@ -47,7 +40,24 @@ The following configuration options are available:
 
 - __`assets.local`__ and __`assets.cdn`__
 
-  The location of every asset. The `local` paths are relative to the public folder, the `cdn` ones are absolute URLs. The RTL variant of the AdminLTE stylesheets is selected automatically when the [RTL mode](./layout_and_styling.md#rtl-mode) is active.
+  The location of every asset. The `local` paths are relative to the public folder, the `cdn` ones are absolute URLs. Both arrays hold the very same set of keys, so an asset can always be switched between the two delivery modes. The RTL variant of the AdminLTE stylesheets is selected automatically when the [RTL mode](./layout_and_styling.md#rtl-mode) is active.
+
+The keys of those two arrays are the next ones:
+
+Key | What it points to | Published by
+----|-------------------|--------------
+`adminlte_css` | The AdminLTE v4 core stylesheet | `--only=assets`
+`adminlte_rtl_css` | The same stylesheet, right-to-left variant | `--only=assets`
+`adminlte_js` | The AdminLTE v4 script (the sidebar, the card tools, the color mode, …) | `--only=assets`
+`colors_css` / `colors_rtl_css` | The [extended color palette](#the-extended-color-palette) stylesheet | `--only=assets`
+`colors_v3_css` / `colors_v3_rtl_css` | The same palette with the **AdminLTE v3** color names | `--only=assets`
+`bootstrap_js` | The Bootstrap 5.3 Javascript bundle | `--only=vendor_assets`
+`bootstrap_icons_css` | The Bootstrap Icons font | `--only=vendor_assets`
+`overlayscrollbars_css` / `overlayscrollbars_js` | OverlayScrollbars, used by the sidebar | `--only=vendor_assets`
+`fonts_css` | The `Source Sans 3` web font, controlled by [`google_fonts.allowed`](/sections/configuration/basic_configuration#google-fonts) | nothing, see the note below
+
+> [!Note]
+> **No package resource publishes the web font.** The `assets.local.fonts_css` path is only served when you put the font there yourself, and until then the `cdn_fallback` option keeps it coming from the CDN. Set `google_fonts.allowed` to `false` when your application must not reach an external font provider at all.
 
 To serve the third party assets locally, install them with `npm` and publish them:
 

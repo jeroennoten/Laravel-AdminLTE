@@ -1,8 +1,10 @@
+# Requirements
+
 **Laravel-AdminLTE v4** (the `4.x` release line of this package) requires:
 
 - **Laravel** 12.x or 13.x
 - **PHP** 8.2 or higher
-- **AdminLTE** 4.x, currently `^4.8`, installed automatically as a composer dependency
+- **AdminLTE** 4.x, currently `^4.9`, installed automatically as a composer dependency
 
 > [!Note]
 > The `4.x` line of **this package** does not support Laravel 11 or lower, nor PHP 8.1 or lower. If you are stuck on an older framework version, keep using an unmaintained `3.x` release of the package.

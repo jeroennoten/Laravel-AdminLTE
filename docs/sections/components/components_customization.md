@@ -1,3 +1,5 @@
+# Components Customization
+
 > [!Important]
 > The blade components provided by this package can be published into your project, so you can customize them.
 In the particular case that you need full control or customization over the available blade components of the package, you can publish them with the next command:
@@ -9,13 +11,13 @@ php artisan adminlte:install --only=components
 Now, you can edit the component views in the `resources/views/vendor/adminlte/components` folder and the component classes in the `app/View/Components/Adminlte` folder. To use the published version of any component you will need to follow the Laravel's `dot` convention for accessing nested classes within a directory, for example, the published and customizable version of the [Input Component](/sections/components/basic_forms_components#input) should be used like:
 
 ```blade
-<x-adminlte.form.input />
+<x-adminlte.form.input name="username"/>
 ```
 
 Instead of:
 
 ```blade
-<x-adminlte-input />
+<x-adminlte-input name="username"/>
 ```
 
 This last one will still reference the original version of the component.

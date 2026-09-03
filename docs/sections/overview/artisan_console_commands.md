@@ -1,8 +1,15 @@
+# Artisan Console Commands
+
 This package provides some artisan commands in order to manage and publish its resources. These commands are explained in the following sections. First, we are going to describe a summary of the available resources and their installation target. The resources are distinguished by a key name and some of they are required by this package, they are listed below:
+
+> [!Note]
+> A **package resource** is a set of files this package can copy into your project (the assets, the configuration file, the views, …). Every one of them is identified by a **key**, and that key is the value you pass to the `--only=`, `--with=` options and to the `adminlte:remove` command.
+
+## The Package Resources
 
 ### Required Resources:
 
-- __`assets`__: The AdminLTE v4 distribution files: the stylesheets (including the RTL and the extended colors variants), the scripts and the default logo image.
+- __`assets`__: The AdminLTE v4 distribution files: the stylesheets (including the RTL and the extended colors variants), the scripts and the default logo image. The source maps and the `adminlte-docs.css` stylesheet of the upstream distribution are left out, since nothing of the package serves them.
 
   **Target:** The assets will be installed inside the `public/vendor/adminlte` folder of your Laravel project.
 
@@ -20,7 +27,7 @@ This package provides some artisan commands in order to manage and publish its r
 
   **Target:** The assets will be installed inside the `public/vendor/bootstrap`, `public/vendor/bootstrap-icons` and `public/vendor/overlayscrollbars` folders of your Laravel project.
 
-- __`auth_views`__: A set of AdminLTE styled authentication views to replace the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) package.
+- __`auth_views`__: A set of AdminLTE styled authentication views to replace the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) package. Six files are written (`login`, `register`, `verify`, `passwords/confirm`, `passwords/email` and `passwords/reset`), and each one is a one-liner extending the related package view, so a package update reaches them without republishing.
 
   **Target:** The authentication views will be published inside the `resources/views/auth` folder of your Laravel project.
 
@@ -28,7 +35,7 @@ This package provides some artisan commands in order to manage and publish its r
 
   **Target:** The routes will be inserted in the `routes/web.php` file of your Laravel project.
 
-- __`main_views`__: The set of blade views that, in conjunction, defines the main layout you usually will extend. You may publish this resource if you need to make some customization on the provided template layout.
+- __`main_views`__: The set of blade views that, in conjunction, defines the main layout you usually will extend. You may publish this resource if you need to make some customization on the provided template layout. It covers the `master.blade.php` and `page.blade.php` files, the whole `partials/` folder, the `plugins.blade.php` file and the `auth/` views. Note it deliberately leaves the `components/` folder out, that one belongs to the `components` resource.
 
   **Target:** The main views will be published in the `resources/views/vendor/adminlte/` folder of your Laravel project.
 
@@ -36,7 +43,7 @@ This package provides some artisan commands in order to manage and publish its r
 
   **Target:** The components views will be published in the `resources/views/vendor/adminlte/components/` folder of your Laravel project, and the components classes will be published in the `app/View/Components/Adminlte/` folder.
 
-- __`error_views`__: The set of AdminLTE styled error views (`401`, `403`, `404`, `419`, `429`, `500` and `503`). Each published file is a one-liner that extends the related package view, so a package update reaches your error pages without republishing them. Note this resource is not part of any `--type` option, since publishing it replaces the error pages your application may already have.
+- __`error_views`__: The set of AdminLTE styled error views (`401`, `403`, `404`, `419`, `429`, `500` and `503`). Each published file is a one-liner that extends the related package view, so a package update reaches your error pages without republishing them. Publishing it replaces the error pages your application may already have, so only the `full` installation type includes it.
 
   **Target:** The error views will be published in the `resources/views/errors/` folder of your Laravel project, which is where Laravel looks for them.
 
@@ -48,9 +55,9 @@ You can install all the required and some additional package resources using the
 
 - `--force`: Use this option to force the overwrite of any existing files during the installation process.
 
-- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (a basic installation plus the `auth_views`, `auth_routes`, `main_views` and `components` resources). Note that no installation type includes the optional `vendor_assets` and `error_views` resources, install them with `--with=` or `--only=`.
+- `--type=`: Use this option to set the installation type, the available types are: **basic** (the default value, which installs the `assets`, `vendor_assets`, `config` and `translations` resources), **basic_with_auth** (a basic installation plus the `auth_views` and `auth_routes` resources), **basic_with_views** (a basic installation plus the `main_views` resource) or **full** (a basic installation plus the `auth_views`, `auth_routes`, `main_views`, `components` and `error_views` resources).
 
-- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views**, **components** or **error_views**. This option can not be used with the `--with` option. Also, you can use this option multiple times, for example:
+- `--only=*`: Use this option to install only specific resources, the available resources are: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views**, **components** or **error_views**. It **can not be combined** with the `--type` and the `--with` options: when `--only` is present the command installs exactly what it lists and the other two are ignored, without any warning. Also, you can use this option multiple times, for example:
   ```sh
   php artisan adminlte:install --only=config --only=main_views
   ```
@@ -77,6 +84,10 @@ php artisan adminlte:remove main_views
 # Remove multiple resources.
 php artisan adminlte:remove main_views auth_views components
 ```
+
+### Command Arguments
+
+- `resource`: One or more resource keys to remove, **at least one is required**. The accepted keys are the ones listed on [The Package Resources](#the-package-resources) section: **assets**, **vendor_assets**, **config**, **translations**, **auth_views**, **auth_routes**, **main_views**, **components** and **error_views**.
 
 ### Command Options
 
@@ -131,7 +142,7 @@ You can **list**, **install** or **remove** all the available plugins at once or
 
 ## The `adminlte:update` Command
 
-This command is a shortcut for `php artisan adminlte:install --force --only=assets`, extended with two conveniences:
+This command takes no arguments and no options. It is a shortcut for `php artisan adminlte:install --force --only=assets`, extended with two conveniences:
 
 - When the optional `vendor_assets` resource was **previously published**, it is refreshed too, so the command becomes `php artisan adminlte:install --force --only=assets --only=vendor_assets`. When it was never published, it is left alone (the package falls back to the CDN for those resources).
 
@@ -147,6 +158,8 @@ This command is very useful to check the package resources installation status, 
 ```sh
 php artisan adminlte:status
 ```
+
+It takes no arguments and no options.
 
 Once completed, it will display a table with all the available package resources and they installation status. The status can be one of the nexts:
 

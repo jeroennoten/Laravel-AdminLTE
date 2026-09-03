@@ -1,21 +1,46 @@
-These components are expected to be used within a `form` element. They can be used to generate forms with styled input fields. At next you can see the list of available components:
+# Basic Form Components
+
+These components are expected to be used within a `form` element of your own, placed inside the `content` section of a blade file that extends `adminlte::page`. Read the [usage](/sections/overview/usage) page for the layout sections, and the [components intro](/sections/components/components_categories#how-to-use-a-component) for the attribute and slot conventions used below. At next you can see the list of available components:
 
 |Components
 |-----------
 | [InputGroup](#input-group-component), [Button](#button), [Input](#input), [InputFile](#inputfile), [Options](#options), [Select](#select), [Select2](#select2), [Textarea](#textarea)
 
-# Input Group Component
+A typical page therefore looks like this, and every example of this page is meant to be placed where the comment is:
+
+```blade
+{{-- resources/views/profile.blade.php --}}
+
+@extends('adminlte::page')
+
+@section('content')
+    <form method="POST" action="{{ url('profile') }}">
+        @csrf
+
+        {{-- The form components of this page go here --}}
+
+    </form>
+@stop
+```
+
+## Input Group Component
 
 > [!Important]
-> This component is **not intended to be used** directly, but it provides a base layout and some properties that other components may extend.
+> This component is **not intended to be used** directly, but it provides a base layout and some properties that other components may extend. Read it once, because every other component of this page (and of the [advanced form components](/sections/components/advanced_forms_components) page) inherits the attributes and the slots described here.
 
-This component represents an empty input group to easily generate form controls by adding text, icons, buttons on either side of textual inputs, custom selects, or custom file inputs. The component yields an `input_group_item` section that other components (like an `input`, `select` or `textarea`) may use to extend the layout. At next, you can see the list of supported attributes:
+This component represents an empty input group to easily generate form controls by adding text, icons, buttons on either side of textual inputs, custom selects, or custom file inputs. At next, you can see the list of supported attributes.
+
+> [!Note]
+> Two abbreviations are used all over the form components:
+>
+> - **`fgroup`** stands for **form group**, the outer container that wraps the label, the control and the validation message of one field.
+> - **`igroup`** stands for **input group**, the inner [Bootstrap 5.3 input group](https://getbootstrap.com/docs/5.3/forms/input-group/) that holds the control together with its add-ons (an icon, a text, a button placed before or after the control).
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 disable-feedback | Disables the invalid feedback notification for the input group | any | `null` | no
-error-key | The lookup key to use when searching for validation errors | string | `null` | no
-fgroup-class | Additional classes for the main container (to customize it) | string | `null` | no
+error-key | The key under which Laravel stored the validation message on the `$errors` bag. Without it, the `name` attribute is used | string | `null` | no
+fgroup-class | Additional classes for the **form group**, the main container of the component | string | `null` | no
 id | The `id` attribute for the underlying input group item | string | `null` | no
 igroup-class | Additional classes for the `input-group` container | string | `null` | no
 igroup-size | The input group size (you can specify `sm` or `lg` values only) | string | `null` | no
@@ -44,7 +69,7 @@ The `name` attribute is the only required property and will be used as the defau
 > [!Note]
 > **Bootstrap 5.3** also removed the `input-group-prepend` and `input-group-append` wrappers: the add-ons are now direct children of the `.input-group` element. The `prependSlot` and `appendSlot` slots below already emit the correct markup, so your add-ons only need the `input-group-text` (or a button) element.
 
-You should note that all the others components that extends from this one will have the previous set of attributes available on their interface. This component also defines some **slots** that can be used to push `add-ons` into the input group:
+You should note that all the others components that extends from this one will have the previous set of attributes available on their interface. This component also defines some [slots](/sections/components/components_categories#how-to-use-a-component) that can be used to push `add-ons` into the input group:
 
 ### Slots
 
@@ -52,9 +77,11 @@ You should note that all the others components that extends from this one will h
 - **appendSlot**: Use this slot to append an add-on in the input group item.
 - **bottomSlot**: Use this slot to add extra information or markup below the input group item.
 
+On top of those three, the components that wrap a control with inner markup also expose a **default slot**, which fills the control itself: the `option` elements of a [Select](#select), [Select2](#select2) or [SelectBs](/sections/components/advanced_forms_components#selectbs), and the initial content of a [Textarea](#textarea) or a [TextEditor](/sections/components/advanced_forms_components#texteditor).
+
 ### Validation State and Accessibility
 
-When the input group is invalid, the control itself declares the state and points at the block holding the message:
+When the input group is invalid, the control itself declares the state and points at the block holding the message. You do not write the next markup, it is what the component **generates** for you:
 
 ```html
 <input id="email" class="form-control is-invalid"
@@ -67,9 +94,9 @@ When the input group is invalid, the control itself declares the state and point
 
 The identifier of the feedback block is always the `id` of the control suffixed with `-error`. A screen reader therefore announces the error together with the field instead of leaving it unassociated. An `aria-describedby` of your own **wins** over the generated one, so pass both identifiers when the field also has a hint.
 
-Every component extending the input group inherits this behaviour, the [InputSlider](/sections/components/advanced_forms_components#inputslider) included, where the attributes land on the element the plugin renders into rather than on the hidden input.
+Every component extending the input group inherits this behaviour, the [InputSlider](/sections/components/advanced_forms_components#inputslider) included, where the attributes land on the `div` that **noUiSlider** renders into rather than on the hidden input holding the submitted value.
 
-# Button
+## Button
 
 This component represents an `AdminLTE` styled button. The following attributes are available:
 
@@ -77,7 +104,7 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 icon | An icon for the button (Bootstrap Icons by default) | string | `null` | no
 label | The visible label (text) for the button | string | `null` | no
-theme | The button style theme: primary, secondary, info, success, warning, danger, light, dark, any `outline-*` variant, or any color of the AdminLTE extended palette like `teal` or `navy`. The AdminLTE v3 color names are mapped on the fly. See [About the `theme` Attribute](/sections/components/widget_components#about-the-theme-attribute) | string | `'default'` | no
+theme | The button style theme: primary, secondary, info, success, warning, danger, light, dark, any `outline-*` variant, or any color of the AdminLTE extended palette like `teal` or `navy` (which requires the `assets.extended_colors` option to be enabled). The AdminLTE v3 color names are mapped on the fly. See [About the `theme` Attribute](/sections/components/widget_components#about-the-theme-attribute) | string | `'default'` | no
 type | The button type (`button`, `submit` or `reset`) | string | `'button'` | no
 
 Any other attribute you define will be directly inserted into the underlying `button` tag. You can, for example, define a `class`, `onclick`, `title` or any other attribute you may need.
@@ -127,7 +154,7 @@ At next you can check how the previous set of defined buttons are rendered:
 
 ![Button Component](/imgs/components/basic_forms_components/button-component.png)
 
-# Input
+## Input
 
 This component represents an input element, and extends from the base [Input Group Component](#input-group-component), so all the attributes from it will be inherited. Even more, you are able to setup any other attribute you generally use on an `input` html element without any problem. The component also defines the next additional attributes:
 
@@ -216,7 +243,7 @@ Use the next image as reference to check how every input example is rendered. Pl
 
 ![Input Component](/imgs/components/basic_forms_components/input-component.png)
 
-# InputFile
+## InputFile
 
 > [!Important]
 > **No plugin is required anymore.** **Bootstrap 5** styles the browser's native file input with the plain `form-control` class, so the `custom-file` structure and the `bs-custom-file-input` plugin that were needed on **AdminLTE v3** were dropped.
@@ -275,7 +302,7 @@ Use the next image as reference to check how every input example is rendered. Pl
 > [!Tip]
 > If you need a rich file input (drag and drop, previews, chunked uploads, ...), use the [InputFileKrajee](/sections/components/advanced_forms_components#inputfilekrajee) component, or wire up one of the jQuery free plugins recommended by **AdminLTE v4** (for example `filepond` or `dropzone`, both installable through `php artisan adminlte:plugins install`).
 
-# Options
+## Options
 
 This component represents a set of option tags. It can be used with [Select](#select), [Select2](#select2) or [SelectBs](/sections/components/advanced_forms_components#selectbs) components. The following attributes are available:
 
@@ -303,9 +330,9 @@ The intention of the `empty-option` attribute is to represent a selectable optio
         disabled="1" placeholder="Select an option..."/>
 ```
 
-They will be rendered as:
+They will be rendered as the next `option` elements:
 
-```blade
+```html
 {{-- Options with empty option --}}
 <option value="">Select an option...</option>
 <option value="0">Option 1</option>
@@ -319,7 +346,7 @@ They will be rendered as:
 <option value="2">Option 3</option>
 ```
 
-### Other examples
+### Other Examples
 
 ```blade
 {{-- Example with empty option (for Select) --}}
@@ -382,7 +409,7 @@ Use the next image as reference to check how every example is rendered. Please, 
 
 ![Options Component](/imgs/components/basic_forms_components/options-component.png)
 
-# Select
+## Select
 
 This component represents an option selection element, and extends from the base [Input Group Component](#input-group-component), so all the attributes from it will be inherited. Even more, you are able to set any attribute you usually will use on a `select` html element without any problem. The component also defines next additional attributes:
 
@@ -440,7 +467,7 @@ Use the next image as reference to check how every example is rendered. Please, 
 
 ![Select Component](/imgs/components/basic_forms_components/select-component.png)
 
-# Select2
+## Select2
 
 > [!Important]
 > This component requires the `Select2` plugin to be enabled on the package configuration file. Read more on the [plugins configuration section](/sections/configuration/plugins), and use the `@section('plugins.Select2', true)` sentence on the blade file where you expect to use the component.
@@ -487,7 +514,7 @@ The available plugin configuration options are those explained on the [plugin do
             <i class="bi bi-car-front"></i>
         </div>
     </x-slot>
-    <option/>
+    <option></option>
     <option>Vehicle 1</option>
     <option>Vehicle 2</option>
 </x-adminlte-select2>
@@ -571,7 +598,7 @@ Remember that you also have to make **jQuery** available on the page (the packag
 > [!Note]
 > The `select2-bootstrap4-theme` plugin that was used on **AdminLTE v3** is not needed (nor compatible) anymore, it was replaced by the `adminlte-select2.min.css` stylesheet shipped with AdminLTE v4.
 
-# Textarea
+## Textarea
 
 This component represents a `textarea` element and extends from the base [Input Group Component](#input-group-component), so all the attributes from it will be inherited. Even more, you are able to set any attribute you usually will use on a `textarea` html element without any problem. The component also defines next additional attributes:
 

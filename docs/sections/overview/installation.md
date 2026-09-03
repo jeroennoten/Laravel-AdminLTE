@@ -1,7 +1,9 @@
+# Installation
+
 > [!Important]
 > The next steps are only valid for a fresh installation procedure, if you are performing an update on the package, please refers to the [Updating](/sections/overview/updating) section.
 
-### 1. Require the package
+## 1. Require the package
 
 On the root folder of your **Laravel** project, require the package using the `composer` tool:
 
@@ -9,7 +11,7 @@ On the root folder of your **Laravel** project, require the package using the `c
 composer require jeroennoten/laravel-adminlte
 ```
 
-### 2. Install the package resources
+## 2. Install the package resources
 
 Install the required package resources using the next command:
 
@@ -23,14 +25,27 @@ This command will install:
 - The package configuration at the `config/adminlte.php` file.
 - The package translations in the `lang/vendor/adminlte/` folder.
 
-### 3. Publish the third party assets (optional)
+## 3. Publish the third party assets
 
-AdminLTE v4 needs a few resources that it does not distribute itself: the **Bootstrap 5 JavaScript bundle**, the **Bootstrap Icons** font and **OverlayScrollbars** (used by the main sidebar). Out of the box the package loads them from a CDN. To serve them from your own domain instead, install them with `npm` and publish them:
+AdminLTE v4 needs four resources that it does not distribute itself: the **Bootstrap 5 JavaScript bundle**, the **Bootstrap Icons** font, **OverlayScrollbars** (used by the main sidebar) and the **Source Sans 3** web font. Install them with `npm` **before** the previous step, and `adminlte:install` publishes them along with everything else:
 
 ```sh
-npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11
+npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11 @fontsource/source-sans-3@^5.0
+php artisan adminlte:install
+```
+
+If you already installed the package, publish them on their own:
+
+```sh
 php artisan adminlte:install --only=vendor_assets
 ```
+
+> [!important]
+> **This step is what keeps your visitors' data on your own server.** Whatever is not published is loaded from `cdn.jsdelivr.net` instead, which means the browser of every visitor sends its ip address to a third party. In the European Union that alone needs a legal basis, so self-hosting is usually the option you want.
+>
+> The package cannot publish what `npm` never installed, so a plain `adminlte:install` without the `npm i` above silently falls back to the CDN. Verify what you ended up with using `php artisan adminlte:status`.
+>
+> If you prefer not to serve the web font at all, set `google_fonts.allowed => false` in the configuration. The panel then uses the font stack of the operating system and requests no font.
 
 The package detects the published files automatically. See the [assets configuration](/sections/configuration/other#assets) for the details and for the `cdn` mode.
 
@@ -41,7 +56,7 @@ The package detects the published files automatically. See the [assets configura
 > 
 > You can check the installation status of the package resources with the command **`php artisan adminlte:status`**.
 
-#### The `vendor:publish` alternative
+### The `vendor:publish` alternative
 
 The `adminlte:install` command is the recommended way to install the resources, since it knows the individual files of the AdminLTE distribution and can report their status. For the cases where the standard Laravel workflow fits better (an automated deployment, for example), the package also registers the usual publish tags:
 
@@ -52,9 +67,12 @@ php artisan vendor:publish --tag=adminlte-lang      # lang/vendor/adminlte
 php artisan vendor:publish --tag=adminlte-assets    # public/vendor/adminlte/dist
 ```
 
-Note the `adminlte-assets` tag copies the **whole** AdminLTE distribution folder, while `adminlte:install` publishes only the files the package actually serves.
+Two differences are worth knowing before you reach for them:
 
-### 4. Install the legacy authentication scaffolding (optional)
+- The `adminlte-assets` tag copies the **whole** AdminLTE distribution folder (source maps included), while `adminlte:install` publishes only the files the package actually serves. In the same way, `adminlte-views` copies **every** view of the package, the `components/` folder included, while the `main_views` resource deliberately leaves that folder to the `components` resource.
+- There is **no publish tag** for the `vendor_assets`, `auth_views`, `auth_routes`, `components` and `error_views` resources. Those five are only reachable through `php artisan adminlte:install`.
+
+## 4. Install the legacy authentication scaffolding (optional)
 
 Optionally, this package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding. If you are planning to use these views, then first require the **laravel/ui** package using composer and install the `bootstrap` scaffolding:
 
@@ -72,7 +90,7 @@ php artisan adminlte:install --only=auth_views
 > [!Important]
 > The authentication scaffolding offers features like login, logout and registration. It is a recommendation to always read the [Laravel Authentication Documentation](https://laravel.com/docs/authentication) for details about the authentication scaffolding. Note that **Laravel** offers some starter kits (like [Laravel-Breeze](https://laravel.com/docs/starter-kits#laravel-breeze)) besides the legacy [laravel/ui](https://github.com/laravel/ui) package. So, using the authentication views from this package is **OPTIONAL** and **UP TO YOU**.
 
-### 5. Install the error views (optional)
+## 5. Install the error views (optional)
 
 The package ships **AdminLTE styled error pages** for the http status codes Laravel renders (`401`, `403`, `404`, `419`, `429`, `500` and `503`). Publish them with:
 
@@ -92,6 +110,6 @@ Because the published file only **extends** the package view, an update of the p
 > [!Note]
 > The error views are not part of any `--type` option, since publishing them replaces the error pages your application may already have. They are only installed when you ask for them explicitly, either with `--only=error_views` or with `--with=error_views`.
 
-### 6. Use the package
+## 6. Use the package
 
 Jump to the [Usage Section](/sections/overview/usage) to read how to use the main **AdminLTE blade template** provided by this package.

@@ -5,19 +5,24 @@ export default {
     base: '/Laravel-AdminLTE',
     themeConfig: {
         logo: '/imgs/AdminLTELogo.ico',
+        outline: {
+            level: [2, 3],
+            label: 'On this page'
+        },
         sidebar: [
             {
-                text: 'Overview',
+                text: 'Getting Started',
                 collapsed: false,
                 items: [
                     { text: 'Home', link: '/' },
                     { text: 'Requirements', link: '/sections/overview/requirements' },
                     { text: 'Installation', link: '/sections/overview/installation' },
-                    { text: 'Updating', link: '/sections/overview/updating' },
-                    { text: 'Upgrading from 3.x', link: '/sections/overview/upgrading_from_3x' },
                     { text: 'Usage', link: '/sections/overview/usage' },
-                    { text: 'Authentication Views', link: '/sections/overview/authentication_views' },
-                    { text: 'Artisan commands', link: '/sections/overview/artisan_console_commands' }
+                    { text: 'Authentication views', link: '/sections/overview/authentication_views' },
+                    { text: 'Artisan commands', link: '/sections/overview/artisan_console_commands' },
+                    { text: 'Events', link: '/sections/overview/events' },
+                    { text: 'Updating', link: '/sections/overview/updating' },
+                    { text: 'Upgrading from 3.x', link: '/sections/overview/upgrading_from_3x' }
                 ]
             }, {
                 text: 'Configuration',
@@ -25,10 +30,10 @@ export default {
                 items: [
                     { text: 'Basic configuration', link: '/sections/configuration/basic_configuration' },
                     { text: 'Layout & styling', link: '/sections/configuration/layout_and_styling' },
-                    { text: 'Menu ', link: '/sections/configuration/menu' },
+                    { text: 'Menu', link: '/sections/configuration/menu' },
                     { text: 'Special menu items', link: '/sections/configuration/special_menu_items' },
                     { text: 'Plugins', link: '/sections/configuration/plugins' },
-                    { text: 'Misc config', link: '/sections/configuration/other' },
+                    { text: 'Assets & integrations', link: '/sections/configuration/other' },
                     { text: 'Translations', link: '/sections/configuration/translations' },
                     { text: 'Views customization', link: '/sections/configuration/views_customization' },
                     { text: 'IFrame mode', link: '/sections/configuration/iframe_mode' }

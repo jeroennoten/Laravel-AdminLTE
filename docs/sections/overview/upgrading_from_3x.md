@@ -1,19 +1,4 @@
-| Upgrading from 3.x
-| ------------------
-| [Before You Start](#before-you-start)
-| [Laravel and PHP Requirements](#laravel-and-php-requirements)
-| [The Stale Bootstrap 4 Assets Trap](#the-stale-bootstrap-4-assets-trap)
-| [The AdminLTE v4 Markup Rewrite](#the-adminlte-v4-markup-rewrite)
-| [Bootstrap Icons Instead of FontAwesome](#bootstrap-icons-instead-of-fontawesome)
-| [The Boxed Layout Was Removed](#the-boxed-layout-was-removed)
-| [The Control Sidebar Is Now an Offcanvas](#the-control-sidebar-is-now-an-offcanvas)
-| [The Sidebar Skins Were Removed](#the-sidebar-skins-were-removed)
-| [The Plugin Catalogue Now Comes From npm](#the-plugin-catalogue-now-comes-from-npm)
-| [The Form Components Switched Their Plugin](#the-form-components-switched-their-plugin)
-| [The Laravel Mix Options Were Removed](#the-laravel-mix-options-were-removed)
-| [Configuration Defaults and Renamed Options](#configuration-defaults-and-renamed-options)
-| [Smaller Behavior Changes](#smaller-behavior-changes)
-| [Checklist](#checklist)
+# Upgrading from 3.x
 
 This page lists the **breaking changes** you actually hit when moving a project from a `3.x` release of this package to **Laravel-AdminLTE v4**.
 
@@ -120,6 +105,19 @@ Then re-apply your customizations on top of the new files, using a comparison to
 
 > [!Warning]
 > This is the single most common cause of a broken panel after the upgrade. A stale published `master.blade.php` silently keeps emitting AdminLTE v3 markup, and the result looks like the stylesheet failed to load.
+
+### The Published Translations (Nothing to Do, Usually)
+
+The translation files gained a large set of new keys on the `4.x` line: the [accessibility strings](/sections/configuration/translations#accessibility-strings) of the card tools, the progress bars and the skip links, the labels of the [color mode](/sections/configuration/layout_and_styling#color-mode) selector, the [error pages](/sections/configuration/views_customization#error-views), the [lockscreen](/sections/overview/authentication_views#the-lockscreen) and the Datatables export buttons.
+
+A `lang/vendor/adminlte` folder published while you were on a `3.x` release is therefore **missing all of them**, but this is the one published resource that does not need a forced re-publish: Laravel loads the package file first and merges your published one **over** it, so the keys you did not customize keep coming from the package, already translated.
+
+Re-publish only when you want the new strings inside your own copies, for example because you translated them into a locale the package does not ship:
+
+```sh
+cp -r lang/vendor/adminlte lang/vendor/adminlte.bak
+php artisan adminlte:install --only=translations --force
+```
 
 ### Re-Publish the Assets and the Configuration
 
@@ -349,6 +347,29 @@ Re-publishing `config/adminlte.php` (which you should do) brings a set of change
 
 > [!Important]
 > The three image paths are not cosmetic. **AdminLTE v4 moved its images to the `dist/assets/img/` folder**, so a configuration that kept the old `vendor/adminlte/dist/img/AdminLTELogo.png` value renders a broken image on the brand logo, the authentication views and the preloader.
+
+## The Tabbed IFrame Mode Was Reimplemented
+
+**AdminLTE v4 dropped the `IFrame` plugin** that backed the tabbed mode on **AdminLTE v3**. The mode itself did not go away: this package now implements it on its own, with a jQuery free helper and a stylesheet that are only pushed into the page when the mode is enabled.
+
+Enabling it is unchanged (`@extends('adminlte::page', ['iFrameEnabled' => true])`) and so are the `iframe` configuration options, so a `3.x` project keeps working. What changed is everything below that: the markup, the class names and the `data-lte-toggle="iframe-*"` attributes that drive the buttons. If you wrote your own controls or styles against the v3 iframe markup, rewrite them against the [tabbed iframe mode](/sections/configuration/iframe_mode) page.
+
+## New in 4.x, Worth Reviewing
+
+None of the next features breaks an upgrade, they are simply new. They are listed here because a `3.x` project has no configuration for them and would otherwise never discover them:
+
+Feature | Where
+--------|-------
+The **color mode** section, replacing the old dark mode | [color mode](/sections/configuration/layout_and_styling#color-mode)
+**RTL mode**, with the mirrored stylesheets of AdminLTE v4 | [RTL mode](/sections/configuration/layout_and_styling#rtl-mode)
+The **assets** section: the `local` / `cdn` delivery modes and the extended color palette | [assets](/sections/configuration/other#assets)
+**`css_variables`**, to brand the panel without a stylesheet of your own | [CSS variables](/sections/configuration/other#css-variables)
+The **lockscreen**, with its routes, its middleware and its events | [the lockscreen](/sections/overview/authentication_views#the-lockscreen)
+The **social authentication links** of the login and register views | [social authentication links](/sections/overview/authentication_views#social-authentication-links)
+The **error views** for the http status codes Laravel renders | [error views](/sections/configuration/views_customization#error-views)
+**`spa_navigation`**, for the Livewire `wire:navigate` visits | [single page navigation](/sections/configuration/other#single-page-navigation)
+**`layout_compact`**, `sidebar_nav_indent`, `sidebar_nav_pills` and `sidebar_breakpoint` | [layout and styling](/sections/configuration/layout_and_styling)
+The **accessibility strings** and the skip links | [translations](/sections/configuration/translations#accessibility-strings)
 
 ## Smaller Behavior Changes
 
