@@ -267,9 +267,11 @@ class AdminLteServiceProvider extends BaseServiceProvider
      */
     protected function loadRoutes()
     {
-        // The checks belong here and not inside the route files, otherwise the
-        // 'route:cache' command would freeze the current value of the options
-        // into the compiled routes.
+        // The checks belong here and not inside the route files, so a compiled
+        // route file never carries a condition. Note the compiled routes still
+        // hold whatever was registered when they were built, so changing one of
+        // these options on a deployment that caches its routes needs a new
+        // 'route:cache' run, the same as any other route change.
 
         $routeFiles = [];
 

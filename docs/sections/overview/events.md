@@ -173,4 +173,4 @@ Route name | Method | Uri | Registered when
 `adminlte.lockscreen.unlock` | POST | `adminlte/lockscreen/unlock` | idem
 
 > [!Note]
-> The checks are made when the routes are registered, not inside the route files, so the `php artisan route:cache` command can never freeze an outdated value of those options into the compiled routes. Remember to re-run `route:cache` after changing any of them on a production deployment.
+> The checks are made when the routes are registered, not inside the route files, so a compiled route file never carries a condition of its own. The compiled routes do hold whatever was registered when they were built, though: on a deployment that caches its routes, changing one of these options needs a new `php artisan route:cache` run, exactly like any other route change.
