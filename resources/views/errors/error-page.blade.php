@@ -1,14 +1,12 @@
 @extends('adminlte::master')
 
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 @php
     $dashboardUrl = View::getSection('dashboard_url')
         ?? config('adminlte.dashboard_url', 'home');
 
-    if (config('adminlte.use_route_url', false)) {
-        $dashboardUrl = $dashboardUrl ? route($dashboardUrl) : '';
-    } else {
-        $dashboardUrl = $dashboardUrl ? url($dashboardUrl) : '';
-    }
+    $dashboardUrl = $layoutHelper->makeUrl($dashboardUrl);
 
     $errorCode = $errorCode ?? '500';
     $errorTheme = $errorTheme ?? 'danger';

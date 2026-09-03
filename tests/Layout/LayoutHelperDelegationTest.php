@@ -6,6 +6,7 @@ use JeroenNoten\LaravelAdminLte\Layout\BodyClasses;
 use JeroenNoten\LaravelAdminLte\Layout\ColorMode;
 use JeroenNoten\LaravelAdminLte\Layout\Direction;
 use JeroenNoten\LaravelAdminLte\Layout\Layout;
+use JeroenNoten\LaravelAdminLte\Layout\Navigation;
 use JeroenNoten\LaravelAdminLte\Layout\Sidebar;
 
 /**
@@ -284,6 +285,12 @@ class LayoutHelperDelegationTest extends TestCase
         );
 
         $this->assertSame(
+            trim(implode(' ', Sidebar::makeNavAttributes())),
+            LayoutHelper::makeSidebarNavData(),
+            $msg
+        );
+
+        $this->assertSame(
             trim(implode(' ', Layout::wrapperClasses())),
             LayoutHelper::makeWrapperClasses(),
             $msg
@@ -294,6 +301,14 @@ class LayoutHelperDelegationTest extends TestCase
             LayoutHelper::makeContentWrapperClasses(),
             $msg
         );
+
+        foreach (['home', 'admin/home', '', null] as $target) {
+            $this->assertSame(
+                Navigation::makeUrl($target),
+                LayoutHelper::makeUrl($target),
+                $msg
+            );
+        }
 
         // The methods kept for backward compatibility.
 
@@ -354,7 +369,8 @@ class LayoutHelperDelegationTest extends TestCase
             'isFixedNavbarEnabled', 'isFixedFooterEnabled', 'makeHtmlData',
             'makeBodyClasses', 'makeBodyData', 'makeWrapperData',
             'makeSidebarWrapperClasses', 'makeSidebarNavClasses',
-            'makeSidebarData', 'makeWrapperClasses',
+            'makeSidebarData', 'makeSidebarNavData', 'makeWrapperClasses',
+            'makeUrl',
             'makeContentWrapperClasses',
         ];
 

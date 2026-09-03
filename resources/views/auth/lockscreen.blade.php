@@ -1,5 +1,7 @@
 @extends('adminlte::master')
 
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 @section('adminlte_css')
     @stack('css')
     @yield('css')
@@ -14,13 +16,8 @@
     $dashboardUrl = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home');
     $logoutUrl = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout');
 
-    if (config('adminlte.use_route_url', false)) {
-        $dashboardUrl = $dashboardUrl ? route($dashboardUrl) : '';
-        $logoutUrl = $logoutUrl ? route($logoutUrl) : '';
-    } else {
-        $dashboardUrl = $dashboardUrl ? url($dashboardUrl) : '';
-        $logoutUrl = $logoutUrl ? url($logoutUrl) : '';
-    }
+    $dashboardUrl = $layoutHelper->makeUrl($dashboardUrl);
+    $logoutUrl = $layoutHelper->makeUrl($logoutUrl);
 
     $unlockUrl = $unlockUrl ?? (Route::has('adminlte.lockscreen.unlock')
         ? route('adminlte.lockscreen.unlock')

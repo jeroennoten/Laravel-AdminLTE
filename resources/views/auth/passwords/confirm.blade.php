@@ -1,5 +1,7 @@
 @extends('adminlte::master')
 
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 @section('adminlte_css')
     @stack('css')
     @yield('css')
@@ -11,13 +13,8 @@
     $passResetUrl = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset');
     $dashboardUrl = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home');
 
-    if (config('adminlte.use_route_url', false)) {
-        $passResetUrl = $passResetUrl ? route($passResetUrl) : '';
-        $dashboardUrl = $dashboardUrl ? route($dashboardUrl) : '';
-    } else {
-        $passResetUrl = $passResetUrl ? url($passResetUrl) : '';
-        $dashboardUrl = $dashboardUrl ? url($dashboardUrl) : '';
-    }
+    $passResetUrl = $layoutHelper->makeUrl($passResetUrl);
+    $dashboardUrl = $layoutHelper->makeUrl($dashboardUrl);
 @endphp
 
 @section('body')

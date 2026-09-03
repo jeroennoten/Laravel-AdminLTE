@@ -1,16 +1,13 @@
 @extends('adminlte::auth.auth-page', ['authType' => 'register'])
 
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 @php
     $loginUrl = View::getSection('login_url') ?? config('adminlte.login_url', 'login');
     $registerUrl = View::getSection('register_url') ?? config('adminlte.register_url', 'register');
 
-    if (config('adminlte.use_route_url', false)) {
-        $loginUrl = $loginUrl ? route($loginUrl) : '';
-        $registerUrl = $registerUrl ? route($registerUrl) : '';
-    } else {
-        $loginUrl = $loginUrl ? url($loginUrl) : '';
-        $registerUrl = $registerUrl ? url($registerUrl) : '';
-    }
+    $loginUrl = $layoutHelper->makeUrl($loginUrl);
+    $registerUrl = $layoutHelper->makeUrl($registerUrl);
 @endphp
 
 @section('auth_header', __('adminlte::adminlte.register_message'))

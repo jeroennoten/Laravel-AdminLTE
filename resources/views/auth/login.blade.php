@@ -1,19 +1,15 @@
 @extends('adminlte::auth.auth-page', ['authType' => 'login'])
 
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 @php
     $loginUrl = View::getSection('login_url') ?? config('adminlte.login_url', 'login');
     $registerUrl = View::getSection('register_url') ?? config('adminlte.register_url', 'register');
     $passResetUrl = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset');
 
-    if (config('adminlte.use_route_url', false)) {
-        $loginUrl = $loginUrl ? route($loginUrl) : '';
-        $registerUrl = $registerUrl ? route($registerUrl) : '';
-        $passResetUrl = $passResetUrl ? route($passResetUrl) : '';
-    } else {
-        $loginUrl = $loginUrl ? url($loginUrl) : '';
-        $registerUrl = $registerUrl ? url($registerUrl) : '';
-        $passResetUrl = $passResetUrl ? url($passResetUrl) : '';
-    }
+    $loginUrl = $layoutHelper->makeUrl($loginUrl);
+    $registerUrl = $layoutHelper->makeUrl($registerUrl);
+    $passResetUrl = $layoutHelper->makeUrl($passResetUrl);
 @endphp
 
 @section('auth_header', __('adminlte::adminlte.login_message'))

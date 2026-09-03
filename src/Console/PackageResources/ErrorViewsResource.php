@@ -78,7 +78,7 @@ class ErrorViewsResource extends PackageResource
      */
     public function uninstall()
     {
-        foreach ($this->source as $file => $content) {
+        foreach (array_keys($this->source) as $file) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (File::isFile($target)) {
@@ -94,7 +94,7 @@ class ErrorViewsResource extends PackageResource
      */
     public function exists()
     {
-        foreach ($this->source as $file => $content) {
+        foreach (array_keys($this->source) as $file) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (File::isFile($target)) {
