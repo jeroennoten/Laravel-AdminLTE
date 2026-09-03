@@ -201,7 +201,7 @@ class NavbarDropdown extends Component
     protected function resolveMenuSize($size)
     {
         if (! isset($size)) {
-            return self::DEFAULT_MENU_SIZE;
+            return static::DEFAULT_MENU_SIZE;
         }
 
         if (! is_string($size)) {
@@ -210,7 +210,7 @@ class NavbarDropdown extends Component
 
         $size = strtolower(trim($size));
 
-        return in_array($size, self::MENU_SIZES, true) ? $size : null;
+        return in_array($size, static::MENU_SIZES, true) ? $size : null;
     }
 
     /**
@@ -223,14 +223,14 @@ class NavbarDropdown extends Component
     protected function resolveMenuAlignment($align)
     {
         if (! is_string($align)) {
-            return self::DEFAULT_MENU_ALIGNMENT;
+            return static::DEFAULT_MENU_ALIGNMENT;
         }
 
         $align = strtolower(trim($align));
 
-        return in_array($align, self::MENU_ALIGNMENTS, true)
+        return in_array($align, static::MENU_ALIGNMENTS, true)
             ? $align
-            : self::DEFAULT_MENU_ALIGNMENT;
+            : static::DEFAULT_MENU_ALIGNMENT;
     }
 
     /**

@@ -127,9 +127,9 @@ class Toast extends Component
      */
     protected function makePosition($position)
     {
-        return isset(self::$positions[$position])
+        return isset(static::$positions[$position])
             ? $position
-            : self::DEFAULT_POSITION;
+            : static::DEFAULT_POSITION;
     }
 
     /**
@@ -151,7 +151,7 @@ class Toast extends Component
     public function makeContainerClass()
     {
         $classes = ['toast-container position-fixed'];
-        $classes[] = self::$positions[$this->position];
+        $classes[] = static::$positions[$this->position];
         $classes[] = 'p-3';
 
         return implode(' ', $classes);

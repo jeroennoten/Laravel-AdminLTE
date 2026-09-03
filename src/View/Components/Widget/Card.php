@@ -181,14 +181,14 @@ class Card extends Component
     protected function resolveTitleTag($tag)
     {
         if (! is_string($tag)) {
-            return self::DEFAULT_TITLE_TAG;
+            return static::DEFAULT_TITLE_TAG;
         }
 
         $tag = strtolower(trim($tag));
 
-        return in_array($tag, self::TITLE_TAGS, true)
+        return in_array($tag, static::TITLE_TAGS, true)
             ? $tag
-            : self::DEFAULT_TITLE_TAG;
+            : static::DEFAULT_TITLE_TAG;
     }
 
     /**

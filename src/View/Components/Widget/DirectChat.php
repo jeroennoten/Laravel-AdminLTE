@@ -165,7 +165,7 @@ class DirectChat extends Component
     ) {
         $this->title = UtilsHelper::applyHtmlEntityDecoder($title);
         $this->icon = $icon;
-        $this->theme = $theme ?? self::DEFAULT_THEME;
+        $this->theme = $theme ?? static::DEFAULT_THEME;
         $this->badge = UtilsHelper::applyHtmlEntityDecoder($badge);
         $this->badgeTheme = $badgeTheme;
         $this->height = $this->resolveHeight($height);
@@ -221,7 +221,7 @@ class DirectChat extends Component
 
         $mode = strtolower(trim($mode));
 
-        return in_array($mode, self::TIMESTAMP_MODES, true) ? $mode : null;
+        return in_array($mode, static::TIMESTAMP_MODES, true) ? $mode : null;
     }
 
     /**
