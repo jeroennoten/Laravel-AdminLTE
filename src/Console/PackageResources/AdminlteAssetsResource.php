@@ -61,11 +61,17 @@ class AdminlteAssetsResource extends PackageResource
                         ],
                     ],
 
-                    // The default logo image. Note the AdminLTE v4 images are
-                    // located at the 'dist/assets/img' folder.
+                    // The default logo images. Note the AdminLTE v4 images are
+                    // located at the 'dist/assets/img' folder. The full logo
+                    // is the large variant of the logo switch setup, the one
+                    // shown while the sidebar is expanded.
 
                     [
                         'source' => 'dist/assets/img/AdminLTELogo.png',
+                    ],
+
+                    [
+                        'source' => 'dist/assets/img/AdminLTEFullLogo.png',
                     ],
                 ],
             ],

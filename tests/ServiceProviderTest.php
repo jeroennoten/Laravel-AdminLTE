@@ -51,6 +51,19 @@ class ServiceProviderTest extends TestCase
         $this->assertTrue(is_array(Config::get('adminlte.menu')));
     }
 
+    public function testBootLoadConfigOverAMalformedPublishedFile()
+    {
+        // A published configuration file that does not return an array used to
+        // abort the boot of the whole application with a type error.
+
+        Config::set('adminlte', 'dummy-content');
+
+        $this->app->register(AdminLteServiceProvider::class)->boot();
+
+        $this->assertTrue(is_array(Config::get('adminlte')));
+        $this->assertEquals('AdminLTE 4', Config::get('adminlte.title'));
+    }
+
     public function testBootRegisterCommands()
     {
         // Check that the artisan commands are registered.
