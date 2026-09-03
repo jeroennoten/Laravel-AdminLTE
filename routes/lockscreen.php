@@ -9,8 +9,9 @@ use JeroenNoten\LaravelAdminLte\Http\Controllers\LockscreenController;
 |--------------------------------------------------------------------------
 |
 | These routes are only registered when the lockscreen is enabled on the
-| package configuration. The check lives on the service provider, so the
-| 'route:cache' command can not freeze the current value of the option.
+| package configuration. The check lives on the service provider, so this file
+| carries no condition of its own. Enabling the option on a deployment that
+| caches its routes needs a new 'route:cache' run.
 |
 */
 

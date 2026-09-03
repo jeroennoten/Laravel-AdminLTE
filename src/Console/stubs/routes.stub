@@ -1,2 +1,6 @@
 
+// Add ['verify' => true] when the application uses the email verification of
+// Laravel: the 'verify' view of this package posts to the 'verification.resend'
+// route, which 'Auth::routes()' only registers with that option.
+
 Auth::routes();
