@@ -54,6 +54,13 @@ class InputSlider extends InputGroupComponent
     public $color;
 
     /**
+     * The attributes of the DOM element that holds the slider.
+     *
+     * @var array
+     */
+    public $sliderAttributes = [];
+
+    /**
      * Create a new component instance.
      * Note this component requires the 'NoUiSlider' plugin.
      *
@@ -83,13 +90,6 @@ class InputSlider extends InputGroupComponent
             ? $sliderAttributes
             : [];
     }
-
-    /**
-     * The attributes of the DOM element that holds the slider.
-     *
-     * @var array
-     */
-    public $sliderAttributes = [];
 
     /**
      * Get the configuration that will be handed over to the 'noUiSlider'

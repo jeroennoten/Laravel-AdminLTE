@@ -1,3 +1,5 @@
+# Issues, Questions and Pull Requests
+
 You can report issues or ask questions in the [issues section](https://github.com/jeroennoten/Laravel-AdminLTE/issues). Please, start your issue with `[BUG]` and your question with `[QUESTION]` in the subject.
 
 If you have a question, it is recommended to search and check the closed issues first.

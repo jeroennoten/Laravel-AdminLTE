@@ -75,6 +75,30 @@ class VendorAssetsResource extends PackageResource
                     ],
                 ],
             ],
+            'fonts' => [
+                'name' => 'Source Sans 3 (the AdminLTE web font)',
+                'package' => '@fontsource/source-sans-3',
+                'version' => '^5.0',
+                'source' => $nodePath.DIRECTORY_SEPARATOR.'@fontsource'
+                    .DIRECTORY_SEPARATOR.'source-sans-3',
+                'target' => public_path('vendor/fonts/source-sans-3'),
+                'resources' => [
+                    [
+                        'source' => 'index.css',
+                    ],
+
+                    // The stylesheet only declares the regular weight, so the
+                    // other seventeen weight and style combinations shipped by
+                    // the package would be dead weight in the public folder.
+
+                    [
+                        'source' => 'files',
+                        'target' => 'files',
+                        'recursive' => false,
+                        'ignore' => ['regex:/^(?!.*-400-normal\.woff2?$)/'],
+                    ],
+                ],
+            ],
             'overlayscrollbars' => [
                 'name' => 'OverlayScrollbars',
                 'package' => 'overlayscrollbars',

@@ -1,14 +1,11 @@
 @extends('adminlte::master')
 
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 @php
     $authType = $authType ?? 'login';
     $dashboardUrl = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home');
-
-    if (config('adminlte.use_route_url', false)) {
-        $dashboardUrl = $dashboardUrl ? route($dashboardUrl) : '';
-    } else {
-        $dashboardUrl = $dashboardUrl ? url($dashboardUrl) : '';
-    }
+    $dashboardUrl = $layoutHelper->makeUrl($dashboardUrl);
 
     // The AdminLTE v4 authentication pages center their content by using the
     // '{login,register}-page' body class. The RTL direction and the color mode

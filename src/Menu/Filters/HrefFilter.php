@@ -2,7 +2,9 @@
 
 namespace JeroenNoten\LaravelAdminLte\Menu\Filters;
 
+use Illuminate\Routing\Exceptions\UrlGenerationException;
 use JeroenNoten\LaravelAdminLte\Helpers\MenuItemHelper;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class HrefFilter implements FilterInterface
 {
@@ -33,7 +35,7 @@ class HrefFilter implements FilterInterface
         // Otherwise, check if route attribute is available.
 
         if (! empty($item['url'])) {
-            return url($item['url']);
+            return $this->makeHrefFromUrlAttr($item['url']);
         } elseif (! empty($item['route'])) {
             return $this->makeHrefFromRouteAttr($item['route']);
         }
@@ -41,6 +43,25 @@ class HrefFilter implements FilterInterface
         // When url and route are not available, return a default value.
 
         return '#';
+    }
+
+    /**
+     * Make and return the href HTML attribute from the url attribute of a menu
+     * item.
+     *
+     * @param  mixed  $urlAttr  The url attribute of a menu item
+     * @return string
+     */
+    protected function makeHrefFromUrlAttr($urlAttr): string
+    {
+        // Only a plain url can be resolved, any other value would abort the
+        // compilation of the whole menu.
+
+        if (! is_string($urlAttr) && ! is_numeric($urlAttr)) {
+            return '#';
+        }
+
+        return url((string) $urlAttr);
     }
 
     /**
@@ -58,11 +79,23 @@ class HrefFilter implements FilterInterface
 
         if (is_array($routeAttr)) {
             $routeName = $routeAttr[0] ?? null;
-            $routeParams = is_array($routeAttr[1]) ? $routeAttr[1] : null;
+            $routeParams = is_array($routeAttr[1] ?? null) ? $routeAttr[1] : null;
         } elseif (is_string($routeAttr)) {
             $routeName = $routeAttr;
         }
 
-        return $routeName ? route($routeName, $routeParams) : '#';
+        if (! is_string($routeName) || $routeName === '') {
+            return '#';
+        }
+
+        // Note an unknown route name, or a set of parameters that does not
+        // satisfy the route, only makes this particular item unreachable. The
+        // rest of the menu (and of the panel) keeps working.
+
+        try {
+            return route($routeName, $routeParams);
+        } catch (RouteNotFoundException|UrlGenerationException $e) {
+            return '#';
+        }
     }
 }

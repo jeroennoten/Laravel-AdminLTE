@@ -1,9 +1,11 @@
+# Updating
+
 > [!Important]
 > Coming from a **3.x** release of this package? The steps below cover a routine update **within** the `4.x` line. A `3.x` &rarr; `4.x` jump is a **major upgrade** with breaking changes (Laravel 12+/PHP 8.2+, the AdminLTE v4 markup rewrite, Bootstrap Icons, the removed boxed layout and sidebar skins, …). Read [Upgrading from 3.x](/sections/overview/upgrading_from_3x) first, then come back here.
 
 To perform an update on this package, please use the next steps as reference:
 
-### 1. Update the package with composer
+## 1. Update the package with composer
 
 On the root folder of your project, update the package with the next composer command:
 
@@ -11,7 +13,7 @@ On the root folder of your project, update the package with the next composer co
 composer update jeroennoten/laravel-adminlte
 ```
 
-### 2. Update the underlying AdminLTE files
+## 2. Update the underlying AdminLTE files
 
 Update the underlying `AdminLTE` resources files by executing the next command:
 
@@ -22,7 +24,7 @@ php artisan adminlte:update
 > [!Note]
 > This command will only update the underlying **AdminLTE v4 distribution files** that were installed in your `public/vendor/adminlte` folder. When the third party assets (`Bootstrap`, `Bootstrap Icons` and `OverlayScrollbars`) were published too, they are refreshed as well.
 
-### 3. Review the package published views (optional)
+## 3. Review the package published views (optional)
 
 If you had previously [published](/sections/configuration/views_customization) and modified the default `master.blade.php` file, the `page.blade.php` file or any other view provided by this package, then you may need to update them too. Please, note there could be huge updates on those views, so it's highly recommended to **backup** your set of previously published view files.
 
@@ -41,7 +43,7 @@ To update the published package views, you may follow next steps:
 
 - Compare the new installed views with your backup files and redo the modifications you had previously made to those views.
 
-### 4. Review the package configuration (optional)
+## 4. Review the package configuration (optional)
 
 From time to time, new configuration options may be added or default values may be changed, so it's also a recommendation to verify and update your package configuration file if needed. To update the configuration, you may follow next steps:
 
@@ -55,7 +57,7 @@ From time to time, new configuration options may be added or default values may 
 
 - Compare the new file with your backup configuration file and redo the modifications you had previously made.
 
-### 5. Update the underlying AdminLTE plugins (very optional)
+## 5. Update the underlying AdminLTE plugins (very optional)
 
 In the particular case that the package update includes jumping to a new version of the underlying `AdminLTE` package, you may also want to update the plugins you had previously installed using the command `php artisan adminlte:plugins install --plugin=somePlugin`. In this case, you may proceed as explained below.
 

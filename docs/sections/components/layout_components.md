@@ -1,3 +1,5 @@
+# Layout Components
+
 These components are classified under the **Layout** category and represents the pieces that fill the **AdminLTE** page layout. At next you can see the list of available components:
 
 |Components
@@ -6,15 +8,15 @@ These components are classified under the **Layout** category and represents the
 | [Navbar Dropdown](#navbar-dropdown)
 | [Navbar Dropdown Item](#navbar-dropdown-item)
 | [Navbar Custom Menu](#navbar-custom-menu)
-| [Navbar Notification](/sections/configuration/special_menu_items#navbar-notification)
+| [Navbar Notification](#navbar-notification)
 | [Navbar Darkmode Widget](/sections/configuration/special_menu_items#navbar-darkmode-widget)
 
 > [!Note]
-> The **Navbar Notification** (`<x-adminlte-navbar-notification>`) and the **Navbar Darkmode Widget** (`<x-adminlte-navbar-darkmode-widget>`) also belong to this category, but they are normally placed through the `menu` configuration instead of by hand, so they are documented on the [special menu items](/sections/configuration/special_menu_items) page.
+> The **Navbar Notification** and the **Navbar Darkmode Widget** (`<x-adminlte-navbar-darkmode-widget>`) are normally placed through the [`menu` configuration](/sections/configuration/menu) instead of by hand, as [special menu items](/sections/configuration/special_menu_items). The darkmode widget is fully documented there; the notification widget has its own section below for the cases where you place it yourself.
 
-# Content Header
+## Content Header
 
-This component represents the header of the page content, the block that every **AdminLTE v4** reference layout places above the main content with the page title on the left and the breadcrumb trail on the right. The following attributes are available:
+This component represents the header of the page content, the block that the **AdminLTE v4** reference layouts (the demo pages shipped with the upstream template) place above the main content with the page title on the left and the breadcrumb trail on the right. The following attributes are available:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
@@ -25,7 +27,7 @@ title-class | The classes for the title element (replaces the default `mb-0 fs-3
 Any other attribute you define will be directly inserted into the underlying `div.row` element. So, for example, you can define a `class`, `id` or any other attribute you may need.
 
 > [!Note]
-> The component only renders the `.row` of the header, because the layout already wraps the `content_header` section inside the `.app-content-header > .container-fluid` elements. The container of that wrapper is configurable through the `classes_content_header` option of the [layout & styling configuration](/sections/configuration/layout_and_styling#layout).
+> The component only renders the `.row` of the header, because the layout already wraps the [`content_header` section](/sections/overview/usage) inside the `.app-content-header > .container-fluid` elements. The container of that wrapper is configurable through the `classes_content_header` option of the [layout & styling configuration](/sections/configuration/layout_and_styling#layout).
 
 > [!Note]
 > When there is no breadcrumb trail (and no `breadcrumbSlot`), the breadcrumb column is not rendered at all, only the title column is emitted.
@@ -50,6 +52,8 @@ The component provides the following slots:
 - **breadcrumbSlot**: Use this slot to fill the breadcrumb column with your own markup. It takes precedence over the `breadcrumbs` attribute.
 
 ### Examples
+
+The component goes inside the `content_header` section of a blade file that extends `adminlte::page`. The examples below use `route()` helpers of a fictional application, so replace them with routes of your own:
 
 ```blade
 {{-- Minimal --}}
@@ -86,7 +90,7 @@ The component provides the following slots:
 @stop
 ```
 
-# Navbar Dropdown
+## Navbar Dropdown
 
 This component represents a navbar dropdown menu, the block that the **AdminLTE v4** reference layouts use for the messages, notifications and tasks menus of the topbar. It renders the `li.nav-item.dropdown` wrapper, the toggle with its icon and its badge, and the `.dropdown-menu` with the optional header, divider and footer pieces. The following attributes are available:
 
@@ -94,11 +98,11 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 id | The id of the underlying `li` wrapper. The toggle gets `{id}-toggle` as its own id | string | `null` | no
 icon | The icon of the dropdown toggle (a [Bootstrap Icon](https://icons.getbootstrap.com/)) | string | `null` | no
-icon-theme | The color of the toggle icon (an AdminLTE color) | string | `null` | no
+icon-theme | The color of the toggle icon (an [AdminLTE color](/sections/components/widget_components#about-the-theme-attribute)) | string | `null` | no
 text | The visible text of the dropdown toggle, placed next to the icon | string | `null` | no
 label | The accessible name of the dropdown toggle (an `aria-label`). See [Accessibility](#accessibility) | string | `null` | no
 badge | The label of the navbar badge attached to the toggle | string | `null` | no
-badge-theme | The background color of the navbar badge (an AdminLTE color) | string | `null` | no
+badge-theme | The background color of the navbar badge (an [AdminLTE color](/sections/components/widget_components#about-the-theme-attribute)) | string | `null` | no
 size | The size of the dropdown menu (`lg` or `xl`). See [The `size` Attribute](#the-size-attribute) | string | `lg` | no
 align | The alignment of the dropdown menu (`start` or `end`) | string | `end` | no
 animated | Whether the dropdown menu fades in. See [The `animated` Attribute](#the-animated-attribute) | bool | `false` | no
@@ -134,6 +138,8 @@ The component provides the following slots:
 - **footerSlot**: Use this slot to fill the dropdown footer link with your own markup. It takes precedence over the `footer` attribute.
 
 ### Examples
+
+Place the component inside the `content_top_nav_right` (or `content_top_nav_left`) section of a blade file that extends `adminlte::page`. The `route()` calls and the images below belong to a fictional application, replace them with your own:
 
 ```blade
 {{-- The messages dropdown of the reference layouts --}}
@@ -183,7 +189,7 @@ The component provides the following slots:
 </x-adminlte-navbar-dropdown>
 ```
 
-# Navbar Dropdown Item
+## Navbar Dropdown Item
 
 This component represents an item of a [Navbar Dropdown](#navbar-dropdown) menu. It provides the two item layouts used by the **AdminLTE v4** reference layouts, the *media* one (an image next to a `.dropdown-item-title`, the excerpt and the time) and the *inline* one (an icon, the text and the time pushed to the end of the item). The following attributes are available:
 
@@ -193,11 +199,11 @@ title | The title of the item. It fills the `.dropdown-item-title` element of th
 text | The text of the item. It's the excerpt on the media layout and the whole text on the inline one | string | `null` | no
 time | The time related to the item | string | `null` | no
 icon | The icon of the item, only used by the inline layout (a [Bootstrap Icon](https://icons.getbootstrap.com/)) | string | `null` | no
-icon-theme | The color of the item icon (an AdminLTE color) | string | `null` | no
+icon-theme | The color of the item icon (an [AdminLTE color](/sections/components/widget_components#about-the-theme-attribute)) | string | `null` | no
 img | The url of the image shown by the media layout | string | `null` | no
 img-alt | The alternative text of the image | string | `''` | no
 marker | The icon shown at the end of the title on the media layout (a [Bootstrap Icon](https://icons.getbootstrap.com/)) | string | `null` | no
-marker-theme | The color of the marker icon (an AdminLTE color) | string | `null` | no
+marker-theme | The color of the marker icon (an [AdminLTE color](/sections/components/widget_components#about-the-theme-attribute)) | string | `null` | no
 url | The url of the item | string | `#` | no
 divider | Whether a `.dropdown-divider` is emitted right after the item | bool | `false` | no
 
@@ -234,7 +240,7 @@ The component provides the following slots:
 </x-adminlte-navbar-dropdown-item>
 ```
 
-# Navbar Custom Menu
+## Navbar Custom Menu
 
 This component represents the `div.navbar-custom-menu` wrapper of the **AdminLTE v4** stylesheet. It keeps the dropdown menus of its items anchored to the end of the navbar, and, on the small breakpoint, it turns them into floating panels with their own background and border. Use it to group the navbar items placed on the right side of the topbar. The following attributes are available:
 
@@ -265,3 +271,60 @@ The component provides the following slots:
     </x-adminlte-navbar-custom-menu>
 @stop
 ```
+
+## Navbar Notification
+
+This component represents a notification icon with a badge, meant to be placed on the top navbar. It is the component behind the [`navbar-notification` special menu item](/sections/configuration/special_menu_items#navbar-notification), and you only need it directly when you prefer to place the widget on a blade section instead of on the `menu` configuration.
+
+Attribute | Description | Type | Default | Required
+----------|-------------|------|---------|---------
+badge-color | The color of the badge (an [AdminLTE color](/sections/components/widget_components#about-the-theme-attribute)). Without it, the badge only carries the AdminLTE `.navbar-badge` style | string | `null` | no
+badge-label | The initial content of the badge. Without it, no badge is rendered at all | string | `null` | no
+dropdown-footer-label | The label of the footer link of the dropdown. Only used on the dropdown mode, and a magnifier icon is rendered when it is left out | string | `null` | no
+enable-dropdown-mode | Whether a click opens a dropdown instead of following the link | bool | `false` | no
+icon | The icon of the widget, for example `bi bi-bell-fill` | string | | **yes**
+icon-color | The color of the icon (an [AdminLTE color](/sections/components/widget_components#about-the-theme-attribute)) | string | `null` | no
+id | The `id` attribute of the underlying `li` wrapper. It is also the handle the periodic update uses, so it has to be unique on the page | string | | **yes**
+update-cfg | The configuration of the periodic update, see below | array | `[]` | no
+
+Any other attribute you define will be directly inserted into the underlying `a` element. In particular, the **`href`** attribute is the target of the widget: on the default mode a click follows it, and on the dropdown mode it becomes the target of the footer link.
+
+### The `update-cfg` Attribute
+
+When this array is filled, the widget polls your application for new data and updates itself. The accepted keys are:
+
+Key | Description
+----|-------------
+`url` | The url to fetch, as a string or as a `[path, parameters]` array
+`route` | A route name instead of an url, as a string or as a `[name, parameters]` array
+`period` | The polling period, in seconds. Without it (or with a value lower than one) the widget is never polled
+
+The expected `json` answer, and a complete controller example, are documented on the [internal updating procedure](/sections/configuration/special_menu_items#internal-updating-procedure) of the special menu items page.
+
+> [!Note]
+> An `url` or a `route` that can not be resolved only leaves the widget without its periodic update, it does not break the page that holds the component.
+
+### Examples
+
+Place the component inside the `content_top_nav_right` section of a blade file extending `adminlte::page`:
+
+```blade
+@section('content_top_nav_right')
+
+    {{-- A plain notification icon linking to a page of your application --}}
+    <x-adminlte-navbar-notification id="msgNotification" icon="bi bi-envelope-fill"
+        icon-color="info" badge-label="3" badge-color="danger"
+        href="{{ url('messages') }}"/>
+
+    {{-- A notification opening a dropdown, refreshed every 30 seconds --}}
+    <x-adminlte-navbar-notification id="allNotifications" icon="bi bi-bell-fill"
+        icon-color="warning" badge-label="0" badge-color="danger"
+        href="{{ url('notifications/show') }}"
+        dropdown-footer-label="All notifications"
+        :update-cfg="['url' => 'notifications/get', 'period' => 30]"
+        enable-dropdown-mode/>
+
+@stop
+```
+
+![Navbar Notification Example](/imgs/configuration/special_menu_items/navbar-notification-example.png)

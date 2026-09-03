@@ -2,12 +2,7 @@
 
 @php
     $dashboard_url = View::getSection('dashboard_url') ?? config('adminlte.dashboard_url', 'home');
-
-    if (config('adminlte.use_route_url', false)) {
-        $dashboard_url = $dashboard_url ? route($dashboard_url) : '';
-    } else {
-        $dashboard_url = $dashboard_url ? url($dashboard_url) : '';
-    }
+    $dashboard_url = $layoutHelper->makeUrl($dashboard_url);
 
     $logoImg = asset(config('adminlte.logo_img', 'vendor/adminlte/dist/assets/img/AdminLTELogo.png'));
     $logoImgXl = asset(config('adminlte.logo_img_xl'));

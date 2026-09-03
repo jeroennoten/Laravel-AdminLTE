@@ -49,6 +49,6 @@ trait HandlesThemeColors
             return $theme;
         }
 
-        return self::$v3ColorAliases[$theme] ?? $theme;
+        return static::$v3ColorAliases[$theme] ?? $theme;
     }
 }

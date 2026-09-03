@@ -114,22 +114,25 @@ class PreloaderHelperTest extends TestCase
 
     public function testPreloaderWithAnUnknownMode()
     {
-        // An unknown mode does not match any of the supported ones.
+        // An unknown mode falls back to the fullscreen one, otherwise it
+        // would silently disable the preloader.
 
         config([
             'adminlte.preloader.enabled' => true,
             'adminlte.preloader.mode' => 'dummy',
         ]);
 
-        $this->assertFalse(PreloaderHelper::isPreloaderEnabled());
-        $this->assertFalse(PreloaderHelper::isPreloaderEnabled('fullscreen'));
+        $this->assertEquals('fullscreen', PreloaderHelper::getMode());
+
+        $this->assertTrue(PreloaderHelper::isPreloaderEnabled());
+        $this->assertTrue(PreloaderHelper::isPreloaderEnabled('fullscreen'));
         $this->assertFalse(PreloaderHelper::isPreloaderEnabled('cwrapper'));
 
-        // But the mode may be checked explicitly.
+        // And an unknown mode is never enabled on its own name.
 
-        $this->assertTrue(PreloaderHelper::isPreloaderEnabled('dummy'));
+        $this->assertFalse(PreloaderHelper::isPreloaderEnabled('dummy'));
 
-        // The style and classes of an unknown mode are the base ones.
+        // The style and classes of the fullscreen mode are the base ones.
 
         $this->assertStringNotContainsString(
             'position-absolute',
@@ -137,6 +140,31 @@ class PreloaderHelperTest extends TestCase
         );
 
         $this->assertEquals('', PreloaderHelper::makePreloaderStyle());
+    }
+
+    public function testPreloaderModeIsNormalized()
+    {
+        config(['adminlte.preloader.enabled' => true]);
+
+        // The mode is matched case insensitively and without surrounding
+        // whitespace.
+
+        config(['adminlte.preloader.mode' => ' CWrapper ']);
+
+        $this->assertEquals('cwrapper', PreloaderHelper::getMode());
+        $this->assertTrue(PreloaderHelper::isPreloaderEnabled('cwrapper'));
+
+        // A value that is not even a string falls back to the default. Note a
+        // truthy one used to enable every mode at once, and thus render the
+        // preloader twice on the same page.
+
+        foreach ([true, 1, null, ['cwrapper']] as $mode) {
+            config(['adminlte.preloader.mode' => $mode]);
+
+            $this->assertEquals('fullscreen', PreloaderHelper::getMode());
+            $this->assertTrue(PreloaderHelper::isPreloaderEnabled('fullscreen'));
+            $this->assertFalse(PreloaderHelper::isPreloaderEnabled('cwrapper'));
+        }
     }
 
     public function testPreloaderModeDefaultsToFullscreen()

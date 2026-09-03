@@ -1,11 +1,6 @@
-In this section we'll explain how to configure the menu items that will be available on your admin panel.
+# Menu Configuration
 
-| Menu Configuration
-| ------------------
-| [Static Menu Config](#static-menu-config)
-| [Menu Filters](#menu-filters)
-| [Dynamic Menu Config](#dynamic-menu-config)
-| [Side Notes About Laravel Policies Support](#side-notes-about-laravel-policies-support)
+In this section we'll explain how to configure the menu items that will be available on your admin panel.
 
 ## Static Menu Config
 
@@ -74,7 +69,7 @@ Attribute                                   | Description
 
 Now, we're going to review all of these attributes with more detail:
 
-#### The __`active`__ Attribute:
+### The __`active`__ Attribute:
 
 By default, a menu item is considered active if any of the following conditions holds:
 
@@ -99,7 +94,7 @@ In the previous case, the menu item will be considered active for all the next U
 - `http://my.domain.com/content-user` (because `content*`)
 - `http://my.domain.com/content/1234` (because `regex:@^content/[0-9]+$@`)
 
-#### The __`can`__ Attribute:
+### The __`can`__ Attribute:
 
 You may use the `can` attribute if you want to conditionally show a menu item. This integrates with the [Laravel's Gate](https://laravel.com/docs/authorization#gates) functionality. If you need to conditionally show a header item, you need to wrap it in an array using the `header` attribute. You can also use multiple conditions entries with an array, check the next example for details:
 
@@ -119,7 +114,7 @@ You may use the `can` attribute if you want to conditionally show a menu item. T
 
 So, for the previous example the header will show only if the user has the `manage-blog` permission, and the link will show if the user has the `add-blog-post` or the `other-right` permissions.
 
-#### The __`classes`__ Attribute:
+### The __`classes`__ Attribute:
 
 This attribute provides a way to add custom classes to a particular menu item. The value should be a string with one or multiple class names, similar to the HTML `class` attribute. For example, you can make a colorful `HEADER` item centered on the left sidebar with the next definition:
 
@@ -144,7 +139,7 @@ Or you can highlight an important link item with something like this:
 > [!Note]
 > Use the **Bootstrap 5.3** utility class names here. The **Bootstrap 4** helpers that were valid on **AdminLTE v3** were renamed: `text-bold` is now `fw-bold`, `text-left` / `text-right` are now `text-start` / `text-end`, `ml-*` / `mr-*` are now `ms-*` / `me-*`, and so on.
 
-#### The __`data`__ Attribute:
+### The __`data`__ Attribute:
 
 In order to add `data-*` attributes to your menu items, you can simply add an associative array called `data` to the item. Here is a basic example:
 
@@ -170,7 +165,7 @@ Then, the previous menu item will be rendered as this:
 </a>
 ```
 
-#### The __`header`__ Attribute:
+### The __`header`__ Attribute:
 
 This attribute is exclusive for header items, and the value is just his descriptive text. Headers are only available for the left sidebar and they provide a way to group items under a label. Example:
 
@@ -182,7 +177,7 @@ This attribute is exclusive for header items, and the value is just his descript
 
 A header item can also be represented with a single string, for example `"REPORTS"`, but the array format provides a way to combine it with other attributes, like the `can` one. The `header` attribute supports translations, as explained on the [Translations](/sections/configuration/translations) section.
 
-#### The __`icon`__ and __`icon_color`__ Attributes:
+### The __`icon`__ and __`icon_color`__ Attributes:
 
 The `icon` attribute is optional, and the sidebar items will fall back to an open circle (`bi bi-circle`) if you leave it out. **AdminLTE v4** ships [Bootstrap Icons](https://icons.getbootstrap.com/), so the available icons that you can use are those from that set. Just specify the class name of the icon and it will appear in front of your menu item. The `icon_color` attribute provides a way to setup an **AdminLTE color** for the icon (it is rendered as a `text-{color}` class). Example:
 
@@ -203,7 +198,7 @@ The `icon` attribute is optional, and the sidebar items will fall back to an ope
 >
 > Unlike the blade components, the menu attributes are **not** translated from the **AdminLTE v3** palette: the value is copied verbatim into the class name. So an old color name such as `lightblue` or `maroon` needs **both** `assets.extended_colors` and `assets.extended_colors_v3_aliases` to be enabled. Otherwise, use the v4 name (`sky`, `pink`, ...). The same applies to the `label_color` attribute.
 
-#### The __`id`__ Attribute:
+### The __`id`__ Attribute:
 
 This attribute is optional, and just provide a way to add an `id` to the element that wraps the menu item, generally a `<li>` tag. This can be useful when you need to target the menu item from `Javascript` in order to perform updates on it.
 
@@ -215,11 +210,11 @@ This attribute is optional, and just provide a way to add an `id` to the element
 ]
 ```
 
-#### The __`key`__ Attribute:
+### The __`key`__ Attribute:
 
 In order to place an item dynamically you can use the `key` attribute, with this attribute you set an unique identifier for the item. Then, you can use this identifier later to add new items before or after the item represented by this `key` identifier. For more details, checkout the section [Dynamic Menu Config](#dynamic-menu-config).
 
-#### The __`label`__ and __`label_color`__ Attributes:
+### The __`label`__ and __`label_color`__ Attributes:
 
 The `label` attribute provides a way to setup a right aligned [badge](https://getbootstrap.com/docs/5.3/components/badge/) for the menu item. The `label_color` is used to configure the badge color (it is rendered as a **Bootstrap 5.3** `text-bg-{color}` class, `primary` when not defined), example:
 
@@ -233,7 +228,7 @@ The `label` attribute provides a way to setup a right aligned [badge](https://ge
 ]
 ```
 
-#### The __`model`__ Attribute:
+### The __`model`__ Attribute:
 
 This attribute is only meaningful together with the [can](#the-can-attribute) attribute. Its value is passed as the extra argument of the `Gate::any()` check performed by the `GateFilter`, which is what [Laravel Policies](https://laravel.com/docs/authorization#creating-policies) need in order to resolve the policy class. The value may be a model class name (for the policy actions that do not require a model instance) or a model instance (only possible on a [dynamic menu configuration](#dynamic-menu-config)):
 
@@ -248,7 +243,7 @@ This attribute is only meaningful together with the [can](#the-can-attribute) at
 
 When the attribute is not defined, the `can` permissions are checked without any extra argument. See [Side Notes About Laravel Policies Support](#side-notes-about-laravel-policies-support) for a complete walkthrough.
 
-#### The __`route`__ Attribute:
+### The __`route`__ Attribute:
 
 You can use this attribute to assign a Laravel route name to a link item, if you choose to use this attribute, then don't mix it with the `url` attribute, for example:
 
@@ -270,7 +265,7 @@ Even more, you can define a route with parameters using an array where the first
 ]
 ```
 
-#### The __`shift`__ Attribute:
+### The __`shift`__ Attribute:
 
 > [!Caution]
 > This attribute will be dropped on the future. So, you should favor the usage of the [classes attribute](/sections/configuration/menu#the-classes-attribute) instead.
@@ -297,7 +292,7 @@ This attribute provides a way to inject classes into the `a.nav-link` element of
 ]
 ```
 
-#### The __`submenu`__ Attribute:
+### The __`submenu`__ Attribute:
 
 This attribute provides a way to create a menu item containing child items. With this feature you can create nested menus. You can create a menu with items in the sidebar and/or the top navbar. Example:
 
@@ -318,22 +313,22 @@ This attribute provides a way to create a menu item containing child items. With
 ]
 ```
 
-#### The __`target`__ Attribute:
+### The __`target`__ Attribute:
 
 This attribute is optional and intended to be used only with link items. It represents the underlying `HTML` target attribute for a link item. As an example, you can setup this attribute to the `'_blank'` value in order to open the link in a new tab.
 
-#### The __`text`__ Attribute:
+### The __`text`__ Attribute:
 
 The value of this attribute is just the descriptive text for a menu item (except for headers). The `text` attribute supports translations, as explained on the [Translations](/sections/configuration/translations) section.
 
-#### The __`topnav`__, __`topnav_right`__ and __`topnav_user`__ Attributes:
+### The __`topnav`__, __`topnav_right`__ and __`topnav_user`__ Attributes:
 
 It's possible to add menu items to the top navigation while the sidebar is enabled, you need to set the `topnav` attribute to `true` for this feature. Also, you can set the `topnav_right` attribute for put the item on the right side of the topnav or set the `topnav_user` attribute to place the menu item in the user menu (above the user-body).
 
 > [!Note]
 > When the top navigation layout is enabled, all menu items will appear in the top navigation.
 
-#### The __`url`__ Attribute:
+### The __`url`__ Attribute:
 
 The value of this attribute should be the URL for a link item. You can use a full URL with the domain part or without it. Don't mix this attribute with the `route` attribute. Examples:
 
@@ -351,6 +346,8 @@ The value of this attribute should be the URL for a link item. You can use a ful
 ```
 
 ## Menu Filters
+
+A **menu filter** is a small class that receives every menu item, one by one, right before it is rendered, and returns it back possibly modified. It is how the package resolves the `url` of a `route` attribute, decides whether an item is active, or hides an item the current user is not allowed to see.
 
 You can set the filters you want to include for rendering the menu using the `filters` configuration of the config file. You can also add your own custom filters to this array after you've created them. You can comment out the `GateFilter` if you don't want to use Laravel's built in Gate functionality. The current default set of menu filters is:
 
@@ -406,11 +403,16 @@ And then add the following configuration to the `config/adminlte.php` file:
 ]
 ```
 
+> [!Note]
+> The example above sets the **`restricted`** attribute on the item. It is the internal flag the package reads to decide whether an item is rendered: any item carrying `'restricted' => true` is dropped from the menu, whatever the reason your filter had. The shipped `GateFilter` sets exactly the same flag, so your own filter integrates with the rest of the pipeline without any extra work.
+
 ## Dynamic Menu Config
 
 It is also possible to configure the menu dynamically at runtime, for example in the boot method of any service provider or from a controller. You can add new menu items at the end of the menu, before or after a specific menu item, and also inside a menu item as a submenu item. You can use this feature when your menu is not created statically, for example when it depends on your database or the locale configuration.
 
 It is also possible to combine both approaches, a static configured menu with dynamics modifications. The menu will simply be concatenated and the order of the service providers will determine the order in the menu.
+
+The dynamic configuration is done from a listener of the **`BuildingMenu`** event that this package dispatches, which hands you a **menu builder** object on its `$menu` property. The [events](/sections/overview/events#buildingmenu) page shows the two places a listener can live on a **Laravel 12** application; the examples below only show the body of the listener.
 
 The available menu builder methods are:
 
@@ -455,10 +457,13 @@ Then, we're going add the next menu items.
 2. `Notifications` inside `Account Settings`
 3. `Profile` before `Notifications`
 
-So, after listening for the `BuildingMenu` event dispatched by this package, we can write the next lines in order to add the mentioned new items:
+So, on the `boot()` method of a service provider of your application (for example `app/Providers/AppServiceProvider.php`), we can write the next lines in order to add the mentioned new items:
 
 ```php
-$events->listen(BuildingMenu::class, function (BuildingMenu $event) {
+use Illuminate\Support\Facades\Event;
+use JeroenNoten\LaravelAdminLte\Events\BuildingMenu;
+
+Event::listen(BuildingMenu::class, function (BuildingMenu $event) {
 
     $event->menu->addAfter('pages', [
         'key' => 'account_settings',
@@ -484,9 +489,9 @@ The event-based approach is used to make sure that the code that builds the menu
 ### Config at the Event Service Provider
 
 > [!Important]
-> The next examples are somehow obsolete for the current Laravel state of art. In the newest version of Laravel you usually will define a `Listener` for the `BuildingMenu` event as explained in the [Laravel's Events Documentation](https://laravel.com/docs/events#registering-events-and-listeners). However, the code may still be used as reference.
+> The next examples are somehow obsolete for the current Laravel state of art. The `app/Providers/EventServiceProvider.php` file does not exist anymore on a fresh **Laravel 12** application, where you usually define a `Listener` class for the `BuildingMenu` event, as explained on the [events](/sections/overview/events#where-the-listener-goes) page and on the [Laravel's Events Documentation](https://laravel.com/docs/events#registering-events-and-listeners). However, the code may still be used as reference, and it keeps working on the projects that still have that file.
 
-To configure the menu at runtime on the Laravel `app/Providers/EventServiceProdider.php`, just register a handler or callback for the `BuildingMenu` event. For example, in the `boot()` method:
+To configure the menu at runtime on the Laravel `app/Providers/EventServiceProvider.php`, just register a handler or callback for the `BuildingMenu` event. For example, in the `boot()` method:
 
 ```php
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -599,10 +604,10 @@ After defining the policies, we can check whether a user has permission to perfo
 
 ```php
 // Check whether a user can create a post via the user model.
-$user->can('create', \App\Models\Post:class);
+$user->can('create', \App\Models\Post::class);
 
 // Check whether a user can create a post via the Gate facade.
-Gate::authorize('create', \App\Models\Post:class);
+Gate::authorize('create', \App\Models\Post::class);
 
 // Check whether a user can update a post via the user model.
 $user->can('update', $post);
@@ -613,7 +618,7 @@ Gate::authorize('update', $post);
 
 Now let's see how this is supported in the menu configuration by using the `can` attribute.
 
-#### Support to Policies Actions That Don't Require Models
+### Support to Policies Actions That Don't Require Models
 
 If you're using a **static menu configuration**, the `can` attribute may be used with policies actions that don't require models. The next example shows a menu item that will only be visible for users that can create posts, as defined by the previous `App\Policies\PostPolicy`.
 
@@ -626,7 +631,7 @@ If you're using a **static menu configuration**, the `can` attribute may be used
 ],
 ```
 
-#### Support to Policies Actions That Require Models:
+### Support to Policies Actions That Require Models:
 
 The `can` attribute may be used with policies actions that require models, but **only if you're defining your [menu dynamically](#dynamic-menu-config)**. The next example shows a menu item that will only be visible for users that can manage (update, delete) a particular post, as defined by the previous `App\Policies\PostPolicy`. Note this example assumes we have a **Listener** for the `BuildingMenu` event dispatched by this package:
 

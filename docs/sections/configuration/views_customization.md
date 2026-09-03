@@ -1,3 +1,5 @@
+# Views Customization
+
 In the particular case that you need full control or customization over the package views, you can publish them with the next command:
 
 ```sh

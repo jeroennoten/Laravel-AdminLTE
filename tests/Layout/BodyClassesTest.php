@@ -31,17 +31,19 @@ class BodyClassesTest extends TestCase
 
     public function testMakeWithTheFixedSidebar()
     {
+        // Note the sidebar always contributes its expand class, the layout
+        // grid gives it no column at all without one.
+
         config([
-            'adminlte.sidebar_expand' => null,
             'adminlte.sidebar_mini' => false,
             'adminlte.classes_body' => '',
         ]);
 
         config(['adminlte.layout_fixed_sidebar' => true]);
-        $this->assertEquals(['layout-fixed'], BodyClasses::make());
+        $this->assertEquals(['layout-fixed', 'sidebar-expand-lg'], BodyClasses::make());
 
         config(['adminlte.layout_fixed_sidebar' => false]);
-        $this->assertEquals([], BodyClasses::make());
+        $this->assertEquals(['sidebar-expand-lg'], BodyClasses::make());
 
         // The fixed sidebar is not compatible with the topnav layout.
 
@@ -64,7 +66,6 @@ class BodyClassesTest extends TestCase
     {
         config([
             'adminlte.layout_fixed_sidebar' => false,
-            'adminlte.sidebar_expand' => null,
             'adminlte.sidebar_mini' => false,
             'adminlte.classes_body' => '',
             'adminlte.layout_fixed_navbar' => true,
@@ -72,7 +73,7 @@ class BodyClassesTest extends TestCase
         ]);
 
         $this->assertEquals(
-            ['fixed-header', 'fixed-footer'],
+            ['fixed-header', 'fixed-footer', 'sidebar-expand-lg'],
             BodyClasses::make()
         );
 
@@ -156,18 +157,21 @@ class BodyClassesTest extends TestCase
     {
         config([
             'adminlte.layout_fixed_sidebar' => false,
-            'adminlte.sidebar_expand' => null,
             'adminlte.sidebar_mini' => false,
         ]);
 
         config(['adminlte.classes_body' => 'custom-1 custom-2']);
-        $this->assertEquals(['custom-1 custom-2'], BodyClasses::make());
+
+        $this->assertEquals(
+            ['sidebar-expand-lg', 'custom-1 custom-2'],
+            BodyClasses::make()
+        );
 
         // Only a non empty string is accepted.
 
         foreach (['', null, false, ['custom'], 10] as $cfg) {
             config(['adminlte.classes_body' => $cfg]);
-            $this->assertEquals([], BodyClasses::make());
+            $this->assertEquals(['sidebar-expand-lg'], BodyClasses::make());
         }
     }
 
@@ -256,9 +260,23 @@ class BodyClassesTest extends TestCase
         $this->assertContains('sidebar-collapse', $classes);
     }
 
-    public function testTheCompactModeRequiresAnExplicitTrue()
+    public function testTheCompactModeFollowsTheUsualTruthiness()
     {
-        foreach ([false, null, 0, '', 'yes', 1] as $value) {
+        // The option is read like every other boolean one of the package, so
+        // a truthy value enables it. It used to require an explicit 'true',
+        // which silently ignored the values an environment variable yields.
+
+        foreach ([true, 1, '1', 'yes'] as $value) {
+            config(['adminlte.layout_compact' => $value]);
+
+            $this->assertContains(
+                'compact-mode',
+                BodyClasses::make(),
+                var_export($value, true)
+            );
+        }
+
+        foreach ([false, null, 0, ''] as $value) {
             config(['adminlte.layout_compact' => $value]);
 
             $this->assertNotContains(

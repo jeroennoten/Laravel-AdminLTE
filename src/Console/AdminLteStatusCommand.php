@@ -3,15 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\ErrorViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\VendorAssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResourcesFactory;
 
 class AdminLteStatusCommand extends Command
 {
@@ -70,17 +62,7 @@ class AdminLteStatusCommand extends Command
 
         // Fill the array with the package resources.
 
-        $this->pkgResources = [
-            'assets' => new AdminlteAssetsResource(),
-            'vendor_assets' => new VendorAssetsResource(),
-            'config' => new ConfigResource(),
-            'translations' => new TranslationsResource(),
-            'main_views' => new LayoutViewsResource(),
-            'auth_views' => new AuthViewsResource(),
-            'auth_routes' => new AuthRoutesResource(),
-            'components' => new BladeComponentsResource(),
-            'error_views' => new ErrorViewsResource(),
-        ];
+        $this->pkgResources = PackageResourcesFactory::make();
     }
 
     /**

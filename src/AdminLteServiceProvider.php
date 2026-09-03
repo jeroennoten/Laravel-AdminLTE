@@ -84,6 +84,7 @@ class AdminLteServiceProvider extends BaseServiceProvider
         'direct-chat-contact' => Widget\DirectChatContact::class,
         'direct-chat-msg' => Widget\DirectChatMsg::class,
         'info-box' => Widget\InfoBox::class,
+        'post' => Widget\Post::class,
         'profile-col-item' => Widget\ProfileColItem::class,
         'profile-row-item' => Widget\ProfileRowItem::class,
         'profile-widget' => Widget\ProfileWidget::class,
@@ -109,7 +110,9 @@ class AdminLteServiceProvider extends BaseServiceProvider
         // container.
 
         $this->app->singleton(AdminLte::class, function () {
-            return new AdminLte(config('adminlte.filters', []));
+            $filters = config('adminlte.filters', []);
+
+            return new AdminLte(is_array($filters) ? $filters : []);
         });
     }
 
@@ -190,6 +193,16 @@ class AdminLteServiceProvider extends BaseServiceProvider
     protected function loadConfig()
     {
         $configPath = $this->packagePath('config/adminlte.php');
+
+        // A published configuration file that does not return an array (a
+        // truncated file, a stray 'return' statement, ...) would abort the
+        // merge with an opaque type error, and with it the boot of the whole
+        // application. It is discarded in favour of the package defaults.
+
+        if (! is_array(config($this->pkgPrefix))) {
+            config([$this->pkgPrefix => []]);
+        }
+
         $this->mergeConfigFrom($configPath, $this->pkgPrefix);
     }
 

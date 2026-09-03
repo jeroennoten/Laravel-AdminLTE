@@ -6,7 +6,9 @@ use JeroenNoten\LaravelAdminLte\Layout\BodyClasses;
 use JeroenNoten\LaravelAdminLte\Layout\ColorMode;
 use JeroenNoten\LaravelAdminLte\Layout\Direction;
 use JeroenNoten\LaravelAdminLte\Layout\Layout;
+use JeroenNoten\LaravelAdminLte\Layout\Navigation;
 use JeroenNoten\LaravelAdminLte\Layout\Palette;
+use JeroenNoten\LaravelAdminLte\Layout\PrintMode;
 use JeroenNoten\LaravelAdminLte\Layout\Sidebar;
 
 class LayoutHelper
@@ -119,6 +121,20 @@ class LayoutHelper
     }
 
     /**
+     * Makes the url of a configured navigation target (the login url, the
+     * dashboard url, ...). The target may be a plain url or, when the
+     * 'use_route_url' option is enabled, the name of a route. A route that
+     * can not be resolved falls back to a plain url.
+     *
+     * @param  mixed  $target  The configured url or route name
+     * @return string
+     */
+    public static function makeUrl($target)
+    {
+        return Navigation::makeUrl($target);
+    }
+
+    /**
      * Makes and return the set of attributes related to the html tag.
      *
      * @return string
@@ -134,7 +150,8 @@ class LayoutHelper
         return self::join(array_merge(
             $attrs,
             ColorMode::makeHtmlAttributes(),
-            Palette::makeHtmlAttributes()
+            Palette::makeHtmlAttributes(),
+            PrintMode::makeHtmlAttributes()
         ));
     }
 
@@ -202,6 +219,17 @@ class LayoutHelper
     public static function makeSidebarData()
     {
         return self::join(Sidebar::makeAttributes());
+    }
+
+    /**
+     * Makes and return the data attributes of the main sidebar navigation
+     * menu element (the AdminLTE treeview plugin setup).
+     *
+     * @return string
+     */
+    public static function makeSidebarNavData()
+    {
+        return self::join(Sidebar::makeNavAttributes());
     }
 
     /**

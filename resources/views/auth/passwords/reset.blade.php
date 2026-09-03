@@ -1,13 +1,10 @@
 @extends('adminlte::auth.auth-page', ['authType' => 'login'])
 
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
 @php
     $passResetUrl = View::getSection('password_reset_url') ?? config('adminlte.password_reset_url', 'password/reset');
-
-    if (config('adminlte.use_route_url', false)) {
-        $passResetUrl = $passResetUrl ? route($passResetUrl) : '';
-    } else {
-        $passResetUrl = $passResetUrl ? url($passResetUrl) : '';
-    }
+    $passResetUrl = $layoutHelper->makeUrl($passResetUrl);
 @endphp
 
 @section('auth_header', __('adminlte::adminlte.password_reset_message'))

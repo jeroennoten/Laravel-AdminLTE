@@ -1,3 +1,5 @@
+# Usage
+
 ## Introduction
 
 To use the main blade template provided by this package, just create a new blade file and extend the provided **AdminLTE layout** with `@extends('adminlte::page')`. The blade template yields some sections that are classified into two groups:
@@ -27,9 +29,11 @@ Section | Type | Description
 > [!IMPORTANT]
 > Compared to the `3.x` releases, note the `right_sidebar` section is spelled with an underscore. The old `right-sidebar` (hyphenated) name is not recognized.
 
-All the previously described sections are optional. As a basic example, your most common blade file extending the provided template could look like the following one:
+All the previously described sections are optional. As a basic example, your most common blade file extending the provided template could look like the following one. Create it anywhere inside the `resources/views` folder of your project, the name of the file is up to you:
 
 ```blade
+{{-- resources/views/dashboard.blade.php --}}
+
 @extends('adminlte::page')
 
 @section('title', 'Dashboard')
@@ -55,7 +59,15 @@ All the previously described sections are optional. As a basic example, your mos
 > [!Tip]
 > On a fresh **Laravel** installation, and after installing this package, you can replace the `resources/views/welcome.blade.php` file with the previous code for a fast template review.
 
-Now, and as usual, you just return this view from a controller. It's a recommendation to check out the [AdminLTE v4](https://adminlte.io/) demo and the [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/) documentation to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade file definition:
+Now, and as usual, you just return this view from a route or a controller, for example on the `routes/web.php` file of your project:
+
+```php
+Route::get('/dashboard', function () {
+    return view('dashboard');
+});
+```
+
+It's a recommendation to check out the [AdminLTE v4](https://adminlte.io/) demo and the [Bootstrap 5.3](https://getbootstrap.com/docs/5.3/) documentation to find out how to build beautiful content for your admin panel. As a preview, the next image shows what you can get with the previous blade file definition:
 
 > [!Note]
 > The screenshot below was taken from an older package version, the layout markup was rebuilt for **AdminLTE v4**.
@@ -208,3 +220,13 @@ That will be rendered like next...
 
 > [!Tip]
 > **AdminLTE v4** does not bundle **jQuery** anymore and its own Javascript plugins are driven by `data-lte-toggle="..."` attributes. If your application still needs jQuery (for example, for the [Select2](/sections/components/basic_forms_components#select2) or the [Datatables](/sections/components/tool_components#datatables) components), you have to load it on your own through the `plugins` configuration or your asset bundling setup.
+
+## Next Steps
+
+At this point you have a page rendering inside the **AdminLTE** layout, but the panel still shows the example menu and the default branding. Continue with:
+
+- [Basic configuration](/sections/configuration/basic_configuration), to set the title, the logo, the user menu and the urls of the panel.
+- [Menu configuration](/sections/configuration/menu), to replace the example menu with your own links. If your menu depends on the database or on the authenticated user, build it from the [`BuildingMenu` event](/sections/overview/events#buildingmenu) instead.
+- [Layout and styling](/sections/configuration/layout_and_styling), to choose the layout (sidebar or top navigation), the color mode and the extra classes of every layout element.
+- [Blade components](/sections/components/components_categories), the ready made cards, widgets and form controls you place inside the `content` section.
+- [Views customization](/sections/configuration/views_customization), only when the sections listed above are not enough and you need to edit the layout markup itself.

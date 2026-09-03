@@ -2,8 +2,10 @@
 
 namespace JeroenNoten\LaravelAdminLte\View\Components\Layout;
 
+use Illuminate\Routing\Exceptions\UrlGenerationException;
 use Illuminate\View\Component;
 use JeroenNoten\LaravelAdminLte\View\Components\Widget\HandlesThemeColors;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 
 class NavbarNotification extends Component
 {
@@ -171,11 +173,11 @@ class NavbarNotification extends Component
      */
     public function makeUpdatePeriod()
     {
-        if (! isset($this->updateCfg['period'])) {
+        if (! isset($this->updateCfg['period']) || ! is_numeric($this->updateCfg['period'])) {
             return 0;
         }
 
-        return (intval($this->updateCfg['period']) ?? 0) * 1000;
+        return intval($this->updateCfg['period']) * 1000;
     }
 
     /**
@@ -221,18 +223,23 @@ class NavbarNotification extends Component
 
         // Check if config is an array with the url or route name and params.
 
-        if (is_array($cfg) && count($cfg) >= 1) {
-            $path = $cfg[0];
-            $params = is_array($cfg[1] ?? null) ? $cfg[1] : [];
-
-            return ($type === self::CFG_ROUTE) ?
-                route($path, $params) :
-                url($path, $params);
+        if (! is_array($cfg) || ! isset($cfg[0]) || ! is_string($cfg[0])) {
+            return null;
         }
 
-        // Return null for invalid types or data.
+        $path = $cfg[0];
+        $params = is_array($cfg[1] ?? null) ? $cfg[1] : [];
 
-        return null;
+        // Note an unresolvable route only leaves the notification without an
+        // update url, it does not break the page that holds the widget.
+
+        try {
+            return ($type === self::CFG_ROUTE)
+                ? route($path, $params)
+                : url($path, $params);
+        } catch (RouteNotFoundException|UrlGenerationException $e) {
+            return null;
+        }
     }
 
     /**

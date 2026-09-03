@@ -48,7 +48,7 @@ class BladeComponentsResource extends PackageResource
     {
         // Copy the component classes to the publishing destination.
 
-        CommandHelper::CopyDirectory(
+        CommandHelper::copyDirectory(
             $this->source['classes'],
             $this->target['classes'],
             true,
@@ -57,7 +57,7 @@ class BladeComponentsResource extends PackageResource
 
         // Copy the component views to the publishing destination.
 
-        CommandHelper::CopyDirectory(
+        CommandHelper::copyDirectory(
             $this->source['views'],
             $this->target['views'],
             true,

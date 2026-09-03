@@ -1,3 +1,5 @@
+# Authentication Views
+
 > [!Important]
 > The authentication views no longer belong to the framework itself, they are part of the legacy [laravel/ui](https://github.com/laravel/ui) package. Laravel also offers several [starter kits](https://laravel.com/docs/starter-kits) for the authentication scaffolding besides the legacy `laravel/ui` package. So, it is always a recommendation to read the [Laravel Authentication Documentation](https://laravel.com/docs/authentication) before proceeding.
 
@@ -93,6 +95,17 @@ The feature is opt-in. Enable it on the `config/adminlte.php` file:
     'except' => [],
 ],
 ```
+
+The available options are:
+
+Option | Description | Default
+-------|-------------|--------
+`lockscreen.enabled` | Enables the feature. Nothing is registered while it is `false` | `false`
+`lockscreen.routes` | Whether the package registers its own lockscreen routes. Set it to `false` when your application provides its own endpoints | `true`
+`lockscreen.guard` | The [authentication guard](https://laravel.com/docs/authentication#adding-custom-guards) used to resolve the user and to verify the password. `null` uses the default guard of the application | `null`
+`lockscreen.throttle.max_attempts` | How many unlock attempts are allowed before the endpoint answers with a `429`. A value lower than one disables the throttling | `5`
+`lockscreen.throttle.decay_seconds` | How long the throttling of an exhausted user lasts, in seconds | `60`
+`lockscreen.except` | Extra request paths that stay reachable while the screen is locked. The values accept the wildcards of `Request::is()` | `[]`
 
 ### The Routes
 

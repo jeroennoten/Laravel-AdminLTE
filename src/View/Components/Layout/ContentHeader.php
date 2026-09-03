@@ -98,7 +98,7 @@ class ContentHeader extends Component
     {
         return isset($this->titleClass)
             ? $this->titleClass
-            : self::DEFAULT_TITLE_CLASS;
+            : static::DEFAULT_TITLE_CLASS;
     }
 
     /**

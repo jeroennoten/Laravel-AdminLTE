@@ -2,8 +2,6 @@
 
 namespace JeroenNoten\LaravelAdminLte\Layout;
 
-use JeroenNoten\LaravelAdminLte\Helpers\UtilsHelper;
-
 class Palette
 {
     /**
@@ -16,6 +14,89 @@ class Palette
     protected static $bootstrapColors = [
         'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark',
     ];
+
+    /**
+     * The colors of the AdminLTE v4 extended palette, as provided by the
+     * optional 'adminlte-colors.css' stylesheet.
+     *
+     * @var array
+     */
+    protected static $extendedColors = [
+        'amber', 'fuchsia', 'graphite', 'indigo', 'midnight', 'navy', 'olive',
+        'orange', 'pink', 'sky', 'slate', 'steel', 'teal', 'violet',
+    ];
+
+    /**
+     * The colors of the AdminLTE v3 palette, as provided by the optional
+     * 'adminlte-colors-v3.css' stylesheet.
+     *
+     * @var array
+     */
+    protected static $extendedColorsV3 = [
+        'blue', 'cyan', 'fuchsia', 'gray', 'gray-dark', 'green', 'indigo',
+        'lightblue', 'lime', 'maroon', 'navy', 'olive', 'orange', 'pink',
+        'purple', 'red', 'teal', 'yellow',
+    ];
+
+    /**
+     * The colors whose 'text-bg-*' utility paints a dark text, since their
+     * background is light enough. Note the v3 names are part of the set, since
+     * they are real colors when the v3 alias stylesheet is loaded.
+     *
+     * @var array
+     */
+    protected static $darkTextColors = [
+        'info', 'warning', 'light', 'cyan', 'yellow',
+    ];
+
+    /**
+     * The additional colors of the v3 palette that get a dark text once the
+     * WCAG AA contrast correction is applied over that palette.
+     *
+     * @var array
+     */
+    protected static $darkTextColorsOnContrastAa = [
+        'blue', 'fuchsia', 'green', 'lightblue', 'olive', 'pink', 'teal',
+    ];
+
+    /**
+     * Gets the set of colors provided by the enabled extended palette. It
+     * returns an empty array when the extended colors are disabled.
+     *
+     * @return array
+     */
+    public static function getExtendedColors(): array
+    {
+        if (! config('adminlte.assets.extended_colors', false)) {
+            return [];
+        }
+
+        return config('adminlte.assets.extended_colors_v3_aliases', false)
+            ? static::$extendedColorsV3
+            : static::$extendedColors;
+    }
+
+    /**
+     * Checks whether a color paints a dark text over its own background. It's
+     * the predicate behind the contrast of any element placed over a themed
+     * background (links, close buttons, ...).
+     *
+     * @param  string|null  $color  The theme color name
+     * @return bool
+     */
+    public static function hasDarkText($color): bool
+    {
+        if (empty($color) || ! is_string($color)) {
+            return false;
+        }
+
+        if (in_array($color, static::$darkTextColors, true)) {
+            return true;
+        }
+
+        return self::getContrast() === 'aa'
+            && in_array($color, static::$darkTextColorsOnContrastAa, true);
+    }
 
     /**
      * Gets the color configured as a replacement of the primary one. It
@@ -64,11 +145,11 @@ class Palette
      */
     public static function getAvailableColors(): array
     {
-        $extended = UtilsHelper::getExtendedColors();
+        $extended = self::getExtendedColors();
 
         return empty($extended)
             ? []
-            : array_merge(self::$bootstrapColors, $extended);
+            : array_merge(static::$bootstrapColors, $extended);
     }
 
     /**
@@ -100,7 +181,7 @@ class Palette
      */
     protected static function isV3PaletteEnabled(): bool
     {
-        return ! empty(UtilsHelper::getExtendedColors())
+        return ! empty(self::getExtendedColors())
             && (bool) config('adminlte.assets.extended_colors_v3_aliases', false);
     }
 }

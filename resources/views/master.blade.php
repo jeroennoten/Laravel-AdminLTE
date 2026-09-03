@@ -63,6 +63,26 @@
         ? 0 + $scrollbarDisableBelow
         : 992;
 
+    // The theme (a class name) of the sidebar scrollbars. OverlayScrollbars
+    // expects a string here, anything else would be dropped by the plugin
+    // together with the rest of its 'scrollbars' options.
+
+    $scrollbarTheme = config('adminlte.sidebar_scrollbar_theme', 'os-theme-light');
+
+    $scrollbarTheme = is_string($scrollbarTheme) && trim($scrollbarTheme) !== ''
+        ? trim($scrollbarTheme)
+        : 'os-theme-light';
+
+    // The event that hides the sidebar scrollbars again. Only the tokens of
+    // the OverlayScrollbars plugin are accepted, so an unsupported one does
+    // not end up rejected (and reported on the console) by the plugin.
+
+    $scrollbarAutoHide = config('adminlte.sidebar_scrollbar_auto_hide', 'leave');
+
+    $scrollbarAutoHide = in_array($scrollbarAutoHide, ['never', 'scroll', 'leave', 'move'], true)
+        ? $scrollbarAutoHide
+        : 'leave';
+
     // The 'crossorigin' attribute is only required on the assets served from
     // an external origin (usually a CDN).
 
@@ -284,8 +304,8 @@
                 'use strict';
                 const SELECTOR_SIDEBAR_WRAPPER = '.sidebar-wrapper';
                 const Default = {
-                    scrollbarTheme: @json(config('adminlte.sidebar_scrollbar_theme', 'os-theme-light')),
-                    scrollbarAutoHide: @json(config('adminlte.sidebar_scrollbar_auto_hide', 'leave')),
+                    scrollbarTheme: @json($scrollbarTheme),
+                    scrollbarAutoHide: @json($scrollbarAutoHide),
                     scrollbarClickScroll: @json((bool) config('adminlte.sidebar_scrollbar_click_scroll', true)),
                 };
 

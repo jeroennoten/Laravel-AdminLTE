@@ -1,3 +1,5 @@
+# Basic Configuration
+
 In order to change the package configuration, the configuration file should be published (a default task when installing this package). However, if you don't see the `adminlte.php` file inside your Laravel `config` folder, then publish the configuration file with the next command:
 
 ```sh
@@ -5,17 +7,6 @@ php artisan adminlte:install --only=config
 ```
 
 Now, you will be able to edit the `config/adminlte.php` file and setup the title, layout, menu, URLs, etc. On the next sections, we are going to review all the available configuration options. Let's start with the most basic ones.
-
-| Basic Configuration
-| -------------------
-| [Title](#title)
-| [Favicons](#favicons)
-| [Google Fonts](#google-fonts)
-| [Admin Panel Logo](#admin-panel-logo)
-| [Authentication Logo](#authentication-logo)
-| [Preloader Animation](#preloader-animation)
-| [User Menu](#user-menu)
-| [URLs](#urls)
 
 ## Title
 
@@ -187,6 +178,9 @@ The next configuration options provides a way to setup the urls for the login, r
 
 > [!Caution]
 > When set to `true`, the next set of URLs should be defined by using route names. For example: `password.email` on __`password_email_url`__, `password.update` on __`password_reset_url`__, etc.
+
+> [!Note]
+> A route name that can not be resolved (because the route does not exist, or because it needs parameters) **falls back to a plain url** built from the same value, instead of aborting the request. Enabling the option on an application that misses one of these routes would otherwise break every page of the panel. So, when a link of the layout points at something like `/home` while you expected a named route, the route is the thing to check first.
 
 - __`dashboard_url`__
 

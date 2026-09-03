@@ -72,7 +72,7 @@ class AuthViewsResource extends PackageResource
     {
         // Remove the published authentication views.
 
-        foreach ($this->source as $file => $content) {
+        foreach (array_keys($this->source) as $file) {
             $target = $this->target.DIRECTORY_SEPARATOR.$file;
 
             if (File::isFile($target)) {

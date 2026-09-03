@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use JeroenNoten\LaravelAdminLte\Events\ScreenWasLocked;
 use JeroenNoten\LaravelAdminLte\Events\ScreenWasUnlocked;
+use JeroenNoten\LaravelAdminLte\Layout\Navigation;
 
 class LockscreenController extends Controller
 {
@@ -331,10 +332,8 @@ class LockscreenController extends Controller
      */
     protected function resolveUrl($url): string
     {
-        if (! $url) {
-            return url('/');
-        }
+        $resolved = Navigation::makeUrl($url);
 
-        return config('adminlte.use_route_url', false) ? route($url) : url($url);
+        return $resolved === '' ? url('/') : $resolved;
     }
 }

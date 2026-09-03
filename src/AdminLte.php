@@ -36,12 +36,7 @@ class AdminLte
     {
         // Setup the map of section filters methods.
 
-        $this->sectionFilterMap = [
-            'sidebar' => $this->sidebarFilter(...),
-            'navbar-left' => $this->navbarLeftFilter(...),
-            'navbar-right' => $this->navbarRightFilter(...),
-            'navbar-user' => $this->navbarUserMenuFilter(...),
-        ];
+        $this->sectionFilterMap = $this->makeSectionFilterMap();
 
         // Create the menu builder instance.
 
@@ -72,6 +67,23 @@ class AdminLte
         // When no section filter token is provided, return the complete menu.
 
         return $this->menuBuilder->menu;
+    }
+
+    /**
+     * Makes the map between the valid section filter tokens and their
+     * respective filter methods. Override this method in order to provide
+     * additional menu sections.
+     *
+     * @return array
+     */
+    protected function makeSectionFilterMap(): array
+    {
+        return [
+            'sidebar' => $this->sidebarFilter(...),
+            'navbar-left' => $this->navbarLeftFilter(...),
+            'navbar-right' => $this->navbarRightFilter(...),
+            'navbar-user' => $this->navbarUserMenuFilter(...),
+        ];
     }
 
     /**
@@ -112,7 +124,7 @@ class AdminLte
      * @param  mixed  $item  The menu item to check
      * @return bool
      */
-    private function sidebarFilter($item): bool
+    protected function sidebarFilter($item): bool
     {
         return SidebarItemHelper::isValidItem($item);
     }
@@ -124,7 +136,7 @@ class AdminLte
      * @param  mixed  $item  The menu item to check
      * @return bool
      */
-    private function navbarLeftFilter($item): bool
+    protected function navbarLeftFilter($item): bool
     {
         // When layout topnav is enabled, most of the sidebar items will also
         // be placed on the left section of the top navbar.
@@ -146,7 +158,7 @@ class AdminLte
      * @param  mixed  $item  The menu item to check
      * @return bool
      */
-    private function navbarRightFilter($item): bool
+    protected function navbarRightFilter($item): bool
     {
         return NavbarItemHelper::isValidRightItem($item);
     }
@@ -158,7 +170,7 @@ class AdminLte
      * @param  mixed  $item  The menu item to check
      * @return bool
      */
-    private function navbarUserMenuFilter($item): bool
+    protected function navbarUserMenuFilter($item): bool
     {
         return NavbarItemHelper::isValidUserMenuItem($item);
     }

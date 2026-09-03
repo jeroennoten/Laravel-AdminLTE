@@ -61,7 +61,7 @@ class ActiveChecker
      */
     protected function containsActive($items): bool
     {
-        foreach ($items as $item) {
+        foreach ((array) $items as $item) {
             if ($this->isActive($item)) {
                 return true;
             }
@@ -86,9 +86,10 @@ class ActiveChecker
         }
 
         // Otherwise, check if any of the url patterns that defines the active
-        // state matches the requested url.
+        // state matches the requested url. Note a single pattern is accepted
+        // too, so a plain string does not abort the menu compilation.
 
-        foreach ($activeDef as $pattern) {
+        foreach ((array) $activeDef as $pattern) {
             if ($this->checkPattern($pattern)) {
                 return true;
             }
@@ -100,17 +101,27 @@ class ActiveChecker
     /**
      * Checks if an url pattern matches with the requested url.
      *
-     * @param  string  $pattern
+     * @param  mixed  $pattern
      * @return bool
      */
     protected function checkPattern($pattern): bool
     {
+        // A pattern that is not a plain string can not be matched against the
+        // requested url, so it never activates an item.
+
+        if (! is_string($pattern)) {
+            return false;
+        }
+
         // First, check if the pattern is a regular expression.
 
         if (Str::startsWith($pattern, 'regex:')) {
             $regex = Str::substr($pattern, 6);
 
-            return (bool) preg_match($regex, request()->path());
+            // Note a malformed expression only fails to match, it does not
+            // abort the compilation of the whole menu.
+
+            return @preg_match($regex, request()->path()) === 1;
         }
 
         // If pattern is not a regex, check if the requested url matches with

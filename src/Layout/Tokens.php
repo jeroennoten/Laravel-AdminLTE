@@ -176,6 +176,14 @@ class Tokens
     ];
 
     /**
+     * The expand breakpoint the AdminLTE push menu plugin assumes when the
+     * sidebar publishes no breakpoint of its own.
+     *
+     * @var string
+     */
+    public const SIDEBAR_DEFAULT_EXPAND = 'lg';
+
+    /**
      * The supported color modes.
      *
      * @var array
@@ -202,6 +210,13 @@ class Tokens
      * @var string
      */
     public const PALETTE_CONTRAST_ATTRIBUTE = 'data-lte-contrast';
+
+    /**
+     * The attribute that tunes the printed output of the layout.
+     *
+     * @var string
+     */
+    public const PRINT_ATTRIBUTE = 'data-lte-print';
 
     /**
      * The breakpoint tokens accepted by the legacy 'sidebar_mini' option.
@@ -250,5 +265,23 @@ class Tokens
         }
 
         return null;
+    }
+
+    /**
+     * Gets the viewport width, in pixels, at or below which the sidebar of the
+     * given expand breakpoint turns into an overlay. This is the upper bound
+     * of the media query AdminLTE ships for that breakpoint, and the very
+     * value its stylesheet publishes to the push menu plugin.
+     *
+     * @param  string  $breakpoint  One of the supported breakpoints
+     * @return string|null
+     */
+    public static function sidebarBreakpointWidth($breakpoint): ?string
+    {
+        if (! isset(self::SIDEBAR_EXPAND_WIDTHS[$breakpoint])) {
+            return null;
+        }
+
+        return number_format(self::SIDEBAR_EXPAND_WIDTHS[$breakpoint] - 0.02, 2, '.', '');
     }
 }

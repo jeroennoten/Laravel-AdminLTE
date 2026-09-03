@@ -2,6 +2,20 @@
 
 This package provides an easy way to quickly set up [AdminLTE v4](https://adminlte.io/) with [Laravel](https://laravel.com/). Its only dependencies are **Laravel** itself and the [AdminLTE template](https://github.com/ColorlibHQ/AdminLTE) (pulled in by composer as `almasaeed2010/adminlte`), so you can start building your admin panel immediately. The package provides a [blade template](https://laravel.com/docs/blade) that you can extend and an advanced menu configuration system. Also, and optionally, the package offers a set of **AdminLTE** styled authentication views that you can use in replacement of the ones that are provided by the legacy [laravel/ui](https://github.com/laravel/ui) authentication scaffolding.
 
+## Where to Start
+
+If you have a fresh **Laravel** application and want a working admin panel, follow these pages in order. Each one ends where the next one begins:
+
+1. [Requirements](/sections/overview/requirements) — check that your Laravel and PHP versions are supported.
+2. [Installation](/sections/overview/installation) — `composer require` the package and publish its resources.
+3. [Usage](/sections/overview/usage) — create your first page by extending the provided blade layout.
+4. [Basic configuration](/sections/configuration/basic_configuration) — set the title, the logo and the urls of your panel.
+5. [Menu configuration](/sections/configuration/menu) — fill the sidebar and the top navbar with your own links.
+6. [Layout and styling](/sections/configuration/layout_and_styling) — pick the layout, the colors and the color mode.
+7. [Blade components](/sections/components/components_categories) — build the content of your pages with ready made widgets, cards and form controls.
+
+Everything else is optional: the [authentication views](/sections/overview/authentication_views), the [plugins](/sections/configuration/plugins), the [tabbed iframe mode](/sections/configuration/iframe_mode), the [translations](/sections/configuration/translations) and the [views customization](/sections/configuration/views_customization).
+
 ## Two version numbers, do not mix them up
 
 This documentation talks about two different things that both carry a **v4**:

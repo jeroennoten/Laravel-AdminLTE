@@ -1,3 +1,5 @@
+# Special Menu Items
+
 In this section we introduce some special menu items available for the **sidebar** and/or the **top navbar**. They are treated on a separate section because they requires special or uncommon configuration. You can see a summary of these special menu items on the next table:
 
 Special Item | Description
@@ -355,7 +357,7 @@ So, you can also place the component yourself on the `content_top_nav_right` sec
 > [!Note]
 > The events described below are only used by the **legacy two-states toggle**, that is, when `color_mode.remember` is set to `false`. When the color mode selector is active, the preference is stored on the browser by the AdminLTE v4 color mode plugin and no request is sent to the server.
 
-Internally, the widget saves the dark mode preference into the session in order to keep the setup over multiple requests. However, this state will be lost when the session bag is destroyed. In the case you want to persist this state on some sort of storage tool (like a database), you will need to interact with the widget inside the `EventServiceProvider` of your Laravel application.
+Internally, the widget saves the dark mode preference into the session in order to keep the setup over multiple requests. However, this state will be lost when the session bag is destroyed. In the case you want to persist this state on some sort of storage tool (like a database), you will need to listen for the two events described below. The [events](/sections/overview/events) page documents their payload and shows where a listener goes on a **Laravel 12** application; the example below uses the older `EventServiceProvider` shape, which keeps working on the projects that still have that file.
 
 - The widget dispatchs a special `DarkModeWasToggled` event every time the button is clicked.
 - The widget also dispatchs a `ReadingDarkModePreference` event when it is about to read dark mode preference to configure the layout.

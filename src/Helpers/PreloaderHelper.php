@@ -5,15 +5,46 @@ namespace JeroenNoten\LaravelAdminLte\Helpers;
 class PreloaderHelper
 {
     /**
+     * The preloader modes supported by the package. The 'fullscreen' one
+     * covers the whole viewport, the 'cwrapper' one is attached to the
+     * content wrapper and thus leaves the sidebars and the navbar visible.
+     *
+     * @var array
+     */
+    public const MODES = ['fullscreen', 'cwrapper'];
+
+    /**
+     * The mode used when the configured one is not supported.
+     *
+     * @var string
+     */
+    public const DEFAULT_MODE = 'fullscreen';
+
+    /**
      * Check if the preloader animation is enabled for the specified mode.
      *
      * @param  string  $mode  The preloader mode to check.
      * @return bool
      */
-    public static function isPreloaderEnabled($mode = 'fullscreen')
+    public static function isPreloaderEnabled($mode = self::DEFAULT_MODE)
     {
-        return config('adminlte.preloader.enabled', false)
-            && config('adminlte.preloader.mode', 'fullscreen') == $mode;
+        return (bool) config('adminlte.preloader.enabled', false)
+            && self::getMode() === $mode;
+    }
+
+    /**
+     * Gets the configured preloader mode. An unsupported value falls back to
+     * the default mode: it would otherwise disable the preloader altogether,
+     * since no rendering branch would ever match it.
+     *
+     * @return string
+     */
+    public static function getMode()
+    {
+        $mode = config('adminlte.preloader.mode', self::DEFAULT_MODE);
+        $mode = is_string($mode) ? strtolower(trim($mode)) : '';
+
+        return in_array($mode, self::MODES, true) ? $mode : self::DEFAULT_MODE;
     }
 
     /**

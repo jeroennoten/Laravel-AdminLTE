@@ -142,8 +142,8 @@ class InputGroupComponent extends Component
     {
         $classes = [];
 
-        if (isset($this->fgroupClass)) {
-            $classes[] = $this->fgroupClass;
+        if (isset($this->fgroupClass) && is_scalar($this->fgroupClass)) {
+            $classes[] = (string) $this->fgroupClass;
         }
 
         // Add the default bottom margin, unless the caller already provides a

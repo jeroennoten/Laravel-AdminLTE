@@ -1,14 +1,6 @@
-The next set of configuration options enables you to change the layout and style of your admin panel.
+# Layout and Styling
 
-| Layout & Styling Configuration
-| ------------------------------
-| [Layout](#layout)
-| [Color Mode](#color-mode)
-| [RTL Mode](#rtl-mode)
-| [Auth View Classes](#authentication-views-classes)
-| [Admin Panel Classes](#admin-panel-classes)
-| [Sidebar](#sidebar)
-| [Right Sidebar](#right-sidebar)
+The next set of configuration options enables you to change the layout and style of your admin panel.
 
 ## Layout
 
@@ -53,6 +45,29 @@ The following config options are available:
 
 Up to AdminLTE v3 the fixed navbar and the fixed footer could be enabled per viewport size, by using an array like `['xs' => true, 'lg' => false]` on the `layout_fixed_navbar` and `layout_fixed_footer` options. AdminLTE v4 dropped the underlying responsive classes. The array notation is still accepted so existing configurations keep working, but the resulting layout is fixed on all viewport sizes.
 
+## Print Mode
+
+**AdminLTE v4** tunes what the browser puts on paper through the `data-lte-print` attribute of the `<html>` element. The `print` configuration option is the list of tokens declared on it, given either as an array or as a space separated string:
+
+```php
+'print' => ['plain'],
+
+// The same, as a string.
+'print' => 'plain',
+```
+
+The accepted tokens are:
+
+Token | Effect
+------|--------
+`plain` | Do not print the url after every external link, and drop the border printed around the buttons
+`app` | Restore the printing of the layout chrome (the header, the sidebar and the footer)
+
+Leave the array **empty** (the default) and no attribute is emitted at all, so the AdminLTE print styles apply exactly as they ship. Any token outside that set is dropped, so the attribute can never carry a value AdminLTE would not understand.
+
+> [!Note]
+> **AdminLTE 4.9 changed what a page prints by default.** Up to 4.8 the header, the sidebar and the footer were printed with the content; from 4.9 on they are left out, which is why the `app` token exists to bring them back. This package requires `^4.9`, so both tokens are effective. If you upgrade an application whose printed pages used to include the chrome, add `'print' => ['app']` to restore it.
+
 ## Color Mode
 
 AdminLTE v4 replaces the old dark mode class by the [Bootstrap 5.3 color modes](https://getbootstrap.com/docs/5.3/customize/color-modes/): the `data-bs-theme` attribute is set on the `<html>` element and every component follows it automatically.
@@ -89,10 +104,36 @@ The following configuration options are available:
 
   The colors used for the `theme-color` meta tags (`light` and `dark` keys). Set an entry to `null` to omit the related meta tag.
 
+- __`color_mode.routes`__
+
+  Whether to register the server side color mode route of the package, the `POST adminlte/darkmode/toggle` endpoint named `adminlte.darkmode.toggle`. It is enabled by default and it is the endpoint the legacy two states toggle posts to. Set it to `false` when your application provides its own endpoint, or when the color mode is fully resolved on the client side (`color_mode.remember => true`).
+
+> [!Note]
+> The older __`disable_darkmode_routes`__ option of the [URLs](/sections/configuration/basic_configuration#urls) section does the same thing with the inverted meaning, and both of them are honored: the route is only registered when `color_mode.routes` is not `false` **and** `disable_darkmode_routes` is not `true`. Prefer the new `color_mode.routes` option, which sits next to the rest of the color mode configuration. The full list of the routes registered by the package is on the [events](/sections/overview/events#routes-registered-by-the-package) page.
+
 To let your users switch the color mode, add the [dark mode menu item](./special_menu_items.md) to your menu. With `color_mode.remember` enabled it renders the AdminLTE v4 color mode selector (light / dark / auto), otherwise it renders the legacy two states toggle.
 
-> [!Important]
-> The legacy `layout_dark_mode` and `layout_theme_mode` options are still supported: `layout_dark_mode => true` behaves like `color_mode.default => 'dark'`.
+### Legacy Color Mode Options
+
+Two options of the `3.x` releases are not part of the shipped configuration file anymore, but they are still read, so an old configuration file keeps working:
+
+- __`layout_theme_mode`__ <Badge type="warning">deprecated</Badge>
+
+  A string with the same values as `color_mode.default` (`'light'`, `'dark'` or `'auto'`).
+
+- __`layout_dark_mode`__ <Badge type="warning">deprecated</Badge>
+
+  A boolean. `layout_dark_mode => true` behaves exactly like `color_mode.default => 'dark'`.
+
+> [!Warning]
+> The legacy options are resolved **before** `color_mode.default`, not after it, so a leftover value in your published configuration file silently wins over the new section. The initial color mode is picked from the first of the next sources that resolves one:
+>
+> 1. `layout_theme_mode`, when it holds one of the three valid values.
+> 2. `layout_dark_mode`, when it is `true`.
+> 3. The [`ReadingDarkModePreference`](/sections/overview/events#readingdarkmodepreference) event, when one of your listeners calls `enable()` on it.
+> 4. `color_mode.default`, falling back to `'auto'` when it holds an unknown value.
+>
+> Delete both legacy options from your `config/adminlte.php` file once you have filled the `color_mode` section.
 
 ## RTL Mode
 
@@ -171,6 +212,9 @@ However, you can customize the options as you want to get some particular themes
 A dark card with light buttons and icons.
 <br>
 
+<img src="/imgs/configuration/layout_and_styling/login-dark.png" alt="Dark Login"
+    style="width:200px;margin-left:5px;float:right;"/>
+
 ```php
 'classes_auth_card' => 'text-bg-dark',
 'classes_auth_header' => '',
@@ -184,6 +228,9 @@ A dark card with light buttons and icons.
 
 A colored header background with matching icons.
 <br>
+
+<img src="/imgs/configuration/layout_and_styling/login-lblue.png" alt="Colored Header Login"
+    style="width:200px;margin-left:5px;float:right;"/>
 
 ```php
 'classes_auth_card' => '',
@@ -385,6 +432,10 @@ The following configuration options are available:
 - __`sidebar_nav_animation_speed`__
 
   Changes the sidebar slide up/down animation speed (in milliseconds).
+
+- __`sidebar_nav_aria_label`__
+
+  The accessible name of the sidebar navigation, emitted as the `aria-label` attribute of the `nav` element that wraps the menu. It is never visible, but a screen reader reads it out to announce the landmark. Leave it `null` (the default) to use the `main_navigation` [translation string](/sections/configuration/translations#accessibility-strings) of the active locale.
 
 ## Right Sidebar
 

@@ -1,4 +1,4 @@
-## Plugins
+# Plugins
 
 > [!Important]
 > AdminLTE v4 does not bundle any third party plugin and dropped jQuery. The plugins shipped on the default configuration are the AdminLTE v4 recommended replacements of the old jQuery widgets (for example **Tom Select** instead of `bootstrap-select`, **Tabulator** instead of the jQuery datatables, **Flatpickr** instead of `daterangepicker`, **Quill** instead of `Summernote` and **noUiSlider** instead of `bootstrap-slider`). **Select2** and the **Krajee file input** are still available, but they keep requiring jQuery.
@@ -86,7 +86,7 @@ You can add new plugins by extending the `plugins` array configuration option, u
 
 In the previous example, the plugin will be injected on every blade file. The new plugin consists of a Javascript file available via CDN and a stylesheet that will be located using the `asset()` function. Usually, if you haven't changed the Laravel `ASSET_URL` configuration, then the `asset()` function will point to the `public` folder of your Laravel project.
 
-### Pace Plugin Configuration
+## Pace Plugin Configuration
 
 You can change the Pace plugin theme by modifying the `css` file location when using the `CDN` injection.
 
@@ -97,7 +97,7 @@ You can change the Pace plugin theme by modifying the `css` file location when u
 - __Available colors are__: black, blue (default), green, orange, pink, purple, red, silver, white & yellow
 - __Available themes are__: barber-shop, big-counter, bounce, center-atom, center-circle, center-radar (default), center-simple, corner-indicator, fill-left, flash, flat-top, loading-bar, mac-osx, minimal
 
-### Install a Plugin with the Artisan Command
+## Install a Plugin with the Artisan Command
 
 There is a set of predefined plugins that are part of the underlying **AdminLTE** template and that you can install using the [artisan command](/sections/overview/artisan_console_commands#the-adminlte-plugins-command) provided by this package. You can view the list of available plugins using the next command:
 
@@ -156,3 +156,36 @@ php artisan adminlte:plugins install --plugin=flatpickr
 ```
 
 All the plugins will be installed in the `public/vendor` folder of your Laravel project. Once they are installed, you need to setup their configuration as explained before in order to use the plugins on the blade files.
+
+> [!Important]
+> **The catalogue of the command and the `plugins` array of the configuration file are two different lists**, and they only partially overlap. The command knows how to copy the files of a library out of your `node_modules` folder; the configuration array tells the layout which files to add to a page. So:
+>
+> - The keys shipped on the configuration file (`Datatables`, `DatatablesButtons`, `Select2`, `TomSelect`, `Tabulator`, `Flatpickr`, `Quill`, `NoUiSlider`, `Chartjs`, `Sweetalert2` and `Pace`) are ready to be enabled on a blade file, and they point to a `CDN`. Installing the matching plugin locally only means you then have to repoint their `location` values to the published files and set `'asset' => true`.
+> - The catalogue keys with **no** entry on the shipped configuration (`apexcharts`, `dropzone`, `easymde`, `filepond`, `fullcalendar`, `glightbox`, `imask`, `jsvectormap`, `pickr` and `sortablejs`) can be published by the command, but you have to write their `plugins` entry yourself before they reach a page.
+> - The `Pace` plugin is the opposite case: it ships a configuration entry pointing to a `CDN`, but it has **no catalogue key**, so `adminlte:plugins install` can not publish it locally.
+>
+> Note also the two lists spell their keys differently: the catalogue keys are lowercase-ish (`tomSelect`, `flatpickr`), the configuration keys are the capitalized ones you write on `@section('plugins.TomSelect', true)`.
+
+## The AdminLTE v3 Plugin Keys
+
+The `adminlte:plugins` command still recognizes the plugin keys of the **AdminLTE v3** catalogue and tells you which **AdminLTE v4** plugin replaces each one, instead of failing with an unknown key. The mapping is the next one:
+
+AdminLTE v3 key | AdminLTE v4 replacement | AdminLTE v3 key | AdminLTE v4 replacement
+----------------|-------------------------|-----------------|-------------------------
+`bootstrap4DualListbox` | `tomSelect` | `jqueryKnob` | `apexcharts`
+`bootstrapColorpicker` | `pickr` | `jqueryMapael` | `jsvectormap`
+`bootstrapSlider` | `noUiSlider` | `jqueryMousewheel` | – (dropped)
+`bootstrapSwitch` | – (native Bootstrap 5.3 switch) | `jqueryUiTouchPunch` | – (dropped)
+`bsCustomFileInput` | – (native Bootstrap 5.3 file input) | `jqvmap` | `jsvectormap`
+`datatablesPlugins` | `datatablesButtons` | `jquery` | – (not bundled anymore)
+`daterangepicker` | `flatpickr` | `jqueryUi` | – (dropped)
+`ekkoLightbox` | `glightbox` | `jqueryValidation` | – (dropped)
+`fastclick` | – (dropped) | `jsgrid` | `tabulator`
+`filterizr` | – (dropped) | `moment` | – (dropped)
+`flagIconCss` | – (dropped) | `overlayScrollbars` | – (see [vendor assets](/sections/configuration/other#assets))
+`flot` | `apexcharts` | `paceProgress` | – (configured through the `Pace` plugin entry)
+`icheckBootstrap` | – (native Bootstrap 5.3 form controls) | `raphael` | – (dropped)
+`inputmask` | `imask` | `simplemde` | `easymde`
+`ionRangslider` | `noUiSlider` | `sparklines` | `apexcharts`
+`summernote` | `quill` | `tempusdominusBootstrap4` | `flatpickr`
+`toastr` | `sweetalert2` | `uplot` | `apexcharts`

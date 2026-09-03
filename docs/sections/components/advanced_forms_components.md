@@ -1,4 +1,6 @@
-These components are expected to be used within a `form` element. They can be used to generate forms with advanced input fields. At next you can see the list of available components:
+# Advanced Form Components
+
+These components are expected to be used within a `form` element of your own, placed inside the `content` section of a blade file that extends `adminlte::page`, exactly like the [basic form components](/sections/components/basic_forms_components). What makes them _advanced_ is that most of them are backed by an extra Javascript library, which you have to enable first. At next you can see the list of available components:
 
 |Components
 |-----------
@@ -6,7 +8,10 @@ These components are expected to be used within a `form` element. They can be us
 
 ## Underlying Plugins on AdminLTE v4
 
-**AdminLTE v4** is **jQuery free**, so on the `4.x` releases of this package every advanced form component was moved to the vanilla Javascript plugin recommended by AdminLTE v4. The next table summarizes what backs each component now:
+**AdminLTE v4** is **jQuery free**, so on the `4.x` releases of this package every advanced form component was moved to the vanilla Javascript plugin recommended by AdminLTE v4. The next table summarizes what backs each component now.
+
+> [!Note]
+> A **plugin key** is the name of an entry of the `plugins` array on your `config/adminlte.php` file, which tells the package which stylesheet and script files to add to the page. Enabling it for one view is done with a `@section('plugins.<Key>', true)` sentence at the top of that blade file — which only works on a file that extends `adminlte::page`, since it is the layout that reads those sections. See the [plugins configuration](/sections/configuration/plugins) page for the whole picture.
 
 Component | Plugin | Plugin key | Requires jQuery
 ----------|--------|------------|----------------
@@ -20,12 +25,12 @@ Component | Plugin | Plugin key | Requires jQuery
 [TextEditor](#texteditor) | [Quill](https://quilljs.com/) | `Quill` | no
 
 > [!Important]
-> The `config` attribute of every component still **accepts the AdminLTE v3 plugin properties**. Whenever a v3 property has an equivalent on the new plugin it is translated on the fly, otherwise it is silently dropped. Each section below lists exactly which properties became no-ops.
+> Every component below exposes a **`config` attribute**, an array handed over to the underlying plugin as its options. It still **accepts the AdminLTE v3 plugin properties**. Whenever a v3 property has an equivalent on the new plugin it is translated on the fly, otherwise it is silently dropped. Each section below lists exactly which properties became no-ops.
 
 > [!Note]
-> With the exception of `KrajeeFileinput`, all the plugin keys above are already present on the `plugins` section of the `config/adminlte.php` file published by the package, pointing to a `CDN`. You only have to enable the plugin on the blade file where you use the component, with a `@section('plugins.<Key>', true)` sentence. For `KrajeeFileinput` you have to add the plugin entry to the configuration file yourself, as explained on the [plugins configuration section](/sections/configuration/plugins).
+> With the exception of `KrajeeFileinput`, all the plugin keys above are already present on the `plugins` section of the `config/adminlte.php` file you published at [installation](/sections/overview/installation) time, pointing to a `CDN`. You only have to enable the plugin on the blade file where you use the component, with a `@section('plugins.<Key>', true)` sentence. For `KrajeeFileinput` you have to add the plugin entry to the configuration file yourself, as explained on the [plugins configuration section](/sections/configuration/plugins).
 
-# DateRange
+## DateRange
 
 > [!Important]
 > This component requires the `Flatpickr` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.Flatpickr', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [Date Range Picker](https://www.daterangepicker.com/) and [Moment](https://momentjs.com/) plugins are **not used anymore** (both required jQuery).
@@ -190,7 +195,7 @@ php artisan adminlte:plugins install --plugin=flatpickr
 
 Finally, you need to use the `@section('plugins.Flatpickr', true)` sentence on the blade file where you expect to use the component.
 
-# InputColor
+## InputColor
 
 > [!Important]
 > **No plugin is required anymore.** **Bootstrap 5** provides a native color control (`form-control form-control-color`), so the [Bootstrap Colorpicker](https://itsjavi.com/bootstrap-colorpicker/index.html) jQuery plugin used on **AdminLTE v3** was dropped.
@@ -264,7 +269,7 @@ Use the next image as reference to check how every example is rendered. Please, 
 > [!Tip]
 > If you need an advanced color picker (alpha channel, swatches, multiple formats, ...), **AdminLTE v4** recommends the jQuery free [Pickr](https://github.com/simonwep/pickr) plugin, which you can publish with `npm i @simonwep/pickr` followed by `php artisan adminlte:plugins install --plugin=pickr`, and then initialize on your own over the component `id`.
 
-# InputDate
+## InputDate
 
 > [!Important]
 > This component requires the `Flatpickr` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.Flatpickr', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [Tempus Dominus](https://tempusdominus.github.io/bootstrap-4/) and [Moment](https://momentjs.com/) plugins are **not used anymore** (both required jQuery).
@@ -401,15 +406,18 @@ Use the next image as reference to check how every example is rendered. Please, 
 
 The plugin setup is exactly the same one described for the [DateRange](#daterange) component, both components share the `Flatpickr` plugin key.
 
-# InputFileKrajee
+## InputFileKrajee
 
 > [!Important]
-> This component requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can use its `CDN` files (read the instructions on the plugin site).
+> This component requires the [krajee-bootstrap-file-input](https://plugins.krajee.com/file-input) plugin, so be sure to first setup the plugin on the package configuration file, read more on the [plugins configuration section](/sections/configuration/plugins). The plugin can be installed manually inside the `public/vendor` folder or you can point the plugin entry to the `CDN` files listed on the [plugin site](https://plugins.krajee.com/file-input#installation). Remember to also load **jQuery** yourself, before the plugin files.
 
 > [!Warning]
 > The Krajee file input plugin **still requires jQuery**, which **AdminLTE v4** does not bundle anymore. The component initialization code is guarded: when neither jQuery nor the plugin are present, the element stays a plain **Bootstrap 5** file input and nothing breaks. If you want a jQuery free alternative, **AdminLTE v4** recommends [FilePond](https://pqina.nl/filepond/) or [Dropzone](https://www.dropzone.dev/), both installable with `php artisan adminlte:plugins install --plugin=filepond` (or `--plugin=dropzone`).
 
 This component represents an advanced **file-input** component with file preview and other features. The component accepts all the attributes of the base [Input Group Component](/sections/components/basic_forms_components#input-group-component). The component also defines the next additional attributes:
+
+> [!Note]
+> Unlike the other components of this page, this one does **not** render a Bootstrap input group, the plugin builds its own widget instead. As a consequence the inherited **`igroup-size`** and **`igroup-class`** attributes are ignored here, together with the three inherited slots (see the warning at the end of this section).
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
@@ -512,7 +520,7 @@ After installed on `public/vendor/krajee-fileinput/` folder, you can use the nex
 
 Finally, you need to use the `@section('plugins.KrajeeFileinput', true)` sentence on the blade file where you expect to use the component. Alternatively, you can choose to use the plugin files from a `CDN` instead of installing the plugin locally.
 
-# InputSlider
+## InputSlider
 
 > [!Important]
 > This component requires the `NoUiSlider` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.NoUiSlider', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [bootstrap-slider](https://github.com/seiyria/bootstrap-slider) plugin is **not used anymore**.
@@ -523,14 +531,19 @@ Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 color | The slider color. One of the available `html` colors, or any CSS color value | string | `null` | no
 config | Array with the plugin configuration parameters | array | `[]` | no
+disabled | Renders a disabled slider. A shortcut of the plugin disabled state | any | `null` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
+max | The upper bound. A shortcut of the plugin `range.max` option | number | `10` | no
+min | The lower bound. A shortcut of the plugin `range.min` option | number | `0` | no
 slider-attributes | Extra attributes for the `div` element the plugin renders into, as `key => value` pairs | array | `[]` | no
+step | The increment between two selectable values. A shortcut of the plugin `step` option | number | `null` | no
+value | The initial value (or a comma separated pair, for a two handles slider). A shortcut of the plugin `start` option | string | the lower bound | no
 
 > [!Important]
 > The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
 
 > [!Tip]
-> The plugin **mutates the DOM** of the slider element, so a **Livewire** re-render would wipe its markup. Use `slider-attributes` to exclude that element:
+> The plugin **mutates the DOM** of the slider element, so a [Livewire](/sections/configuration/other#livewire) re-render would wipe its markup. Use `slider-attributes` to exclude that element:
 >
 > ```blade
 > <x-adminlte-input-slider name="range" :slider-attributes="['wire:ignore' => '']"/>
@@ -545,7 +558,7 @@ The available plugin configuration (for the `config` attribute) are those explai
 >
 > The `config['id']` property is the `id` of the `div` that holds the slider (it defaults to `"{$id}-slider"`), it is **not** the `id` of the underlying input.
 
-The standard `value`, `min`, `max`, `step` and `disabled` HTML attributes are still supported as shortcuts of the plugin `start`, `range.min`, `range.max`, `step` and disabled state.
+The four shortcut attributes above (`value`, `min`, `max` and `step`) plus `disabled` are the plain HTML attributes you would write on a range input, so a slider needs no `config` at all for the common cases.
 
 > [!Warning]
 > The `data-slider-*` attributes of the legacy plugin are **not supported anymore**, they are just forwarded to the hidden input and have no effect. Use the `config` attribute or the standard HTML attributes instead.
@@ -667,7 +680,7 @@ php artisan adminlte:plugins install --plugin=noUiSlider
 
 Finally, you need to use the `@section('plugins.NoUiSlider', true)` sentence on the blade file where you expect to use the component.
 
-# InputSwitch
+## InputSwitch
 
 > [!Important]
 > **No plugin is required anymore.** **Bootstrap 5.3** provides a native switch control (`form-check form-switch` with `role="switch"`), so the [Bootstrap Switch](https://bttstrp.github.io/bootstrap-switch/) jQuery plugin used on **AdminLTE v3** was dropped.
@@ -766,7 +779,7 @@ Use the next images as reference to check how every example is rendered. Please,
 
 ![Input Switch Component](/imgs/components/advanced_forms_components/input-switch-component.png)
 
-# SelectBs
+## SelectBs
 
 > [!Important]
 > This component requires the `TomSelect` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.TomSelect', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [bootstrap-select](https://developer.snapappointments.com/bootstrap-select/) plugin is **not used anymore** (it required jQuery).
@@ -903,17 +916,20 @@ php artisan adminlte:plugins install --plugin=tomSelect
 
 Finally, you need to use the `@section('plugins.TomSelect', true)` sentence on the blade file where you expect to use the component.
 
-# TextEditor
+## TextEditor
 
 > [!Important]
 > This component requires the `Quill` plugin, so be sure to enable it on the blade file where you use the component with `@section('plugins.Quill', true)`. Read more on the [plugins configuration section](/sections/configuration/plugins). The legacy [Summernote](https://summernote.org/) plugin is **not used anymore** (it required jQuery).
 
-This component represents a **WYSIWYG editor** and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes and the three slots from it are inherited and rendered. The component also defines next additional attributes:
+This component represents a **WYSIWYG editor** (a rich text editor that shows the formatted result while you type) and extends from the base [Input Group Component](/sections/components/basic_forms_components#input-group-component), so all the attributes and the three slots (`prependSlot`, `appendSlot` and `bottomSlot`) from it are inherited and rendered. On top of them, the **default slot** seeds the initial content of the editor. The component also defines next additional attributes:
 
 Attribute | Description | Type | Default | Required
 ----------|-------------|------|---------|---------
 config | Array with the plugin configuration parameters | array | `[]` | no
+disabled | Renders a read only editor. Mapped to the plugin `readOnly` option | any | `null` | no
 enable-old-support | Enable auto retrievement and filling with the submitted value in case of validation errors | any | `null` | no
+placeholder | The hint shown while the editor is empty. Mapped to the plugin `placeholder` option | string | `null` | no
+readonly | Renders a read only editor. Mapped to the plugin `readOnly` option | any | `null` | no
 
 > [!Important]
 > The `enable-old-support` property offers a similar behavior as using the Laravel `old()` helper explicitly by your own.
