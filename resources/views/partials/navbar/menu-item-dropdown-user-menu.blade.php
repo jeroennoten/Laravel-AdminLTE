@@ -1,25 +1,34 @@
+@inject('layoutHelper', 'JeroenNoten\LaravelAdminLte\Helpers\LayoutHelper')
+
+{{--
+    Resolve the data of the authenticated user. Note the 'adminlte_*' methods
+    are optional additions to the user model, so they are only called when the
+    model provides them, otherwise enabling one of the related options would
+    break every page of the panel.
+--}}
 @php
+    $umUser = Auth::user();
+
+    $umValueOf = static function ($method) use ($umUser) {
+        return is_object($umUser) && method_exists($umUser, $method)
+            ? $umUser->{$method}()
+            : null;
+    };
+
+    $umName = $umUser->name ?? '';
+    $umImage = config('adminlte.usermenu_image') ? $umValueOf('adminlte_image') : null;
+    $umDesc = config('adminlte.usermenu_desc') ? $umValueOf('adminlte_desc') : null;
+
     $logout_url = View::getSection('logout_url') ?? config('adminlte.logout_url', 'logout');
     $profile_url = View::getSection('profile_url') ?? config('adminlte.profile_url', false);
+
+    if (config('adminlte.usermenu_profile_url', false)) {
+        $profile_url = $umValueOf('adminlte_profile_url');
+    }
+
+    $profile_url = $layoutHelper->makeUrl($profile_url);
+    $logout_url = $layoutHelper->makeUrl($logout_url);
 @endphp
-
-@if (config('adminlte.usermenu_profile_url', false))
-    @php
-        $profile_url = Auth::user()->adminlte_profile_url();
-    @endphp
-@endif
-
-@if (config('adminlte.use_route_url', false))
-    @php
-        $profile_url = $profile_url ? route($profile_url) : '';
-        $logout_url = $logout_url ? route($logout_url) : '';
-    @endphp
-@else
-    @php
-        $profile_url = $profile_url ? url($profile_url) : '';
-        $logout_url = $logout_url ? url($logout_url) : '';
-    @endphp
-@endif
 
 {{--
     Setup the user menu header classes. The legacy 'bg-{color}' values are
@@ -48,13 +57,13 @@
     {{-- User menu toggler --}}
     <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"
        aria-expanded="false">
-        @if(config('adminlte.usermenu_image'))
-            <img src="{{ Auth::user()->adminlte_image() }}"
+        @if($umImage)
+            <img src="{{ $umImage }}"
                  class="user-image rounded-circle shadow"
-                 alt="{{ Auth::user()->name }}">
+                 alt="{{ $umName }}">
         @endif
-        <span @if(config('adminlte.usermenu_image')) class="d-none d-md-inline" @endif>
-            {{ Auth::user()->name }}
+        <span @if($umImage) class="d-none d-md-inline" @endif>
+            {{ $umName }}
         </span>
     </a>
 
@@ -64,16 +73,16 @@
         {{-- User menu header --}}
         @if(!View::hasSection('usermenu_header') && config('adminlte.usermenu_header'))
             <li class="user-header {{ $umHeaderClass }}"
-                @if(!config('adminlte.usermenu_image')) style="min-height:auto" @endif>
-                @if(config('adminlte.usermenu_image'))
-                    <img src="{{ Auth::user()->adminlte_image() }}"
+                @if(! $umImage) style="min-height:auto" @endif>
+                @if($umImage)
+                    <img src="{{ $umImage }}"
                          class="rounded-circle shadow"
-                         alt="{{ Auth::user()->name }}">
+                         alt="{{ $umName }}">
                 @endif
-                <p class="@if(!config('adminlte.usermenu_image')) mt-0 @endif">
-                    {{ Auth::user()->name }}
-                    @if(config('adminlte.usermenu_desc'))
-                        <small>{{ Auth::user()->adminlte_desc() }}</small>
+                <p class="@if(! $umImage) mt-0 @endif">
+                    {{ $umName }}
+                    @if($umDesc)
+                        <small>{{ $umDesc }}</small>
                     @endif
                 </p>
             </li>

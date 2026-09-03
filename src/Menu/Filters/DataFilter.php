@@ -31,6 +31,16 @@ class DataFilter implements FilterInterface
         $compiled = [];
 
         foreach ($dataArray as $key => $value) {
+            // A value that is not a plain scalar has no representation as an
+            // HTML attribute, so it's dropped instead of aborting the whole
+            // menu compilation. Note the value is escaped, otherwise a quote
+            // would break out of the generated attribute.
+
+            if (! is_scalar($value) && ! is_null($value)) {
+                continue;
+            }
+
+            $value = e((string) $value);
             $compiled[] = "data-{$key}=\"{$value}\"";
         }
 

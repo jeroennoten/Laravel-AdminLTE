@@ -92,6 +92,48 @@ class UserMenuRenderTest extends TestCase
         $this->assertStringContainsString('text-bg-primary', $html);
     }
 
+    public function testTheUserMenuUsesTheOptionalUserModelMethods()
+    {
+        config([
+            'adminlte.usermenu_enabled' => true,
+            'adminlte.usermenu_header' => true,
+            'adminlte.usermenu_image' => true,
+            'adminlte.usermenu_desc' => true,
+            'adminlte.usermenu_profile_url' => true,
+        ]);
+
+        $this->loginDummyUser();
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('/img/user.png', $html);
+        $this->assertStringContainsString('Web Developer', $html);
+        $this->assertStringContainsString(url('profile'), $html);
+    }
+
+    public function testTheUserMenuRendersOnAUserModelWithoutTheOptionalMethods()
+    {
+        // The 'adminlte_*' methods are an optional addition to the user model,
+        // so enabling their options on a plain model has to degrade instead of
+        // breaking every page of the panel.
+
+        config([
+            'adminlte.usermenu_enabled' => true,
+            'adminlte.usermenu_header' => true,
+            'adminlte.usermenu_image' => true,
+            'adminlte.usermenu_desc' => true,
+            'adminlte.usermenu_profile_url' => true,
+        ]);
+
+        Auth::setUser(new UserMenuRenderTestPlainUser());
+
+        $html = $this->renderPage();
+
+        $this->assertStringContainsString('user-menu', $html);
+        $this->assertStringContainsString('John Doe', $html);
+        $this->assertStringNotContainsString('user-image', $html);
+    }
+
     public function testTheLogoutLinkIsRenderedWithoutTheUserMenu()
     {
         config(['adminlte.usermenu_enabled' => false]);
@@ -132,6 +174,49 @@ class UserMenuRenderTestUser implements Authenticatable
     public function getAuthIdentifier()
     {
         return 1;
+    }
+
+    public function getAuthPasswordName()
+    {
+        return 'password';
+    }
+
+    public function getAuthPassword()
+    {
+        return '';
+    }
+
+    public function getRememberToken()
+    {
+        return '';
+    }
+
+    public function setRememberToken($value)
+    {
+        //
+    }
+
+    public function getRememberTokenName()
+    {
+        return '';
+    }
+}
+
+/**
+ * A user model that does not provide any of the optional 'adminlte_*' methods.
+ */
+class UserMenuRenderTestPlainUser implements Authenticatable
+{
+    public $name = 'John Doe';
+
+    public function getAuthIdentifierName()
+    {
+        return 'id';
+    }
+
+    public function getAuthIdentifier()
+    {
+        return 2;
     }
 
     public function getAuthPasswordName()

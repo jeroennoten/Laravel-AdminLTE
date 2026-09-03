@@ -137,7 +137,7 @@ class Datatable extends Component
         $wrapperAttributes = []
     ) {
         $this->id = $id;
-        $this->heads = $heads;
+        $this->heads = is_iterable($heads) ? $heads : Arr::wrap($heads);
         $this->theme = $theme;
         $this->headTheme = $headTheme;
         $this->bordered = $bordered;

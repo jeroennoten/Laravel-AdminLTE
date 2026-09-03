@@ -42,6 +42,7 @@ class SearchFilter implements FilterInterface
         // Setup the search bar method attribute.
 
         $isValidMethod = isset($item['method'])
+            && is_string($item['method'])
             && in_array(strtolower($item['method']), ['post', 'get']);
 
         if (! $isValidMethod) {

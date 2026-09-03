@@ -3,9 +3,15 @@
 
 @php
     $isRtlEnabled = $layoutHelper->isRtlEnabled();
+
+    // A configuration that is not a set of plugins is ignored, so a wrong
+    // value does not break every page of the panel.
+
+    $plugins = config('adminlte.plugins', []);
+    $plugins = is_array($plugins) ? $plugins : [];
 @endphp
 
-@foreach(config('adminlte.plugins', []) as $pluginName => $plugin)
+@foreach($plugins as $pluginName => $plugin)
 
     {{-- Check whether the plugin is active --}}
 

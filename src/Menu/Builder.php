@@ -107,7 +107,16 @@ class Builder
      */
     public function add(...$items)
     {
-        array_push($this->rawMenu, ...$items);
+        // Note the keys of the provided items are dropped. A menu declared as
+        // an associative array is a common mistake, and the variadic spread of
+        // such an array would otherwise abort the whole menu compilation.
+
+        $items = array_values($items);
+
+        if (! empty($items)) {
+            array_push($this->rawMenu, ...$items);
+        }
+
         $this->shouldCompile = true;
     }
 
@@ -284,6 +293,10 @@ class Builder
         if (empty($itemPath = $this->findItemPath($itemKey, $this->rawMenu))) {
             return;
         }
+
+        // Drop the keys of the provided items, see the {@see add()} method.
+
+        $items = array_values($items);
 
         // Get the index of the specified menu item relative to its parent.
 
