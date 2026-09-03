@@ -3,15 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AdminlteAssetsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthRoutesResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\AuthViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\BladeComponentsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\ConfigResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\ErrorViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\LayoutViewsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\TranslationsResource;
-use JeroenNoten\LaravelAdminLte\Console\PackageResources\VendorAssetsResource;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResourcesFactory;
 
 class AdminLteInstallCommand extends Command
 {
@@ -80,24 +72,18 @@ class AdminLteInstallCommand extends Command
 
         // Fill the array with the available package resources.
 
-        $this->pkgResources = [
-            'assets' => new AdminlteAssetsResource(),
-            'vendor_assets' => new VendorAssetsResource(),
-            'config' => new ConfigResource(),
-            'translations' => new TranslationsResource(),
-            'main_views' => new LayoutViewsResource(),
-            'auth_views' => new AuthViewsResource(),
-            'auth_routes' => new AuthRoutesResource(),
-            'components' => new BladeComponentsResource(),
-            'error_views' => new ErrorViewsResource(),
-        ];
+        $this->pkgResources = PackageResourcesFactory::make();
 
-        // Add the resources related to each available --type option.
+        // Add the resources related to each available --type option. Note the
+        // third party assets belong to the basic set: without them the panel
+        // falls back to a CDN, which sends the ip address of every visitor to
+        // a third party. The resource skips whatever the node modules folder
+        // does not hold, so it stays harmless when npm was never run.
 
-        $basic = ['assets', 'config', 'translations'];
+        $basic = ['assets', 'vendor_assets', 'config', 'translations'];
         $basicWithAuth = array_merge($basic, ['auth_views', 'auth_routes']);
         $basicWithViews = array_merge($basic, ['main_views']);
-        $full = array_merge($basicWithAuth, ['main_views', 'components']);
+        $full = array_merge($basicWithAuth, ['main_views', 'components', 'error_views']);
 
         $this->optTypeResources = [
             'basic' => $basic,
@@ -106,19 +92,14 @@ class AdminLteInstallCommand extends Command
             'full' => $full,
         ];
 
-        // Add the resources related to each available --only option.
+        // Add the resources related to each available --only option. Every
+        // resource can be installed on its own.
 
-        $this->optOnlyResources = [
-            'assets' => ['assets'],
-            'vendor_assets' => ['vendor_assets'],
-            'config' => ['config'],
-            'translations' => ['translations'],
-            'main_views' => ['main_views'],
-            'auth_views' => ['auth_views'],
-            'auth_routes' => ['auth_routes'],
-            'components' => ['components'],
-            'error_views' => ['error_views'],
-        ];
+        $this->optOnlyResources = [];
+
+        foreach (PackageResourcesFactory::keys() as $key) {
+            $this->optOnlyResources[$key] = [$key];
+        }
 
         // Add the resources related to each available --with option.
 

@@ -108,9 +108,10 @@ class VendorAssetsTest extends CommandTestCase
 
         $assets = $this->vendorAssets->getSourceData();
 
-        $this->assertCount(3, $assets);
+        $this->assertCount(4, $assets);
         $this->assertArrayHasKey('bootstrap', $assets);
         $this->assertArrayHasKey('bootstrap-icons', $assets);
+        $this->assertArrayHasKey('fonts', $assets);
         $this->assertArrayHasKey('overlayscrollbars', $assets);
 
         // Check the data of a specific asset.
@@ -129,9 +130,10 @@ class VendorAssetsTest extends CommandTestCase
     {
         $missing = $this->vendorAssets->getMissingAssets();
 
-        $this->assertCount(3, $missing);
+        $this->assertCount(4, $missing);
         $this->assertContains('bootstrap', $missing);
         $this->assertContains('bootstrap-icons', $missing);
+        $this->assertContains('fonts', $missing);
         $this->assertContains('overlayscrollbars', $missing);
 
         // The command to install the missing npm packages is suggested.
@@ -242,7 +244,7 @@ class VendorAssetsTest extends CommandTestCase
 
         $missing = $this->vendorAssets->getMissingAssets();
 
-        $this->assertCount(2, $missing);
+        $this->assertCount(3, $missing);
         $this->assertNotContains('bootstrap', $missing);
 
         // The suggested npm command only installs the missing packages.
@@ -408,16 +410,21 @@ class VendorAssetsTest extends CommandTestCase
         }
     }
 
-    public function testTheVendorAssetsAreNotInstalledByDefault()
+    public function testTheVendorAssetsAreInstalledByDefault()
     {
+        // Without them the panel falls back to a CDN, which sends the ip
+        // address of every visitor to a third party, so they belong to the
+        // basic installation.
+
         $this->makeFakeNodeModules();
-        $this->installVendorAssets();
 
         $this->artisan('adminlte:install --force')->assertExitCode(0);
 
-        $this->assertFalse($this->vendorAssets->exists());
+        $this->assertTrue($this->vendorAssets->exists());
 
         // Clear the installed resources.
+
+        $this->vendorAssets->uninstall();
 
         foreach (['assets', 'config', 'translations'] as $name) {
             $this->getResources($name)->uninstall();

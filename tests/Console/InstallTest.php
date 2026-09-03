@@ -331,6 +331,11 @@ class InstallTest extends CommandTestCase
             $this->getResources('auth_routes'),
             $this->getResources('main_views'),
             $this->getResources('components'),
+
+            // The error views belong to the full installation, but they are
+            // not part of the shared resource map of the test case.
+
+            new \JeroenNoten\LaravelAdminLte\Console\PackageResources\ErrorViewsResource(),
         ];
 
         // Ensure the required vendor assets exists.
