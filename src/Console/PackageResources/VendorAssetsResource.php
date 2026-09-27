@@ -78,7 +78,7 @@ class VendorAssetsResource extends PackageResource
             'fonts' => [
                 'name' => 'Source Sans 3 (the AdminLTE web font)',
                 'package' => '@fontsource/source-sans-3',
-                'version' => '^5.0',
+                'version' => '^5.3',
                 'source' => $nodePath.DIRECTORY_SEPARATOR.'@fontsource'
                     .DIRECTORY_SEPARATOR.'source-sans-3',
                 'target' => public_path('vendor/fonts/source-sans-3'),

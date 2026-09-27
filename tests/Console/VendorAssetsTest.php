@@ -144,6 +144,7 @@ class VendorAssetsTest extends CommandTestCase
         $this->assertStringContainsString('bootstrap@', $cmd);
         $this->assertStringContainsString('bootstrap-icons@', $cmd);
         $this->assertStringContainsString('overlayscrollbars@', $cmd);
+        $this->assertStringContainsString('@fontsource/source-sans-3@', $cmd);
     }
 
     public function testInstallWithoutTheNodeModulesFolder()
