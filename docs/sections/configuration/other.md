@@ -54,15 +54,15 @@ Key | What it points to | Published by
 `bootstrap_js` | The Bootstrap 5.3 Javascript bundle | `--only=vendor_assets`
 `bootstrap_icons_css` | The Bootstrap Icons font | `--only=vendor_assets`
 `overlayscrollbars_css` / `overlayscrollbars_js` | OverlayScrollbars, used by the sidebar | `--only=vendor_assets`
-`fonts_css` | The `Source Sans 3` web font, controlled by [`google_fonts.allowed`](/sections/configuration/basic_configuration#google-fonts) | nothing, see the note below
+`fonts_css` | The `Source Sans 3` web font, controlled by [`google_fonts.allowed`](/sections/configuration/basic_configuration#google-fonts) | `--only=vendor_assets`
 
 > [!Note]
-> **No package resource publishes the web font.** The `assets.local.fonts_css` path is only served when you put the font there yourself, and until then the `cdn_fallback` option keeps it coming from the CDN. Set `google_fonts.allowed` to `false` when your application must not reach an external font provider at all.
+> Only the regular weight the stylesheet declares is published, not the other seventeen weight and style combinations the npm package ships. Set `google_fonts.allowed` to `false` when your application should load no web font at all: the panel then uses the font stack of the operating system and requests nothing.
 
 To serve the third party assets locally, install them with `npm` and publish them:
 
 ```sh
-npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11
+npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11 @fontsource/source-sans-3@^5.3
 php artisan adminlte:install --only=vendor_assets
 ```
 
@@ -223,7 +223,7 @@ The AdminLTE v4 theming is driven by the **Bootstrap 5.3 and AdminLTE custom pro
 If you want to use **Laravel Mix** to compile the assets into single files instead of publishing them in the `/public/vendor` folder, start by installing the required `NPM` packages:
 
 ```sh
-npm i admin-lte@^4.8 bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11
+npm i admin-lte@^4.9 bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11 @fontsource/source-sans-3@^5.3
 ```
 
 Now, add the following to your `resources/js/app.js` file:
@@ -241,6 +241,8 @@ Also, add the following to your `resources/css/app.css` (or `app.scss`) file:
 @import 'overlayscrollbars/overlayscrollbars.css';
 // Bootstrap Icons
 @import 'bootstrap-icons/font/bootstrap-icons.css';
+// Source Sans 3, the AdminLTE web font
+@import '@fontsource/source-sans-3/index.css';
 // AdminLTE (Bootstrap 5.3 is already bundled inside it)
 @import 'admin-lte/dist/css/adminlte.css';
 ```
