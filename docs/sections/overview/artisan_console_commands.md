@@ -23,7 +23,7 @@ This package provides some artisan commands in order to manage and publish its r
 
 ### Optional Resources:
 
-- __`vendor_assets`__: The third party assets that AdminLTE v4 requires at runtime but does not distribute: the `Bootstrap` JavaScript bundle, the `Bootstrap Icons` font and `OverlayScrollbars`. They are published from the `node_modules` folder of your project, so install them first with `npm i bootstrap bootstrap-icons overlayscrollbars`. When they are not available, the resource is skipped and the package falls back to the CDN locations defined on the [assets configuration](/sections/configuration/other#assets).
+- __`vendor_assets`__: The third party assets that AdminLTE v4 requires at runtime but does not distribute: the `Bootstrap` JavaScript bundle, the `Bootstrap Icons` font, `OverlayScrollbars` and the `Source Sans 3` web font. They are published from the `node_modules` folder of your project, so install them first with `npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11 @fontsource/source-sans-3@^5.3`. When they are not available, the resource is skipped and the package falls back to the CDN locations defined on the [assets configuration](/sections/configuration/other#assets).
 
   **Target:** The assets will be installed inside the `public/vendor/bootstrap`, `public/vendor/bootstrap-icons` and `public/vendor/overlayscrollbars` folders of your Laravel project.
 

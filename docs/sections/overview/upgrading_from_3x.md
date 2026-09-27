@@ -60,10 +60,10 @@ rm -rf public/vendor/bootstrap \
 
 This alone is already enough to unbreak the panel: with `assets.cdn_fallback` at its default `true`, a missing local file is served from the CDN. Then decide how you want the third party resources delivered:
 
-**Self host them** with the new `vendor_assets` resource. It is the supported way to serve the Bootstrap Javascript bundle, the Bootstrap Icons font and OverlayScrollbars from your own domain. They are published from the `node_modules` folder of your project, so install the npm packages first:
+**Self host them** with the new `vendor_assets` resource. It is the supported way to serve the Bootstrap Javascript bundle, the Bootstrap Icons font, OverlayScrollbars and the Source Sans 3 web font from your own domain. They are published from the `node_modules` folder of your project, so install the npm packages first:
 
 ```sh
-npm i bootstrap bootstrap-icons overlayscrollbars
+npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11 @fontsource/source-sans-3@^5.3
 php artisan adminlte:install --only=vendor_assets
 ```
 

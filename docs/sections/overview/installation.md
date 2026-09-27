@@ -30,7 +30,7 @@ This command will install:
 AdminLTE v4 needs four resources that it does not distribute itself: the **Bootstrap 5 JavaScript bundle**, the **Bootstrap Icons** font, **OverlayScrollbars** (used by the main sidebar) and the **Source Sans 3** web font. Install them with `npm` **before** the previous step, and `adminlte:install` publishes them along with everything else:
 
 ```sh
-npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11 @fontsource/source-sans-3@^5.0
+npm i bootstrap@^5.3 bootstrap-icons@^1.13 overlayscrollbars@^2.11 @fontsource/source-sans-3@^5.3
 php artisan adminlte:install
 ```
 
