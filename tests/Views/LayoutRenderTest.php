@@ -224,6 +224,33 @@ class LayoutRenderTest extends TestCase
         $this->assertStringContainsString('adminlte-colors', $html);
     }
 
+    public function testTheVendoredBundlesAreNotRunAgainOnASinglePageNavigation()
+    {
+        // The vendored bundles register their delegated listeners on the
+        // document at module scope and without an abort signal, so running
+        // them a second time leaves the listeners of the previous execution
+        // behind. Turbo and Livewire re-create every script of a swapped body
+        // unless it carries this attribute.
+
+        $html = $this->renderPage();
+
+        foreach (['adminlte.min.js', 'bootstrap.bundle.min.js', 'overlayscrollbars'] as $bundle) {
+            $this->assertMatchesRegularExpression(
+                '/<script[^>]*'.preg_quote($bundle, '/').'[^>]*data-navigate-once/',
+                $html,
+                "The {$bundle} bundle is re-executed on a single page navigation."
+            );
+        }
+
+        // The scripts the package pushes are deliberately not marked: they
+        // have to run again to reinitialize the plugins of the new body.
+
+        $this->assertMatchesRegularExpression(
+            '/<script>(?!.*data-navigate-once)/s',
+            $html
+        );
+    }
+
     public function testRenderWithAssetBundling()
     {
         // On the vite mode, the AdminLTE core assets are not emitted. Note the
