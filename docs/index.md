@@ -21,7 +21,7 @@ Everything else is optional: the [authentication views](/sections/overview/authe
 This documentation talks about two different things that both carry a **v4**:
 
 - **Laravel-AdminLTE v4** (also written as _package version_ `4.x`) is **this package**, its new major release. Whenever you read _"the package"_, _"this package"_ or _"the `4.x` releases"_, this is what is meant.
-- **AdminLTE v4** is the **upstream admin template** ([ColorlibHQ/AdminLTE](https://github.com/ColorlibHQ/AdminLTE)), which this package integrates and installs as a composer dependency. The `4.x` package line requires **AdminLTE `^4.8`** (currently 4.8/4.9).
+- **AdminLTE v4** is the **upstream admin template** ([ColorlibHQ/AdminLTE](https://github.com/ColorlibHQ/AdminLTE)), which this package integrates and installs as a composer dependency. The `4.x` package line requires **AdminLTE `^4.9`**.
 
 **AdminLTE v4** is built on top of **Bootstrap 5.3**, ships **Bootstrap Icons** as its icon set and is completely **jQuery free**.
 

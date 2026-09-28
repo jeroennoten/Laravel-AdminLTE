@@ -25,7 +25,7 @@ The current package requirements are:
 
 - Laravel 12.x or 13.x
 - PHP >= 8.2
-- AdminLTE 4.x (installed as a composer dependency, currently `^4.8`)
+- AdminLTE 4.x (installed as a composer dependency, currently `^4.9`)
 
 
 ## Issues, Questions and Pull Requests
