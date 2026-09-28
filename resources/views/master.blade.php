@@ -267,14 +267,23 @@
     {{-- Body Content --}}
     @yield('body')
 
+    {{-- The vendored bundles carry 'data-navigate-once' so a single page
+         navigation does not run them again. They register their delegated
+         listeners on the document at module scope and without an abort signal,
+         so a second execution leaves the listeners of the previous one behind,
+         orphaned and impossible to remove. The attribute is inert without
+         Livewire, and the inline scripts the package pushes are deliberately
+         left unmarked: those have to run again to reinitialize the plugins of
+         the new body. --}}
+
     {{-- Third Party Plugin (OverlayScrollbars) --}}
     @isset($overlayScrollbarsJs)
-        <script src="{{ $overlayScrollbarsJs }}"{!! $crossOrigin($overlayScrollbarsJs) !!}></script>
+        <script src="{{ $overlayScrollbarsJs }}"{!! $crossOrigin($overlayScrollbarsJs) !!} data-navigate-once></script>
     @endisset
 
     {{-- Required Plugin (Bootstrap 5) --}}
     @isset($bootstrapJs)
-        <script src="{{ $bootstrapJs }}"{!! $crossOrigin($bootstrapJs) !!}></script>
+        <script src="{{ $bootstrapJs }}"{!! $crossOrigin($bootstrapJs) !!} data-navigate-once></script>
     @endisset
 
     {{-- Base Scripts (depends on the Laravel asset bundling tool) --}}
@@ -290,7 +299,7 @@
         @default
             {{-- Required Plugin (AdminLTE) --}}
             @isset($adminlteJs)
-                <script src="{{ $adminlteJs }}"></script>
+                <script src="{{ $adminlteJs }}" data-navigate-once></script>
             @endisset
     @endswitch
 

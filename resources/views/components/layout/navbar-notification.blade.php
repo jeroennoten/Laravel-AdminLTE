@@ -68,7 +68,15 @@
         const nLink = new _AdminLTE_NavbarNotification("{{ $id }}");
         updateNotification(nLink);
 
-        setInterval(updateNotification, {{ $makeUpdatePeriod() }}, nLink);
+        // The timer is registered once per javascript context. A single page
+        // navigation re-executes this script, and a second timer would keep
+        // polling next to the first one, so a long session would turn into a
+        // request storm. One timer is enough: the notification resolves its
+        // element by id on every tick, so it keeps serving the swapped body.
+
+        window._AdminLTE_Once('navbar-notification-{{ $id }}', () => {
+            setInterval(updateNotification, {{ $makeUpdatePeriod() }}, nLink);
+        });
 
     });
 
