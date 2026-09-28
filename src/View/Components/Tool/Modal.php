@@ -32,7 +32,7 @@ class Modal extends Component
     /**
      * The title for the modal header.
      *
-     * @var string
+     * @var string|null
      */
     public $title;
 
@@ -46,7 +46,7 @@ class Modal extends Component
     /**
      * The modal size (sm, lg or xl).
      *
-     * @var string
+     * @var string|null
      */
     public $size;
 

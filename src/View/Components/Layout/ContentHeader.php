@@ -34,7 +34,7 @@ class ContentHeader extends Component
      * The classes for the title element. When not provided, the classes used
      * by the AdminLTE v4 reference layouts are applied.
      *
-     * @var string
+     * @var string|null
      */
     public $titleClass;
 

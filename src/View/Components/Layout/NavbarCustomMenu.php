@@ -10,7 +10,7 @@ class NavbarCustomMenu extends Component
      * Extra classes for the inner "navbar-nav" element. This provides a way to
      * customize the navigation container style.
      *
-     * @var string
+     * @var string|null
      */
     public $navClass;
 

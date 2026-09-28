@@ -58,7 +58,7 @@ class DirectChat extends Component
      * The content of the badge shown on the card header, usually the amount
      * of unread messages.
      *
-     * @var string
+     * @var string|null
      */
     public $badge;
 
@@ -66,7 +66,7 @@ class DirectChat extends Component
      * The theme of the header badge. It falls back to the widget theme when
      * not provided.
      *
-     * @var string
+     * @var string|null
      */
     public $badgeTheme;
 
@@ -75,7 +75,7 @@ class DirectChat extends Component
      * is taken as pixels. Both panes always get the same height, otherwise
      * they desynchronize when the contacts pane slides in.
      *
-     * @var string
+     * @var string|null
      */
     public $height;
 
@@ -83,7 +83,7 @@ class DirectChat extends Component
      * The contrast mode of the message timestamps (light or dark). Any other
      * value leaves the stylesheet default in place.
      *
-     * @var string
+     * @var string|null
      */
     public $timestampMode;
 
@@ -106,7 +106,7 @@ class DirectChat extends Component
      * Extra classes for the "card-header" element. This provides a way to
      * customize the card header container style.
      *
-     * @var string
+     * @var string|null
      */
     public $headerClass;
 
@@ -114,7 +114,7 @@ class DirectChat extends Component
      * Extra classes for the "card-body" element. This provides a way to
      * customize the card body container style.
      *
-     * @var string
+     * @var string|null
      */
     public $bodyClass;
 
@@ -122,7 +122,7 @@ class DirectChat extends Component
      * Extra classes for the "card-footer" element. This provides a way to
      * customize the card footer container style.
      *
-     * @var string
+     * @var string|null
      */
     public $footerClass;
 

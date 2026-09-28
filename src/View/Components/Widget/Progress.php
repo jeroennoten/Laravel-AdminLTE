@@ -35,7 +35,7 @@ class Progress extends Component
     /**
      * The progress bar size (sm, xs or xxs).
      *
-     * @var string
+     * @var string|null
      */
     public $size;
 
