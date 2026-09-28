@@ -67,6 +67,28 @@ class LayoutComponentsTest extends TestCase
     |--------------------------------------------------------------------------
     */
 
+    public function testTheNotificationPollerRegistersOneTimerPerContext()
+    {
+        // A single page navigation re-executes the pushed script. Registering
+        // the timer again would leave the previous one polling next to it, so
+        // a long session turns into a request storm.
+
+        $this->renderComponent(
+            '<x-adminlte-navbar-notification id="nid" icon="bi bi-bell"'
+            .' :update-cfg="[\'url\' => \'/notifications\', \'period\' => 10]"/>'
+        );
+
+        $html = $this->renderPushedAssets();
+
+        $this->assertStringContainsString('setInterval(', $html);
+
+        $this->assertMatchesRegularExpression(
+            '/_AdminLTE_Once\([^)]*nid[^)]*,\s*\(\)\s*=>\s*\{\s*setInterval\(/s',
+            $html,
+            'The notification timer is registered again on every navigation.'
+        );
+    }
+
     public function testNavbarNotificationClasses()
     {
         // Test basic component.
