@@ -11,7 +11,7 @@ class InputGroupComponent extends Component
      * Holds an instance of the Laravel errors bag. This will be mainly used to
      * detect when the input group has associated errors.
      *
-     * @var \Illuminate\Support\MessageBag;
+     * @var \Illuminate\Support\MessageBag|null
      */
     protected $errorsBag;
 
@@ -52,14 +52,14 @@ class InputGroupComponent extends Component
     /**
      * The label of the input group.
      *
-     * @var string
+     * @var string|null
      */
     public $label;
 
     /**
      * The input group size (you can specify 'sm' or 'lg').
      *
-     * @var string
+     * @var string|null
      */
     public $size;
 
@@ -67,7 +67,7 @@ class InputGroupComponent extends Component
      * Additional classes for the "input-group" element. This provides a way to
      * customize the input group container style.
      *
-     * @var string
+     * @var string|null
      */
     public $igroupClass;
 
@@ -75,7 +75,7 @@ class InputGroupComponent extends Component
      * Extra classes for the label container. This provides a way to customize
      * the label style.
      *
-     * @var string
+     * @var string|null
      */
     public $labelClass;
 
@@ -83,14 +83,14 @@ class InputGroupComponent extends Component
      * Extra classes for the "form-group" element. This provides a way to
      * customize the main container style.
      *
-     * @var string
+     * @var mixed
      */
     public $fgroupClass;
 
     /**
      * Indicates if the invalid feedback is disabled for the input group.
      *
-     * @var bool
+     * @var bool|null
      */
     public $disableFeedback;
 

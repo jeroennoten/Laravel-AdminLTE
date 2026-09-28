@@ -158,7 +158,7 @@ class NavbarDropdown extends Component
      * Extra classes for the "dropdown-menu" element. This provides a way to
      * customize the dropdown menu style.
      *
-     * @var string
+     * @var string|null
      */
     public $menuClass;
 

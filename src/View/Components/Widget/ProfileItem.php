@@ -59,7 +59,7 @@ abstract class ProfileItem extends Component
      * any color of the AdminLTE extended palette like sky or teal. You can
      * also prepend the 'pill-' token for a pill badge, e.g: 'pill-info'.
      *
-     * @var string
+     * @var string|null
      */
     public $badge;
 

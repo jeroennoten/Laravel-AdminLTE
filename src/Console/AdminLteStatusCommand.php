@@ -3,6 +3,7 @@
 namespace JeroenNoten\LaravelAdminLte\Console;
 
 use Illuminate\Console\Command;
+use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResource;
 use JeroenNoten\LaravelAdminLte\Console\PackageResources\PackageResourcesFactory;
 
 class AdminLteStatusCommand extends Command

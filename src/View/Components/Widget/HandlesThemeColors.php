@@ -33,8 +33,8 @@ trait HandlesThemeColors
      * info, light and dark) are always available, the extended palette
      * requires the 'adminlte.assets.extended_colors' option to be enabled.
      *
-     * @param  string|null  $theme  The theme color name
-     * @return string|null
+     * @param  mixed  $theme  The theme color name
+     * @return mixed
      */
     protected function resolveThemeColor($theme)
     {

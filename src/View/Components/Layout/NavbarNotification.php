@@ -25,7 +25,7 @@ class NavbarNotification extends Component
     public $id;
 
     /**
-     * The notification icon (a Font Awesome icon).
+     * The notification icon (a Bootstrap Icons icon).
      *
      * @var string
      */
@@ -114,7 +114,7 @@ class NavbarNotification extends Component
     /**
      * Make the default attributes for the anchor tag.
      *
-     * @return string
+     * @return array
      */
     public function makeAnchorDefaultAttrs()
     {
@@ -210,7 +210,7 @@ class NavbarNotification extends Component
     /**
      * Create the url from specific configuration type.
      *
-     * @param  string|array  $cfg  The configuration for the url.
+     * @param  mixed  $cfg  The configuration for the url.
      * @param  mixed  $type  The configuration type (url or route).
      * @return string|null
      */

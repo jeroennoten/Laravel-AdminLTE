@@ -81,7 +81,7 @@ class Palette
      * the predicate behind the contrast of any element placed over a themed
      * background (links, close buttons, ...).
      *
-     * @param  string|null  $color  The theme color name
+     * @param  mixed  $color  The theme color name
      * @return bool
      */
     public static function hasDarkText($color): bool

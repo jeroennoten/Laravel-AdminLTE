@@ -39,7 +39,7 @@ class Ribbon extends Component
      * The ribbon size (lg or xl). The default size only fits about six
      * characters, the bigger sizes are meant for longer labels.
      *
-     * @var string
+     * @var string|null
      */
     public $size;
 

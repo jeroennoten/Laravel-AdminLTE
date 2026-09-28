@@ -48,7 +48,7 @@ class UserBlock extends Component
      * The user block size (sm). The small size shrinks the avatar and the
      * font sizes, it is the one used on the comments of a feed.
      *
-     * @var string
+     * @var string|null
      */
     public $size;
 

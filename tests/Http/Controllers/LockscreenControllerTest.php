@@ -506,6 +506,50 @@ class LockscreenControllerTest extends TestCase
         $response->assertSee('bye');
     }
 
+    public function testTheMiddlewareLetsTheLogoutRouteNamePass()
+    {
+        // On the route url mode, the logout and login options hold a route
+        // name instead of a path, so the middleware has to resolve them
+        // before comparing. Otherwise a locked user can not log out anymore.
+
+        config([
+            'adminlte.use_route_url' => true,
+            'adminlte.logout_url' => 'logout',
+        ]);
+
+        Route::middleware(['web', RedirectIfLocked::class])
+            ->post('/auth/sign-out', function () {
+                return 'bye';
+            })
+            ->name('logout');
+
+        $response = $this->actingAs($this->makeUser())
+            ->withSession([$this->sessionKey => true])
+            ->post('/auth/sign-out');
+
+        $response->assertOk();
+        $response->assertSee('bye');
+    }
+
+    public function testTheMiddlewareIgnoresAnUnknownRouteNameOnTheRouteUrlMode()
+    {
+        // An unresolvable route name leaves the option without a path, and the
+        // request is locked as any other one.
+
+        config([
+            'adminlte.use_route_url' => true,
+            'adminlte.logout_url' => 'a-route-that-does-not-exist',
+        ]);
+
+        $this->registerProtectedRoute();
+
+        $response = $this->actingAs($this->makeUser())
+            ->withSession([$this->sessionKey => true])
+            ->get('/protected-page');
+
+        $response->assertRedirect(route('adminlte.lockscreen.show'));
+    }
+
     public function testTheMiddlewareHonorsTheExtraExcludedPaths()
     {
         config(['adminlte.lockscreen.except' => ['api/*']]);

@@ -58,11 +58,13 @@
     "almasaeed2010/adminlte": "^4.9"
   },
   "require-dev": {
+    "larastan/larastan": "^3.0",
     "laravel/ui": "^4.6",
     "orchestra/testbench": "^10.0|^11.0",
     "phpunit/phpunit": "^11.0|^12.0"
   },
   "scripts": {
+    "analyse": "phpstan analyse --no-progress",
     "test": "phpunit --no-coverage",
     "test:coverage": "phpunit --coverage-text"
   },

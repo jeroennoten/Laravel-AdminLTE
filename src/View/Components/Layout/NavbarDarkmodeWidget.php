@@ -34,7 +34,7 @@ class NavbarDarkmodeWidget extends Component
     /**
      * The color mode resolved for the current request.
      *
-     * @var string
+     * @var string|null
      */
     protected $colorMode;
 

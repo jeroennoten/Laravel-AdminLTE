@@ -24,7 +24,7 @@ class Direction
     /**
      * Checks whether the specified locale is a right-to-left one.
      *
-     * @param  string  $locale  The locale to check (for example: 'ar')
+     * @param  mixed  $locale  The locale to check (for example: 'ar')
      * @return bool
      */
     public static function isRtlLocale($locale): bool

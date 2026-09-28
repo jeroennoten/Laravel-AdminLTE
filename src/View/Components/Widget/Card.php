@@ -394,7 +394,7 @@ class Card extends Component
      * overwrite the default ones.
      *
      * @param  string  $baseClass  The base class of the section
-     * @param  string  $extraClass  The extra classes provided by the user
+     * @param  string|null  $extraClass  The extra classes provided by the user
      * @param  array  $modifiers  Additional classes for the section
      * @return string
      */

@@ -103,13 +103,13 @@ class CommandHelper
         // Check if we can open the first folder.
 
         if (! is_resource($dirHandler = @opendir($dir1))) {
-            return;
+            return null;
         }
 
         // Check if the second folder exists.
 
         if (! is_dir($dir2)) {
-            return;
+            return null;
         }
 
         // Now, compare the folders. Note we will skip dots items.

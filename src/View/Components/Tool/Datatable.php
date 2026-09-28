@@ -29,7 +29,7 @@ class Datatable extends Component
      * The table theme (light, dark, primary, secondary, info, warning or
      * danger).
      *
-     * @var string
+     * @var string|null
      */
     public $theme;
 

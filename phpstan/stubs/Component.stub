@@ -1,0 +1,26 @@
+<?php
+
+namespace Illuminate\View;
+
+/**
+ * The attribute bag is only declared here so the stub of the component below
+ * can name it. Every member of the real class is kept, a stub only overrides
+ * the types it declares itself.
+ */
+class ComponentAttributeBag
+{
+}
+
+abstract class Component
+{
+    /**
+     * The framework documents the attribute bag as non-nullable, but only
+     * 'withAttributes()' ever fills it, and Blade calls that while rendering a
+     * component tag. A component built with 'new' (the way the test suite and
+     * any consumer calling a maker method by hand builds one) keeps it null,
+     * so the null-safe access used by the components is not redundant.
+     *
+     * @var \Illuminate\View\ComponentAttributeBag|null
+     */
+    public $attributes;
+}

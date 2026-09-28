@@ -1,0 +1,185 @@
+name: quality
+
+# The checks that guard the package beyond the test matrix of run-tests.yml.
+# They are cheap and independent of the Laravel/PHP combination, so each one
+# runs a single time instead of once per matrix entry.
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Static analysis of the package sources with PHPStan and the Laravel
+  # extension. The level is pinned on phpstan.neon.dist, so a local run and
+  # this job always agree.
+  static-analysis:
+    name: Static analysis
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction
+
+      # The analysis boots a testbench application to resolve the package
+      # views, so it needs the same extensions as the test suite.
+      - name: Analyse
+        run: vendor/bin/phpstan analyse --no-progress
+
+  # Reports the known security advisories of the dependencies. Note the
+  # abandoned packages are only reported, they do not fail the job: an
+  # abandoned dependency is a maintenance decision and not a vulnerability.
+  dependency-audit:
+    name: Dependency audit
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          coverage: none
+
+      - name: Install dependencies
+        run: composer update --prefer-dist --no-interaction
+
+      - name: Audit the composer dependencies
+        run: composer audit --abandoned=report
+
+      - name: Audit the npm dependencies of the documentation
+        run: npm audit --audit-level=high
+
+  # Installs the package on a real Laravel application and renders a page with
+  # it. The test suite runs on a testbench application, so this is the only
+  # check that exercises the skeleton the users actually start from, together
+  # with the console commands that publish the package resources.
+  integration:
+    name: Install into a Laravel application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+        with:
+          path: package
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: curl, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, iconv
+          coverage: none
+
+      - name: Create a Laravel application
+        run: composer create-project laravel/laravel app --prefer-dist --no-interaction
+
+      # The package is required from the checkout, without a symlink, so the
+      # installed files are the ones a release would ship.
+      - name: Require the package from the checkout
+        working-directory: app
+        run: |
+          composer config repositories.package path ../package
+          composer config repositories.package.options.symlink false --json
+          composer config minimum-stability dev
+          composer config prefer-stable true
+          composer require "jeroennoten/laravel-adminlte:*" --no-interaction
+
+      # Every resource except the Laravel/UI auth routes is published. Those
+      # routes append an 'Auth::routes()' call to the application, which needs
+      # the laravel/ui package that a stock skeleton does not carry.
+      - name: Publish the package resources
+        working-directory: app
+        run: |
+          php artisan adminlte:install --type=basic_with_views --force \
+            --with=components --with=error_views --with=auth_views
+
+      - name: Check the status of the package resources
+        working-directory: app
+        run: |
+          php artisan adminlte:status
+          php artisan adminlte:plugins list
+
+      # Every published resource must report itself as installed right after
+      # the installation, otherwise the publishing and the verification of a
+      # resource disagree.
+      - name: Verify every required resource was installed
+        working-directory: app
+        run: |
+          php artisan adminlte:status | tee status.txt
+          if grep -E '^\| (assets|config|translations|main_views|components) .*Not Installed' status.txt; then
+            echo 'A required resource is not installed after adminlte:install'
+            exit 1
+          fi
+
+      - name: Render an AdminLTE page
+        working-directory: app
+        run: |
+          cp ../package/.github/integration/smoke.blade.php resources/views/adminlte-smoke.blade.php
+          cp ../package/.github/integration/routes.php routes/adminlte-smoke.php
+          cp ../package/.github/integration/smoke.php smoke.php
+          php -r '
+            $f = "bootstrap/app.php";
+            $s = file_get_contents($f);
+            $s = str_replace(
+              "web: __DIR__.\"/../routes/web.php\",",
+              "web: [__DIR__.\"/../routes/web.php\", __DIR__.\"/../routes/adminlte-smoke.php\"],",
+              $s
+            );
+            $s = str_replace(
+              "web: __DIR__.\x27/../routes/web.php\x27,",
+              "web: [__DIR__.\x27/../routes/web.php\x27, __DIR__.\x27/../routes/adminlte-smoke.php\x27],",
+              $s
+            );
+            file_put_contents($f, $s);
+          '
+          php artisan route:list | grep adminlte-smoke
+          php smoke.php
+
+      - name: Remove the package resources
+        working-directory: app
+        run: |
+          php artisan adminlte:remove --force \
+            assets vendor_assets config translations main_views components \
+            error_views auth_views
+
+  # Builds the current documentation. The deploy workflow only runs after a
+  # merge on master, so without this check a broken documentation is found
+  # once it is already published.
+  docs-build:
+    name: Documentation build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      # Only the documentation of the current major is built. The older majors
+      # are built from their release tag, which the deploy workflow does, and
+      # a pull request can not change them anymore.
+      - name: Build the current documentation
+        run: npm run docs:build
