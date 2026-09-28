@@ -106,10 +106,15 @@ class AdminLteServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
-        // Bind a singleton instance of the AdminLte class into the service
-        // container.
+        // Bind a scoped instance of the AdminLte class into the service
+        // container. It has to be scoped rather than a singleton: the menu is
+        // compiled in the constructor, and compiling it filters the items by
+        // the permissions of the authenticated user and marks the active one
+        // from the current url. On a long lived worker (Octane, FrankenPHP) a
+        // singleton would survive the request and hand the menu of one visitor
+        // to the next. A scoped binding is flushed between requests.
 
-        $this->app->singleton(AdminLte::class, function () {
+        $this->app->scoped(AdminLte::class, function () {
             $filters = config('adminlte.filters', []);
 
             return new AdminLte(is_array($filters) ? $filters : []);
