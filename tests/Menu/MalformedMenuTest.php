@@ -39,6 +39,30 @@ class MalformedMenuTest extends TestCase
         $this->assertEquals('Sub', $menu[1]['submenu'][0]['text']);
     }
 
+    public function testItemsCanBeAddedInsideAnItemWithAMalformedSubmenu()
+    {
+        // A 'submenu' property that is not an array used to abort the menu
+        // compilation, since it reached an array_push() call.
+
+        foreach (['not-an-array', null, 42] as $submenu) {
+            $builder = $this->makeMenuBuilder();
+
+            $builder->add([
+                'key' => 'about',
+                'text' => 'About',
+                'submenu' => $submenu,
+            ]);
+
+            $builder->addIn('about', ['text' => 'Sub', 'url' => '/sub']);
+
+            $menu = $builder->menu;
+
+            $this->assertCount(1, $menu);
+            $this->assertCount(1, $menu[0]['submenu']);
+            $this->assertEquals('Sub', $menu[0]['submenu'][0]['text']);
+        }
+    }
+
     public function testANonArrayMenuConfigurationIsIgnored()
     {
         config(['adminlte.menu' => 'not-a-menu']);

@@ -309,6 +309,14 @@ class Builder
         if ($where === self::ADD_INSIDE) {
             $targetPath = implode('.', array_merge($itemPath, ['submenu']));
             $targetArr = Arr::get($this->rawMenu, $targetPath, []);
+
+            // A 'submenu' property that is not an array can not hold the new
+            // items. Note such an item is not compiled as a submenu either, so
+            // the malformed value is replaced instead of aborting the whole
+            // menu compilation.
+
+            $targetArr = is_array($targetArr) ? $targetArr : [];
+
             array_push($targetArr, ...$items);
         } else {
             $targetPath = implode('.', array_slice($itemPath, 0, -1)) ?: null;
