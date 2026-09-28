@@ -31,12 +31,32 @@ class AuthRoutesResource extends PackageResource
     }
 
     /**
+     * Checks whether the Laravel/UI package, which provides the 'Auth::routes()'
+     * method these routes rely on, is available on the application.
+     *
+     * @return bool
+     */
+    public function isScaffoldingAvailable()
+    {
+        return class_exists(\Laravel\Ui\UiServiceProvider::class);
+    }
+
+    /**
      * Installs or publishes the resource.
      *
      * @return void
      */
     public function install()
     {
+        // Without the Laravel/UI package the published routes raise on every
+        // request and on every artisan command, which also takes down the
+        // command that would remove them again. So the resource is skipped
+        // instead, and the install message explains how to get them.
+
+        if (! $this->isScaffoldingAvailable()) {
+            return;
+        }
+
         // If the routes already exists, we won't publish they again.
 
         if ($this->exists()) {
@@ -51,6 +71,40 @@ class AuthRoutesResource extends PackageResource
 
         File::ensureDirectoryExists(File::dirname($this->target));
         File::append($this->target, $routes);
+    }
+
+    /**
+     * Gets an installation message. The 'success' message is replaced when the
+     * routes can't be published, in order to notify the situation to the final
+     * user.
+     *
+     * @param  string  $key  The message keyword
+     * @return string|null
+     */
+    public function getInstallMessage($key)
+    {
+        if ($key !== 'success' || $this->isScaffoldingAvailable()) {
+            return parent::getInstallMessage($key);
+        }
+
+        return $this->makeSkippedRoutesMessage();
+    }
+
+    /**
+     * Makes the message that notifies about the skipped auth routes.
+     *
+     * @return string
+     */
+    protected function makeSkippedRoutesMessage()
+    {
+        $msg = 'The auth routes were skipped: they use the Auth::routes() ';
+        $msg .= 'method, which the Laravel/UI package provides.'.PHP_EOL;
+        $msg .= 'Publishing them without it would raise on every request.'.PHP_EOL;
+        $msg .= 'To get them, install the package and run the installation again:'.PHP_EOL;
+        $msg .= ' composer require laravel/ui'.PHP_EOL;
+        $msg .= ' php artisan adminlte:install --only=auth_routes'.PHP_EOL;
+
+        return $msg;
     }
 
     /**

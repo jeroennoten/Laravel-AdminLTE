@@ -5,16 +5,31 @@ use JeroenNoten\LaravelAdminLte\AdminLteServiceProvider;
 
 class ServiceProviderTest extends TestCase
 {
-    public function testRegisterSingletonInstance()
+    public function testRegisterScopedInstance()
     {
         // Check the instance of AdminLte resolver.
 
         $adminlte = $this->app->make(AdminLte::class);
         $this->assertInstanceOf(AdminLte::class, $adminlte);
 
-        // Check that a singleton instance is registered.
+        // Check the instance is shared within the request.
 
         $this->assertSame($adminlte, $this->app->make(AdminLte::class));
+    }
+
+    public function testTheInstanceIsNotSharedBetweenRequests()
+    {
+        // The menu is compiled in the constructor, and compiling it filters the
+        // items by the permissions of the authenticated user. A binding that
+        // outlives the request would therefore hand the menu of one visitor to
+        // the next one on a long lived worker, so the instance has to be
+        // registered as scoped rather than as a singleton.
+
+        $adminlte = $this->app->make(AdminLte::class);
+
+        $this->app->forgetScopedInstances();
+
+        $this->assertNotSame($adminlte, $this->app->make(AdminLte::class));
     }
 
     public function testBootLoadViews()
